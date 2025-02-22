@@ -16,48 +16,12 @@ class AppTheme {
           onSurface: AppColorsDark().onSurface,
           onError: AppColorsDark().onError,
         ),
-        textTheme: TextTheme(
-          headlineLarge: TextStyle(
-            fontSize: 96,
-            fontWeight: FontWeight.w300,
-            letterSpacing: -1.5,
-          ),
-          headlineMedium: TextStyle(
-            fontSize: 48,
-            fontWeight: FontWeight.w400,
-          ),
-          headlineSmall: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-            letterSpacing: 0.15,
-          ),
-          bodyLarge: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-            letterSpacing: 0.5,
-          ),
-          bodyMedium: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-            letterSpacing: 0.25,
-          ),
-          bodySmall: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w400,
-            letterSpacing: 0.25,
-          ),
-        ),
+        textTheme: _textTheme,
         appBarTheme: AppBarTheme(
           backgroundColor: AppColorsDark().primary,
           elevation: 0,
-          titleTextStyle: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-            letterSpacing: 0.15,
-          ),
-          iconTheme: IconThemeData(
-            color: AppColorsDark().onBackground,
-          ),
+          titleTextStyle: _appBarTextStyle,
+          iconTheme: IconThemeData(color: AppColorsDark().onBackground),
         ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: AppColorsDark().background,
@@ -73,19 +37,14 @@ class AppTheme {
           crossAxisMargin: 4,
           mainAxisMargin: 4,
         ),
-        pageTransitionsTheme: PageTransitionsTheme(
-          builders: {
-            TargetPlatform.android: ZoomPageTransitionsBuilder(),
-            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-          },
-        ),
+        pageTransitionsTheme: _pageTransitionsTheme,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       );
 
   static ThemeData get light => ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: AppColorsLight().background,
-        colorScheme: ColorScheme.dark(
+        colorScheme: ColorScheme.light(
           primary: AppColorsLight().primary,
           secondary: AppColorsLight().secondary,
           surface: AppColorsLight().surface,
@@ -95,48 +54,12 @@ class AppTheme {
           onSurface: AppColorsLight().onSurface,
           onError: AppColorsLight().onError,
         ),
-        textTheme: TextTheme(
-          headlineLarge: TextStyle(
-            fontSize: 96,
-            fontWeight: FontWeight.w300,
-            letterSpacing: -1.5,
-          ),
-          headlineMedium: TextStyle(
-            fontSize: 48,
-            fontWeight: FontWeight.w400,
-          ),
-          headlineSmall: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-            letterSpacing: 0.15,
-          ),
-          bodyLarge: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-            letterSpacing: 0.5,
-          ),
-          bodyMedium: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-            letterSpacing: 0.25,
-          ),
-          bodySmall: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w400,
-            letterSpacing: 0.25,
-          ),
-        ),
+        textTheme: _textTheme,
         appBarTheme: AppBarTheme(
-          backgroundColor: AppColorsLight().background,
+          backgroundColor: AppColorsLight().primary,
           elevation: 0,
-          titleTextStyle: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-            letterSpacing: 0.15,
-          ),
-          iconTheme: IconThemeData(
-            color: AppColorsLight().onBackground,
-          ),
+          titleTextStyle: _appBarTextStyle,
+          iconTheme: IconThemeData(color: AppColorsLight().onBackground),
         ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: AppColorsLight().background,
@@ -152,12 +75,35 @@ class AppTheme {
           crossAxisMargin: 4,
           mainAxisMargin: 4,
         ),
-        pageTransitionsTheme: PageTransitionsTheme(
-          builders: {
-            TargetPlatform.android: ZoomPageTransitionsBuilder(),
-            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-          },
-        ),
+        pageTransitionsTheme: _pageTransitionsTheme,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       );
+
+  static const TextTheme _textTheme = TextTheme(
+    headlineLarge: TextStyle(
+        fontSize: 96, fontWeight: FontWeight.w300, letterSpacing: -1.5),
+    headlineMedium: TextStyle(fontSize: 48, fontWeight: FontWeight.w400),
+    headlineSmall: TextStyle(
+        fontSize: 20, fontWeight: FontWeight.w500, letterSpacing: 0.15),
+    bodyLarge: TextStyle(
+        fontSize: 16, fontWeight: FontWeight.w400, letterSpacing: 0.5),
+    bodyMedium: TextStyle(
+        fontSize: 14, fontWeight: FontWeight.w400, letterSpacing: 0.25),
+    bodySmall: TextStyle(
+        fontSize: 12, fontWeight: FontWeight.w400, letterSpacing: 0.25),
+  );
+
+  static const TextStyle _appBarTextStyle = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w500,
+    letterSpacing: 0.15,
+  );
+
+  static const PageTransitionsTheme _pageTransitionsTheme =
+      PageTransitionsTheme(
+    builders: {
+      TargetPlatform.android: ZoomPageTransitionsBuilder(),
+      TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+    },
+  );
 }

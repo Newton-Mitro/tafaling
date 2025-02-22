@@ -16,7 +16,8 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: 'My Web App',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.dark,
+      darkTheme: AppTheme.dark,
+      themeMode: ThemeMode.dark,
       localizationsDelegates: [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,

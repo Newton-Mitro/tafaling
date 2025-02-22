@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_skeleton/shared/dimensions/app_dimensions.dart';
+import 'package:flutter_skeleton/shared/dimensions/large_app_dimensions.dart';
+import 'package:flutter_skeleton/shared/dimensions/medium_app_dimensions.dart';
+import 'package:flutter_skeleton/shared/dimensions/small_app_dimensions.dart';
 import 'package:flutter_skeleton/shared/styles/app_text_style.dart';
 import 'package:flutter_skeleton/shared/styles/lg_text_style.dart';
 import 'package:flutter_skeleton/shared/styles/md_text_style.dart';
@@ -31,11 +35,24 @@ extension AppContext on BuildContext {
         return MdTextStyle();
       case DeviceType.Desktop:
         return LgTextStyle();
-      default:
-        return MdTextStyle();
     }
   }
 
-  AppLocalizations get stringResource =>
+  AppDimensions get appDimensions {
+    switch (deviceType) {
+      case DeviceType.Mobile:
+        return SmallAppDimensions();
+      case DeviceType.Tablet:
+        return MediumAppDimensions();
+      case DeviceType.Desktop:
+        return LargeAppDimensions();
+    }
+  }
+
+  ThemeData get theme {
+    return Theme.of(this);
+  }
+
+  AppLocalizations get appLocalizations =>
       AppLocalizations.of(this) ?? lookupAppLocalizations(Locale('en'));
 }

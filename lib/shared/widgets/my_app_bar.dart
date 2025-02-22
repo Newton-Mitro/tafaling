@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_skeleton/shared/widgets/app_bar_drawer_icon.dart';
 import 'package:flutter_skeleton/utils/app_context.dart';
 
 class MyAppBar extends StatelessWidget {
@@ -6,23 +7,35 @@ class MyAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          spacing: 20,
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      alignment: Alignment.center,
+      color: context.theme.appBarTheme.backgroundColor,
+      height: context.appDimensions.appBarHeight,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: context.appDimensions.containerWidth,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            AppLogo(),
-            AppLargeMenus(),
+            Row(
+              spacing: context.appDimensions.appBarSpacing,
+              children: [
+                AppLogo(),
+                if (context.isDesktop) AppLargeMenus(),
+              ],
+            ),
+            Row(
+              children: [
+                LanguageSelector(),
+                ThemeSwitcher(),
+                if (!context.isDesktop) AppBarDrawerIcon(),
+              ],
+            ),
           ],
         ),
-        Row(
-          children: [
-            LanguageSelector(),
-            ThemeSwitcher(),
-          ],
-        ),
-      ],
+      ),
     );
   }
 }
@@ -33,7 +46,7 @@ class AppLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      context.stringResource.appName,
+      context.appLocalizations.appName,
       style: context.textStyle.appBarTextStyle,
     );
   }
@@ -45,11 +58,11 @@ class AppLargeMenus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      spacing: 20,
+      spacing: context.appDimensions.appBarSpacing,
       children: [
-        Text(context.stringResource.home),
-        Text(context.stringResource.about),
-        Text(context.stringResource.contact),
+        Text(context.appLocalizations.home),
+        Text(context.appLocalizations.about),
+        Text(context.appLocalizations.contact),
       ],
     );
   }

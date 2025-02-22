@@ -3,43 +3,40 @@ import 'package:flutter_skeleton/shared/colors/app_colors.dart';
 
 class AppColorsDark extends AppColors {
   @override
-  Color get primary => Color(0xFFBB86FC); // Softer purple for dark mode
+  Color get primary => Colors.blueGrey;
 
   @override
-  Color get primaryVariant => Color(0xFF3700B3); // Deep purple
+  Color get primaryVariant => Colors.blueGrey[700]!;
 
   @override
-  Color get secondary => Color(0xFF03DAC5); // Teal
+  Color get secondary => Colors.teal;
 
   @override
-  Color get secondaryVariant => Color(0xFF018786); // Darker teal
+  Color get secondaryVariant => Colors.tealAccent;
 
   @override
-  Color get background => Color(
-      0xFF1E1E1E); // Slightly lighter than pure black for better readability
+  Color get background => Colors.black;
 
   @override
-  Color get surface => Color(0xFF2C2C2C); // Dark gray for card backgrounds
+  Color get surface => Colors.grey[900]!;
 
   @override
-  Color get error => Color(0xFFCF6679); // Red with enough contrast
+  Color get error => Colors.redAccent;
 
   @override
-  Color get onPrimary =>
-      Color(0xFF121212); // Dark background on primary color for better contrast
+  Color get onPrimary => Colors.white;
 
   @override
-  Color get onSecondary => Color(0xFF000000); // Black on secondary color
+  Color get onSecondary => Colors.white;
 
   @override
-  Color get onBackground =>
-      Color(0xFFE0E0E0); // Light gray for good readability on dark background
+  Color get onBackground => Colors.white;
 
   @override
-  Color get onSurface => Color(0xFFFAFAFA); // White on dark surfaces
+  Color get onSurface => Colors.white;
 
   @override
-  Color get onError => Color(0xFFFFFFFF); // White on error color
+  Color get onError => Colors.black;
 
   @override
   MaterialColor get gray => MaterialColor(50, {
