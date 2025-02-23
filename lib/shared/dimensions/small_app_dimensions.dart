@@ -2,7 +2,7 @@ import 'package:flutter_skeleton/shared/dimensions/app_dimensions.dart';
 
 class SmallAppDimensions implements AppDimensions {
   @override
-  double get appBarHeight => 40;
+  double get appBarHeight => 60;
 
   @override
   double get appBarSpacing => 10;

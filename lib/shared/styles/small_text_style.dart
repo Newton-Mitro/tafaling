@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_skeleton/shared/styles/app_text_style.dart';
 
-class SmTextStyle extends AppTextStyle {
+class SmallTextStyle extends AppTextStyle {
   @override
   TextStyle get appBarTextStyle => TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
+        fontSize: 12,
+      );
+
+  @override
+  TextStyle get appBarLogoTextStyle => TextStyle(
+        fontSize: 24,
       );
 
   @override

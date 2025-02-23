@@ -4,9 +4,9 @@ import 'package:flutter_skeleton/shared/dimensions/large_app_dimensions.dart';
 import 'package:flutter_skeleton/shared/dimensions/medium_app_dimensions.dart';
 import 'package:flutter_skeleton/shared/dimensions/small_app_dimensions.dart';
 import 'package:flutter_skeleton/shared/styles/app_text_style.dart';
-import 'package:flutter_skeleton/shared/styles/lg_text_style.dart';
-import 'package:flutter_skeleton/shared/styles/md_text_style.dart';
-import 'package:flutter_skeleton/shared/styles/sm_text_style.dart';
+import 'package:flutter_skeleton/shared/styles/large_text_style.dart';
+import 'package:flutter_skeleton/shared/styles/medium_text_style.dart';
+import 'package:flutter_skeleton/shared/styles/small_text_style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum DeviceType { Mobile, Tablet, Desktop }
@@ -30,11 +30,11 @@ extension AppContext on BuildContext {
   AppTextStyle get textStyle {
     switch (deviceType) {
       case DeviceType.Mobile:
-        return SmTextStyle();
+        return SmallTextStyle();
       case DeviceType.Tablet:
-        return MdTextStyle();
+        return MediumTextStyle();
       case DeviceType.Desktop:
-        return LgTextStyle();
+        return LargeTextStyle();
     }
   }
 

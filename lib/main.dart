@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_skeleton/pages/home_page/home_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_skeleton/shared/themes/app_theme.dart';
+import 'package:flutter_skeleton/utils/app_context.dart';
 
 void main() {
   runApp(const MainApp());
@@ -14,10 +15,11 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'My Web App',
+      title: context.appLocalizations.appName,
       debugShowCheckedModeBanner: false,
       darkTheme: AppTheme.dark,
-      themeMode: ThemeMode.dark,
+      theme: AppTheme.light,
+      themeMode: ThemeMode.light,
       localizationsDelegates: [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,

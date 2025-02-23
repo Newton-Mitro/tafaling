@@ -7,11 +7,14 @@ environment:
   sdk: ^3.6.0
 
 dependencies:
+  flag: ^7.0.0
   flutter:
     sdk: flutter
+  flutter_bloc: ^9.0.0
   flutter_localizations:
     sdk: flutter
   intl: any
+  shared_preferences: ^2.5.2
 
 dev_dependencies:
   flutter_test:
@@ -21,3 +24,24 @@ dev_dependencies:
 flutter:
   generate: true
   uses-material-design: true
+  assets:
+    - assets/images/
+  # fonts:
+  # - family: Roboto
+  #   fonts:
+  #     - asset: assets/fonts/Roboto-Regular.ttf
+  #     - asset: assets/fonts/Roboto-Bold.ttf
+  #       weight: 700
+  # - family: Poppins
+  #   fonts:
+  #     - asset: assets/fonts/Poppins-Regular.ttf
+  #     - asset: assets/fonts/Poppins-Bold.ttf
+  #       weight: 700
+  #     - asset: assets/fonts/Poppins-Black.ttf
+  #       weight: 900
+  #     - asset: assets/fonts/Poppins-Italic.ttf
+  #       style: italic
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/favicon.png"
