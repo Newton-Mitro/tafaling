@@ -1,5 +1,7 @@
 import 'package:flag/flag.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_skeleton/shared/widgets/language_selector/bloc/language_bloc.dart';
 import 'package:flutter_skeleton/utils/app_context.dart';
 
 class LanguageSelector extends StatelessWidget {
@@ -7,42 +9,52 @@ class LanguageSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<int>(
-      itemBuilder: (context) {
-        return [
-          PopupMenuItem(
-            value: 0,
-            child: PopupLanguageSelectorItem(
-              language: 'English',
-              flagCode: FlagsCode.US,
+    return BlocConsumer<LanguageBloc, LanguageState>(
+      listener: (context, state) {
+        // TODO: implement listener
+      },
+      builder: (context, state) {
+        return PopupMenuButton<int>(
+          itemBuilder: (context) {
+            return [
+              PopupMenuItem(
+                value: 0,
+                child: PopupLanguageSelectorItem(
+                  language: 'English',
+                  flagCode: FlagsCode.US,
+                ),
+              ),
+              PopupMenuItem(
+                value: 1,
+                child: PopupLanguageSelectorItem(
+                  language: 'বাংলা',
+                  flagCode: FlagsCode.BD,
+                ),
+              ),
+            ];
+          },
+          onSelected: (int value) {
+            context
+                .read<LanguageBloc>()
+                .add(LanguageSelected(value == 0 ? 'en' : 'bn'));
+          },
+          initialValue: state.language == 'en'
+              ? 0
+              : state.language == 'bn'
+                  ? 1
+                  : 0,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                const Icon(Icons.language),
+                const SizedBox(width: 5),
+                Text(state.language),
+              ],
             ),
           ),
-          PopupMenuItem(
-            value: 1,
-            child: PopupLanguageSelectorItem(
-              language: 'বাংলা',
-              flagCode: FlagsCode.BD,
-            ),
-          ),
-        ];
+        );
       },
-      onSelected: (int value) {
-        Locale newLocale =
-            (value == 0) ? const Locale('en') : const Locale('bn');
-        // You should implement the locale-changing logic, such as updating the App's locale provider
-      },
-      initialValue:
-          context.appLocalizations.localeName.startsWith('en') ? 0 : 1,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            const Icon(Icons.language),
-            const SizedBox(width: 5),
-            Text(context.appLocalizations.localeName),
-          ],
-        ),
-      ),
     );
   }
 }

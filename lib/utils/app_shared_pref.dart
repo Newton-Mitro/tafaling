@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AppSharedPref {
   static const localeKey = 'app_locale';
 
-  static void setAppLocale(String locale) {
+  static Future<void> setAppLocale(String locale) async {
     final sharedPref = SharedPreferences.getInstance();
     sharedPref.then((pref) {
       pref.setString(localeKey, locale);
