@@ -1,30 +1,43 @@
+import 'package:flutter_skeleton/core/states/notifiers.dart';
+import 'package:flutter_skeleton/injection_container.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppSharedPref {
   static const localeKey = 'app_locale';
   static const themeKey = 'app_theme';
+  static const authToken = 'auth_token';
+  static final SharedPreferences sharedPref = locator.get();
 
+  // Language
   static Future<void> setAppLocale(String locale) async {
-    final sharedPref = SharedPreferences.getInstance();
-    sharedPref.then((pref) {
-      pref.setString(localeKey, locale);
-    });
+    sharedPref.setString(localeKey, locale);
   }
 
   static Future<String> getAppLocale() async {
-    final sharedPref = await SharedPreferences.getInstance();
     return sharedPref.getString(localeKey) ?? 'en';
   }
 
+  // Theme
   static Future<void> setAppTheme(String theme) async {
-    final sharedPref = SharedPreferences.getInstance();
-    sharedPref.then((pref) {
-      pref.setString(themeKey, theme);
-    });
+    sharedPref.setString(themeKey, theme);
   }
 
   static Future<String> getAppTheme() async {
-    final sharedPref = await SharedPreferences.getInstance();
     return sharedPref.getString(themeKey) ?? 'light';
+  }
+
+  // Auth
+  static Future<void> setAuthToken(String token) async {
+    sharedPref.setString(authToken, token);
+    authNotifier.value = token;
+  }
+
+  static Future<void> removeAuthToken() async {
+    sharedPref.remove(authToken);
+    authNotifier.value = null;
+  }
+
+  static Future<String?> getAuthToken() async {
+    return sharedPref.getString(authToken);
   }
 }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_skeleton/features/home/presentation/pages/home_page/home_page.dart';
+import 'package:flutter_skeleton/features/home/presentation/pages/home_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_skeleton/injection_container.dart';
 import 'package:flutter_skeleton/res/themes/app_theme.dart';
 import 'package:flutter_skeleton/res/widgets/language_selector/bloc/language_bloc.dart';
 import 'package:flutter_skeleton/res/widgets/theme_switcher/bloc/theme_bloc.dart';
@@ -9,6 +10,8 @@ import 'package:flutter_skeleton/core/utils/app_context.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  getInit();
   runApp(
     MultiBlocProvider(providers: [
       BlocProvider(

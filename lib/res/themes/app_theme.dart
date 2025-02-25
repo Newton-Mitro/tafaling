@@ -28,7 +28,6 @@ class AppTheme {
         appBarTheme: AppBarTheme(
           backgroundColor: AppColorsDark().primary,
           elevation: 0,
-          titleTextStyle: _appBarTextStyle,
           iconTheme: IconThemeData(color: AppColorsDark().onBackground),
         ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
@@ -74,7 +73,6 @@ class AppTheme {
         appBarTheme: AppBarTheme(
           backgroundColor: AppColorsLight().primary,
           elevation: 0,
-          titleTextStyle: _appBarTextStyle,
           iconTheme: IconThemeData(color: AppColorsLight().onBackground),
         ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
@@ -107,12 +105,6 @@ class AppTheme {
         fontSize: 14, fontWeight: FontWeight.w400, letterSpacing: 0.25),
     bodySmall: TextStyle(
         fontSize: 12, fontWeight: FontWeight.w400, letterSpacing: 0.25),
-  );
-
-  static const TextStyle _appBarTextStyle = TextStyle(
-    fontSize: 20,
-    fontWeight: FontWeight.w500,
-    letterSpacing: 0.15,
   );
 
   static const PageTransitionsTheme _pageTransitionsTheme =
