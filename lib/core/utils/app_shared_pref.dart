@@ -6,6 +6,7 @@ class AppSharedPref {
   static const localeKey = 'app_locale';
   static const themeKey = 'app_theme';
   static const authToken = 'auth_token';
+  static const onboarding = 'onboarding';
   static final SharedPreferences sharedPref = locator.get();
 
   // Language
@@ -39,5 +40,20 @@ class AppSharedPref {
 
   static Future<String?> getAuthToken() async {
     return sharedPref.getString(authToken);
+  }
+
+  // Onboarding
+  static Future<void> setOnboardingStatus(bool status) async {
+    sharedPref.setBool(onboarding, status);
+  }
+
+  static Future<bool> getOnboardingStatus() async {
+    final sharedPref = await SharedPreferences.getInstance();
+    return sharedPref.getBool(onboarding) ?? true;
+  }
+
+  // Clear all
+  static Future<void> clearAll() async {
+    sharedPref.clear();
   }
 }

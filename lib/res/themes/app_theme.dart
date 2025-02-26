@@ -30,12 +30,12 @@ class AppTheme {
           elevation: 0,
           iconTheme: IconThemeData(color: AppColorsDark().onBackground),
         ),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: AppColorsDark().background,
-          elevation: 0,
-          selectedItemColor: AppColorsDark().primary,
-          unselectedItemColor: AppColorsDark().onBackground,
-        ),
+        // bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        //   backgroundColor: AppColorsDark().background,
+        //   elevation: 0,
+        //   selectedItemColor: AppColorsDark().primary,
+        //   unselectedItemColor: AppColorsDark().onBackground,
+        // ),
         scrollbarTheme: ScrollbarThemeData(
           thickness: WidgetStateProperty.all(4),
           radius: Radius.circular(2),
@@ -75,12 +75,12 @@ class AppTheme {
           elevation: 0,
           iconTheme: IconThemeData(color: AppColorsLight().onBackground),
         ),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: AppColorsLight().background,
-          elevation: 0,
-          selectedItemColor: AppColorsLight().primary,
-          unselectedItemColor: AppColorsLight().onBackground,
-        ),
+        // bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        //   backgroundColor: AppColorsLight().background,
+        //   elevation: 0,
+        //   selectedItemColor: AppColorsLight().primary,
+        //   unselectedItemColor: AppColorsLight().onBackground,
+        // ),
         scrollbarTheme: ScrollbarThemeData(
           thickness: WidgetStateProperty.all(4),
           radius: Radius.circular(2),

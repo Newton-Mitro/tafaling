@@ -1,31 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_skeleton/features/home/presentation/pages/home_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_skeleton/core/utils/app_shared_pref.dart';
+import 'package:flutter_skeleton/features/home/presentation/pages/home_page.dart';
+import 'package:flutter_skeleton/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:flutter_skeleton/injection_container.dart';
 import 'package:flutter_skeleton/res/themes/app_theme.dart';
 import 'package:flutter_skeleton/res/widgets/language_selector/bloc/language_bloc.dart';
 import 'package:flutter_skeleton/res/widgets/theme_switcher/bloc/theme_bloc.dart';
 import 'package:flutter_skeleton/core/utils/app_context.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_skeleton/routes.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
+void main() async {
   getInit();
+
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  final bool onBoarding = await AppSharedPref.getOnboardingStatus() ?? true;
+
   runApp(
-    MultiBlocProvider(providers: [
-      BlocProvider(
-        create: (context) => LanguageBloc()..add(LoadLocaleEvent()),
-      ),
-      BlocProvider(
-        create: (context) => ThemeBloc()..add(LoadThemeEvent()),
-      ),
-    ], child: const MainApp()),
+    MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => LanguageBloc()..add(LoadLocaleEvent()),
+          ),
+          BlocProvider(
+            create: (context) => ThemeBloc()..add(LoadThemeEvent()),
+          ),
+        ],
+        child: MainApp(
+          onBoarding: onBoarding,
+        )),
   );
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  final bool onBoarding;
+  const MainApp({super.key, required this.onBoarding});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +66,8 @@ class MainApp extends StatelessWidget {
                 Locale('bn'),
               ],
               locale: Locale(languageState.language),
-              home: HomePage(),
+              home: onBoarding ? OnboardingPage() : HomePage(),
+              onGenerateRoute: AppRoutes().onGenerateRoutes,
             );
           },
         );

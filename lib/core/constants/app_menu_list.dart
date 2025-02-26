@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_skeleton/res/values/constants/app_route.dart';
+import 'package:flutter_skeleton/core/constants/app_route.dart';
 import 'package:flutter_skeleton/core/utils/app_context.dart';
 
 class AppMenuModel {
