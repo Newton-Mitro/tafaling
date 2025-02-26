@@ -14,6 +14,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^9.0.0
+  flutter_launcher_icons: ^0.14.3
   flutter_localizations:
     sdk: flutter
   flutter_native_splash: ^2.4.5
@@ -32,6 +33,8 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/images/brand/
+    - assets/images/onboarding/
   # fonts:
   # - family: Roboto
   #   fonts:
@@ -50,16 +53,7 @@ flutter:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/logo.png"
+  image_path: "assets/images/brand/logo.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/images/brand/logo.png"
 
-flutter_native_splash:
-  android: true
-  ios: true
-  web: false
-  color: "#42a5f5"
-  background_image: "assets/images/logo.png"
-  branding: "assets/images/logo.png"
-  android_12:
-    color: "#42a5f5"
-    background_image: "assets/images/logo.png"
-    branding: "assets/images/logo.png"

@@ -5,12 +5,12 @@ class OnboardingListItems {
     OnboardingInfo(
       title: "Welcome to Flutter Skeleton",
       description: "This is a skeleton project for Flutter.",
-      imagePath: "images/onboarding/onboarding_one.png",
+      imagePath: "assets/images/onboarding/onboarding_one.png",
     ),
     OnboardingInfo(
       title: "Onboarding Page",
       description: "This is the onboarding page.",
-      imagePath: "images/onboarding/onboarding_two.png",
+      imagePath: "assets/images/onboarding/onboarding_two.png",
     ),
   ];
 }

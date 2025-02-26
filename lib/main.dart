@@ -13,10 +13,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_skeleton/routes.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   getInit();
-
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   final bool onBoarding = await AppSharedPref.getOnboardingStatus() ?? true;
 
