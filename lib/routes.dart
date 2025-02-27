@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_skeleton/core/constants/route_name.dart';
-import 'package:flutter_skeleton/features/home/presentation/pages/home_page.dart';
-import 'package:flutter_skeleton/features/splash/presentation/pages/splash_screen.dart';
+import 'package:tafaling/core/constants/route_name.dart';
+import 'package:tafaling/features/home/presentation/pages/home_page.dart';
+import 'package:tafaling/features/splash/presentation/pages/splash_screen.dart';
 
 class AppRoutes {
   Route<dynamic> onGenerateRoutes(RouteSettings settings) {

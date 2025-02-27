@@ -1,5 +1,5 @@
-import 'package:flutter_skeleton/core/states/notifiers.dart';
-import 'package:flutter_skeleton/injection_container.dart';
+import 'package:tafaling/core/states/notifiers.dart';
+import 'package:tafaling/injection_container.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppSharedPref {

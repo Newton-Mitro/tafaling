@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_skeleton/core/utils/app_shared_pref.dart';
+import 'package:tafaling/core/utils/app_shared_pref.dart';
 
 part 'language_event.dart';
 part 'language_state.dart';

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_skeleton/res/widgets/app_logo.dart';
-import 'package:flutter_skeleton/res/widgets/language_selector/language_selector.dart';
-import 'package:flutter_skeleton/res/widgets/my_app_bar/app_bar_drawer_icon.dart';
-import 'package:flutter_skeleton/res/widgets/my_app_bar/large_screen_app_menus.dart';
-import 'package:flutter_skeleton/res/widgets/theme_switcher/theme_switcher.dart';
-import 'package:flutter_skeleton/core/utils/app_context.dart';
+import 'package:tafaling/res/widgets/app_logo.dart';
+import 'package:tafaling/res/widgets/language_selector/language_selector.dart';
+import 'package:tafaling/res/widgets/my_app_bar/app_bar_drawer_icon.dart';
+import 'package:tafaling/res/widgets/my_app_bar/large_screen_app_menus.dart';
+import 'package:tafaling/res/widgets/theme_switcher/theme_switcher.dart';
+import 'package:tafaling/core/utils/app_context.dart';
 
 class MyAppBar extends StatelessWidget {
   const MyAppBar({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_skeleton/res/values/colors/dark_colors.dart';
-import 'package:flutter_skeleton/res/values/colors/light_colors.dart';
+import 'package:tafaling/res/values/colors/dark_colors.dart';
+import 'package:tafaling/res/values/colors/light_colors.dart';
 
 class AppTheme {
   static ThemeData get dark => ThemeData(

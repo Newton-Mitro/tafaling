@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_skeleton/res/widgets/theme_switcher/bloc/theme_bloc.dart';
+import 'package:tafaling/res/widgets/theme_switcher/bloc/theme_bloc.dart';
 
 class ThemeSwitcher extends StatelessWidget {
   const ThemeSwitcher({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_skeleton/res/styles/app_text_style.dart';
+import 'package:tafaling/res/styles/app_text_style.dart';
 
 class SmallTextStyle extends AppTextStyle {
   @override

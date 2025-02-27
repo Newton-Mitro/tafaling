@@ -1,4 +1,4 @@
-import 'package:flutter_skeleton/res/values/dimensions/app_dimensions.dart';
+import 'package:tafaling/res/values/dimensions/app_dimensions.dart';
 
 class MediumAppDimensions implements AppDimensions {
   @override

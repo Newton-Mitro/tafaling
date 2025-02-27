@@ -1,4 +1,4 @@
-package com.tafaling.tafaling
+package com.example.tafaling
 
 import io.flutter.embedding.android.FlutterActivity
 

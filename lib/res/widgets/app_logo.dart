@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_skeleton/core/constants/app_images.dart';
+import 'package:tafaling/core/constants/app_images.dart';
 
 class AppLogo extends StatelessWidget {
   const AppLogo({super.key});

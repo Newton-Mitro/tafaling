@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_skeleton/core/constants/app_menu_list.dart';
-import 'package:flutter_skeleton/core/utils/app_context.dart';
+import 'package:tafaling/core/constants/app_menu_list.dart';
+import 'package:tafaling/core/utils/app_context.dart';
 
 class LargeScreenAppMenuItem extends StatelessWidget {
   const LargeScreenAppMenuItem({super.key, required this.menu});

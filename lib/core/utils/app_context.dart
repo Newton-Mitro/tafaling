@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_skeleton/res/values/dimensions/app_dimensions.dart';
-import 'package:flutter_skeleton/res/values/dimensions/large_app_dimensions.dart';
-import 'package:flutter_skeleton/res/values/dimensions/medium_app_dimensions.dart';
-import 'package:flutter_skeleton/res/values/dimensions/small_app_dimensions.dart';
-import 'package:flutter_skeleton/res/styles/app_text_style.dart';
-import 'package:flutter_skeleton/res/styles/large_text_style.dart';
-import 'package:flutter_skeleton/res/styles/medium_text_style.dart';
-import 'package:flutter_skeleton/res/styles/small_text_style.dart';
+import 'package:tafaling/res/values/dimensions/app_dimensions.dart';
+import 'package:tafaling/res/values/dimensions/large_app_dimensions.dart';
+import 'package:tafaling/res/values/dimensions/medium_app_dimensions.dart';
+import 'package:tafaling/res/values/dimensions/small_app_dimensions.dart';
+import 'package:tafaling/res/styles/app_text_style.dart';
+import 'package:tafaling/res/styles/large_text_style.dart';
+import 'package:tafaling/res/styles/medium_text_style.dart';
+import 'package:tafaling/res/styles/small_text_style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum DeviceType { Mobile, Tablet, Desktop }

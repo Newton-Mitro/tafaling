@@ -1,5 +1,5 @@
-name: flutter_skeleton
-description: "A new Flutter project."
+name: tafaling
+description: "Tafaling is a dynamic social media platform designed to connect users through engaging content, real-time interactions, and personalized experiences. Whether you want to share your thoughts, post multimedia content, or engage in meaningful conversations, Tafaling offers a seamless and intuitive interface to keep you connected with your community."
 publish_to: "none"
 version: 0.1.0
 
@@ -20,6 +20,7 @@ dependencies:
   flutter_native_splash: ^2.4.5
   get_it: ^8.0.3
   intl: any
+  rename: ^3.0.2
   shared_preferences: ^2.5.2
   smooth_page_indicator: ^1.2.1
 
@@ -53,7 +54,41 @@ flutter:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/brand/logo.png"
+  image_path: "assets/images/brand/app_icon.png"
   adaptive_icon_background: "#ffffff"
-  adaptive_icon_foreground: "assets/images/brand/logo.png"
+  adaptive_icon_foreground: "assets/images/brand/app_icon.png"
 
+flutter_native_splash:
+  android: true
+  ios: true
+  web: false
+
+  color: "#00a4cc"
+  color_dark: "#002b35"
+
+  # background_image: "assets/images/brand/background_image.jpg"
+  # background_image_dark: "assets/images/brand/background_image_dark.jpg"
+
+  image: "assets/images/brand/app_icon.png"
+  image_dark: "assets/images/brand/app_icon.png"
+
+  branding: "assets/images/brand/logo.png"
+  branding_dark: "assets/images/brand/logo.png"
+
+  branding_mode: bottom
+  branding_bottom_padding: 24
+  android_12:
+    color: "#00a4cc"
+    color_dark: "#002b35"
+
+    # icon_background_color: "#111111"
+    # icon_background_color_dark: "#eeeeee"
+
+    background_image_android: "assets/images/brand/background_image.jpg"
+    background_image_dark_android: "assets/images/brand/background_image_dark.jpg"
+
+    branding: "assets/images/brand/logo.png"
+    branding_dark: "assets/images/brand/logo.png"
+
+    image: "assets/images/brand/app_icon.png"
+    image_dark: "assets/images/brand/app_icon.png"

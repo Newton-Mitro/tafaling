@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_skeleton/core/utils/app_shared_pref.dart';
+import 'package:tafaling/core/utils/app_shared_pref.dart';
 
 part 'theme_event.dart';
 part 'theme_state.dart';

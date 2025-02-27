@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_skeleton/core/utils/app_shared_pref.dart';
-import 'package:flutter_skeleton/features/home/presentation/pages/home_page.dart';
-import 'package:flutter_skeleton/features/onboarding/presentation/pages/onboarding_page.dart';
-import 'package:flutter_skeleton/injection_container.dart';
-import 'package:flutter_skeleton/res/themes/app_theme.dart';
-import 'package:flutter_skeleton/res/widgets/language_selector/bloc/language_bloc.dart';
-import 'package:flutter_skeleton/res/widgets/theme_switcher/bloc/theme_bloc.dart';
-import 'package:flutter_skeleton/core/utils/app_context.dart';
+import 'package:tafaling/core/utils/app_shared_pref.dart';
+import 'package:tafaling/features/home/presentation/pages/home_page.dart';
+import 'package:tafaling/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:tafaling/injection_container.dart';
+import 'package:tafaling/res/themes/app_theme.dart';
+import 'package:tafaling/res/widgets/language_selector/bloc/language_bloc.dart';
+import 'package:tafaling/res/widgets/theme_switcher/bloc/theme_bloc.dart';
+import 'package:tafaling/core/utils/app_context.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_skeleton/routes.dart';
+import 'package:tafaling/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
