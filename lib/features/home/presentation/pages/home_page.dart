@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tafaling/res/widgets/my_tool_bar/custom_app_bar.dart';
-import 'package:tafaling/res/widgets/my_tool_bar/my_drawer.dart';
+import 'package:tafaling/res/widgets/my_bottom_navigation_bar/my_bottom_navigation_bar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -8,13 +7,10 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
-      drawer: SafeArea(
-        child: MyDrawer(),
-      ),
+      bottomNavigationBar:
+          MyBottomNavigationBar(selectedIndex: 0, onItemTapped: (int a) {}),
       body: Column(
         children: [
-          // MyAppBar(),
           Expanded(
             child: Center(
               child: Text('Home Page'),

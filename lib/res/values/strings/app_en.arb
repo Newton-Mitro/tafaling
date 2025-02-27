@@ -2,5 +2,9 @@
   "appName": "Tafaling",
   "home": "Home",
   "about": "About",
-  "contact": "Contact"
+  "contact": "Contact",
+  "friends": "Friends",
+  "post": "Post",
+  "inbox": "Inbox",
+  "profile": "Profile"
 }

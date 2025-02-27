@@ -11,33 +11,36 @@ class MyAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      alignment: Alignment.center,
-      color: context.theme.appBarTheme.backgroundColor,
-      height: context.appDimensions.appBarHeight,
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: context.appDimensions.containerWidth,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              spacing: context.appDimensions.appBarSpacing,
-              children: [
-                AppLogo(),
-                if (context.isDesktop) LargeScreenAppMenus(),
-              ],
-            ),
-            Row(
-              children: [
-                LanguageSelector(),
-                ThemeSwitcher(),
-                if (!context.isDesktop) AppBarDrawerIcon(),
-              ],
-            ),
-          ],
+    return SafeArea(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        alignment: Alignment.center,
+        color: context.theme.appBarTheme.backgroundColor,
+        height: context.appDimensions.appBarHeight,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: context.appDimensions.containerWidth,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                spacing: context.appDimensions.appBarSpacing,
+                children: [
+                  AppLogo(),
+                  if (context.isDesktop) LargeScreenAppMenus(),
+                ],
+              ),
+              Row(
+                children: [
+                  LanguageSelector(),
+                  ThemeSwitcher(),
+                  if (!context.isDesktop) AppBarDrawerIcon(),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

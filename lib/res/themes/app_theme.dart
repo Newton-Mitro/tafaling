@@ -3,7 +3,7 @@ import 'package:tafaling/res/values/colors/dark_colors.dart';
 import 'package:tafaling/res/values/colors/light_colors.dart';
 
 class AppTheme {
-  static ThemeData get dark => ThemeData(
+  ThemeData get dark => ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: AppColorsDark().background,
         colorScheme: ColorScheme.dark(
@@ -30,25 +30,16 @@ class AppTheme {
           elevation: 0,
           iconTheme: IconThemeData(color: AppColorsDark().onBackground),
         ),
-        // bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        //   backgroundColor: AppColorsDark().background,
-        //   elevation: 0,
-        //   selectedItemColor: AppColorsDark().primary,
-        //   unselectedItemColor: AppColorsDark().onBackground,
-        // ),
-        scrollbarTheme: ScrollbarThemeData(
-          thickness: WidgetStateProperty.all(4),
-          radius: Radius.circular(2),
-          interactive: true,
-          trackColor: WidgetStateProperty.all(AppColorsDark().onBackground),
-          crossAxisMargin: 4,
-          mainAxisMargin: 4,
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: AppColorsDark().primary,
+          elevation: 0,
+          selectedItemColor: AppColorsDark().onPrimary,
         ),
         pageTransitionsTheme: _pageTransitionsTheme,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       );
 
-  static ThemeData get light => ThemeData(
+  ThemeData get light => ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: AppColorsLight().background,
         colorScheme: ColorScheme.light(
@@ -75,25 +66,16 @@ class AppTheme {
           elevation: 0,
           iconTheme: IconThemeData(color: AppColorsLight().onBackground),
         ),
-        // bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        //   backgroundColor: AppColorsLight().background,
-        //   elevation: 0,
-        //   selectedItemColor: AppColorsLight().primary,
-        //   unselectedItemColor: AppColorsLight().onBackground,
-        // ),
-        scrollbarTheme: ScrollbarThemeData(
-          thickness: WidgetStateProperty.all(4),
-          radius: Radius.circular(2),
-          interactive: true,
-          trackColor: WidgetStateProperty.all(AppColorsLight().onBackground),
-          crossAxisMargin: 4,
-          mainAxisMargin: 4,
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: AppColorsLight().primary,
+          elevation: 0,
+          selectedItemColor: AppColorsLight().onPrimary,
         ),
         pageTransitionsTheme: _pageTransitionsTheme,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       );
 
-  static const TextTheme _textTheme = TextTheme(
+  final TextTheme _textTheme = TextTheme(
     headlineLarge: TextStyle(
         fontSize: 96, fontWeight: FontWeight.w300, letterSpacing: -1.5),
     headlineMedium: TextStyle(fontSize: 48, fontWeight: FontWeight.w400),
@@ -107,8 +89,7 @@ class AppTheme {
         fontSize: 12, fontWeight: FontWeight.w400, letterSpacing: 0.25),
   );
 
-  static const PageTransitionsTheme _pageTransitionsTheme =
-      PageTransitionsTheme(
+  final PageTransitionsTheme _pageTransitionsTheme = PageTransitionsTheme(
     builders: {
       TargetPlatform.android: ZoomPageTransitionsBuilder(),
       TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
