@@ -3,10 +3,10 @@ import 'package:tafaling/configs/values/colors/app_colors.dart';
 
 class AppColorsLight extends AppColors {
   @override
-  Color get primary => Colors.blue;
+  Color get primary => Color(0xFF015266);
 
   @override
-  Color get primaryVariant => Colors.blueAccent;
+  Color get primaryVariant => Color(0xFF002b35);
 
   @override
   Color get secondary => Colors.green;
@@ -15,7 +15,7 @@ class AppColorsLight extends AppColors {
   Color get secondaryVariant => Colors.greenAccent;
 
   @override
-  Color get background => Colors.blueGrey[100]!;
+  Color get background => Color.fromARGB(255, 208, 225, 228);
 
   @override
   Color get surface => Colors.grey[100]!;

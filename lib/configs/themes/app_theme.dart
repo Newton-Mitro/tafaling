@@ -70,6 +70,7 @@ class AppTheme {
           backgroundColor: AppColorsLight().primary,
           elevation: 0,
           selectedItemColor: AppColorsLight().onPrimary,
+          unselectedItemColor: AppColorsLight().gray[400],
         ),
         pageTransitionsTheme: _pageTransitionsTheme,
         visualDensity: VisualDensity.adaptivePlatformDensity,
