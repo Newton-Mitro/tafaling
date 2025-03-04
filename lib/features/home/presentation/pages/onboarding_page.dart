@@ -122,7 +122,7 @@ Widget getStartedButton(BuildContext context) {
   return ElevatedButton(
     onPressed: () {
       AppSharedPref.setOnboardingStatus(false);
-      Navigator.popAndPushNamed(context, RoutesName.homeScreen);
+      Navigator.popAndPushNamed(context, RoutesName.homePage);
     },
     child: const Text('Get Started'),
   );

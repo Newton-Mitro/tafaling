@@ -54,7 +54,7 @@ flutter_native_splash:
   ios: true
   web: false
 
-  color: "#00a4cc"
+  color: "#015266"
   color_dark: "#002b35"
 
   # background_image: "assets/images/brand/background_image.jpg"
@@ -69,7 +69,7 @@ flutter_native_splash:
   branding_mode: bottom
   branding_bottom_padding: 24
   android_12:
-    color: "#00a4cc"
+    color: "#015266"
     color_dark: "#002b35"
 
     background_image_android: "assets/images/brand/background_image.jpg"

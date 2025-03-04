@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tafaling/core/utils/app_shared_pref.dart';
+import 'package:tafaling/features/auth/presentation/pages/login_page.dart';
+import 'package:tafaling/features/auth/presentation/pages/register_page.dart';
 import 'package:tafaling/features/home/presentation/pages/home_page.dart';
 import 'package:tafaling/features/home/presentation/pages/onboarding_page.dart';
 import 'package:tafaling/injection_container.dart';

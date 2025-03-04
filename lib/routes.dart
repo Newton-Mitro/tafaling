@@ -7,7 +7,7 @@ class AppRoutes {
     final args = settings.arguments;
 
     switch (settings.name) {
-      case RoutesName.homeScreen:
+      case RoutesName.homePage:
         return _materialRoute(const HomePage());
 
       default:
