@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tafaling/core/constants/app_route.dart';
+import 'package:tafaling/configs/routes/app_route.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 
 class AppMenuModel {

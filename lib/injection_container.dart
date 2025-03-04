@@ -7,18 +7,21 @@ Future<void> getInit() async {
   await _setupComponents();
   await _setupDatasources();
   await _setupRepositories();
+  await _setupStates();
 }
 
 Future<void> _setupComponents() async {
   // Register your services here
-  // locator.registerLazySingleton(() => DioProvider.createDioWithHeader());
-  // locator.registerLazySingleton(() => AuthManager());
   locator.registerSingleton<SharedPreferences>(
       await SharedPreferences.getInstance());
 }
 
 Future<void> _setupDatasources() async {
-  // locator.registerFactory(<IAuthDatasource>() => AuthRemoteDatasource());
+  // locator.registerSingleton(<IAuthDatasource>() => AuthRemoteDatasource());
 }
 
 Future<void> _setupRepositories() async {}
+
+Future<void> _setupStates() async {
+  // locator.registerFactory<LoginBloc>(()=>LoginBloc(locator()));
+}

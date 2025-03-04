@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tafaling/res/widgets/my_bottom_navigation_bar/my_bottom_navigation_bar.dart';
+import 'package:tafaling/core/widgets/my_bottom_navigation_bar/my_bottom_navigation_bar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

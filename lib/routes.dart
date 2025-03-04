@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tafaling/core/constants/route_name.dart';
+import 'package:tafaling/configs/routes/route_name.dart';
 import 'package:tafaling/features/home/presentation/pages/home_page.dart';
-import 'package:tafaling/features/splash/presentation/pages/splash_screen.dart';
 
 class AppRoutes {
   Route<dynamic> onGenerateRoutes(RouteSettings settings) {
@@ -10,9 +9,6 @@ class AppRoutes {
     switch (settings.name) {
       case RoutesName.homeScreen:
         return _materialRoute(const HomePage());
-
-      case RoutesName.splashScreen:
-        return _materialRoute(const SplashScreen());
 
       default:
         return _materialRoute(const HomePage());

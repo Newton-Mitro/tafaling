@@ -3,11 +3,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tafaling/core/utils/app_shared_pref.dart';
 import 'package:tafaling/features/home/presentation/pages/home_page.dart';
-import 'package:tafaling/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:tafaling/features/home/presentation/pages/onboarding_page.dart';
 import 'package:tafaling/injection_container.dart';
-import 'package:tafaling/res/themes/app_theme.dart';
-import 'package:tafaling/res/widgets/language_selector/bloc/language_bloc.dart';
-import 'package:tafaling/res/widgets/theme_switcher/bloc/theme_bloc.dart';
+import 'package:tafaling/configs/themes/app_theme.dart';
+import 'package:tafaling/core/widgets/language_selector/bloc/language_bloc.dart';
+import 'package:tafaling/core/widgets/theme_switcher/bloc/theme_bloc.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/routes.dart';
@@ -15,9 +15,7 @@ import 'package:tafaling/routes.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   getInit();
-
-  final bool onBoarding = await AppSharedPref.getOnboardingStatus() ?? true;
-
+  final bool onBoarding = await AppSharedPref.getOnboardingStatus();
   runApp(
     MultiBlocProvider(
         providers: [
