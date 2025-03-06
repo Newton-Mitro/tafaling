@@ -80,19 +80,27 @@ class _PostViewerState extends State<PostViewer> {
           // Only show arrows if itemCount > 1
           if (itemCount > 1)
             Positioned(
-              left: 10,
+              left: 5,
               top: MediaQuery.of(context).size.height / 2 - 20,
               child: IconButton(
-                icon: Icon(Icons.arrow_left, size: 40),
+                icon: Icon(
+                  Icons.arrow_left,
+                  size: 45,
+                  color: Color.fromARGB(46, 255, 135, 135),
+                ),
                 onPressed: _previousPage,
               ),
             ),
           if (itemCount > 1)
             Positioned(
-              right: 10,
+              right: 5,
               top: MediaQuery.of(context).size.height / 2 - 20,
               child: IconButton(
-                icon: Icon(Icons.arrow_right, size: 40),
+                icon: Icon(
+                  Icons.arrow_right,
+                  size: 45,
+                  color: Color.fromARGB(46, 255, 135, 135),
+                ),
                 onPressed: _nextPage,
               ),
             ),

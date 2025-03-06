@@ -45,7 +45,7 @@ class _PostsViewerState extends State<PostsViewer> {
                   children: [
                     PostViewer(
                       imageUrl:
-                          'https://img.freepik.com/premium-photo/portrait-beautiful-young-woman-traditional-costume_762026-53741.jpg',
+                          'https://mymodernmet.com/wp/wp-content/uploads/2018/08/portrait-artists-yasutomo-oka-2.jpg',
                     ),
                     Text(
                       "$selectedPost",
