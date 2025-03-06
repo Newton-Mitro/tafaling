@@ -1,4 +1,4 @@
-import 'package:tafaling/core/states/notifiers.dart';
+import 'package:tafaling/core/widgets/my_bottom_navigation_bar/states/notifiers.dart';
 import 'package:tafaling/injection_container.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

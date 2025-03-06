@@ -42,12 +42,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             PopupMenuButton(itemBuilder: (context) {
               return [
                 PopupMenuItem(
-                  child: Text("Settings"),
                   value: "settings",
+                  child: Text("Settings"),
                 ),
                 PopupMenuItem(
-                  child: Text("Logout"),
                   value: "logout",
+                  child: Text("Logout"),
                 ),
               ];
             }),

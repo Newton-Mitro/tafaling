@@ -15,7 +15,7 @@ class AppColorsLight extends AppColors {
   Color get secondaryVariant => Colors.greenAccent;
 
   @override
-  Color get background => Color.fromARGB(255, 208, 225, 228);
+  Color get background => Color.fromARGB(255, 1, 72, 90);
 
   @override
   Color get surface => Colors.grey[100]!;
