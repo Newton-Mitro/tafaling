@@ -5,10 +5,10 @@ import 'package:tafaling/features/home/presentation/views/friends_screen.dart';
 import 'package:tafaling/features/home/presentation/views/inbox_screen.dart';
 import 'package:tafaling/features/home/presentation/views/post_screen.dart';
 import 'package:tafaling/features/home/presentation/views/profile_screen.dart';
-import 'package:tafaling/features/post/presentation/widgets/posts_viewer.dart';
+import 'package:tafaling/features/post/presentation/views/posts_screen.dart';
 
 List<Widget> screens = [
-  PostsViewer(),
+  PostsScreen(),
   FriendsScreen(),
   PostScreen(),
   InboxScreen(),

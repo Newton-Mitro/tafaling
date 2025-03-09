@@ -37,7 +37,6 @@ class MyBottomNavigationBar extends StatelessWidget {
           child: BottomNavigationBar(
             currentIndex: selectedPage,
             type: BottomNavigationBarType.fixed,
-            backgroundColor: Colors.transparent,
             onTap: (value) {
               selectedPageNotifier.value = value;
             },

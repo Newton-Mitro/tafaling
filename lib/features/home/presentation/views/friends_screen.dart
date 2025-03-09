@@ -10,7 +10,12 @@ class FriendsScreen extends StatelessWidget {
         children: [
           Expanded(
             child: Center(
-              child: Text('Friends Page'),
+              child: Text(
+                'Friends Page',
+                style: TextStyle(
+                  fontSize: 30,
+                ),
+              ),
             ),
           ),
         ],

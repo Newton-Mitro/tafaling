@@ -9,13 +9,13 @@ class AppColorsDark extends AppColors {
   Color get primaryVariant => const Color.fromARGB(255, 14, 18, 20);
 
   @override
-  Color get secondary => Colors.teal;
+  Color get secondary => const Color.fromARGB(255, 169, 223, 252);
 
   @override
   Color get secondaryVariant => Colors.tealAccent;
 
   @override
-  Color get background => const Color.fromARGB(255, 20, 34, 41);
+  Color get background => Colors.grey[900]!;
 
   @override
   Color get surface => Colors.grey[900]!;
@@ -24,7 +24,7 @@ class AppColorsDark extends AppColors {
   Color get error => Colors.redAccent;
 
   @override
-  Color get onPrimary => Colors.white;
+  Color get onPrimary => const Color.fromARGB(255, 144, 183, 204);
 
   @override
   Color get onSecondary => Colors.white;

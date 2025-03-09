@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:photo_view_v3/photo_view.dart';
+import 'package:tafaling/features/post/data/models/post_model.dart';
+import 'package:tafaling/features/post/presentation/widgets/image_post_viewer.dart';
 import 'package:tafaling/features/post/presentation/widgets/sidebar_widget.dart';
+import 'package:tafaling/features/post/presentation/widgets/video_post_viewer.dart';
 
 class PostViewer extends StatefulWidget {
-  final String imageUrl;
-  const PostViewer({super.key, required this.imageUrl});
+  final PostModel postModel;
+  const PostViewer({super.key, required this.postModel});
 
   @override
   State<PostViewer> createState() => _PostViewerState();
@@ -34,7 +36,7 @@ class _PostViewerState extends State<PostViewer> {
   }
 
   void _nextPage() {
-    if (_pageController.page! < itemCount - 1) {
+    if (_pageController.page! < widget.postModel.attachments.length - 1) {
       _pageController.nextPage(
           duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
     }
@@ -48,33 +50,26 @@ class _PostViewerState extends State<PostViewer> {
           PageView.builder(
             scrollDirection: Axis.horizontal,
             controller: _pageController,
-            itemCount:
-                itemCount, // This should be dynamically set based on your data
+            itemCount: widget.postModel.attachments.length,
             onPageChanged: (index) {},
             itemBuilder: (context, index) {
-              return Container(
-                  child: Stack(
-                alignment: Alignment.centerRight,
-                children: [
-                  PhotoView(
-                    backgroundDecoration: BoxDecoration(
-                      color: Colors.transparent,
-                    ),
-                    imageProvider: NetworkImage(widget.imageUrl),
-                    loadingBuilder: (context, event) => Center(
-                      child: Container(
-                        width: 20.0,
-                        height: 20.0,
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                  ),
-                  Text(
-                    "$index",
-                    style: TextStyle(fontSize: 50, color: Colors.lightGreen),
-                  ),
-                ],
-              ));
+              if (widget.postModel.attachments[index].mimeType
+                  .contains("Image")) {
+                return ImagePostViewer(
+                  attachmentUrl: widget.postModel.attachments[index].fileURL +
+                      widget.postModel.attachments[index].fileName,
+                );
+              } else if (widget.postModel.attachments[index].mimeType
+                  .contains("Video")) {
+                return VideoPostViewer(
+                  attachmentUrl: widget.postModel.attachments[index].fileURL +
+                      widget.postModel.attachments[index].fileName,
+                );
+              } else {
+                return Container(
+                  color: Colors.transparent,
+                );
+              }
             },
           ),
           // Only show arrows if itemCount > 1

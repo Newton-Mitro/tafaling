@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tafaling/configs/routes/route_name.dart';
+import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/core/utils/app_shared_pref.dart';
 import 'package:tafaling/features/home/data/constants/onboarding_list_items.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -49,7 +50,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       OnboardingListItems.listItems[index].title,
                       style: const TextStyle(
                         fontSize: 30,
-                        color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
@@ -58,9 +58,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     Text(
                       OnboardingListItems.listItems[index].description,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
                     ),
                     const SizedBox(height: 50),
                     isLastPage
@@ -69,6 +66,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      context.theme.colorScheme.primary,
+                                  foregroundColor:
+                                      context.theme.colorScheme.onPrimary,
+                                ),
                                 onPressed: () {
                                   if ((_pageController.page ?? 0).round() > 0) {
                                     _pageController.previousPage(
@@ -92,6 +95,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 ),
                               ),
                               ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      context.theme.colorScheme.primary,
+                                  foregroundColor:
+                                      context.theme.colorScheme.onPrimary,
+                                ),
                                 onPressed: () {
                                   if ((_pageController.page ?? 0).round() <
                                       OnboardingListItems.listItems.length -
@@ -120,6 +129,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
 Widget getStartedButton(BuildContext context) {
   return ElevatedButton(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: context.theme.colorScheme.primary,
+      foregroundColor: context.theme.colorScheme.onPrimary,
+    ),
     onPressed: () {
       AppSharedPref.setOnboardingStatus(false);
       Navigator.popAndPushNamed(context, RoutesName.homePage);

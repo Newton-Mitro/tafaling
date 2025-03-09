@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tafaling/configs/routes/route_name.dart';
+import 'package:tafaling/core/utils/app_context.dart';
 
 class TopNavigation extends StatelessWidget {
   const TopNavigation({super.key});
@@ -15,19 +15,16 @@ class TopNavigation extends StatelessWidget {
         children: [
           IconButton(
             icon: const Icon(Icons.search),
-            color: Colors.white,
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                RoutesName.homePage,
-              );
-            },
+            color: context.theme.colorScheme.onSurface,
+            onPressed: () {},
           ),
           TextButton(
             onPressed: () {},
-            child: const Text(
+            child: Text(
               "For You",
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(
+                color: context.theme.colorScheme.onSurface,
+              ),
             ),
           ),
         ],

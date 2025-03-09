@@ -15,7 +15,7 @@ class AppColorsLight extends AppColors {
   Color get secondaryVariant => Colors.greenAccent;
 
   @override
-  Color get background => Color.fromARGB(255, 1, 72, 90);
+  Color get background => const Color.fromARGB(255, 215, 238, 250);
 
   @override
   Color get surface => Colors.grey[100]!;
@@ -24,7 +24,7 @@ class AppColorsLight extends AppColors {
   Color get error => Colors.red;
 
   @override
-  Color get onPrimary => Colors.white;
+  Color get onPrimary => const Color.fromARGB(255, 126, 168, 189);
 
   @override
   Color get onSecondary => Colors.black;

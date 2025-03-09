@@ -8,6 +8,7 @@ class AppTheme {
         scaffoldBackgroundColor: AppColorsDark().background,
         colorScheme: ColorScheme.dark(
           primary: AppColorsDark().primary,
+          onPrimaryFixed: AppColorsDark().onPrimary,
           secondary: AppColorsDark().secondary,
           surface: AppColorsDark().surface,
           error: AppColorsDark().error,
@@ -25,6 +26,7 @@ class AppTheme {
           trackColor: WidgetStateProperty.all(AppColorsDark().onSurface),
         ),
         textTheme: _textTheme,
+        fontFamily: 'Roboto',
         appBarTheme: AppBarTheme(
           backgroundColor: AppColorsDark().primary,
           elevation: 0,
@@ -32,8 +34,8 @@ class AppTheme {
         ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: AppColorsDark().primary,
-          elevation: 0,
-          selectedItemColor: AppColorsDark().onPrimary,
+          unselectedItemColor: AppColorsDark().onPrimary,
+          selectedItemColor: AppColorsDark().secondary,
         ),
         pageTransitionsTheme: _pageTransitionsTheme,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -44,6 +46,7 @@ class AppTheme {
         scaffoldBackgroundColor: AppColorsLight().background,
         colorScheme: ColorScheme.light(
           primary: AppColorsLight().primary,
+          onPrimaryFixed: AppColorsLight().onPrimary,
           secondary: AppColorsLight().secondary,
           surface: AppColorsLight().surface,
           error: AppColorsLight().error,
@@ -61,6 +64,7 @@ class AppTheme {
           trackColor: WidgetStateProperty.all(AppColorsLight().onSurface),
         ),
         textTheme: _textTheme,
+        fontFamily: 'Roboto',
         appBarTheme: AppBarTheme(
           backgroundColor: AppColorsLight().primary,
           elevation: 0,
@@ -68,9 +72,8 @@ class AppTheme {
         ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: AppColorsLight().primary,
-          elevation: 0,
-          selectedItemColor: AppColorsLight().onPrimary,
-          unselectedItemColor: AppColorsLight().gray[400],
+          unselectedItemColor: AppColorsLight().onPrimary,
+          selectedItemColor: AppColorsLight().secondary,
         ),
         pageTransitionsTheme: _pageTransitionsTheme,
         visualDensity: VisualDensity.adaptivePlatformDensity,

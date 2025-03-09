@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cached_network_image_plus/flutter_cached_network_image_plus.dart';
 import 'package:flutter/material.dart';
 
 class UserAvatar extends StatelessWidget {
@@ -30,14 +30,8 @@ class UserAvatar extends StatelessWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(35),
-                  child: CachedNetworkImage(
+                  child: CacheNetworkImagePlus(
                     imageUrl: profilePhotoUrl,
-                    placeholder: (context, url) =>
-                        const CircularProgressIndicator(
-                      color: Colors.blue,
-                    ),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
                   ),
                 ),
               ),

@@ -1,30 +1,19 @@
-class AttachmentModel {
-  final int attachmentId;
-  final int postId;
-  final String fileName;
-  final String filePath;
-  final String fileURL;
-  final String mimeType;
-  final int createdBy;
-  final int likeCount;
-  final int viewCount;
-  final int shareCount;
-  final String createdAt;
-  final String updatedAt;
+import 'package:tafaling/features/post/domain/entities/attachment_entity.dart';
 
-  AttachmentModel({
-    required this.attachmentId,
-    required this.postId,
-    required this.fileName,
-    required this.filePath,
-    required this.fileURL,
-    required this.mimeType,
-    required this.createdBy,
-    required this.likeCount,
-    required this.viewCount,
-    required this.shareCount,
-    required this.createdAt,
-    required this.updatedAt,
+class AttachmentModel extends AttachmentEntity {
+  const AttachmentModel({
+    required super.attachmentId,
+    required super.postId,
+    required super.fileName,
+    required super.filePath,
+    required super.fileURL,
+    required super.mimeType,
+    required super.createdBy,
+    required super.likeCount,
+    required super.viewCount,
+    required super.shareCount,
+    required super.createdAt,
+    required super.updatedAt,
   });
 
   factory AttachmentModel.fromJson(Map<String, dynamic> json) =>

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/core/widgets/language_selector/language_selector.dart';
-import 'package:tafaling/core/widgets/my_app_bar/app_bar_drawer_icon.dart';
 import 'package:tafaling/core/widgets/theme_switcher/theme_switcher.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
