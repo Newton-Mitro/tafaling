@@ -68,11 +68,11 @@ class _PostViewerState extends State<PostViewer> {
 
               if (mimeType.contains("image")) {
                 return ImagePostViewer(
-                  attachmentUrl: '${attachment.fileURL}${attachment.fileName}',
+                  attachmentUrl: '${attachment.fileURL}/${attachment.fileName}',
                 );
               } else if (mimeType.contains("video")) {
                 return VideoPostViewer(
-                  attachmentUrl: '${attachment.fileURL}${attachment.fileName}',
+                  attachmentUrl: '${attachment.fileURL}/${attachment.fileName}',
                 );
               } else {
                 return const SizedBox.shrink(); // Return empty if unknown type

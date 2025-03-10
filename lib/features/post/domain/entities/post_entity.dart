@@ -11,8 +11,8 @@ class PostEntity extends Equatable {
   final UserEntity creator;
   final List<AttachmentEntity> attachments;
   final int likeCount;
-  final String createdAt;
-  final String expireDate;
+  final String? createdAt;
+  final String? expireDate;
   final bool isLiked;
 
   const PostEntity({
@@ -24,9 +24,9 @@ class PostEntity extends Equatable {
     required this.creator,
     required this.attachments,
     required this.likeCount,
-    required this.createdAt,
-    required this.expireDate,
-    required this.isLiked,
+    this.createdAt,
+    this.expireDate,
+    this.isLiked = false,
   });
 
   @override

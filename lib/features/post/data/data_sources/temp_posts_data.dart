@@ -2,6 +2,68 @@ import 'package:tafaling/features/post/data/models/attachment_model.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
 import 'package:tafaling/features/user/data/models/user_model.dart';
 
+const jsonPosts = [
+  {
+    "postId": 129,
+    "userId": 48,
+    "body": "https://youtu.be/_j5dQshrD5Y?si=kXPAJATEYYlaVx1p",
+    "privacyId": 1,
+    "createdBy": 48,
+    "creator": {
+      "user_id": 48,
+      "name": "Juliet",
+      "user_name": "juliet",
+      "email": "julietsarkar2006@gmail.com",
+      "profile_picture":
+          "https://devapi.tafaling.com/storage/users/profile/6g2Sne78KmdhV7lXiOIxB7b85EPyzgnoSVtnlGHF.jpg",
+      "cover_photo":
+          "https://devapi.tafaling.com/storage/users/cover/ycwEXmDrgYJdavk4Q0Nupj62d8PFUX4A9sADvXkb.jpg",
+      "email_verified_at": null,
+      "followers": 1,
+      "following": 0,
+      "total_like_count": 0,
+      "is_following": false
+    },
+    "attachments": [],
+    "likeCount": 1,
+    "createdAt": "2025-03-10 04:56:51",
+    "expireDate": "2026-03-10 04:56:51",
+    "isLiked": 0
+  },
+  {
+    "postId": 109,
+    "userId": 41,
+    "body": null,
+    "privacyId": 1,
+    "createdBy": 41,
+    "creator": {
+      "user_id": 41,
+      "name": "Alauddin Mallik",
+      "user_name": "alauddin_mallik",
+      "email": "mallikbd@gmail.com",
+      "profile_picture": null,
+      "cover_photo": null,
+      "email_verified_at": null,
+      "followers": 2,
+      "following": 1,
+      "total_like_count": 0,
+      "is_following": false
+    },
+    "attachments": [
+      {
+        "postId": 109,
+        "fileURL": "https://devapi.tafaling.com/storage/posts/images",
+        "fileName": "qpkoBUMkSLewhSwWGNn0FJU4m2JKzxxRSu3X2WHr.png",
+        "mimeType": "image/png",
+        "attachmentId": 77
+      }
+    ]
+  }
+];
+
+List<PostModel> posts =
+    jsonPosts.map((json) => PostModel.fromJson(json)).toList();
+
 const postModels = [
   PostModel(
       id: 1,

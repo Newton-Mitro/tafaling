@@ -11,6 +11,7 @@ class PostBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity,
       margin: const EdgeInsets.only(bottom: 10, left: 15, right: 80),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,

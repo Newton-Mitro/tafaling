@@ -38,7 +38,7 @@ class _PostsScreenState extends State<PostsScreen> {
               PageView.builder(
                 scrollDirection: Axis.vertical,
                 controller: _pageController,
-                itemCount: postModels.length,
+                itemCount: posts.length,
                 onPageChanged: (index) {
                   selectedPostNotifier.value = index;
                 },
@@ -46,10 +46,10 @@ class _PostsScreenState extends State<PostsScreen> {
                   return Stack(
                     children: [
                       PostViewer(
-                        postModel: postModels[index],
+                        postModel: posts[index],
                       ),
                       PostBody(
-                        postModel: postModels[index],
+                        postModel: posts[index],
                       ),
                     ],
                   );

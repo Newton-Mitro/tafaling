@@ -12,42 +12,26 @@ class PostModel extends PostEntity {
     required UserModel super.creator,
     required List<AttachmentModel> super.attachments,
     required super.likeCount,
-    required super.createdAt,
-    required super.expireDate,
-    required super.isLiked,
+    super.createdAt,
+    super.expireDate,
+    super.isLiked,
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
-        id: json["post_id"] as int,
-        userId: json["user_id"] as int,
+        id: json["postId"] as int,
+        userId: json["userId"] as int,
         body: json["body"] as String?,
-        privacyId: json["privacy_id"] as int,
-        createdBy: json["created_by"] as int,
+        privacyId: json["privacyId"] as int,
+        createdBy: json["createdBy"] as int,
         creator: UserModel.fromJson(json["creator"] ?? {}),
         attachments: (json["attachments"] as List<dynamic>? ?? [])
             .map((item) =>
                 AttachmentModel.fromJson(item as Map<String, dynamic>))
             .toList()
             .cast<AttachmentModel>(),
-        likeCount: json["like_count"] as int,
-        createdAt: json["created_at"] as String,
-        expireDate: json["expire_date"] as String,
-        isLiked: json["is_liked"] as bool,
+        likeCount: json["likeCount"] ?? 0,
+        createdAt: json["createdAt"] as String?,
+        expireDate: json["expireDate"] as String?,
+        isLiked: (json["isLiked"] ?? 0) == 1, // Convert int to bool
       );
-
-  Map<String, dynamic> toJson() => {
-        "post_id": id,
-        "user_id": userId,
-        "body": body,
-        "privacy_id": privacyId,
-        "created_by": createdBy,
-        "creator": (creator as UserModel).toJson(),
-        "attachments": attachments
-            .map((item) => (item as AttachmentModel).toJson())
-            .toList(),
-        "like_count": likeCount,
-        "created_at": createdAt,
-        "expire_date": expireDate,
-        "is_liked": isLiked,
-      };
 }
