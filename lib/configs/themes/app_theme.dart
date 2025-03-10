@@ -17,6 +17,11 @@ class AppTheme {
           onSurface: AppColorsDark().onSurface,
           onError: AppColorsDark().onError,
         ),
+        filledButtonTheme: FilledButtonThemeData(
+            style: ButtonStyle(
+          backgroundColor:
+              WidgetStatePropertyAll<Color?>(AppColorsDark().background),
+        )),
         popupMenuTheme: PopupMenuThemeData(
           color: AppColorsDark().surface,
           textStyle: _textTheme.bodyMedium,
@@ -29,8 +34,14 @@ class AppTheme {
         fontFamily: 'Roboto',
         appBarTheme: AppBarTheme(
           backgroundColor: AppColorsDark().primary,
+          titleTextStyle: TextStyle(
+            fontSize: 18,
+            color: AppColorsDark().onPrimary,
+          ),
           elevation: 0,
-          iconTheme: IconThemeData(color: AppColorsDark().onBackground),
+          iconTheme: IconThemeData(
+            color: AppColorsDark().onPrimary,
+          ),
         ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: AppColorsDark().primary,

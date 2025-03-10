@@ -5,7 +5,7 @@ class UserAvatar extends StatelessWidget {
   const UserAvatar(
       {super.key, required this.profilePhotoUrl, required this.onTap});
 
-  final String profilePhotoUrl;
+  final String? profilePhotoUrl;
   final VoidCallback onTap; // Add the onTap callback
 
   @override
@@ -31,7 +31,7 @@ class UserAvatar extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(35),
                   child: CacheNetworkImagePlus(
-                    imageUrl: profilePhotoUrl,
+                    imageUrl: profilePhotoUrl ?? '',
                   ),
                 ),
               ),

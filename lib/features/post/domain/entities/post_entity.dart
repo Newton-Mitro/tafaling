@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
-import 'package:tafaling/features/auth/domain/entities/user_entity.dart';
 import 'package:tafaling/features/post/domain/entities/attachment_entity.dart';
+import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 
 class PostEntity extends Equatable {
-  final int postId;
+  final int id;
   final int userId;
   final String? body;
   final int privacyId;
@@ -16,7 +16,7 @@ class PostEntity extends Equatable {
   final bool isLiked;
 
   const PostEntity({
-    required this.postId,
+    required this.id,
     required this.userId,
     this.body,
     required this.privacyId,
@@ -31,7 +31,7 @@ class PostEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        postId,
+        id,
         userId,
         body,
         privacyId,

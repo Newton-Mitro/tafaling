@@ -4,9 +4,9 @@ import 'package:tafaling/core/widgets/user_avatar.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
 
 class SidebarWidget extends StatelessWidget {
-  final PostModel? post;
+  final PostModel? postModel;
 
-  const SidebarWidget({super.key, required this.post});
+  const SidebarWidget({super.key, required this.postModel});
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +21,11 @@ class SidebarWidget extends StatelessWidget {
         child: Column(
           children: [
             UserAvatar(
-              profilePhotoUrl:
-                  "https://cactusthemes.com/blog/wp-content/uploads/2018/01/tt_avatar_small.jpg",
+              profilePhotoUrl: postModel?.creator.profilePicture,
               onTap: () {},
             ),
             _buildSidebarActionButton(FontAwesomeIcons.solidHeart, 10,
-                post?.isLiked == true ? Colors.red : Colors.white, () {}),
+                postModel?.isLiked == true ? Colors.red : Colors.white, () {}),
             _buildSidebarActionButton(
                 FontAwesomeIcons.solidShareFromSquare, 14, Colors.white, () {}),
             _buildSidebarActionButton(

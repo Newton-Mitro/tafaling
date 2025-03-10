@@ -4,15 +4,15 @@ import 'package:tafaling/core/widgets/my_bottom_navigation_bar/states/notifiers.
 import 'package:tafaling/features/home/presentation/views/friends_screen.dart';
 import 'package:tafaling/features/home/presentation/views/inbox_screen.dart';
 import 'package:tafaling/features/home/presentation/views/post_screen.dart';
-import 'package:tafaling/features/home/presentation/views/profile_screen.dart';
 import 'package:tafaling/features/post/presentation/views/posts_screen.dart';
+import 'package:tafaling/features/user/presentation/views/my_profile_screen.dart';
 
 List<Widget> screens = [
   PostsScreen(),
   FriendsScreen(),
   PostScreen(),
   InboxScreen(),
-  ProfileScreen(),
+  MyProfileScreen(),
 ];
 
 class HomeScreen extends StatelessWidget {
