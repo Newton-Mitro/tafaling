@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tafaling/core/utils/app_context.dart';
 
 class StatColumn extends StatelessWidget {
   final String label;
@@ -27,13 +28,11 @@ class StatColumn extends StatelessWidget {
             children: [
               Text(
                 value,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: context.theme.textTheme.labelLarge,
               ),
               Text(
                 label,
+                style: context.theme.textTheme.labelMedium,
               ),
             ],
           ),

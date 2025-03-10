@@ -80,7 +80,6 @@ class _MyVideoPlayerState extends State<VideoPostViewer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 2, 37, 39),
       body: GestureDetector(
         onTap: _toggleSeekBarVisibility,
         child: Stack(

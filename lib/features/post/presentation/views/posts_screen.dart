@@ -30,9 +30,6 @@ class _PostsScreenState extends State<PostsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Home"),
-      ),
       body: ValueListenableBuilder(
         valueListenable: selectedPostNotifier,
         builder: (context, selectedPost, child) {

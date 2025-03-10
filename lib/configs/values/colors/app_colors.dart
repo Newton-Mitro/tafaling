@@ -13,5 +13,8 @@ abstract class AppColors {
   Color get onBackground;
   Color get onSurface;
   Color get onError;
+  Color get selected;
+  Color get unSelected;
+  Color get disabled;
   MaterialColor get gray;
 }

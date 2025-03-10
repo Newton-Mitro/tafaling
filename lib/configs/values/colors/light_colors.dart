@@ -39,6 +39,15 @@ class AppColorsLight extends AppColors {
   Color get onError => Colors.white;
 
   @override
+  Color get disabled => throw UnimplementedError();
+
+  @override
+  Color get selected => throw UnimplementedError();
+
+  @override
+  Color get unSelected => throw UnimplementedError();
+
+  @override
   MaterialColor get gray => MaterialColor(50, {
         50: Color(0xFFFAFAFA),
         100: Color(0xFFF5F5F5),

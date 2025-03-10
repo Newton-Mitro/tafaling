@@ -3,13 +3,13 @@ import 'package:tafaling/configs/values/colors/app_colors.dart';
 
 class AppColorsDark extends AppColors {
   @override
-  Color get primary => const Color.fromARGB(255, 31, 41, 46);
+  Color get primary => const Color(0xFF1F292E);
 
   @override
-  Color get primaryVariant => const Color.fromARGB(255, 14, 18, 20);
+  Color get primaryVariant => const Color(0xFF0E1214);
 
   @override
-  Color get secondary => const Color.fromARGB(255, 169, 223, 252);
+  Color get secondary => const Color.fromARGB(255, 21, 31, 36);
 
   @override
   Color get secondaryVariant => Colors.tealAccent;
@@ -37,6 +37,15 @@ class AppColorsDark extends AppColors {
 
   @override
   Color get onError => Colors.black;
+
+  @override
+  Color get disabled => const Color.fromARGB(255, 145, 153, 158);
+
+  @override
+  Color get selected => const Color.fromARGB(255, 169, 223, 252);
+
+  @override
+  Color get unSelected => const Color.fromARGB(255, 144, 183, 204);
 
   @override
   MaterialColor get gray => MaterialColor(50, {

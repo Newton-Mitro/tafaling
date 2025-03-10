@@ -20,7 +20,7 @@ class AppTheme {
         filledButtonTheme: FilledButtonThemeData(
             style: ButtonStyle(
           backgroundColor:
-              WidgetStatePropertyAll<Color?>(AppColorsDark().background),
+              WidgetStatePropertyAll<Color?>(AppColorsDark().secondary),
         )),
         popupMenuTheme: PopupMenuThemeData(
           color: AppColorsDark().surface,
@@ -43,10 +43,16 @@ class AppTheme {
             color: AppColorsDark().onPrimary,
           ),
         ),
+        tabBarTheme: TabBarThemeData(
+          indicatorColor: AppColorsDark().error,
+          dividerColor: AppColorsDark().primaryVariant,
+          labelColor: AppColorsDark().selected,
+          unselectedLabelColor: AppColorsDark().unSelected,
+        ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: AppColorsDark().primary,
-          unselectedItemColor: AppColorsDark().onPrimary,
-          selectedItemColor: AppColorsDark().secondary,
+          unselectedItemColor: AppColorsDark().unSelected,
+          selectedItemColor: AppColorsDark().selected,
         ),
         pageTransitionsTheme: _pageTransitionsTheme,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -91,17 +97,69 @@ class AppTheme {
       );
 
   final TextTheme _textTheme = TextTheme(
-    headlineLarge: TextStyle(
-        fontSize: 96, fontWeight: FontWeight.w300, letterSpacing: -1.5),
-    headlineMedium: TextStyle(fontSize: 48, fontWeight: FontWeight.w400),
-    headlineSmall: TextStyle(
-        fontSize: 20, fontWeight: FontWeight.w500, letterSpacing: 0.15),
     bodyLarge: TextStyle(
-        fontSize: 16, fontWeight: FontWeight.w400, letterSpacing: 0.5),
+      fontSize: 18,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0.6,
+      height: 1.5,
+      color: AppColorsDark().onPrimary,
+    ),
     bodyMedium: TextStyle(
-        fontSize: 14, fontWeight: FontWeight.w400, letterSpacing: 0.25),
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0.4,
+      height: 1.4,
+      color: AppColorsDark().onPrimary,
+    ),
     bodySmall: TextStyle(
-        fontSize: 12, fontWeight: FontWeight.w400, letterSpacing: 0.25),
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.3,
+      height: 1.3,
+      color: AppColorsDark().onPrimary,
+    ),
+    labelLarge: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w600,
+      letterSpacing: 0.5,
+      height: 1.4,
+      color: AppColorsDark().onPrimary,
+    ),
+    labelMedium: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0.4,
+      height: 1.3,
+      color: AppColorsDark().onPrimary,
+    ),
+    labelSmall: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0.3,
+      height: 1.2,
+      color: AppColorsDark().onPrimary,
+    ),
+    headlineLarge: TextStyle(
+      fontSize: 24,
+      fontWeight: FontWeight.bold,
+      letterSpacing: 0.8,
+      height: 1.6,
+      color: AppColorsDark().onPrimary,
+    ),
+    headlineMedium: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.w700,
+      letterSpacing: 0.7,
+      height: 1.5,
+      color: AppColorsDark().onPrimary,
+    ),
+    headlineSmall: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.w600,
+      letterSpacing: 0.6,
+      height: 1.4,
+      color: AppColorsDark().onPrimary,
+    ),
   );
 
   final PageTransitionsTheme _pageTransitionsTheme = PageTransitionsTheme(

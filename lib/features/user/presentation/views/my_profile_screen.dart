@@ -89,10 +89,7 @@ class MyProfileScreen extends StatelessWidget {
                             const SizedBox(height: 5),
                             Text(
                               userName,
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: context.theme.textTheme.labelLarge,
                             ),
                             Row(
                               mainAxisSize: MainAxisSize.min,
@@ -115,14 +112,20 @@ class MyProfileScreen extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 FilledButton(
-                                  child: Text("Edit Profile"),
+                                  child: Text(
+                                    "Edit Profile",
+                                    style: context.theme.textTheme.labelMedium,
+                                  ),
                                   onPressed: () {
                                     // Edit Profile Action
                                   },
                                 ),
                                 const SizedBox(width: 10),
                                 FilledButton(
-                                  child: Text("Share Profile"),
+                                  child: Text(
+                                    "Share Profile",
+                                    style: context.theme.textTheme.labelMedium,
+                                  ),
                                   onPressed: () {
                                     // Share Profile Action
                                   },
@@ -130,17 +133,14 @@ class MyProfileScreen extends StatelessWidget {
                               ],
                             ),
                             const SizedBox(height: 10),
-                            const Padding(
+                            Padding(
                               padding: EdgeInsets.symmetric(horizontal: 20),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     'This is a short bio about the user. It can include interests, hobbies, or anything the user wants to share.',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                    ),
+                                    style: context.theme.textTheme.labelMedium,
                                   ),
                                 ],
                               ),
@@ -153,8 +153,7 @@ class MyProfileScreen extends StatelessWidget {
                   ),
                   SliverPersistentHeader(
                     delegate: _SliverAppBarDelegate(
-                      const TabBar(
-                        indicatorColor: Colors.white,
+                      TabBar(
                         tabs: [
                           Tab(text: 'Posts'),
                           Tab(text: 'Private'),
@@ -196,33 +195,22 @@ class MyProfileScreen extends StatelessWidget {
 }
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  final TabBar tabBar;
+  final TabBar _tabBar;
 
-  _SliverAppBarDelegate(TabBar tabBar)
-      : tabBar = const TabBar(
-          indicatorColor: Colors.red,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.grey,
-          tabs: [
-            Tab(text: 'Posts'),
-            Tab(text: 'Private'),
-            Tab(text: 'Following'),
-            Tab(text: 'followers'),
-          ],
-        );
+  _SliverAppBarDelegate(TabBar tabBar) : _tabBar = tabBar;
 
   @override
-  double get minExtent => tabBar.preferredSize.height;
+  double get minExtent => _tabBar.preferredSize.height;
 
   @override
-  double get maxExtent => tabBar.preferredSize.height;
+  double get maxExtent => _tabBar.preferredSize.height;
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Material(
-      color: context.theme.colorScheme.primaryFixed,
-      child: tabBar,
+      color: context.theme.colorScheme.secondary,
+      child: _tabBar,
     );
   }
 

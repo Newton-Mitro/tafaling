@@ -8,7 +8,7 @@ class TopNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Positioned(
       left: 0,
-      top: 35,
+      top: 10,
       right: 0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
