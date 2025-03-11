@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 
-class TopNavigation extends StatelessWidget {
-  const TopNavigation({super.key});
+class PostTopNavigation extends StatelessWidget {
+  const PostTopNavigation({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
       left: 0,
-      top: 10,
+      top: 35,
       right: 0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

@@ -1,89 +1,52 @@
-final List<Map<String, dynamic>> myFollowers = [
+import 'package:tafaling/features/user/data/models/user_model.dart';
+
+final List<Map<String, dynamic>> jsonFollowers = [
   {
-    'avatarUrl':
-        'https://t3.ftcdn.net/jpg/00/35/66/46/360_F_35664648_N33kGk5LKODV6A9Hq5cqDaU9X2VwTPmg.jpg',
-    'username': 'JohnDoe',
-    'isFollower': true,
+    "user_id": 50,
+    "name": "FunBuzz",
+    "user_name": "funbuzz",
+    "email": "daniel@workdirectory.ca",
+    "profile_picture":
+        "https://devapi.tafaling.com/storage/users/profile/hgXS2KY1nITVMMnJnGdJMXjgEdUc4DUcjjWlWmB9.jpg",
+    "cover_photo":
+        "https://devapi.tafaling.com/storage/users/cover/L9Nk6u6no2MLXuNlLTrlTGx2ZxY21kkDxt0tro7T.jpg",
+    "email_verified_at": null,
+    "followers": 0,
+    "following": 19,
+    "total_like_count": 0,
+    "is_following": false
   },
   {
-    'avatarUrl':
-        'https://t3.ftcdn.net/jpg/00/35/66/46/360_F_35664648_N33kGk5LKODV6A9Hq5cqDaU9X2VwTPmg.jpg',
-    'username': 'JaneSmith',
-    'isFollower': false,
+    "user_id": 50,
+    "name": "FunBuzz",
+    "user_name": "funbuzz",
+    "email": "daniel@workdirectory.ca",
+    "profile_picture":
+        "https://devapi.tafaling.com/storage/users/profile/hgXS2KY1nITVMMnJnGdJMXjgEdUc4DUcjjWlWmB9.jpg",
+    "cover_photo":
+        "https://devapi.tafaling.com/storage/users/cover/L9Nk6u6no2MLXuNlLTrlTGx2ZxY21kkDxt0tro7T.jpg",
+    "email_verified_at": null,
+    "followers": 0,
+    "following": 19,
+    "total_like_count": 0,
+    "is_following": true
   },
   {
-    'avatarUrl':
-        'https://t3.ftcdn.net/jpg/00/35/66/46/360_F_35664648_N33kGk5LKODV6A9Hq5cqDaU9X2VwTPmg.jpg',
-    'username': 'MikeJohnson',
-    'isFollower': true,
-  },
-  {
-    'avatarUrl': '',
-    'username': 'AnnaBrown',
-    'isFollower': false,
-  },
-  {
-    'avatarUrl':
-        'https://t3.ftcdn.net/jpg/00/35/66/46/360_F_35664648_N33kGk5LKODV6A9Hq5cqDaU9X2VwTPmg.jpg',
-    'username': 'ChrisGreen',
-    'isFollower': true,
-  },
-  {
-    'avatarUrl':
-        'https://t3.ftcdn.net/jpg/00/35/66/46/360_F_35664648_N33kGk5LKODV6A9Hq5cqDaU9X2VwTPmg.jpg',
-    'username': 'JohnDoe',
-    'isFollower': true,
-  },
-  {
-    'avatarUrl':
-        'https://t3.ftcdn.net/jpg/00/35/66/46/360_F_35664648_N33kGk5LKODV6A9Hq5cqDaU9X2VwTPmg.jpg',
-    'username': 'JaneSmith',
-    'isFollower': false,
-  },
-  {
-    'avatarUrl':
-        'https://t3.ftcdn.net/jpg/00/35/66/46/360_F_35664648_N33kGk5LKODV6A9Hq5cqDaU9X2VwTPmg.jpg',
-    'username': 'MikeJohnson',
-    'isFollower': true,
-  },
-  {
-    'avatarUrl': '',
-    'username': 'AnnaBrown',
-    'isFollower': false,
-  },
-  {
-    'avatarUrl':
-        'https://t3.ftcdn.net/jpg/00/35/66/46/360_F_35664648_N33kGk5LKODV6A9Hq5cqDaU9X2VwTPmg.jpg',
-    'username': 'ChrisGreen',
-    'isFollower': true,
-  },
-  {
-    'avatarUrl':
-        'https://t3.ftcdn.net/jpg/00/35/66/46/360_F_35664648_N33kGk5LKODV6A9Hq5cqDaU9X2VwTPmg.jpg',
-    'username': 'JohnDoe',
-    'isFollower': true,
-  },
-  {
-    'avatarUrl':
-        'https://t3.ftcdn.net/jpg/00/35/66/46/360_F_35664648_N33kGk5LKODV6A9Hq5cqDaU9X2VwTPmg.jpg',
-    'username': 'JaneSmith',
-    'isFollower': false,
-  },
-  {
-    'avatarUrl':
-        'https://t3.ftcdn.net/jpg/00/35/66/46/360_F_35664648_N33kGk5LKODV6A9Hq5cqDaU9X2VwTPmg.jpg',
-    'username': 'MikeJohnson',
-    'isFollower': true,
-  },
-  {
-    'avatarUrl': '',
-    'username': 'AnnaBrown',
-    'isFollower': false,
-  },
-  {
-    'avatarUrl':
-        'https://t3.ftcdn.net/jpg/00/35/66/46/360_F_35664648_N33kGk5LKODV6A9Hq5cqDaU9X2VwTPmg.jpg',
-    'username': 'ChrisGreen',
-    'isFollower': true,
-  },
+    "user_id": 50,
+    "name": "FunBuzz",
+    "user_name": "funbuzz",
+    "email": "daniel@workdirectory.ca",
+    "profile_picture":
+        "https://devapi.tafaling.com/storage/users/profile/hgXS2KY1nITVMMnJnGdJMXjgEdUc4DUcjjWlWmB9.jpg",
+    "cover_photo":
+        "https://devapi.tafaling.com/storage/users/cover/L9Nk6u6no2MLXuNlLTrlTGx2ZxY21kkDxt0tro7T.jpg",
+    "email_verified_at": null,
+    "followers": 0,
+    "following": 19,
+    "total_like_count": 0,
+    "is_following": false
+  }
 ];
+
+List<UserModel> myFollowers =
+    jsonFollowers.map((json) => UserModel.fromJson(json)).toList();

@@ -15,10 +15,10 @@ class AppColorsDark extends AppColors {
   Color get secondaryVariant => Colors.tealAccent;
 
   @override
-  Color get background => Colors.grey[900]!;
+  Color get background => const Color.fromARGB(255, 29, 29, 29)!;
 
   @override
-  Color get surface => Colors.grey[900]!;
+  Color get surface => const Color.fromARGB(255, 34, 34, 34)!;
 
   @override
   Color get error => Colors.redAccent;

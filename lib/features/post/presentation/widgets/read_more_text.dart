@@ -1,21 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:tafaling/core/utils/app_context.dart';
+import 'package:tafaling/features/post/data/models/post_model.dart';
 
 class ReadMoreText extends StatefulWidget {
-  final String text;
+  final PostModel postModel;
   final int maxLines;
+  final bool isExpanded;
+  final VoidCallback? onClick; // Add onClick callback
 
-  const ReadMoreText({super.key, required this.text, this.maxLines = 2});
+  const ReadMoreText({
+    super.key,
+    required this.postModel,
+    this.maxLines = 2,
+    required this.isExpanded,
+    required this.onClick, // Receive the callback function
+  });
 
   @override
-  _ReadMoreTextState createState() => _ReadMoreTextState();
+  State<ReadMoreText> createState() => _ReadMoreTextState();
 }
 
 class _ReadMoreTextState extends State<ReadMoreText> {
-  bool _isExpanded = false;
-
   @override
   Widget build(BuildContext context) {
     final double maxHeight = MediaQuery.of(context).size.height - 260;
+    final String text = widget.postModel.body ?? '';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,35 +34,35 @@ class _ReadMoreTextState extends State<ReadMoreText> {
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Text(
-              style: const TextStyle(color: Color.fromARGB(255, 209, 209, 209)),
-              _isExpanded
-                  ? widget.text
-                  : (widget.text.length > 100
-                      ? '${widget.text.substring(0, 100)}...'
-                      : widget.text),
-              maxLines: _isExpanded ? null : widget.maxLines,
-              overflow: _isExpanded ? null : TextOverflow.ellipsis,
+              style: context.theme.textTheme.bodySmall,
+              widget.isExpanded
+                  ? text
+                  : (text.length > 100 ? '${text.substring(0, 100)}...' : text),
+              maxLines: widget.isExpanded ? null : widget.maxLines,
+              overflow: widget.isExpanded ? null : TextOverflow.ellipsis,
             ),
           ),
         ),
-        if (widget.text.length > 100)
+        if (text.length > 100)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('...'),
+              Text(
+                '...',
+                style: context.theme.textTheme.bodySmall,
+              ),
               TextButton(
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.zero,
                 ),
                 onPressed: () {
-                  setState(() {
-                    _isExpanded = !_isExpanded;
-                  });
+                  if (widget.onClick != null) {
+                    widget.onClick!(); // Call the onClick function
+                  }
                 },
                 child: Text(
-                  _isExpanded ? 'Less' : 'More',
-                  style: const TextStyle(
-                      color: Color.fromARGB(255, 219, 219, 219)),
+                  widget.isExpanded ? 'Less' : 'More',
+                  style: context.theme.textTheme.bodySmall,
                 ),
               ),
             ],

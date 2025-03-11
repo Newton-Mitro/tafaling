@@ -3,8 +3,10 @@ import 'package:cached_video_player_plus/cached_video_player_plus.dart';
 import 'package:flutter/material.dart';
 
 class VideoPostViewer extends StatefulWidget {
-  const VideoPostViewer({super.key, required this.attachmentUrl});
+  const VideoPostViewer(
+      {super.key, required this.attachmentUrl, required this.autoPlay});
   final String attachmentUrl;
+  final bool autoPlay;
 
   @override
   State<VideoPostViewer> createState() => _MyVideoPlayerState();
@@ -30,7 +32,10 @@ class _MyVideoPlayerState extends State<VideoPostViewer> {
         setState(() {
           _isInitialized = true;
         });
-        videoPlayerController.play();
+        if (widget.autoPlay) {
+          videoPlayerController.play();
+        }
+        // videoPlayerController.play();
         await videoPlayerController.setLooping(true);
 
         // Listen to video position updates
@@ -105,7 +110,7 @@ class _MyVideoPlayerState extends State<VideoPostViewer> {
               ),
             if (_showSeekBar && _isInitialized)
               Positioned(
-                bottom: 40,
+                bottom: 120,
                 left: 20,
                 right: 20,
                 child: SliderTheme(

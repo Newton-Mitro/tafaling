@@ -48,16 +48,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   children: [
                     Text(
                       OnboardingListItems.listItems[index].title,
-                      style: const TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: context.theme.textTheme.headlineMedium,
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 10),
                     Text(
                       OnboardingListItems.listItems[index].description,
                       textAlign: TextAlign.center,
+                      style: context.theme.textTheme.bodySmall,
                     ),
                     const SizedBox(height: 50),
                     isLastPage
@@ -65,12 +63,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         : Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
+                              FilledButton(
+                                style: ButtonStyle(
                                   backgroundColor:
-                                      context.theme.colorScheme.primary,
+                                      WidgetStatePropertyAll<Color>(
+                                          context.theme.colorScheme.primary),
                                   foregroundColor:
-                                      context.theme.colorScheme.onPrimary,
+                                      WidgetStatePropertyAll<Color>(
+                                          context.theme.colorScheme.onPrimary),
                                 ),
                                 onPressed: () {
                                   if ((_pageController.page ?? 0).round() > 0) {
@@ -81,25 +81,31 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                     );
                                   }
                                 },
-                                child: const Text('Previous'),
+                                child: Text(
+                                  'Previous',
+                                  style: context.theme.textTheme.labelSmall,
+                                ),
                               ),
                               SmoothPageIndicator(
                                 controller: _pageController,
                                 count: OnboardingListItems.listItems.length,
-                                effect: const ExpandingDotsEffect(
-                                  dotColor: Colors.grey,
-                                  activeDotColor: Colors.blue,
+                                effect: ExpandingDotsEffect(
+                                  dotColor: context.theme.colorScheme.primary,
+                                  activeDotColor:
+                                      context.theme.colorScheme.error,
                                   dotHeight: 10,
                                   dotWidth: 10,
                                   spacing: 5,
                                 ),
                               ),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
+                              FilledButton(
+                                style: ButtonStyle(
                                   backgroundColor:
-                                      context.theme.colorScheme.primary,
+                                      WidgetStatePropertyAll<Color>(
+                                          context.theme.colorScheme.primary),
                                   foregroundColor:
-                                      context.theme.colorScheme.onPrimary,
+                                      WidgetStatePropertyAll<Color>(
+                                          context.theme.colorScheme.onPrimary),
                                 ),
                                 onPressed: () {
                                   if ((_pageController.page ?? 0).round() <
@@ -112,7 +118,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                     );
                                   }
                                 },
-                                child: const Text('Next'),
+                                child: Text(
+                                  'Next',
+                                  style: context.theme.textTheme.labelSmall,
+                                ),
                               ),
                             ],
                           ),
@@ -128,8 +137,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 }
 
 Widget getStartedButton(BuildContext context) {
-  return ElevatedButton(
-    style: ElevatedButton.styleFrom(
+  return FilledButton(
+    style: FilledButton.styleFrom(
       backgroundColor: context.theme.colorScheme.primary,
       foregroundColor: context.theme.colorScheme.onPrimary,
     ),
@@ -137,6 +146,9 @@ Widget getStartedButton(BuildContext context) {
       AppSharedPref.setOnboardingStatus(false);
       Navigator.popAndPushNamed(context, RoutesName.homePage);
     },
-    child: const Text('Get Started'),
+    child: Text(
+      'Get Started',
+      style: context.theme.textTheme.labelSmall,
+    ),
   );
 }

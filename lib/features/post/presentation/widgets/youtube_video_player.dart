@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class YouTubeVideoPlayer extends StatefulWidget {
-  final String videoUrl; // Pass video URL as a parameter
+  final String videoUrl;
 
   const YouTubeVideoPlayer({super.key, required this.videoUrl});
 
   @override
-  _YouTubeVideoPlayerState createState() => _YouTubeVideoPlayerState();
+  State<YouTubeVideoPlayer> createState() => _YouTubeVideoPlayerState();
 }
 
 class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {

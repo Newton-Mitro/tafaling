@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tafaling/core/widgets/my_bottom_navigation_bar/states/notifiers.dart';
 import 'package:tafaling/features/post/data/data_sources/temp_posts_data.dart';
-import 'package:tafaling/features/post/presentation/widgets/post_body.dart';
 import 'package:tafaling/features/post/presentation/widgets/post_viewer.dart';
-import 'package:tafaling/features/post/presentation/widgets/top_navigation.dart';
+import 'package:tafaling/features/post/presentation/widgets/post_top_navigation.dart';
 
 class PostsScreen extends StatefulWidget {
   const PostsScreen({super.key});
@@ -37,25 +36,19 @@ class _PostsScreenState extends State<PostsScreen> {
             children: [
               PageView.builder(
                 scrollDirection: Axis.vertical,
+                physics: BouncingScrollPhysics(),
                 controller: _pageController,
                 itemCount: posts.length,
                 onPageChanged: (index) {
                   selectedPostNotifier.value = index;
                 },
                 itemBuilder: (context, index) {
-                  return Stack(
-                    children: [
-                      PostViewer(
-                        postModel: posts[index],
-                      ),
-                      PostBody(
-                        postModel: posts[index],
-                      ),
-                    ],
+                  return PostViewer(
+                    postModel: posts[index],
                   );
                 },
               ),
-              TopNavigation(),
+              PostTopNavigation(),
             ],
           );
         },

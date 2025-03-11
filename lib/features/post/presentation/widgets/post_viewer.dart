@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:tafaling/core/utils/url_extractor.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
 import 'package:tafaling/features/post/presentation/widgets/image_post_viewer.dart';
-import 'package:tafaling/features/post/presentation/widgets/link_preview.dart';
-import 'package:tafaling/features/post/presentation/widgets/post_body.dart';
-import 'package:tafaling/features/post/presentation/widgets/sidebar_widget.dart';
+import 'package:tafaling/features/post/presentation/widgets/link_post_viewer.dart';
+import 'package:tafaling/features/post/presentation/widgets/post_body_text.dart';
+import 'package:tafaling/features/post/presentation/widgets/post_sidebar.dart';
 import 'package:tafaling/features/post/presentation/widgets/video_post_viewer.dart';
 
 class PostViewer extends StatefulWidget {
@@ -73,6 +73,7 @@ class _PostViewerState extends State<PostViewer> {
               } else if (mimeType.contains("video")) {
                 return VideoPostViewer(
                   attachmentUrl: '${attachment.fileURL}/${attachment.fileName}',
+                  autoPlay: true,
                 );
               } else {
                 return const SizedBox.shrink(); // Return empty if unknown type
@@ -104,8 +105,8 @@ class _PostViewerState extends State<PostViewer> {
           ),
         ],
 
-        PostBody(postModel: widget.postModel),
-        SidebarWidget(postModel: widget.postModel),
+        PostBodyText(postModel: widget.postModel),
+        PostSidebar(postModel: widget.postModel),
       ],
     );
   }

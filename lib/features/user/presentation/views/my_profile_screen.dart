@@ -5,25 +5,26 @@ import 'package:tafaling/features/post/data/data_sources/temp_posts_data.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
 import 'package:tafaling/features/user/data/data_sources/follower_data.dart';
 import 'package:tafaling/features/user/data/data_sources/following_data.dart';
-import 'package:tafaling/features/user/presentation/widgets/following_users_widget.dart';
-import 'package:tafaling/features/user/presentation/widgets/my_video_grid_widget.dart';
-import 'package:tafaling/features/user/presentation/widgets/stat_column_widget.dart';
-import 'package:tafaling/features/user/presentation/widgets/users_followers_widget.dart';
+import 'package:tafaling/features/user/presentation/widgets/following_users.dart';
+import 'package:tafaling/features/post/presentation/widgets/profile_video_grid.dart';
+import 'package:tafaling/features/user/presentation/widgets/sliver_app_bar_delegate.dart';
+import 'package:tafaling/features/user/presentation/widgets/follow_status.dart';
+import 'package:tafaling/features/user/presentation/widgets/users_followers.dart';
 
 class MyProfileScreen extends StatelessWidget {
   const MyProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return _buildProfilePage(context, postModels);
+    return _buildProfilePage(context, posts);
   }
 
   Widget _buildProfilePage(BuildContext context, List<PostModel> posts) {
-    var profilePic = posts[0].creator.profilePicture ?? '';
-    var userName = posts[0].creator.name;
-    var followers = posts[0].creator.followers;
-    var following = posts[0].creator.following;
-    var myPosts = posts.isNotEmpty && posts[0].id != 0 ? posts : [];
+    final String profilePic = posts[0].creator.profilePicture ?? '';
+    final String userName = posts[0].creator.name;
+    final int followers = posts[0].creator.followers;
+    final int following = posts[0].creator.following;
+    List<PostModel> myPosts = posts.isNotEmpty && posts[0].id != 0 ? posts : [];
 
     return PopScope(
       child: DefaultTabController(
@@ -63,7 +64,7 @@ class MyProfileScreen extends StatelessWidget {
                     pinned: true,
                     floating: true,
                     snap: true,
-                    expandedHeight: MediaQuery.of(context).size.height / 3,
+                    expandedHeight: MediaQuery.of(context).size.height / 2.5,
                     flexibleSpace: FlexibleSpaceBar(
                       background: SingleChildScrollView(
                         child: Column(
@@ -82,7 +83,10 @@ class MyProfileScreen extends StatelessWidget {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(50),
                                   child: CacheNetworkImagePlus(
-                                      imageUrl: profilePic),
+                                    imageUrl: profilePic,
+                                    errorWidget: Image.asset(
+                                        'assets/images/misc/avatar.png'),
+                                  ),
                                 ),
                               ),
                             ),
@@ -95,13 +99,13 @@ class MyProfileScreen extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                StatColumn(
+                                FollowStatus(
                                   label: "Following",
                                   value: following.toString(),
                                   onPressed: () {},
                                 ),
                                 const VerticalDivider(),
-                                StatColumn(
+                                FollowStatus(
                                   label: "Followers",
                                   value: followers.toString(),
                                   onPressed: () {},
@@ -152,7 +156,7 @@ class MyProfileScreen extends StatelessWidget {
                     ),
                   ),
                   SliverPersistentHeader(
-                    delegate: _SliverAppBarDelegate(
+                    delegate: SliverAppBarDelegate(
                       TabBar(
                         tabs: [
                           Tab(text: 'Posts'),
@@ -168,19 +172,19 @@ class MyProfileScreen extends StatelessWidget {
               },
               body: TabBarView(
                 children: [
-                  MyVideoGrid(
+                  ProfileVideoGrid(
                     itemCount: myPosts.length,
                     myPosts: myPosts,
                   ),
-                  const MyVideoGrid(
+                  const ProfileVideoGrid(
                     itemCount: 0,
                     myPosts: [],
                   ),
-                  FollowingUsersWidget(
+                  FollowingUsers(
                     itemCount: followingUsers.length,
                     users: followingUsers,
                   ),
-                  UsersFollowersWidget(
+                  UsersFollowers(
                     itemCount: myFollowers.length,
                     users: myFollowers,
                   ),
@@ -191,31 +195,5 @@ class MyProfileScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  final TabBar _tabBar;
-
-  _SliverAppBarDelegate(TabBar tabBar) : _tabBar = tabBar;
-
-  @override
-  double get minExtent => _tabBar.preferredSize.height;
-
-  @override
-  double get maxExtent => _tabBar.preferredSize.height;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Material(
-      color: context.theme.colorScheme.secondary,
-      child: _tabBar,
-    );
-  }
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return true;
   }
 }
