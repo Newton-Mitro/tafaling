@@ -21,7 +21,7 @@ class UserProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
-        final profileBloc = servLoc<ProfileBloc>();
+        final profileBloc = serviceLoc<ProfileBloc>();
         profileBloc.add(FetchProfileEvent(userId: userId as int, fetchPage: 1));
         return profileBloc;
       },

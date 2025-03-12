@@ -91,9 +91,6 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchState> {
         50,
       );
 
-      // final allUsers = List<SearchUserModel>.from(currentUsers)
-      //   ..addAll(newUsers);
-
       emit(SearchLoaded(newUsers)); // Emit the loaded state with users
     } catch (e) {
       emit(SearchError('Failed to load users'));

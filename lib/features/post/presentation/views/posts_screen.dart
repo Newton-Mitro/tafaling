@@ -60,7 +60,8 @@ class _PostsScreenState extends State<PostsScreen> {
                           );
                         },
                       ),
-                      PostTopNavigation(),
+                      if (context.read<HomeScreenBloc>().state.authUserId != 0)
+                        PostTopNavigation(),
                     ],
                   );
                 }

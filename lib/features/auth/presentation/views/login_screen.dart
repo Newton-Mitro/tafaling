@@ -22,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => servLoc<LoginScreenBloc>(),
+      create: (context) => serviceLoc<LoginScreenBloc>(),
       child: Scaffold(
         appBar: AppBar(
           title: Text("Login"),

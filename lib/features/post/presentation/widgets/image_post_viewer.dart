@@ -8,13 +8,10 @@ class ImagePostViewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Stack(
-        alignment: Alignment.centerRight,
-        children: [
-          CacheNetworkImagePlus(
-            imageUrl: attachmentUrl,
-          ),
-        ],
+      alignment: Alignment.center,
+      child: CacheNetworkImagePlus(
+        imageUrl: attachmentUrl,
+        errorWidget: Image.asset('assets/images/misc/no_preview.png'),
       ),
     );
   }

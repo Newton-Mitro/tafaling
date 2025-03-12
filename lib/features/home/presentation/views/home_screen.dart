@@ -10,7 +10,6 @@ import 'package:tafaling/features/home/presentation/views/inbox_screen.dart';
 import 'package:tafaling/features/home/presentation/views/post_screen.dart';
 import 'package:tafaling/features/post/presentation/states/post_bloc/posts_screen_bloc.dart';
 import 'package:tafaling/features/post/presentation/views/posts_screen.dart';
-import 'package:tafaling/features/user/presentation/states/user_search_bloc/search_screen_bloc.dart';
 import 'package:tafaling/features/user/presentation/views/user_profile_screen.dart';
 import 'package:tafaling/injection_container.dart';
 
@@ -30,16 +29,13 @@ class _HomeScreenState extends State<HomeScreen> {
     return MultiBlocProvider(
       providers: [
         BlocProvider<HomeScreenBloc>(
-          create: (context) => servLoc<HomeScreenBloc>(),
+          create: (context) => serviceLoc<HomeScreenBloc>(),
         ),
         BlocProvider<PostsScreenBloc>(
-          create: (context) => servLoc<PostsScreenBloc>(),
+          create: (context) => serviceLoc<PostsScreenBloc>(),
         ),
         BlocProvider<HomeScreenBloc>(
-          create: (context) => servLoc<HomeScreenBloc>(),
-        ),
-        BlocProvider<SearchScreenBloc>(
-          create: (context) => servLoc<SearchScreenBloc>(),
+          create: (context) => serviceLoc<HomeScreenBloc>(),
         ),
       ],
       child: BlocConsumer<HomeScreenBloc, HomeScreenState>(

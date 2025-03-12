@@ -27,7 +27,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => servLoc<SignUpScreenBloc>(),
+      create: (context) => serviceLoc<SignUpScreenBloc>(),
       child: Scaffold(
         appBar: AppBar(
           title: Text(

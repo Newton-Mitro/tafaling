@@ -7,7 +7,7 @@ class AppSharedPref {
   static const themeKey = 'app_theme';
   static const authToken = 'auth_token';
   static const onboarding = 'onboarding';
-  static final SharedPreferences sharedPref = servLoc.get();
+  static final SharedPreferences sharedPref = serviceLoc.get();
 
   // Language
   static Future<void> setAppLocale(String locale) async {
