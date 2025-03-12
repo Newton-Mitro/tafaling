@@ -10,6 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/features/home/presentation/views/home_screen.dart';
 import 'package:tafaling/routes.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 class MyApp extends StatelessWidget {
   final bool onBoarding;
   const MyApp({super.key, required this.onBoarding});
@@ -26,6 +28,7 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               darkTheme: AppTheme().dark,
               theme: AppTheme().light,
+              navigatorKey: navigatorKey,
               themeMode: themeState is LightThemeState
                   ? ThemeMode.dark
                   : ThemeMode.dark,

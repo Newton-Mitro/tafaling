@@ -1,4 +1,4 @@
-import 'package:tafaling/core/widgets/my_bottom_navigation_bar/states/notifiers.dart';
+import 'package:tafaling/features/home/presentation/states/notifiers.dart';
 import 'package:tafaling/injection_container.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -7,7 +7,7 @@ class AppSharedPref {
   static const themeKey = 'app_theme';
   static const authToken = 'auth_token';
   static const onboarding = 'onboarding';
-  static final SharedPreferences sharedPref = locator.get();
+  static final SharedPreferences sharedPref = servLoc.get();
 
   // Language
   static Future<void> setAppLocale(String locale) async {

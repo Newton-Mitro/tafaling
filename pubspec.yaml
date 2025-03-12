@@ -10,6 +10,7 @@ dependencies:
   bloc: ^9.0.0
   cached_network_image_plus: ^0.0.5
   cached_video_player_plus: ^3.0.3
+  data_connection_checker_nulls: ^0.0.2
   dio: ^5.8.0+1
   equatable: ^2.0.7
   flag: ^7.0.0
@@ -71,33 +72,10 @@ flutter_icons:
   adaptive_icon_foreground: "assets/images/brand/app_icon.png"
 
 flutter_native_splash:
-  android: true
-  ios: true
-  web: false
-
-  color: "#015266"
-  color_dark: "#002b35"
-
-  # background_image: "assets/images/brand/background_image.jpg"
-  # background_image_dark: "assets/images/brand/background_image_dark.jpg"
-
-  image: "assets/images/brand/app_icon.png"
-  image_dark: "assets/images/brand/app_icon.png"
-
-  branding: "assets/images/brand/logo.png"
-  branding_dark: "assets/images/brand/logo.png"
-
-  branding_mode: bottom
-  branding_bottom_padding: 24
+  color: "#1F292E" # Background color (adjust as needed)
+  image: assets/images/brand/splash.png # Full-screen image
+  fullscreen: true # Ensures full coverage
   android_12:
-    color: "#015266"
-    color_dark: "#002b35"
-
-    background_image_android: "assets/images/brand/background_image.jpg"
-    background_image_dark_android: "assets/images/brand/background_image_dark.jpg"
-
-    branding: "assets/images/brand/logo.png"
-    branding_dark: "assets/images/brand/logo.png"
-
-    image: "assets/images/brand/app_icon.png"
-    image_dark: "assets/images/brand/app_icon.png"
+    image: assets/images/brand/splash.png
+    icon_background_color: "#1F292E" # Optional, set the background color
+    fullscreen: true

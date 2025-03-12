@@ -1,6 +1,7 @@
 import 'package:cached_network_image_plus/flutter_cached_network_image_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tafaling/configs/routes/route_name.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
 
 class PostSidebar extends StatelessWidget {
@@ -21,21 +22,44 @@ class PostSidebar extends StatelessWidget {
         ),
         child: Column(
           children: [
-            SizedBox(
-              width: 50,
-              child: Container(
+            GestureDetector(
+              // Wrap the SizedBox with GestureDetector
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  RoutesName.userProfilePage,
+                  arguments: 36,
+                );
+              }, // Handle the tap
+              child: SizedBox(
                 width: 50,
                 height: 50,
-                padding: const EdgeInsets.all(1),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(50),
-                  child: CacheNetworkImagePlus(
-                    imageUrl: profileImage,
-                    errorWidget: Image.asset('assets/images/misc/avatar.png'),
-                  ),
+                child: Stack(
+                  children: [
+                    Positioned(
+                      left: 5,
+                      child: Container(
+                        width: 45,
+                        height: 45,
+                        padding: const EdgeInsets.all(1),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(35),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(35),
+                          child: profileImage.isNotEmpty
+                              ? CacheNetworkImagePlus(
+                                  imageUrl: profileImage,
+                                )
+                              : Image.asset(
+                                  'assets/images/misc/avatar.png',
+                                  fit: BoxFit.cover,
+                                ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

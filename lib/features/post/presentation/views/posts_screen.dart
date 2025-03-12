@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tafaling/core/widgets/my_bottom_navigation_bar/states/notifiers.dart';
+import 'package:tafaling/features/home/presentation/states/notifiers.dart';
 import 'package:tafaling/features/post/data/data_sources/temp_posts_data.dart';
 import 'package:tafaling/features/post/presentation/widgets/post_viewer.dart';
 import 'package:tafaling/features/post/presentation/widgets/post_top_navigation.dart';

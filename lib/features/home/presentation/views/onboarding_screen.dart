@@ -38,7 +38,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               Container(
                 width: double.infinity,
                 height: double.infinity,
-                color: Colors.black54,
+                color: const Color.fromARGB(80, 0, 0, 0),
               ),
               Padding(
                 padding:
