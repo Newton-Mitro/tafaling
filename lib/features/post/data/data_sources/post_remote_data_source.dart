@@ -27,7 +27,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   Future<List<PostModel>> fetchPosts(
       int userId, int startRecord, int pageSize) async {
     final response = await apiService.get(
-      '/posts/all/$userId',
+      '/posts/v2/all/$userId',
       queryParameters: {
         'start_record': startRecord,
         'page_size': pageSize,
@@ -46,7 +46,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   Future<List<PostModel>> fetchUserPosts(
       int userId, int startRecord, int pageSize) async {
     final response = await authApiService.get(
-      '/posts/user/$userId',
+      '/posts/v2/user/$userId',
       queryParameters: {
         'start_record': startRecord,
         'page_size': pageSize,

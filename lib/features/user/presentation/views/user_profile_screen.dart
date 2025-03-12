@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/core/utils/app_context.dart';
-import 'package:tafaling/features/post/data/data_sources/temp_posts_data.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
 import 'package:tafaling/features/post/presentation/widgets/profile_video_grid.dart';
 import 'package:tafaling/features/user/data/data_sources/follower_data.dart';
@@ -22,14 +21,14 @@ class UserProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
-        final profileBloc = ProfileBloc(servLoc<FetchProfileUseCase>());
+        final profileBloc = servLoc<ProfileBloc>();
         profileBloc.add(FetchProfileEvent(userId: userId as int, fetchPage: 1));
         return profileBloc;
       },
       child: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
           if (state.loading) {
-            return const Center(
+            return Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -39,7 +38,7 @@ class UserProfileScreen extends StatelessWidget {
           }
 
           if (state.posts.isNotEmpty) {
-            return _buildProfilePage(context, posts, state);
+            return _buildProfilePage(context, state.posts, state);
           }
           return Container();
         },
@@ -49,39 +48,21 @@ class UserProfileScreen extends StatelessWidget {
 
   Widget _buildProfilePage(
       BuildContext context, List<PostModel> posts, ProfileState state) {
-    final String profilePic = posts[0].creator.profilePicture ?? '';
-    final String userName = posts[0].creator.name;
-    final int followers = posts[0].creator.followers;
-    final int following = posts[0].creator.following;
-    final bool isFollowing = posts[0].creator.isFollowing;
+    var profilePic = posts[0].creator.profilePicture ?? '';
+    var userName = posts[0].creator.name;
+    var followers = posts[0].creator.followers;
+    var following = posts[0].creator.following;
+    var isFollowing = posts[0].creator.isFollowing;
     List<PostModel> myPosts = posts.isNotEmpty && posts[0].id != 0 ? posts : [];
 
     return PopScope(
       child: DefaultTabController(
         length: 3, // Two tabs: Public and Private
         child: Scaffold(
-          backgroundColor: const Color.fromARGB(255, 2, 37, 39),
           appBar: AppBar(
-            automaticallyImplyLeading: false,
-            backgroundColor: const Color.fromARGB(255, 2, 31, 32),
             title: const Text(
               'Profile',
-              style: TextStyle(color: Colors.white, fontSize: 20),
             ),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.search, color: Colors.white),
-                onPressed: () {
-                  // Search action
-                },
-              ),
-              IconButton(
-                icon: const Icon(Icons.more_vert, color: Colors.white),
-                onPressed: () {
-                  // More options
-                },
-              ),
-            ],
           ),
           body: SafeArea(
             child: NestedScrollView(
@@ -90,7 +71,6 @@ class UserProfileScreen extends StatelessWidget {
                 return <Widget>[
                   SliverAppBar(
                     toolbarHeight: 0,
-                    backgroundColor: const Color.fromARGB(255, 2, 37, 39),
                     pinned: true,
                     floating: true,
                     snap: true,
@@ -171,7 +151,7 @@ class UserProfileScreen extends StatelessWidget {
                                           context.theme.textTheme.labelMedium,
                                     ),
                                     onPressed: () {
-                                      // Share Profile Action
+                                      // Edit Profile Action
                                     },
                                   ),
                                   const SizedBox(width: 10),
@@ -220,11 +200,14 @@ class UserProfileScreen extends StatelessWidget {
                                       // Share Profile Action
                                     },
                                   ),
-                                  const SizedBox(width: 10),
+                                  SizedBox(width: 10),
                                   IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(Icons.person_add),
-                                  ),
+                                      icon: Icon(
+                                        Icons.person_add,
+                                      ),
+                                      onPressed: () {
+                                        // My Icon Button action
+                                      }),
                                 ],
                                 // Always show "Message" and "My Icon Button"
                               ],

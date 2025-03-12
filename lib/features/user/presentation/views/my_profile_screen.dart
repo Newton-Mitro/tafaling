@@ -33,26 +33,8 @@ class MyProfileScreen extends StatelessWidget {
           appBar: AppBar(
             automaticallyImplyLeading: false,
             title: const Text(
-              'Profile',
+              'My Profile',
             ),
-            actions: [
-              IconButton(
-                icon: const Icon(
-                  Icons.search,
-                ),
-                onPressed: () {
-                  // Search action
-                },
-              ),
-              IconButton(
-                icon: const Icon(
-                  Icons.more_vert,
-                ),
-                onPressed: () {
-                  // More options
-                },
-              ),
-            ],
           ),
           body: SafeArea(
             child: NestedScrollView(

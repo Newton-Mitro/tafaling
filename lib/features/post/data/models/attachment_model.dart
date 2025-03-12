@@ -31,4 +31,35 @@ class AttachmentModel extends AttachmentEntity {
         createdAt: json["createdAt"] as String?,
         updatedAt: json["updatedAt"] as String?,
       );
+
+  // CopyWith method
+  AttachmentModel copyWith({
+    int? attachmentId,
+    int? postId,
+    String? fileName,
+    String? filePath,
+    String? fileURL,
+    String? mimeType,
+    int? createdBy,
+    int? likeCount,
+    int? viewCount,
+    int? shareCount,
+    String? createdAt,
+    String? updatedAt,
+  }) {
+    return AttachmentModel(
+      attachmentId: attachmentId ?? this.attachmentId,
+      postId: postId ?? this.postId,
+      fileName: fileName ?? this.fileName,
+      filePath: filePath ?? this.filePath,
+      fileURL: fileURL ?? this.fileURL,
+      mimeType: mimeType ?? this.mimeType,
+      createdBy: createdBy ?? this.createdBy,
+      likeCount: likeCount ?? this.likeCount,
+      viewCount: viewCount ?? this.viewCount,
+      shareCount: shareCount ?? this.shareCount,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
 }

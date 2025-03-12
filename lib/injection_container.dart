@@ -11,6 +11,7 @@ import 'package:tafaling/features/auth/domain/usecases/login_usecase.dart';
 import 'package:tafaling/features/auth/domain/usecases/signup_usecase.dart';
 import 'package:tafaling/features/auth/presentation/states/login_bloc/login_screen_bloc.dart';
 import 'package:tafaling/features/auth/presentation/states/register_bloc/signup_screen_bloc.dart';
+import 'package:tafaling/features/home/presentation/states/bloc/home_screen_bloc.dart';
 import 'package:tafaling/features/post/data/data_sources/post_remote_data_source.dart';
 import 'package:tafaling/features/post/data/repositories/post_repository_impl.dart';
 import 'package:tafaling/features/post/domain/repositories/post_repository.dart';
@@ -18,6 +19,7 @@ import 'package:tafaling/features/post/domain/usecases/dis_like_post_usecase.dar
 import 'package:tafaling/features/post/domain/usecases/fetch_posts_usecase.dart';
 import 'package:tafaling/features/post/domain/usecases/fetch_user_posts_usecase.dart';
 import 'package:tafaling/features/post/domain/usecases/like_post_usecase.dart';
+import 'package:tafaling/features/post/presentation/states/post_bloc/posts_screen_bloc.dart';
 import 'package:tafaling/features/user/data/data_sources/user_profile_remote_data_source.dart';
 import 'package:tafaling/features/user/data/repositories/user_profile_repository_impl.dart';
 import 'package:tafaling/features/user/domain/repositories/user_profile_repository.dart';
@@ -95,13 +97,13 @@ Future<void> _setupUsecases() async {
 Future<void> _setupStates() async {
   servLoc.registerFactory(() => LoginScreenBloc(servLoc<LoginUseCase>()));
   servLoc.registerFactory(() => SignUpScreenBloc(servLoc<RegisterUseCase>()));
-  // servLoc.registerFactory(() => HomeScreenBloc());
+  servLoc.registerFactory(() => HomeScreenBloc());
   servLoc.registerFactory(() => SearchScreenBloc(servLoc<SearchUsersUseCase>(),
       servLoc<FollowUserUseCase>(), servLoc<UnFollowUserUseCase>()));
-  // servLoc.registerFactory(() => PostsScreenBloc(
-  //     servLoc<FetchPostsUseCase>(),
-  //     servLoc<FetchUserPostsUseCase>(),
-  //     servLoc<LikePostUseCase>(),
-  //     servLoc<DisLikePostUseCase>()));
+  servLoc.registerFactory(() => PostsScreenBloc(
+      servLoc<FetchPostsUseCase>(),
+      servLoc<FetchUserPostsUseCase>(),
+      servLoc<LikePostUseCase>(),
+      servLoc<DisLikePostUseCase>()));
   servLoc.registerFactory(() => ProfileBloc(servLoc<FetchProfileUseCase>()));
 }

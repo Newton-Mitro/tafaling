@@ -1,8 +1,11 @@
 import 'package:cached_network_image_plus/flutter_cached_network_image_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tafaling/configs/routes/route_name.dart';
+import 'package:tafaling/features/home/presentation/states/bloc/home_screen_bloc.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
+import 'package:tafaling/features/post/presentation/states/post_bloc/posts_screen_bloc.dart';
 
 class PostSidebar extends StatelessWidget {
   final PostModel? postModel;
@@ -25,11 +28,17 @@ class PostSidebar extends StatelessWidget {
             GestureDetector(
               // Wrap the SizedBox with GestureDetector
               onTap: () {
-                Navigator.pushNamed(
-                  context,
-                  RoutesName.userProfilePage,
-                  arguments: 36,
-                );
+                if (context.read<PostsScreenBloc>().state.loggedInUserId != 0) {
+                  Navigator.pushNamed(
+                    context,
+                    RoutesName.userProfilePage,
+                    arguments: postModel?.creator.id,
+                  );
+                } else {
+                  context
+                      .read<HomeScreenBloc>()
+                      .add(const SetGuestStateEvent());
+                }
               }, // Handle the tap
               child: SizedBox(
                 width: 50,
