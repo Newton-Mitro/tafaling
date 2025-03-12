@@ -17,3 +17,15 @@ dart run flutter_native_splash:remove --path=.
 ```
 flutter pub run flutter_launcher_icons:main
 ```
+
+## Build Variants (Optional)
+
+- flutter build apk
+- flutter build apk --release
+- flutter build apk --debug
+- flutter build apk --profile
+
+## APK Location
+
+build/app/outputs/flutter-apk/app-release.apk # For release build
+build/app/outputs/flutter-apk/app-debug.apk # For debug build

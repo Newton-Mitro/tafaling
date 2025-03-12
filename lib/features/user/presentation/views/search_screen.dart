@@ -10,19 +10,13 @@ class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
 
   @override
-  _SearchScreenState createState() => _SearchScreenState();
+  State<SearchScreen> createState() => _SearchScreenState();
 }
 
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _searchController = TextEditingController();
   late SearchScreenBloc _searchBloc;
   Timer? _debounce;
-
-  @override
-  void initState() {
-    super.initState();
-    _searchBloc = BlocProvider.of<SearchScreenBloc>(context);
-  }
 
   void _onSearch(String query) {
     // Cancel the previous timer if it exists

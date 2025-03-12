@@ -4,4 +4,5 @@ final class RoutesName {
   static const String loginPage = 'loginPage';
   static const String registerPage = 'registerPage';
   static const String userProfilePage = 'userProfilePage';
+  static const String searchUser = 'searchUser';
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tafaling/configs/routes/route_name.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 
 class PostTopNavigation extends StatelessWidget {
@@ -16,7 +17,12 @@ class PostTopNavigation extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.search),
             color: context.theme.colorScheme.onSurface,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                RoutesName.searchUser,
+              );
+            },
           ),
           TextButton(
             onPressed: () {},

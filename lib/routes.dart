@@ -3,6 +3,7 @@ import 'package:tafaling/configs/routes/route_name.dart';
 import 'package:tafaling/features/auth/presentation/views/login_screen.dart';
 import 'package:tafaling/features/auth/presentation/views/register_screen.dart';
 import 'package:tafaling/features/home/presentation/views/home_screen.dart';
+import 'package:tafaling/features/user/presentation/views/search_screen.dart';
 import 'package:tafaling/features/user/presentation/views/user_profile_screen.dart';
 
 class AppRoutes {
@@ -21,6 +22,9 @@ class AppRoutes {
 
       case RoutesName.userProfilePage:
         return _materialRoute(UserProfileScreen(userId: args));
+
+      case RoutesName.searchUser:
+        return _materialRoute(SearchScreen());
 
       default:
         return _materialRoute(const HomeScreen());
