@@ -1,22 +1,19 @@
-class SharedLinkModel {
-  final String url;
-  final String title;
-  final String? description;
-  final String? thumbnail;
+import 'package:tafaling/features/post/domain/entities/shared_link_entity.dart';
 
-  SharedLinkModel({
-    required this.url,
-    required this.title,
-    this.description,
-    this.thumbnail,
+class SharedLinkModel extends SharedLinkEntity {
+  const SharedLinkModel({
+    required super.url,
+    required super.title,
+    super.description,
+    super.thumbnail,
   });
 
-  factory SharedLinkModel.fromJsonToModel(Map<String, dynamic> json) {
+  factory SharedLinkModel.fromJson(Map<String, dynamic> json) {
     return SharedLinkModel(
-      url: json['url'],
-      title: json['title'],
-      description: json['description'],
-      thumbnail: json['thumbnail'],
+      url: json['url'] as String,
+      title: json['title'] as String,
+      description: json['description'] as String?,
+      thumbnail: json['thumbnail'] as String?,
     );
   }
 
@@ -27,5 +24,19 @@ class SharedLinkModel {
       'description': description,
       'thumbnail': thumbnail,
     };
+  }
+
+  SharedLinkModel copyWith({
+    String? url,
+    String? title,
+    String? description,
+    String? thumbnail,
+  }) {
+    return SharedLinkModel(
+      url: url ?? this.url,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      thumbnail: thumbnail ?? this.thumbnail,
+    );
   }
 }

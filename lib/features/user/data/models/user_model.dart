@@ -41,7 +41,7 @@ class UserModel extends UserEntity {
       'name': name,
       'userName': userName,
       'email': email,
-      'emailVerifiedAt': emailVerifiedAt,
+      'emailVerifiedAt': emailVerifiedAt?.toIso8601String(),
       'profilePicture': profilePicture,
       'coverPhoto': coverPhoto,
       'followers': followers,
@@ -50,5 +50,35 @@ class UserModel extends UserEntity {
       'isFollowing': isFollowing,
       'friendshipStatus': friendshipStatus,
     };
+  }
+
+  UserModel copyWith({
+    int? id,
+    String? name,
+    String? userName,
+    String? email,
+    DateTime? emailVerifiedAt,
+    String? profilePicture,
+    String? coverPhoto,
+    int? followers,
+    int? following,
+    int? totalLikeCount,
+    bool? isFollowing,
+    int? friendshipStatus,
+  }) {
+    return UserModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      userName: userName ?? this.userName,
+      email: email ?? this.email,
+      emailVerifiedAt: emailVerifiedAt ?? this.emailVerifiedAt,
+      profilePicture: profilePicture ?? this.profilePicture,
+      coverPhoto: coverPhoto ?? this.coverPhoto,
+      followers: followers ?? this.followers,
+      following: following ?? this.following,
+      totalLikeCount: totalLikeCount ?? this.totalLikeCount,
+      isFollowing: isFollowing ?? this.isFollowing,
+      friendshipStatus: friendshipStatus ?? this.friendshipStatus,
+    );
   }
 }

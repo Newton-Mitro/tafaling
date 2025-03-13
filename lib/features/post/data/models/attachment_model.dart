@@ -16,23 +16,40 @@ class AttachmentModel extends AttachmentEntity {
     super.updatedAt,
   });
 
-  factory AttachmentModel.fromJson(Map<String, dynamic> json) =>
-      AttachmentModel(
-        attachmentId: json["attachmentId"] as int,
-        postId: json["postId"] as int,
-        fileName: json["fileName"] as String?,
-        filePath: json["filePath"] as String?,
-        fileURL: json["fileURL"] as String,
-        mimeType: json["mimeType"] as String,
-        createdBy: json["createdBy"] ?? 0,
-        likeCount: json["likeCount"] ?? 0,
-        viewCount: json["viewCount"] ?? 0,
-        shareCount: json["shareCount"] ?? 0,
-        createdAt: json["createdAt"] as String?,
-        updatedAt: json["updatedAt"] as String?,
-      );
+  factory AttachmentModel.fromJson(Map<String, dynamic> json) {
+    return AttachmentModel(
+      attachmentId: json["attachmentId"] as int,
+      postId: json["postId"] as int,
+      fileName: json["fileName"] as String?,
+      filePath: json["filePath"] as String?,
+      fileURL: json["fileURL"] as String,
+      mimeType: json["mimeType"] as String,
+      createdBy: json["createdBy"] ?? 0,
+      likeCount: json["likeCount"] ?? 0,
+      viewCount: json["viewCount"] ?? 0,
+      shareCount: json["shareCount"] ?? 0,
+      createdAt: json["createdAt"] as String?,
+      updatedAt: json["updatedAt"] as String?,
+    );
+  }
 
-  // CopyWith method
+  Map<String, dynamic> toJson() {
+    return {
+      "attachmentId": attachmentId,
+      "postId": postId,
+      "fileName": fileName,
+      "filePath": filePath,
+      "fileURL": fileURL,
+      "mimeType": mimeType,
+      "createdBy": createdBy,
+      "likeCount": likeCount,
+      "viewCount": viewCount,
+      "shareCount": shareCount,
+      "createdAt": createdAt,
+      "updatedAt": updatedAt,
+    };
+  }
+
   AttachmentModel copyWith({
     int? attachmentId,
     int? postId,

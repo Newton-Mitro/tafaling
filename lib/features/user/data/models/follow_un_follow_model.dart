@@ -1,11 +1,11 @@
-class FollowUnFollowModel {
-  final int followingCount;
+import 'package:tafaling/features/user/domain/entities/follow_unfollow_entity.dart';
 
-  FollowUnFollowModel({required this.followingCount});
+class FollowUnFollowModel extends FollowUnFollowEntity {
+  const FollowUnFollowModel({required super.followingCount});
 
-  factory FollowUnFollowModel.fromJsonToModel(Map<String, dynamic> json) {
+  factory FollowUnFollowModel.fromJson(Map<String, dynamic> json) {
     return FollowUnFollowModel(
-      followingCount: json['FollowingCount'],
+      followingCount: json['FollowingCount'] as int,
     );
   }
 
@@ -13,5 +13,11 @@ class FollowUnFollowModel {
     return {
       'FollowingCount': followingCount,
     };
+  }
+
+  FollowUnFollowModel copyWith({int? followingCount}) {
+    return FollowUnFollowModel(
+      followingCount: followingCount ?? this.followingCount,
+    );
   }
 }

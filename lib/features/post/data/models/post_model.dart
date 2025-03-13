@@ -35,6 +35,23 @@ class PostModel extends PostEntity {
         isLiked: (json["isLiked"] ?? 0) == 1, // Convert int to bool
       );
 
+  Map<String, dynamic> toJson() {
+    return {
+      "postId": id,
+      "userId": userId,
+      "body": body,
+      "privacyId": privacyId,
+      "createdBy": createdBy,
+      "creator": (creator as UserModel).toJson(),
+      "attachments":
+          attachments.map((e) => (e as AttachmentModel).toJson()).toList(),
+      "likeCount": likeCount,
+      "createdAt": createdAt,
+      "expireDate": expireDate,
+      "isLiked": isLiked == true ? 1 : 0, // Convert bool to int
+    };
+  }
+
   PostModel copyWith({
     int? id,
     int? userId,

@@ -1,32 +1,26 @@
-class CommentModel {
-  final int commentId;
-  final int postId;
-  final String content;
-  final int createdBy;
-  final DateTime createdAt;
-  final List<CommentModel> replies; // Nested comments
+import 'package:tafaling/features/post/domain/entities/comment_entity.dart';
 
-  CommentModel({
-    required this.commentId,
-    required this.postId,
-    required this.content,
-    required this.createdBy,
-    required this.createdAt,
-    this.replies = const [],
+class CommentModel extends CommentEntity {
+  const CommentModel({
+    required super.commentId,
+    required super.postId,
+    required super.content,
+    required super.createdBy,
+    required super.createdAt,
+    super.replies = const [],
   });
 
-  factory CommentModel.fromJsonToModel(Map<String, dynamic> json) {
-    var repliesFromJson = json['replies'] as List;
-    List<CommentModel> replyList =
-        repliesFromJson.map((i) => CommentModel.fromJsonToModel(i)).toList();
-
+  factory CommentModel.fromJson(Map<String, dynamic> json) {
     return CommentModel(
-      commentId: json['commentId'],
-      postId: json['postId'],
-      content: json['content'],
-      createdBy: json['createdBy'],
+      commentId: json['commentId'] as int,
+      postId: json['postId'] as int,
+      content: json['content'] as String,
+      createdBy: json['createdBy'] as int,
       createdAt: DateTime.parse(json['createdAt']),
-      replies: replyList,
+      replies: (json['replies'] as List<dynamic>?)
+              ?.map((reply) => CommentModel.fromJson(reply))
+              .toList() ??
+          [],
     );
   }
 
@@ -37,7 +31,26 @@ class CommentModel {
       'content': content,
       'createdBy': createdBy,
       'createdAt': createdAt.toIso8601String(),
-      'replies': replies.map((reply) => reply.toJson()).toList(),
+      'replies':
+          replies.map((reply) => (reply as CommentModel).toJson()).toList(),
     };
+  }
+
+  CommentModel copyWith({
+    int? commentId,
+    int? postId,
+    String? content,
+    int? createdBy,
+    DateTime? createdAt,
+    List<CommentModel>? replies,
+  }) {
+    return CommentModel(
+      commentId: commentId ?? this.commentId,
+      postId: postId ?? this.postId,
+      content: content ?? this.content,
+      createdBy: createdBy ?? this.createdBy,
+      createdAt: createdAt ?? this.createdAt,
+      replies: replies ?? this.replies,
+    );
   }
 }

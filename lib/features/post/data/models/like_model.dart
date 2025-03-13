@@ -1,17 +1,23 @@
-class LikeModel {
-  final int likeCount;
+import 'package:tafaling/features/post/domain/entities/like_entity.dart';
 
-  LikeModel({required this.likeCount});
+class LikeModel extends LikeEntity {
+  const LikeModel({required super.likeCount});
 
-  factory LikeModel.fromJsonToModel(Map<String, dynamic> json) {
+  factory LikeModel.fromJson(Map<String, dynamic> json) {
     return LikeModel(
-      likeCount: json['LikeCount'],
+      likeCount: json['LikeCount'] ?? 0,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'likeCount': likeCount,
+      'LikeCount': likeCount,
     };
+  }
+
+  LikeModel copyWith({int? likeCount}) {
+    return LikeModel(
+      likeCount: likeCount ?? this.likeCount,
+    );
   }
 }

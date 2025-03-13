@@ -1,41 +1,25 @@
-class SearchUserModel {
-  final int userId;
-  final String? userName;
-  final String email;
-  final String? firstName;
-  final String? lastName;
-  final String? dateOfBirth;
-  final String? profilePicture;
-  final String? coverPhoto;
-  final String? gender;
-  final String? registrationDate;
-  final int? countryId;
-  final int? privacySettingId;
-  final String name;
-  final int following;
-  final int followers;
-  final bool isFollowing;
+import 'package:tafaling/features/user/domain/entities/search_user_entity.dart';
 
-  SearchUserModel({
-    required this.userId,
-    required this.userName,
-    required this.email,
-    this.firstName,
-    this.lastName,
-    this.dateOfBirth,
-    required this.profilePicture,
-    required this.coverPhoto,
-    this.gender,
-    this.registrationDate,
-    this.countryId,
-    this.privacySettingId,
-    required this.name,
-    required this.following,
-    required this.followers,
-    required this.isFollowing,
+class SearchUserModel extends SearchUserEntity {
+  const SearchUserModel({
+    required super.userId,
+    required super.userName,
+    required super.email,
+    super.firstName,
+    super.lastName,
+    super.dateOfBirth,
+    required super.profilePicture,
+    required super.coverPhoto,
+    super.gender,
+    super.registrationDate,
+    super.countryId,
+    super.privacySettingId,
+    required super.name,
+    required super.following,
+    required super.followers,
+    required super.isFollowing,
   });
 
-  // Factory method to create an instance from JSON
   factory SearchUserModel.fromJson(Map<String, dynamic> json) {
     return SearchUserModel(
       userId: json['userId'] as int,
@@ -57,7 +41,6 @@ class SearchUserModel {
     );
   }
 
-  // Method to convert the object to JSON
   Map<String, dynamic> toJson() {
     return {
       'userId': userId,
@@ -79,7 +62,6 @@ class SearchUserModel {
     };
   }
 
-  // CopyWith method to create a new instance with some fields modified
   SearchUserModel copyWith({
     int? userId,
     String? userName,

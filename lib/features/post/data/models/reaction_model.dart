@@ -1,24 +1,20 @@
-class ReactionModel {
-  final int reactionId;
-  final int postId;
-  final int userId;
-  final String type; // e.g., "like", "love", etc.
-  final DateTime createdAt;
+import 'package:tafaling/features/post/domain/entities/reaction_entity.dart';
 
-  ReactionModel({
-    required this.reactionId,
-    required this.postId,
-    required this.userId,
-    required this.type,
-    required this.createdAt,
+class ReactionModel extends ReactionEntity {
+  const ReactionModel({
+    required super.reactionId,
+    required super.postId,
+    required super.userId,
+    required super.type,
+    required super.createdAt,
   });
 
-  factory ReactionModel.fromJsonToModel(Map<String, dynamic> json) {
+  factory ReactionModel.fromJson(Map<String, dynamic> json) {
     return ReactionModel(
-      reactionId: json['reactionId'],
-      postId: json['postId'],
-      userId: json['userId'],
-      type: json['type'],
+      reactionId: json['reactionId'] as int,
+      postId: json['postId'] as int,
+      userId: json['userId'] as int,
+      type: json['type'] as String,
       createdAt: DateTime.parse(json['createdAt']),
     );
   }
@@ -31,5 +27,21 @@ class ReactionModel {
       'type': type,
       'createdAt': createdAt.toIso8601String(),
     };
+  }
+
+  ReactionModel copyWith({
+    int? reactionId,
+    int? postId,
+    int? userId,
+    String? type,
+    DateTime? createdAt,
+  }) {
+    return ReactionModel(
+      reactionId: reactionId ?? this.reactionId,
+      postId: postId ?? this.postId,
+      userId: userId ?? this.userId,
+      type: type ?? this.type,
+      createdAt: createdAt ?? this.createdAt,
+    );
   }
 }

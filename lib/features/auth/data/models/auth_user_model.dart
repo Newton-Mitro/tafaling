@@ -20,7 +20,19 @@ class AuthUserModel extends AuthUserEntity {
     return {
       'accessToken': accessToken,
       'refreshToken': refreshToken,
-      'user': (user as UserModel).toJson(),
+      "user": (user as UserModel).toJson(),
     };
+  }
+
+  AuthUserModel copyWith({
+    String? accessToken,
+    String? refreshToken,
+    UserModel? user,
+  }) {
+    return AuthUserModel(
+      accessToken: accessToken ?? this.accessToken,
+      refreshToken: refreshToken ?? this.refreshToken,
+      user: user ?? this.user,
+    );
   }
 }
