@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tafaling/configs/routes/route_name.dart';
-import 'package:tafaling/features/auth/presentation/views/login_screen.dart';
-import 'package:tafaling/features/auth/presentation/views/register_screen.dart';
-import 'package:tafaling/features/home/presentation/views/home_screen.dart';
-import 'package:tafaling/features/user/presentation/views/search_screen.dart';
-import 'package:tafaling/features/user/presentation/views/user_profile_screen.dart';
+import 'package:tafaling/features/auth/presentation/login_screen/view/login_screen.dart';
+import 'package:tafaling/features/auth/presentation/registration_screen/view/register_screen.dart';
+import 'package:tafaling/features/home/presentation/home_screen/view/home_screen.dart';
+import 'package:tafaling/features/user/presentation/search_screen/view/search_screen.dart';
+import 'package:tafaling/features/user/presentation/user_profile_screen/view/user_profile_screen.dart';
 
 class AppRoutes {
   Route<dynamic> onGenerateRoutes(RouteSettings settings) {

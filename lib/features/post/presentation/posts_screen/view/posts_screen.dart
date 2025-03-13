@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tafaling/features/home/presentation/states/bloc/home_screen_bloc.dart';
-import 'package:tafaling/features/home/presentation/states/notifiers.dart';
-import 'package:tafaling/features/post/presentation/states/post_bloc/posts_screen_bloc.dart';
+import 'package:tafaling/features/home/presentation/home_screen/bloc/home_screen_bloc.dart';
+import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
+import 'package:tafaling/features/post/presentation/posts_screen/bloc/posts_screen_bloc.dart';
 import 'package:tafaling/features/post/presentation/widgets/post_viewer.dart';
 import 'package:tafaling/features/post/presentation/widgets/post_top_navigation.dart';
 

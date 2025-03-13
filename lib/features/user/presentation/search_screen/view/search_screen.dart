@@ -2,7 +2,7 @@ import 'dart:async'; // Import for Timer
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/configs/routes/route_name.dart';
-import 'package:tafaling/features/user/presentation/states/user_search_bloc/search_screen_bloc.dart';
+import 'package:tafaling/features/user/presentation/search_screen/bloc/search_screen_bloc.dart';
 import 'package:tafaling/features/user/presentation/widgets/user_tile.dart';
 import 'package:tafaling/injection_container.dart';
 

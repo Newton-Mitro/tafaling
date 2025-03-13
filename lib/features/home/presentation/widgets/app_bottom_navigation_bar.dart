@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tafaling/core/utils/app_context.dart';
-import 'package:tafaling/features/home/presentation/states/notifiers.dart';
+import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
 
-class MyBottomNavigationBar extends StatelessWidget {
-  const MyBottomNavigationBar({
+class AppBottomNavigationBar extends StatelessWidget {
+  const AppBottomNavigationBar({
     super.key,
   });
 
@@ -39,7 +39,6 @@ class MyBottomNavigationBar extends StatelessWidget {
             type: BottomNavigationBarType.fixed,
             onTap: (value) {
               selectedPageNotifier.value = value;
-              bottomSheetToggleNotifier.value = true;
             },
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(

@@ -9,9 +9,9 @@ import 'package:tafaling/features/auth/data/repositories/auth_repository_impl.da
 import 'package:tafaling/features/auth/domain/repositories/auth_repository.dart';
 import 'package:tafaling/features/auth/domain/usecases/login_usecase.dart';
 import 'package:tafaling/features/auth/domain/usecases/signup_usecase.dart';
-import 'package:tafaling/features/auth/presentation/states/login_bloc/login_screen_bloc.dart';
-import 'package:tafaling/features/auth/presentation/states/register_bloc/signup_screen_bloc.dart';
-import 'package:tafaling/features/home/presentation/states/bloc/home_screen_bloc.dart';
+import 'package:tafaling/features/auth/presentation/login_screen/bloc/login_screen_bloc.dart';
+import 'package:tafaling/features/auth/presentation/registration_screen/bloc/signup_screen_bloc.dart';
+import 'package:tafaling/features/home/presentation/home_screen/bloc/home_screen_bloc.dart';
 import 'package:tafaling/features/post/data/data_sources/post_remote_data_source.dart';
 import 'package:tafaling/features/post/data/repositories/post_repository_impl.dart';
 import 'package:tafaling/features/post/domain/repositories/post_repository.dart';
@@ -19,7 +19,7 @@ import 'package:tafaling/features/post/domain/usecases/dis_like_post_usecase.dar
 import 'package:tafaling/features/post/domain/usecases/fetch_posts_usecase.dart';
 import 'package:tafaling/features/post/domain/usecases/fetch_user_posts_usecase.dart';
 import 'package:tafaling/features/post/domain/usecases/like_post_usecase.dart';
-import 'package:tafaling/features/post/presentation/states/post_bloc/posts_screen_bloc.dart';
+import 'package:tafaling/features/post/presentation/posts_screen/bloc/posts_screen_bloc.dart';
 import 'package:tafaling/features/user/data/data_sources/user_profile_remote_data_source.dart';
 import 'package:tafaling/features/user/data/repositories/user_profile_repository_impl.dart';
 import 'package:tafaling/features/user/domain/repositories/user_profile_repository.dart';
@@ -27,8 +27,8 @@ import 'package:tafaling/features/user/domain/usecases/fetch_profile_usecase.dar
 import 'package:tafaling/features/user/domain/usecases/follow_user_usecase.dart';
 import 'package:tafaling/features/user/domain/usecases/search_users_usecase.dart';
 import 'package:tafaling/features/user/domain/usecases/un_follow_user_usecase.dart';
-import 'package:tafaling/features/user/presentation/states/profile_bloc/profile_bloc.dart';
-import 'package:tafaling/features/user/presentation/states/user_search_bloc/search_screen_bloc.dart';
+import 'package:tafaling/features/user/presentation/user_profile_screen/bloc/profile_bloc.dart';
+import 'package:tafaling/features/user/presentation/search_screen/bloc/search_screen_bloc.dart';
 
 var serviceLoc = GetIt.instance;
 

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tafaling/configs/routes/route_name.dart';
-import 'package:tafaling/features/home/presentation/states/bloc/home_screen_bloc.dart';
+import 'package:tafaling/features/home/presentation/home_screen/bloc/home_screen_bloc.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
-import 'package:tafaling/features/post/presentation/states/post_bloc/posts_screen_bloc.dart';
+import 'package:tafaling/features/post/presentation/posts_screen/bloc/posts_screen_bloc.dart';
 
 class PostSidebar extends StatelessWidget {
   final PostModel? postModel;
