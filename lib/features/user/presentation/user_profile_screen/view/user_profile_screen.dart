@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/core/utils/app_context.dart';
+import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
 import 'package:tafaling/features/post/presentation/widgets/profile_video_grid.dart';
 import 'package:tafaling/features/user/data/data_sources/follower_data.dart';
@@ -10,6 +11,12 @@ import 'package:tafaling/features/user/presentation/widgets/follow_status.dart';
 import 'package:tafaling/features/user/presentation/widgets/following_users.dart';
 import 'package:tafaling/features/user/presentation/widgets/users_followers.dart';
 import 'package:tafaling/injection_container.dart';
+
+final profileTabs = [
+  Tab(text: 'Posts'),
+  Tab(text: 'Following'),
+  Tab(text: 'followers'),
+];
 
 class UserProfileScreen extends StatelessWidget {
   final Object? userId;
@@ -56,9 +63,11 @@ class UserProfileScreen extends StatelessWidget {
 
     return PopScope(
       child: DefaultTabController(
-        length: 3, // Two tabs: Public and Private
+        length: profileTabs.length, // Two tabs: Public and Private
         child: Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading:
+                userId == authUserNotifier.value?.id ? false : true,
             title: const Text(
               'Profile',
             ),
@@ -142,7 +151,7 @@ class UserProfileScreen extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 // Show "Edit Profile" and "Share Profile" if it's the authenticated user's profile
-                                if (1 == 2) ...[
+                                if (userId == authUserNotifier.value?.id) ...[
                                   FilledButton(
                                     child: Text(
                                       "Edit Profile",
@@ -169,6 +178,14 @@ class UserProfileScreen extends StatelessWidget {
                                 else ...[
                                   isFollowing
                                       ? FilledButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                Color.fromARGB(255, 13, 82, 14),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15.0),
+                                            ),
+                                          ),
                                           child: Text(
                                             "Unfollow",
                                             style: context
@@ -179,6 +196,14 @@ class UserProfileScreen extends StatelessWidget {
                                           },
                                         )
                                       : FilledButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                Color.fromARGB(255, 6, 47, 82),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15.0),
+                                            ),
+                                          ),
                                           child: Text(
                                             "Follow",
                                             style: context
@@ -199,14 +224,6 @@ class UserProfileScreen extends StatelessWidget {
                                       // Share Profile Action
                                     },
                                   ),
-                                  SizedBox(width: 10),
-                                  IconButton(
-                                      icon: Icon(
-                                        Icons.person_add,
-                                      ),
-                                      onPressed: () {
-                                        // My Icon Button action
-                                      }),
                                 ],
                                 // Always show "Message" and "My Icon Button"
                               ],
@@ -244,13 +261,11 @@ class UserProfileScreen extends StatelessWidget {
                   ),
                   SliverPersistentHeader(
                     delegate: _SliverAppBarDelegate(
-                      const TabBar(
+                      TabBar(
                         indicatorColor: Colors.white,
-                        tabs: [
-                          Tab(text: 'Posts'),
-                          Tab(text: 'Following'),
-                          Tab(text: 'followers'),
-                        ],
+                        labelColor: Colors.white, // Active tab color
+                        unselectedLabelColor: Colors.grey, // Inactive tab col
+                        tabs: profileTabs,
                       ),
                     ),
                     pinned: true,
@@ -282,32 +297,22 @@ class UserProfileScreen extends StatelessWidget {
 }
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  final TabBar tabBar;
+  final TabBar _tabBar;
 
-  _SliverAppBarDelegate(TabBar tabBar)
-      : tabBar = const TabBar(
-          indicatorColor: Colors.white,
-          labelColor: Colors.white, // Active tab color
-          unselectedLabelColor: Colors.grey, // Inactive tab color
-          tabs: [
-            Tab(text: 'Posts'),
-            Tab(text: 'Following'),
-            Tab(text: 'followers'),
-          ],
-        );
+  _SliverAppBarDelegate(TabBar tabBar) : _tabBar = tabBar;
 
   @override
-  double get minExtent => tabBar.preferredSize.height;
+  double get minExtent => _tabBar.preferredSize.height;
 
   @override
-  double get maxExtent => tabBar.preferredSize.height;
+  double get maxExtent => _tabBar.preferredSize.height;
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Material(
       color: const Color.fromARGB(255, 2, 31, 32),
-      child: tabBar,
+      child: _tabBar,
     );
   }
 

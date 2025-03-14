@@ -53,24 +53,25 @@ class _SearchScreenState extends State<SearchScreen> {
           title: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: SizedBox(
-              height: 40,
+              height: 36, // Reduce the height of the TextField
               child: TextField(
                 controller: _searchController,
                 onChanged: _onSearch,
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white, fontSize: 14),
                 decoration: InputDecoration(
                   filled: true,
-                  prefixIcon: const Icon(Icons.search, color: Colors.white70),
-                  hintText: 'Search users',
-                  hintStyle: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.white70,
-                    height: 1, // Ensures vertical centering
-                  ),
+                  fillColor: Colors.white10, // Light background
                   contentPadding: const EdgeInsets.symmetric(
-                      vertical: 10), // Centers the text vertically
+                    vertical: 8, // Reduce vertical padding
+                    horizontal: 12, // Adjust horizontal padding
+                  ),
+                  prefixIcon:
+                      const Icon(Icons.search, color: Colors.white70, size: 20),
+                  hintText: 'Search users',
+                  hintStyle:
+                      const TextStyle(fontSize: 14, color: Colors.white70),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.0),
+                    borderRadius: BorderRadius.circular(20.0), // Smaller radius
                     borderSide: BorderSide.none,
                   ),
                 ),
