@@ -14,12 +14,10 @@ class AuthInterceptor extends Interceptor {
       RequestOptions options, RequestInterceptorHandler handler) async {
     // Retrieve tokens
     accessToken = await AppSharedPref.getAccessToken();
-    refreshToken = await AppSharedPref.getAccessToken();
+    refreshToken = await AppSharedPref.getRefreshToken();
 
     options.headers['Accept'] = 'application/json';
-    options.validateStatus = (status) {
-      return status! < 600; // Accepts all status codes below 500
-    };
+    options.validateStatus = (status) => status != null && status < 500;
 
     if (accessToken != null && !JwtDecoder.isExpired(accessToken!)) {
       options.headers['Authorization'] = 'Bearer $accessToken';

@@ -1,4 +1,4 @@
-import 'package:cached_network_image_plus/flutter_cached_network_image_plus.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tafaling/configs/routes/route_name.dart';
@@ -55,7 +55,7 @@ class PostSidebar extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(35),
                           child: profileImage.isNotEmpty
-                              ? CacheNetworkImagePlus(
+                              ? CachedNetworkImage(
                                   imageUrl: profileImage,
                                 )
                               : Image.asset(

@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/core/errors/exceptions.dart';
 import 'package:tafaling/core/utils/app_shared_pref.dart';
-import 'package:tafaling/features/auth/data/models/auth_user_model.dart';
 import 'package:tafaling/features/auth/domain/usecases/login_usecase.dart';
 import 'package:tafaling/features/user/data/models/user_model.dart';
 

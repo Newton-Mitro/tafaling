@@ -1,4 +1,4 @@
-import 'package:cached_network_image_plus/flutter_cached_network_image_plus.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
 import 'package:tafaling/features/post/presentation/widgets/video_post_viewer.dart';
@@ -46,11 +46,10 @@ class ProfileVideoGrid extends StatelessWidget {
         if (mimeType.contains("image")) {
           return Container(
             color: Colors.grey,
-            child: CacheNetworkImagePlus(
+            child: CachedNetworkImage(
               imageUrl: thumbnailUrl,
-              boxFit:
-                  BoxFit.cover, // Make the image cover the grid cell completely
-              errorWidget: Image.asset('assets/images/misc/no_preview.png'),
+              errorWidget: (context, url, error) =>
+                  Image.asset('assets/images/misc/no_preview.png'),
             ),
           );
         } else if (mimeType.contains("video")) {
@@ -61,11 +60,10 @@ class ProfileVideoGrid extends StatelessWidget {
         } else {
           return Container(
             color: Colors.grey,
-            child: CacheNetworkImagePlus(
+            child: CachedNetworkImage(
               imageUrl: thumbnailUrl,
-              boxFit:
-                  BoxFit.cover, // Make the image cover the grid cell completely
-              errorWidget: Image.asset('assets/images/misc/no_preview.png'),
+              errorWidget: (context, url, error) =>
+                  Image.asset('assets/images/misc/no_preview.png'),
             ),
           );
         }

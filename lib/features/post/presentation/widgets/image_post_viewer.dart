@@ -1,5 +1,6 @@
-import 'package:cached_network_image_plus/flutter_cached_network_image_plus.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
 
 class ImagePostViewer extends StatelessWidget {
   final String attachmentUrl;
@@ -9,9 +10,18 @@ class ImagePostViewer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      child: CacheNetworkImagePlus(
-        imageUrl: attachmentUrl,
-        errorWidget: Image.asset('assets/images/misc/no_preview.png'),
+      child: PhotoView(
+        loadingBuilder: (context, event) => Center(
+          child: Container(
+            width: 20.0,
+            height: 20.0,
+            child: CircularProgressIndicator(),
+          ),
+        ),
+        imageProvider: CachedNetworkImageProvider(attachmentUrl),
+        errorBuilder: (context, error, stackTrace) => Image.asset(
+          'assets/images/misc/no_preview.png',
+        ),
       ),
     );
   }
