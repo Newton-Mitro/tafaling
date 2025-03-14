@@ -11,7 +11,6 @@ import 'package:tafaling/features/auth/domain/usecases/login_usecase.dart';
 import 'package:tafaling/features/auth/domain/usecases/signup_usecase.dart';
 import 'package:tafaling/features/auth/presentation/login_screen/bloc/login_screen_bloc.dart';
 import 'package:tafaling/features/auth/presentation/registration_screen/bloc/signup_screen_bloc.dart';
-import 'package:tafaling/features/home/presentation/home_screen/bloc/home_screen_bloc.dart';
 import 'package:tafaling/features/post/data/data_sources/post_remote_data_source.dart';
 import 'package:tafaling/features/post/data/repositories/post_repository_impl.dart';
 import 'package:tafaling/features/post/domain/repositories/post_repository.dart';
@@ -99,7 +98,6 @@ Future<void> _setupStates() async {
   serviceLoc.registerFactory(() => LoginScreenBloc(serviceLoc<LoginUseCase>()));
   serviceLoc
       .registerFactory(() => SignUpScreenBloc(serviceLoc<RegisterUseCase>()));
-  serviceLoc.registerFactory(() => HomeScreenBloc());
   serviceLoc.registerFactory(() => SearchScreenBloc(
       serviceLoc<SearchUsersUseCase>(),
       serviceLoc<FollowUserUseCase>(),

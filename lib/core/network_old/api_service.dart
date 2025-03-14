@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:tafaling/core/errors/exceptions.dart';
-import 'package:tafaling/core/utils/shared_prefs.dart';
+import 'package:tafaling/core/utils/app_shared_pref.dart';
 
 class ApiService {
   final Dio _dio = Dio(BaseOptions(
@@ -42,7 +42,7 @@ class ApiService {
   Future<Response> _performRequest(Future<Response> Function() request,
       {Options? options}) async {
     try {
-      String? accessToken = await SharedPrefs.getAccessToken();
+      var accessToken = await AppSharedPref.getAccessToken();
       options ??= Options();
       options.headers ??= {};
       if (accessToken != null) {

@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tafaling/features/home/presentation/home_screen/bloc/home_screen_bloc.dart';
-import 'package:tafaling/features/home/presentation/widgets/bottom_sheet.dart';
 import 'package:tafaling/features/home/presentation/widgets/app_bottom_navigation_bar.dart';
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
 import 'package:tafaling/features/user/presentation/friends_screen/view/friends_screen.dart';
@@ -16,33 +13,24 @@ class HomeScreenBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<HomeScreenBloc, HomeScreenState>(
-      listener: (context, state) {
-        if (state is GuestState && !isBottomSheetOpen) {
-          showCustomBottomSheet(context);
-        }
-      },
-      builder: (context, state) {
-        return Scaffold(
-          body: ValueListenableBuilder<int>(
-            valueListenable: selectedPageNotifier,
-            builder: (context, selectedPage, child) {
-              return _getScreen(selectedPage, state);
-            },
-          ),
-          bottomNavigationBar: const AppBottomNavigationBar(),
-        );
-      },
+    return Scaffold(
+      body: ValueListenableBuilder<int>(
+        valueListenable: selectedPageNotifier,
+        builder: (context, selectedPage, child) {
+          return _getScreen(selectedPage);
+        },
+      ),
+      bottomNavigationBar: const AppBottomNavigationBar(),
     );
   }
 
-  Widget _getScreen(int selectedPage, HomeScreenState state) {
+  Widget _getScreen(int selectedPage) {
     final List<Widget> screens = [
       const PostsScreen(),
       const FriendsScreen(),
       const CreatePostScreen(),
       const InboxScreen(),
-      UserProfileScreen(userId: state.authUserId),
+      UserProfileScreen(userId: authUserNotifier.value?.id),
     ];
     return screens[selectedPage];
   }

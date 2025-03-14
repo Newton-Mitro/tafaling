@@ -10,9 +10,9 @@ class AuthUserModel extends AuthUserEntity {
 
   factory AuthUserModel.fromJson(Map<String, dynamic> json) {
     return AuthUserModel(
-      accessToken: json['access_token'] as String,
-      refreshToken: json['refresh_token'] as String,
-      user: UserModel.fromJson(json['user'] as Map<String, dynamic>),
+      accessToken: json['access_token'] ?? "",
+      refreshToken: json['refresh_token'] ?? "",
+      user: UserModel.fromJson(json["user"] ?? {}),
     );
   }
 

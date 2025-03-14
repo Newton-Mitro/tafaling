@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tafaling/features/home/presentation/home_screen/bloc/home_screen_bloc.dart';
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
 import 'package:tafaling/features/post/presentation/posts_screen/bloc/posts_screen_bloc.dart';
 import 'package:tafaling/features/post/presentation/widgets/post_viewer.dart';
@@ -31,53 +30,45 @@ class _PostsScreenState extends State<PostsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<PostsScreenBloc, PostsScreenState>(
-      listener: (context, state) {
-        if (state.loggedInUserId == 0 && state.loggedInState != 0) {
-          context.read<HomeScreenBloc>().add(const SetGuestStateEvent());
-        }
-      },
-      child: Scaffold(
-        body: ValueListenableBuilder(
-          valueListenable: selectedPostNotifier,
-          builder: (context, selectedPost, child) {
-            return BlocBuilder<PostsScreenBloc, PostsScreenState>(
-              builder: (context, state) {
-                if (state.posts.isNotEmpty) {
-                  return Stack(
-                    children: [
-                      PageView.builder(
-                        scrollDirection: Axis.vertical,
-                        physics: BouncingScrollPhysics(),
-                        controller: _pageController,
-                        itemCount: state.posts.length,
-                        onPageChanged: (index) {
-                          selectedPostNotifier.value = index;
-                        },
-                        itemBuilder: (context, index) {
-                          return PostViewer(
-                            postModel: state.posts[index],
-                          );
-                        },
-                      ),
-                      if (context.read<HomeScreenBloc>().state.authUserId != 0)
-                        PostTopNavigation(),
-                    ],
-                  );
-                }
-
-                return const Stack(
+    return Scaffold(
+      body: ValueListenableBuilder(
+        valueListenable: selectedPostNotifier,
+        builder: (context, selectedPost, child) {
+          return BlocBuilder<PostsScreenBloc, PostsScreenState>(
+            builder: (context, state) {
+              if (state.posts.isNotEmpty) {
+                return Stack(
                   children: [
-                    // Page content (empty for now while fetching)
-                    Center(
-                      child: CircularProgressIndicator(),
+                    PageView.builder(
+                      scrollDirection: Axis.vertical,
+                      controller: _pageController,
+                      itemCount: state.posts.length,
+                      allowImplicitScrolling: true,
+                      onPageChanged: (index) {
+                        selectedPostNotifier.value = index;
+                      },
+                      itemBuilder: (context, index) {
+                        return PostViewer(
+                          postModel: state.posts[index],
+                        );
+                      },
                     ),
+                    if (accessTokenNotifier.value != null) PostTopNavigation(),
                   ],
                 );
-              },
-            );
-          },
-        ),
+              }
+
+              return const Stack(
+                children: [
+                  // Page content (empty for now while fetching)
+                  Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ],
+              );
+            },
+          );
+        },
       ),
     );
   }

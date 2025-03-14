@@ -1,8 +1,9 @@
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tafaling/core/utils/shared_prefs.dart';
+import 'package:tafaling/core/utils/app_shared_pref.dart';
+import 'package:tafaling/features/auth/data/models/auth_user_model.dart';
+import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
+
 import 'package:tafaling/features/post/data/models/post_model.dart';
 import 'package:tafaling/features/user/domain/usecases/fetch_profile_usecase.dart';
 
@@ -24,22 +25,17 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<FetchProfileEvent>(_onFetchProfile);
   }
 
-  // Retrieves the access token from shared preferences
-  Future<String?> _getAccessToken() async {
-    return await SharedPrefs.getAccessToken();
-  }
-
-  // Retrieves the user data from shared preferences
-  Future<Map<String, dynamic>?> _getUserData() async {
-    final user = await SharedPrefs.getUser();
-    return user != null ? jsonDecode(user) : null;
+  Future<Map<String, dynamic>> _getUserCredentials() async {
+    var user = await AppSharedPref.getAuthUser();
+    var accessToken = await AppSharedPref.getAccessToken();
+    return {'userId': user?.id, 'accessToken': accessToken};
   }
 
   // Handles fetching posts
   void _onFetchProfile(
       FetchProfileEvent event, Emitter<ProfileState> emit) async {
-    final accessToken = await _getAccessToken();
-    final user = await _getUserData();
+    final credentials = await _getUserCredentials();
+    final accessToken = credentials['accessToken'];
 
     emit(state.copyWith(loading: true));
 

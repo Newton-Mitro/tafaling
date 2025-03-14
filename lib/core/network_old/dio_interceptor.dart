@@ -1,30 +1,32 @@
 import 'package:dio/dio.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:tafaling/configs/routes/route_name.dart';
-import 'package:tafaling/core/utils/shared_prefs.dart';
-import 'package:tafaling/main.dart';
+import 'package:tafaling/core/utils/app_shared_pref.dart';
+import 'package:tafaling/features/auth/data/models/auth_user_model.dart';
 import 'package:tafaling/my_app.dart';
 
 class AuthInterceptor extends Interceptor {
-  String? accessToken;
-  String? refreshToken;
+  late String? accessToken;
+  late String? refreshToken;
 
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     // Retrieve tokens
-    await _retrieveTokens();
+    accessToken = await AppSharedPref.getAccessToken();
+    refreshToken = await AppSharedPref.getAccessToken();
+
     options.headers['Accept'] = 'application/json';
     options.validateStatus = (status) {
       return status! < 600; // Accepts all status codes below 500
     };
 
-    bool isTokenValid = _isAccessTokenValid();
-
-    if (isTokenValid) {
+    if (accessToken != null && !JwtDecoder.isExpired(accessToken!)) {
       options.headers['Authorization'] = 'Bearer $accessToken';
     } else {
-      await SharedPrefs.clearTokens();
+      await AppSharedPref.removeAccessToken();
+      await AppSharedPref.removeRefreshToken();
+      await AppSharedPref.removeAuthUser();
     }
 
     // Ensure only one handler call
@@ -49,15 +51,6 @@ class AuthInterceptor extends Interceptor {
     }
   }
 
-  Future<void> _retrieveTokens() async {
-    accessToken = await SharedPrefs.getAccessToken();
-    refreshToken = await SharedPrefs.getRefreshToken();
-  }
-
-  bool _isAccessTokenValid() {
-    return accessToken != null && !JwtDecoder.isExpired(accessToken!);
-  }
-
   Future<void> _handleTokenRefresh(RequestOptions options, handler) async {
     try {
       final response = await Dio().get(
@@ -72,26 +65,27 @@ class AuthInterceptor extends Interceptor {
 
       if (response.statusCode == 200) {
         final data = response.data!['data'];
+        var res = AuthUserModel.fromJson(data);
+        await AppSharedPref.setAccessToken(res.accessToken);
+        await AppSharedPref.setRefreshToken(res.refreshToken);
 
-        final at = data['access_token'];
-        final rt = data['refresh_token'];
-        if (accessToken != null && refreshToken != null) {
-          await SharedPrefs.saveAccessToken(at!);
-          await SharedPrefs.saveRefreshToken(rt!);
-        }
-
+        String? newAccessToken = res.accessToken;
         // Retry the original request with the new access token
-        options.headers['Authorization'] = 'Bearer $at';
+        options.headers['Authorization'] = 'Bearer $newAccessToken';
         final retryResponse = await Dio().fetch(options);
         handler.resolve(retryResponse);
       } else {
-        await SharedPrefs.clearTokens();
+        await AppSharedPref.removeAuthUser();
+        await AppSharedPref.removeAccessToken();
+        await AppSharedPref.removeRefreshToken();
         navigatorKey.currentState?.pushReplacementNamed(RoutesName.loginPage);
         handler
             .reject(DioException(requestOptions: options, response: response));
       }
     } on DioException {
-      await SharedPrefs.clearTokens();
+      await AppSharedPref.removeAuthUser();
+      await AppSharedPref.removeAccessToken();
+      await AppSharedPref.removeRefreshToken();
       navigatorKey.currentState?.pushReplacementNamed(RoutesName.loginPage);
     }
     return;

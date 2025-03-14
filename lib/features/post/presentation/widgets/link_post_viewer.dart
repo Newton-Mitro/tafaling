@@ -29,9 +29,9 @@ class _LinkPreviewerState extends State<LinkPreviewer> {
     try {
       final metadata = await AnyLinkPreview.getMetadata(
         link: widget.url,
-        cache: const Duration(days: 7),
-        proxyUrl: "https://corsproxy.org/", // Needed for web support
-        userAgent: 'WhatsApp/2.21.12.21 A', // Adjust if needed
+        cache: const Duration(days: 2),
+        proxyUrl:
+            "https://thingproxy.freeboard.io/fetch/", // Needed for web support
       );
 
       if (mounted) {
@@ -75,13 +75,11 @@ class _LinkPreviewerState extends State<LinkPreviewer> {
 
   Widget _buildPreviewWidget() {
     return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(10),
-      ),
+      alignment: Alignment.center,
       padding: const EdgeInsets.all(8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (_metadata?.image != null)
             ClipRRect(

@@ -16,13 +16,12 @@ class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
   @override
   void initState() {
     super.initState();
-    String videoId = YoutubePlayer.convertUrlToId(widget.videoUrl) ??
-        ''; // Convert the URL to video ID
+    String videoId = YoutubePlayer.convertUrlToId(widget.videoUrl) ?? '';
 
     _controller = YoutubePlayerController(
-      initialVideoId: videoId, // Set the dynamic video ID
+      initialVideoId: videoId,
       flags: YoutubePlayerFlags(
-        autoPlay: true,
+        autoPlay: false,
         mute: false,
       ),
     );

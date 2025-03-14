@@ -2,7 +2,8 @@ import 'dart:math';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tafaling/core/utils/shared_prefs.dart';
+import 'package:tafaling/core/utils/app_shared_pref.dart';
+import 'package:tafaling/features/auth/data/models/auth_user_model.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
 import 'package:tafaling/features/post/domain/usecases/dis_like_post_usecase.dart';
 import 'package:tafaling/features/post/domain/usecases/fetch_posts_usecase.dart';
@@ -74,9 +75,10 @@ class PostsScreenBloc extends Bloc<PostsScreenEvent, PostsScreenState> {
   }
 
   Future<Map<String, dynamic>> _getUserCredentials() async {
-    final userId = await SharedPrefs.getUserId();
-    final accessToken = await SharedPrefs.getAccessToken();
-    return {'userId': userId, 'accessToken': accessToken};
+    final accessToken = await AppSharedPref.getAccessToken();
+    final refreshToken = await AppSharedPref.getRefreshToken();
+    final user = await AppSharedPref.getAuthUser();
+    return {'userId': user?.id, 'accessToken': accessToken};
   }
 
   Future<void> _onPageChange(

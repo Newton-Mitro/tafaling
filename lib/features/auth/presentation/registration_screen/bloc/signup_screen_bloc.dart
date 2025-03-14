@@ -1,9 +1,7 @@
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/core/errors/exceptions.dart';
-import 'package:tafaling/core/utils/shared_prefs.dart';
+import 'package:tafaling/core/utils/app_shared_pref.dart';
 import 'package:tafaling/features/auth/domain/usecases/signup_usecase.dart';
 import 'package:tafaling/features/user/data/models/user_model.dart';
 
@@ -20,14 +18,14 @@ class SignUpScreenBloc extends Bloc<SignUpScreenEvent, SignUpScreenState> {
 
   Future<void> _onCheckLoginStatusEvent(
       CheckLoginStatusEvent event, Emitter<SignUpScreenState> emit) async {
-    final accessToken = await SharedPrefs.getAccessToken();
-    final refreshToken = await SharedPrefs.getRefreshToken();
-    final user = await SharedPrefs.getUser();
+    final accessToken = await AppSharedPref.getAccessToken();
+    final refreshToken = await AppSharedPref.getRefreshToken();
+    final user = await AppSharedPref.getAuthUser();
     if (accessToken != null) {
       emit(LoggedIn(
           accessToken: accessToken,
           refreshToken: refreshToken!,
-          user: jsonDecode(user!)));
+          user: user as UserModel));
     } else {
       emit(SignUpInitial());
     }

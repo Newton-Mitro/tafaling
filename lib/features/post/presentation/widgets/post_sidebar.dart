@@ -1,11 +1,10 @@
 import 'package:cached_network_image_plus/flutter_cached_network_image_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tafaling/configs/routes/route_name.dart';
-import 'package:tafaling/features/home/presentation/home_screen/bloc/home_screen_bloc.dart';
+import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
+import 'package:tafaling/features/home/presentation/widgets/bottom_sheet.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
-import 'package:tafaling/features/post/presentation/posts_screen/bloc/posts_screen_bloc.dart';
 
 class PostSidebar extends StatelessWidget {
   final PostModel? postModel;
@@ -28,16 +27,14 @@ class PostSidebar extends StatelessWidget {
             GestureDetector(
               // Wrap the SizedBox with GestureDetector
               onTap: () {
-                if (context.read<PostsScreenBloc>().state.loggedInUserId != 0) {
+                if (accessTokenNotifier.value != null) {
                   Navigator.pushNamed(
                     context,
                     RoutesName.userProfilePage,
                     arguments: postModel?.creator.id,
                   );
                 } else {
-                  context
-                      .read<HomeScreenBloc>()
-                      .add(const SetGuestStateEvent());
+                  showCustomBottomSheet(context);
                 }
               }, // Handle the tap
               child: SizedBox(
@@ -76,19 +73,34 @@ class PostSidebar extends StatelessWidget {
               FontAwesomeIcons.solidHeart,
               10,
               postModel?.isLiked == true ? Colors.red : Colors.white,
-              () => print('Heart clicked'),
+              () {
+                if (accessTokenNotifier.value != null) {
+                } else {
+                  showCustomBottomSheet(context);
+                }
+              },
             ),
             _buildSidebarActionButton(
               FontAwesomeIcons.solidShareFromSquare,
               14,
               Colors.white,
-              () => print('Share clicked'),
+              () {
+                if (accessTokenNotifier.value != null) {
+                } else {
+                  showCustomBottomSheet(context);
+                }
+              },
             ),
             _buildSidebarActionButton(
               FontAwesomeIcons.solidComment,
               5,
               Colors.white,
-              () => print('Comment clicked'),
+              () {
+                if (accessTokenNotifier.value != null) {
+                } else {
+                  showCustomBottomSheet(context);
+                }
+              },
             ),
           ],
         ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
+import 'package:tafaling/features/home/presentation/widgets/bottom_sheet.dart';
 
 class AppBottomNavigationBar extends StatelessWidget {
   const AppBottomNavigationBar({
@@ -38,7 +39,15 @@ class AppBottomNavigationBar extends StatelessWidget {
             currentIndex: selectedPage,
             type: BottomNavigationBarType.fixed,
             onTap: (value) {
-              selectedPageNotifier.value = value;
+              if (value > 0) {
+                if (accessTokenNotifier.value != null) {
+                  selectedPageNotifier.value = value;
+                } else {
+                  showCustomBottomSheet(context);
+                }
+              } else {
+                selectedPageNotifier.value = value;
+              }
             },
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
