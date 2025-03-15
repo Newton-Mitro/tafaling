@@ -62,7 +62,8 @@ class PostsScreenBloc extends Bloc<PostsScreenEvent, PostsScreenState> {
 
   Future<void> _onInitPostsScreen(
       InitPostsScreenEvent event, Emitter<PostsScreenState> emit) async {
-    emit(state.copyWith(
+    emit(
+      state.copyWith(
         isFetching: false,
         posts: state.posts,
         currentPage: state.currentPage,
@@ -70,7 +71,9 @@ class PostsScreenBloc extends Bloc<PostsScreenEvent, PostsScreenState> {
         loggedInUserId: 0,
         loggedInState: 0,
         profileUserId: 0,
-        profileState: 0));
+        profileState: 0,
+      ),
+    );
   }
 
   Future<Map<String, dynamic>> _getUserCredentials() async {

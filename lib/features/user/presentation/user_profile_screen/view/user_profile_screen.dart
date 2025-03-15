@@ -33,11 +33,11 @@ class UserProfileScreen extends StatelessWidget {
       },
       child: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
-          if (state.loading) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+          // if (state.loading) {
+          //   return Center(
+          //     child: CircularProgressIndicator(),
+          //   );
+          // }
 
           if (state.error.isNotEmpty) {
             return Center(child: Text('Error: ${state.error}'));
@@ -55,6 +55,7 @@ class UserProfileScreen extends StatelessWidget {
   Widget _buildProfilePage(
       BuildContext context, List<PostModel> posts, ProfileState state) {
     var profilePic = posts[0].creator.profilePicture ?? '';
+    var userId = posts[0].creator.id;
     var userName = posts[0].creator.name;
     var followers = posts[0].creator.followers;
     var following = posts[0].creator.following;
@@ -71,6 +72,14 @@ class UserProfileScreen extends StatelessWidget {
             title: const Text(
               'Profile',
             ),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.logout),
+                onPressed: () {
+                  // More Actions
+                },
+              ),
+            ],
           ),
           body: SafeArea(
             child: NestedScrollView(
@@ -177,42 +186,44 @@ class UserProfileScreen extends StatelessWidget {
                                 // If it's not the authenticated user's profile, show "Follow/Unfollow" buttons
                                 else ...[
                                   isFollowing
-                                      ? FilledButton(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                Color.fromARGB(255, 13, 82, 14),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15.0),
+                                      ? state.loading
+                                          ? CircularProgressIndicator(
+                                              color: Colors.red,
+                                            )
+                                          : FilledButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Color.fromARGB(
+                                                    255, 13, 82, 14),
+                                              ),
+                                              child: Text(
+                                                "Unfollow",
+                                                style: context.theme.textTheme
+                                                    .labelMedium,
+                                              ),
+                                              onPressed: () {
+                                                context.read<ProfileBloc>().add(
+                                                    UnFollowUserEvent(userId));
+                                              },
+                                            )
+                                      : state.loading
+                                          ? CircularProgressIndicator(
+                                              color: Colors.red,
+                                            )
+                                          : FilledButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Color.fromARGB(
+                                                    255, 6, 47, 82),
+                                              ),
+                                              child: Text(
+                                                "Follow",
+                                                style: context.theme.textTheme
+                                                    .labelMedium,
+                                              ),
+                                              onPressed: () {
+                                                context.read<ProfileBloc>().add(
+                                                    FollowUserEvent(userId));
+                                              },
                                             ),
-                                          ),
-                                          child: Text(
-                                            "Unfollow",
-                                            style: context
-                                                .theme.textTheme.labelMedium,
-                                          ),
-                                          onPressed: () {
-                                            // Share Profile Action
-                                          },
-                                        )
-                                      : FilledButton(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                Color.fromARGB(255, 6, 47, 82),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15.0),
-                                            ),
-                                          ),
-                                          child: Text(
-                                            "Follow",
-                                            style: context
-                                                .theme.textTheme.labelMedium,
-                                          ),
-                                          onPressed: () {
-                                            // Share Profile Action
-                                          },
-                                        ),
                                   const SizedBox(width: 10),
                                   FilledButton(
                                     child: Text(

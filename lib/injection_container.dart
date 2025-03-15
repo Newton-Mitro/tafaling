@@ -107,6 +107,9 @@ Future<void> _setupStates() async {
       serviceLoc<FetchUserPostsUseCase>(),
       serviceLoc<LikePostUseCase>(),
       serviceLoc<DisLikePostUseCase>()));
-  serviceLoc
-      .registerFactory(() => ProfileBloc(serviceLoc<FetchProfileUseCase>()));
+  serviceLoc.registerFactory(() => ProfileBloc(
+        serviceLoc<FetchProfileUseCase>(),
+        serviceLoc<FollowUserUseCase>(),
+        serviceLoc<UnFollowUserUseCase>(),
+      ));
 }

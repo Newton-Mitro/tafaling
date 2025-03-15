@@ -16,3 +16,15 @@ final class FetchProfileEvent extends ProfileEvent {
   @override
   List<Object> get props => [fetchPage];
 }
+
+class FollowUserEvent extends ProfileEvent {
+  final int followingUserId;
+
+  const FollowUserEvent(this.followingUserId);
+}
+
+class UnFollowUserEvent extends ProfileEvent {
+  final int followingUserId;
+
+  const UnFollowUserEvent(this.followingUserId);
+}

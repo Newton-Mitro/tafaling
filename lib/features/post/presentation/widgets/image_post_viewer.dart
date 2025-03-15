@@ -13,7 +13,7 @@ class ImagePostViewer extends StatelessWidget {
       child: PhotoView(
         enablePanAlways: true,
         loadingBuilder: (context, event) => Center(
-          child: Container(
+          child: SizedBox(
             width: 20.0,
             height: 20.0,
             child: CircularProgressIndicator(),

@@ -21,12 +21,35 @@ class AuthInterceptor extends Interceptor {
     options.headers['Accept'] = 'application/json';
     options.validateStatus = (status) => status != null && status < 500;
 
-    if (accessToken != null && !JwtDecoder.isExpired(accessToken!)) {
+    if (accessToken != null) {
       options.headers['Authorization'] = 'Bearer $accessToken';
+
+      // Check if token is expired and log out if needed
+      if (JwtDecoder.isExpired(accessToken!)) {
+        await AppSharedPref.removeAuthUser();
+        await AppSharedPref.removeAccessToken();
+        await AppSharedPref.removeRefreshToken();
+        navigatorKey.currentState?.pushReplacementNamed(RoutesName.loginPage);
+      }
     }
 
     // Ensure only one handler call
     handler.next(options);
+  }
+
+  @override
+  void onResponse(Response response, ResponseInterceptorHandler handler) async {
+    if (response.statusCode == 401) {
+      final newToken = await _handleTokenRefresh();
+      if (newToken != null) {
+        response.requestOptions.headers["Authorization"] = "Bearer $newToken";
+
+        // Repeat the failed request with the new token
+        final retryResponse = await dio.fetch(response.requestOptions);
+        return handler.resolve(retryResponse);
+      }
+    }
+    handler.next(response);
   }
 
   @override
@@ -37,8 +60,8 @@ class AuthInterceptor extends Interceptor {
         err.requestOptions.headers["Authorization"] = "Bearer $newToken";
 
         // Repeat the failed request with the new token
-        final response = await dio.fetch(err.requestOptions);
-        return handler.resolve(response);
+        final retryResponse = await dio.fetch(err.requestOptions);
+        return handler.resolve(retryResponse);
       }
     }
     return handler.next(err);
@@ -48,6 +71,7 @@ class AuthInterceptor extends Interceptor {
     try {
       refreshToken = await AppSharedPref.getRefreshToken();
       if (refreshToken == null) return null;
+
       final response = await dio.get(
         'https://devapi.tafaling.com/api/auth/refresh',
         options: Options(
@@ -64,15 +88,20 @@ class AuthInterceptor extends Interceptor {
         await AppSharedPref.setAccessToken(res.accessToken);
         await AppSharedPref.setRefreshToken(res.refreshToken);
 
-        String? newAccessToken = res.accessToken;
-        return newAccessToken;
+        return res.accessToken;
+      } else {
+        await _logout();
       }
     } on DioException {
-      await AppSharedPref.removeAuthUser();
-      await AppSharedPref.removeAccessToken();
-      await AppSharedPref.removeRefreshToken();
-      navigatorKey.currentState?.pushReplacementNamed(RoutesName.loginPage);
+      await _logout();
     }
     return null;
+  }
+
+  Future<void> _logout() async {
+    await AppSharedPref.removeAuthUser();
+    await AppSharedPref.removeAccessToken();
+    await AppSharedPref.removeRefreshToken();
+    navigatorKey.currentState?.pushReplacementNamed(RoutesName.loginPage);
   }
 }

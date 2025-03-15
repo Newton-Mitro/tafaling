@@ -5,7 +5,7 @@
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "Tafaling is a dynamic social media platform designed to connect users through engaging content, real-time interactions, and personalized experiences. Whether you want to share your thoughts, post multimedia content, or engage in meaningful conversations, Tafaling offers a seamless and intuitive interface to keep you connected with your community.  .",
+    "description": "A new Flutter project.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

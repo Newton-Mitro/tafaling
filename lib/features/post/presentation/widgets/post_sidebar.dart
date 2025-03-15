@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tafaling/configs/routes/route_name.dart';
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
 import 'package:tafaling/features/home/presentation/widgets/bottom_sheet.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
+import 'package:tafaling/features/post/presentation/posts_screen/bloc/posts_screen_bloc.dart';
 
 class PostSidebar extends StatelessWidget {
   final PostModel? postModel;
@@ -71,10 +73,14 @@ class PostSidebar extends StatelessWidget {
             ),
             _buildSidebarActionButton(
               FontAwesomeIcons.solidHeart,
-              10,
+              postModel?.likeCount ?? 0,
               postModel?.isLiked == true ? Colors.red : Colors.white,
               () {
                 if (accessTokenNotifier.value != null) {
+                  final event = postModel?.isLiked == true
+                      ? DisLikePostEvent(postModel?.id ?? 0)
+                      : LikePostEvent(postModel?.id ?? 0);
+                  context.read<PostsScreenBloc>().add(event);
                 } else {
                   showCustomBottomSheet(context);
                 }
@@ -82,7 +88,7 @@ class PostSidebar extends StatelessWidget {
             ),
             _buildSidebarActionButton(
               FontAwesomeIcons.solidShareFromSquare,
-              14,
+              1,
               Colors.white,
               () {
                 if (accessTokenNotifier.value != null) {
