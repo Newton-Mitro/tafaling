@@ -13,12 +13,12 @@ class SignUpLoading extends SignUpScreenState {}
 
 class RegisteredCompleted extends SignUpScreenState {}
 
-class LoggedIn extends SignUpScreenState {
+class SignedUp extends SignUpScreenState {
   final String accessToken;
   final String refreshToken;
   final UserModel user;
 
-  const LoggedIn(
+  const SignedUp(
       {required this.accessToken,
       required this.refreshToken,
       required this.user});

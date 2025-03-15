@@ -22,7 +22,7 @@ class SignUpScreenBloc extends Bloc<SignUpScreenEvent, SignUpScreenState> {
     final refreshToken = await AppSharedPref.getRefreshToken();
     final user = await AppSharedPref.getAuthUser();
     if (accessToken != null) {
-      emit(LoggedIn(
+      emit(SignedUp(
           accessToken: accessToken,
           refreshToken: refreshToken!,
           user: user as UserModel));
