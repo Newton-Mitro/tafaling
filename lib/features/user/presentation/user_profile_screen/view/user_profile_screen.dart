@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
-import 'package:tafaling/features/user/presentation/widgets/profile_video_grid.dart';
+import 'package:tafaling/features/user/presentation/widgets/profile_posts_grid.dart';
 import 'package:tafaling/features/user/data/data_sources/follower_data.dart';
 import 'package:tafaling/features/user/data/data_sources/following_data.dart';
 import 'package:tafaling/features/user/presentation/user_profile_screen/bloc/profile_bloc.dart';
 import 'package:tafaling/features/user/presentation/widgets/follow_status.dart';
-import 'package:tafaling/features/user/presentation/widgets/following_users.dart';
-import 'package:tafaling/features/user/presentation/widgets/users_followers.dart';
+import 'package:tafaling/features/user/presentation/following_users_screen/view/following_users_screen.dart';
+import 'package:tafaling/features/user/presentation/users_followers_screen/view/users_followers_screen.dart';
 import 'package:tafaling/injection_container.dart';
 
 final profileTabs = [
@@ -285,15 +285,15 @@ class UserProfileScreen extends StatelessWidget {
               },
               body: TabBarView(
                 children: [
-                  ProfileVideoGrid(
+                  ProfilePostsGrid(
                     itemCount: myPosts.length,
                     myPosts: myPosts,
                   ),
-                  FollowingUsers(
+                  FollowingUsersScreen(
                     itemCount: followingUsers.length,
                     users: followingUsers,
                   ),
-                  UsersFollowers(
+                  UsersFollowersScreen(
                     itemCount: myFollowers.length,
                     users: myFollowers,
                   ),

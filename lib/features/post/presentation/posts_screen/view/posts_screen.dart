@@ -46,8 +46,12 @@ class _PostsScreenState extends State<PostsScreen> {
                       allowImplicitScrolling: true,
                       onPageChanged: (index) {
                         selectedPostNotifier.value = index;
+                        print("onchange: $index");
+                        print("selectedPage 1: $selectedPost");
                       },
                       itemBuilder: (context, index) {
+                        print("onbuild: $index");
+                        print("selectedPage 2: $selectedPost");
                         return PostViewer(
                           postModel: state.posts[index],
                         );

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:tafaling/features/user/data/models/user_model.dart';
 import 'package:tafaling/features/user/presentation/widgets/user_tile.dart';
 
-class FollowingUsers extends StatelessWidget {
+class UsersFollowersScreen extends StatelessWidget {
   final int itemCount;
   final List<UserModel> users;
 
-  const FollowingUsers({
+  const UsersFollowersScreen({
     super.key,
     required this.itemCount,
     required this.users,
@@ -18,13 +18,16 @@ class FollowingUsers extends StatelessWidget {
     if (itemCount == 0) {
       return Center(
         child: Text(
-          'Not following anyone',
-          style: TextStyle(fontSize: 18, color: Colors.grey[500]),
+          'No followers available',
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.grey[500],
+          ),
         ),
       );
     }
 
-    // Build the user list if there are users
+    // Build the followers list if there are users
     return ListView.builder(
       itemCount: itemCount,
       itemBuilder: (context, index) {
@@ -34,7 +37,7 @@ class FollowingUsers extends StatelessWidget {
           userAvatar: user.profilePicture ?? '',
           userName: user.name,
           isFollowing: user.isFollowing,
-          friendshipStatus: 1,
+          friendshipStatus: 2,
           onFollowToggle: () {},
           onFriendRequestToggle: () {},
           onViewProfile: () {},

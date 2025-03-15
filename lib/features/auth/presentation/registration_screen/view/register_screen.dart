@@ -4,7 +4,6 @@ import 'package:tafaling/configs/routes/route_name.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/core/widgets/app_logo.dart';
 import 'package:tafaling/core/widgets/app_text_input.dart';
-import 'package:tafaling/features/auth/presentation/login_screen/bloc/login_screen_bloc.dart';
 import 'package:tafaling/features/auth/presentation/registration_screen/bloc/signup_screen_bloc.dart';
 import 'package:tafaling/injection_container.dart';
 

@@ -4,11 +4,11 @@ import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
 import 'package:tafaling/features/post/presentation/widgets/video_post_viewer.dart';
 
-class ProfileVideoGrid extends StatelessWidget {
+class ProfilePostsGrid extends StatelessWidget {
   final int itemCount;
   final List<PostModel> myPosts;
 
-  const ProfileVideoGrid({
+  const ProfilePostsGrid({
     super.key,
     required this.itemCount,
     required this.myPosts,

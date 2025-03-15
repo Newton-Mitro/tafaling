@@ -16,23 +16,23 @@ class PostViewer extends StatefulWidget {
 }
 
 class _PostViewerState extends State<PostViewer> {
-  late final PageController _pageController;
+  late final PageController _attachmentController;
 
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: 0);
+    _attachmentController = PageController(initialPage: 0);
   }
 
   @override
   void dispose() {
-    _pageController.dispose();
+    _attachmentController.dispose();
     super.dispose();
   }
 
   void _previousPage() {
-    if (_pageController.page != null && _pageController.page! > 0) {
-      _pageController.previousPage(
+    if (_attachmentController.page != null && _attachmentController.page! > 0) {
+      _attachmentController.previousPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
@@ -40,9 +40,9 @@ class _PostViewerState extends State<PostViewer> {
   }
 
   void _nextPage() {
-    if (_pageController.page != null &&
-        _pageController.page! < widget.postModel.attachments.length - 1) {
-      _pageController.nextPage(
+    if (_attachmentController.page != null &&
+        _attachmentController.page! < widget.postModel.attachments.length - 1) {
+      _attachmentController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
@@ -60,7 +60,7 @@ class _PostViewerState extends State<PostViewer> {
         if (attachmentCount > 0)
           PageView.builder(
             scrollDirection: Axis.horizontal,
-            controller: _pageController,
+            controller: _attachmentController,
             itemCount: attachmentCount,
             itemBuilder: (context, index) {
               final attachment = widget.postModel.attachments[index];
