@@ -12,7 +12,7 @@ class AppSharedPref {
   static const _accessToken = 'access_token';
   static const _refreshToken = 'refresh_token';
   static const _onboarding = 'onboarding';
-  static final SharedPreferences sharedPref = serviceLoc.get();
+  static final SharedPreferences sharedPref = serviceLoc<SharedPreferences>();
 
   // Language
   static Future<void> setAppLocale(String locale) async {
@@ -34,7 +34,8 @@ class AppSharedPref {
 
   // Auth User
   static Future<void> setAuthUser(UserModel authUser) async {
-    sharedPref.setString(_authUser, jsonEncode(authUser));
+    String jsonAuthUser = jsonEncode(authUser.toJson());
+    sharedPref.setString(_authUser, jsonAuthUser);
     authUserNotifier.value = authUser;
   }
 
@@ -44,6 +45,7 @@ class AppSharedPref {
   }
 
   static Future<UserModel?> getAuthUser() async {
+    final sharedPref = await SharedPreferences.getInstance();
     var authUser = sharedPref.getString(_authUser);
     if (authUser != null) {
       return UserModel.fromJson(jsonDecode(authUser));
@@ -59,6 +61,7 @@ class AppSharedPref {
   }
 
   static Future<String?> getAccessToken() async {
+    final sharedPref = await SharedPreferences.getInstance();
     return sharedPref.getString(_accessToken);
   }
 

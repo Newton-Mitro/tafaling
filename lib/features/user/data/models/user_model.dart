@@ -37,18 +37,18 @@ class UserModel extends UserEntity {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'user_id': id,
       'name': name,
-      'userName': userName,
+      'user_name': userName,
       'email': email,
-      'emailVerifiedAt': emailVerifiedAt?.toIso8601String(),
-      'profilePicture': profilePicture,
-      'coverPhoto': coverPhoto,
+      'email_verified_at': emailVerifiedAt?.toIso8601String(),
+      'profile_picture': profilePicture,
+      'cover_photo': coverPhoto,
       'followers': followers,
       'following': following,
-      'totalLikeCount': totalLikeCount,
-      'isFollowing': isFollowing,
-      'friendshipStatus': friendshipStatus,
+      'total_like_count': totalLikeCount,
+      'is_following': isFollowing,
+      'friendship_status': friendshipStatus,
     };
   }
 

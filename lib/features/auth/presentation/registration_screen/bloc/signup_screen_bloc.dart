@@ -40,7 +40,7 @@ class SignUpScreenBloc extends Bloc<SignUpScreenEvent, SignUpScreenState> {
       return;
     }
     try {
-      final res = await registerUseCase(
+      await registerUseCase(
           event.name, event.email, event.password, event.confirmPassword);
       emit(RegisteredCompleted());
     } catch (e) {

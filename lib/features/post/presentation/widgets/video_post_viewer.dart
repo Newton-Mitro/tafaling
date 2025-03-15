@@ -18,7 +18,6 @@ class _MyVideoPlayerState extends State<VideoPostViewer> {
   bool _showSeekBar = false;
   Timer? _hideSeekBarTimer;
   Duration _videoPosition = Duration.zero;
-  Duration _newPosition = Duration.zero;
 
   @override
   void initState() {
@@ -130,11 +129,7 @@ class _MyVideoPlayerState extends State<VideoPostViewer> {
                     min: 0,
                     max: videoPlayerController.value.duration.inSeconds
                         .toDouble(),
-                    onChanged: (value) {
-                      setState(() {
-                        _newPosition = Duration(seconds: value.toInt());
-                      });
-                    },
+                    onChanged: (value) {},
                     onChangeEnd: (value) {
                       final seekToPosition = Duration(seconds: value.toInt());
                       videoPlayerController.seekTo(seekToPosition);

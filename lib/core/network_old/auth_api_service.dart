@@ -11,7 +11,7 @@ class AuthApiService {
       connectTimeout: const Duration(seconds: 50),
       receiveTimeout: const Duration(seconds: 50),
     );
-    _dio.interceptors.add(AuthInterceptor());
+    _dio.interceptors.add(AuthInterceptor(_dio));
   }
 
   Future<Response> get(String endpoint,
@@ -63,7 +63,6 @@ class AuthApiService {
   /// Custom error handling based on DioException
   void _handleDioError(DioException e) {
     final statusCode = e.response?.statusCode;
-    final errorMessage = e.message ?? 'Unknown error';
 
     switch (statusCode) {
       case 400:

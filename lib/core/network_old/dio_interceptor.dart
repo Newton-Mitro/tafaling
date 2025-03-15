@@ -6,25 +6,23 @@ import 'package:tafaling/features/auth/data/models/auth_user_model.dart';
 import 'package:tafaling/my_app.dart';
 
 class AuthInterceptor extends Interceptor {
+  final Dio dio;
   late String? accessToken;
   late String? refreshToken;
+
+  AuthInterceptor(this.dio);
 
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     // Retrieve tokens
     accessToken = await AppSharedPref.getAccessToken();
-    refreshToken = await AppSharedPref.getRefreshToken();
 
     options.headers['Accept'] = 'application/json';
     options.validateStatus = (status) => status != null && status < 500;
 
     if (accessToken != null && !JwtDecoder.isExpired(accessToken!)) {
       options.headers['Authorization'] = 'Bearer $accessToken';
-    } else {
-      await AppSharedPref.removeAccessToken();
-      await AppSharedPref.removeRefreshToken();
-      await AppSharedPref.removeAuthUser();
     }
 
     // Ensure only one handler call
@@ -32,26 +30,25 @@ class AuthInterceptor extends Interceptor {
   }
 
   @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
-    if (response.statusCode == 401) {
-      _handleTokenRefresh(response.requestOptions, handler);
-    } else {
-      handler.next(response);
-    }
-  }
-
-  @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
+  void onError(DioException err, ErrorInterceptorHandler handler) async {
     if (err.response?.statusCode == 401) {
-      _handleTokenRefresh(err.requestOptions, handler);
-    } else {
-      handler.next(err);
+      final newToken = await _handleTokenRefresh();
+      if (newToken != null) {
+        err.requestOptions.headers["Authorization"] = "Bearer $newToken";
+
+        // Repeat the failed request with the new token
+        final response = await dio.fetch(err.requestOptions);
+        return handler.resolve(response);
+      }
     }
+    return handler.next(err);
   }
 
-  Future<void> _handleTokenRefresh(RequestOptions options, handler) async {
+  Future<String?> _handleTokenRefresh() async {
     try {
-      final response = await Dio().get(
+      refreshToken = await AppSharedPref.getRefreshToken();
+      if (refreshToken == null) return null;
+      final response = await dio.get(
         'https://devapi.tafaling.com/api/auth/refresh',
         options: Options(
           headers: {
@@ -68,17 +65,7 @@ class AuthInterceptor extends Interceptor {
         await AppSharedPref.setRefreshToken(res.refreshToken);
 
         String? newAccessToken = res.accessToken;
-        // Retry the original request with the new access token
-        options.headers['Authorization'] = 'Bearer $newAccessToken';
-        final retryResponse = await Dio().fetch(options);
-        handler.resolve(retryResponse);
-      } else {
-        await AppSharedPref.removeAuthUser();
-        await AppSharedPref.removeAccessToken();
-        await AppSharedPref.removeRefreshToken();
-        navigatorKey.currentState?.pushReplacementNamed(RoutesName.loginPage);
-        handler
-            .reject(DioException(requestOptions: options, response: response));
+        return newAccessToken;
       }
     } on DioException {
       await AppSharedPref.removeAuthUser();
@@ -86,6 +73,6 @@ class AuthInterceptor extends Interceptor {
       await AppSharedPref.removeRefreshToken();
       navigatorKey.currentState?.pushReplacementNamed(RoutesName.loginPage);
     }
-    return;
+    return null;
   }
 }

@@ -18,8 +18,8 @@ class AuthUserModel extends AuthUserEntity {
 
   Map<String, dynamic> toJson() {
     return {
-      'accessToken': accessToken,
-      'refreshToken': refreshToken,
+      'access_token': accessToken,
+      'refresh_token': refreshToken,
       "user": (user as UserModel).toJson(),
     };
   }

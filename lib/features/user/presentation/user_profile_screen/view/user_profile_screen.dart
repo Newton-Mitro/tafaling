@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
-import 'package:tafaling/features/post/presentation/widgets/profile_video_grid.dart';
+import 'package:tafaling/features/user/presentation/widgets/profile_video_grid.dart';
 import 'package:tafaling/features/user/data/data_sources/follower_data.dart';
 import 'package:tafaling/features/user/data/data_sources/following_data.dart';
 import 'package:tafaling/features/user/presentation/user_profile_screen/bloc/profile_bloc.dart';

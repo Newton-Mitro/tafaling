@@ -11,6 +11,7 @@ class ImagePostViewer extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       child: PhotoView(
+        enablePanAlways: true,
         loadingBuilder: (context, event) => Center(
           child: Container(
             width: 20.0,

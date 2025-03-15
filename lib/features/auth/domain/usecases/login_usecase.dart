@@ -1,3 +1,4 @@
+import 'package:tafaling/core/usecases/usecase.dart';
 import 'package:tafaling/features/auth/data/models/auth_user_model.dart';
 import 'package:tafaling/features/auth/domain/repositories/auth_repository.dart';
 
@@ -8,7 +9,7 @@ class LoginParams {
   LoginParams({required this.email, required this.password});
 }
 
-class LoginUseCase {
+class LoginUseCase extends UseCase<AuthUserModel, LoginParams> {
   final AuthRepository repository;
 
   LoginUseCase(this.repository);

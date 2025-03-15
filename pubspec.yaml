@@ -74,9 +74,11 @@ flutter_icons:
 
 flutter_native_splash:
   color: "#1F292E"
-  image: assets/images/brand/splash.png
+  branding: assets/images/brand/logo.png
+  # image: assets/images/brand/splash.png
   fullscreen: true
   android_12:
-    image: assets/images/brand/splash.png
+    # image: assets/images/brand/splash.png
+    branding: assets/images/brand/logo.png
     icon_background_color: "#1F292E"
     fullscreen: true
