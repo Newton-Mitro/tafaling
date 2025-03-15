@@ -73,12 +73,17 @@ flutter_icons:
   adaptive_icon_foreground: "assets/images/brand/app_icon.png"
 
 flutter_native_splash:
-  color: "#1F292E"
+  color: "#ffffff"
+  color_dark: "#1F292E"
+
+  background_image: assets/images/brand/splash.png
+  background_image_dark: assets/images/brand/splash.png
+
   branding: assets/images/brand/logo.png
-  # image: assets/images/brand/splash.png
+  branding_dark: assets/images/brand/logo.png
+  branding_bottom_padding: 24
+
+  image: assets/images/brand/app_icon.png
+  image_dark: assets/images/brand/app_icon.png
+
   fullscreen: true
-  android_12:
-    # image: assets/images/brand/splash.png
-    branding: assets/images/brand/logo.png
-    icon_background_color: "#1F292E"
-    fullscreen: true
