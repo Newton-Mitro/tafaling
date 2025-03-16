@@ -4,7 +4,7 @@ import 'package:tafaling/configs/routes/route_name.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/core/widgets/app_logo.dart';
 import 'package:tafaling/core/widgets/app_text_input.dart';
-import 'package:tafaling/features/auth/presentation/registration_screen/bloc/signup_screen_bloc.dart';
+import 'package:tafaling/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:tafaling/injection_container.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -27,7 +27,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => serviceLoc<SignUpScreenBloc>(),
+      create: (context) => AuthBloc(
+        registrationUseCase: sl.get(),
+        loginUseCase: sl.get(),
+        logoutUseCase: sl.get(),
+        isLoggedInUseCase: sl.get(),
+        authUserUsecase: sl.get(),
+      ),
       child: Scaffold(
         appBar: AppBar(
           title: Text(
@@ -45,17 +51,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               begin: Alignment.topCenter,
             ),
           ),
-          child: BlocListener<SignUpScreenBloc, SignUpScreenState>(
+          child: BlocListener<AuthBloc, AuthState>(
             listener: (context, state) {
-              if (state is SignedUp) {
+              if (state is Authenticated) {
                 Navigator.pushReplacementNamed(context, RoutesName.homePage);
               }
-              if (state is SignUpError) {
+              if (state is AuthError) {
                 ScaffoldMessenger.of(context)
                     .showSnackBar(SnackBar(content: Text(state.message)));
               }
 
-              if (state is RegisteredCompleted) {
+              if (state is Authenticated) {
                 Navigator.pushReplacementNamed(context, RoutesName.homePage);
               }
             },
@@ -63,7 +69,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: SingleChildScrollView(
-                  child: BlocBuilder<SignUpScreenBloc, SignUpScreenState>(
+                  child: BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       return Column(
                         spacing: 10,
@@ -76,7 +82,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           AppTextInput(
                             controller: nameController,
                             label: 'Name',
-                            errorText: state is SignUpValidationError
+                            errorText: state is AuthValidationError
                                 ? state.errors['name']?.isNotEmpty == true
                                     ? state.errors['name']![0]
                                     : null
@@ -88,7 +94,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           AppTextInput(
                             controller: emailController,
                             label: 'Email',
-                            errorText: state is SignUpValidationError
+                            errorText: state is AuthValidationError
                                 ? state.errors['email']?.isNotEmpty == true
                                     ? state.errors['email']![0]
                                     : null
@@ -101,7 +107,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           AppTextInput(
                             controller: passwordController,
                             label: 'Password',
-                            errorText: state is SignUpValidationError
+                            errorText: state is AuthValidationError
                                 ? state.errors['password']?.isNotEmpty == true
                                     ? state.errors['password']![0]
                                     : null
@@ -111,7 +117,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           AppTextInput(
                             controller: confirmPasswordController,
                             label: 'Confirm Password',
-                            errorText: state is SignUpValidationError
+                            errorText: state is AuthValidationError
                                 ? state.errors['confirm_password']
                                             ?.isNotEmpty ==
                                         true
@@ -121,20 +127,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             obscureText: _obscureConfirmPassword,
                           ),
                           const SizedBox(height: 20),
-                          BlocBuilder<SignUpScreenBloc, SignUpScreenState>(
+                          BlocBuilder<AuthBloc, AuthState>(
                             builder: (context, state) {
-                              if (state is SignUpLoading) {
+                              if (state is AuthLoading) {
                                 return CircularProgressIndicator();
                               }
                               return ElevatedButton(
                                 onPressed: () {
-                                  context
-                                      .read<SignUpScreenBloc>()
-                                      .add(RegisterEvent(
-                                        nameController.text,
-                                        passwordController.text,
-                                        emailController.text,
-                                        confirmPasswordController.text,
+                                  context.read<AuthBloc>().add(RegisterEvent(
+                                        name: nameController.text,
+                                        email: emailController.text,
+                                        password: passwordController.text,
+                                        confirmPassword:
+                                            confirmPasswordController.text,
                                       ));
                                 },
                                 style: ElevatedButton.styleFrom(

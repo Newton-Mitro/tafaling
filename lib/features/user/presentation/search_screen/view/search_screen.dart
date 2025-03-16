@@ -21,7 +21,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
-    _searchBloc = serviceLoc<SearchScreenBloc>();
+    _searchBloc = sl<SearchScreenBloc>();
   }
 
   void _onSearch(String query) {

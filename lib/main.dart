@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tafaling/core/utils/app_shared_pref.dart';
+import 'package:tafaling/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
 import 'package:tafaling/features/user/presentation/user_profile_screen/bloc/profile_bloc.dart';
 import 'package:tafaling/injection_container.dart';
@@ -26,8 +27,8 @@ void main() async {
             create: (context) => ThemeBloc()..add(LoadThemeEvent()),
           ),
           BlocProvider(
-              create: (context) => ProfileBloc(
-                  serviceLoc.get(), serviceLoc.get(), serviceLoc.get())),
+            create: (context) => ProfileBloc(sl.get(), sl.get(), sl.get()),
+          ),
         ],
         child: MyApp(
           onBoarding: onBoarding,

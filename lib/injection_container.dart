@@ -7,10 +7,12 @@ import 'package:tafaling/core/network_old/network_info.dart';
 import 'package:tafaling/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:tafaling/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:tafaling/features/auth/domain/repositories/auth_repository.dart';
+import 'package:tafaling/features/auth/domain/usecases/auth_user_usecase.dart';
+import 'package:tafaling/features/auth/domain/usecases/is_logged_in_usecase.dart';
 import 'package:tafaling/features/auth/domain/usecases/login_usecase.dart';
-import 'package:tafaling/features/auth/domain/usecases/signup_usecase.dart';
-import 'package:tafaling/features/auth/presentation/login_screen/bloc/login_screen_bloc.dart';
-import 'package:tafaling/features/auth/presentation/registration_screen/bloc/signup_screen_bloc.dart';
+import 'package:tafaling/features/auth/domain/usecases/logout_usecase.dart';
+import 'package:tafaling/features/auth/domain/usecases/registration_usecase.dart';
+import 'package:tafaling/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:tafaling/features/post/data/data_sources/post_remote_data_source.dart';
 import 'package:tafaling/features/post/data/repositories/post_repository_impl.dart';
 import 'package:tafaling/features/post/domain/repositories/post_repository.dart';
@@ -29,7 +31,7 @@ import 'package:tafaling/features/user/domain/usecases/un_follow_user_usecase.da
 import 'package:tafaling/features/user/presentation/user_profile_screen/bloc/profile_bloc.dart';
 import 'package:tafaling/features/user/presentation/search_screen/bloc/search_screen_bloc.dart';
 
-var serviceLoc = GetIt.instance;
+var sl = GetIt.instance;
 
 Future<void> getInit() async {
   await _setupComponents();
@@ -41,75 +43,76 @@ Future<void> getInit() async {
 
 Future<void> _setupComponents() async {
   // Register your services here
-  serviceLoc.registerLazySingleton<Dio>(() => Dio());
-  serviceLoc.registerLazySingleton<NetworkService>(() => NetworkService());
+  sl.registerLazySingleton<Dio>(() => Dio());
+  sl.registerLazySingleton<NetworkService>(() => NetworkService());
 
-  serviceLoc.registerLazySingleton<ApiService>(() => ApiService());
-  serviceLoc.registerLazySingleton<AuthApiService>(() => AuthApiService());
+  sl.registerLazySingleton<ApiService>(() => ApiService());
+  sl.registerLazySingleton<AuthApiService>(() => AuthApiService());
 
-  serviceLoc.registerSingleton<SharedPreferences>(
+  sl.registerSingleton<SharedPreferences>(
       await SharedPreferences.getInstance());
 }
 
 Future<void> _setupDatasources() async {
-  serviceLoc.registerLazySingleton<AuthRemoteDataSource>(() =>
-      AuthRemoteDataSourceImpl(
-          apiService: serviceLoc(), authApiService: serviceLoc()));
-  serviceLoc.registerLazySingleton<PostRemoteDataSource>(() =>
-      PostRemoteDataSourceImpl(
-          apiService: serviceLoc(), authApiService: serviceLoc()));
-  serviceLoc.registerLazySingleton<UserProfileRemoteDataSource>(
-      () => UserProfileRemoteDataSourceImpl(authApiService: serviceLoc()));
+  sl.registerLazySingleton<AuthRemoteDataSource>(
+      () => AuthRemoteDataSourceImpl(apiService: sl(), authApiService: sl()));
+  sl.registerLazySingleton<PostRemoteDataSource>(
+      () => PostRemoteDataSourceImpl(apiService: sl(), authApiService: sl()));
+  sl.registerLazySingleton<UserProfileRemoteDataSource>(
+      () => UserProfileRemoteDataSourceImpl(authApiService: sl()));
 }
 
 Future<void> _setupRepositories() async {
-  serviceLoc.registerLazySingleton<AuthRepository>(
-      () => AuthRepositoryImpl(serviceLoc(), serviceLoc()));
-  serviceLoc.registerLazySingleton<PostRepository>(
-      () => PostRepositoryImpl(serviceLoc(), serviceLoc()));
-  serviceLoc.registerLazySingleton<UserProfileRepository>(
-      () => UserProfileRepositoryImpl(serviceLoc(), serviceLoc()));
+  sl.registerLazySingleton<AuthRepository>(
+      () => AuthRepositoryImpl(sl(), sl()));
+  sl.registerLazySingleton<PostRepository>(
+      () => PostRepositoryImpl(sl(), sl()));
+  sl.registerLazySingleton<UserProfileRepository>(
+      () => UserProfileRepositoryImpl(sl(), sl()));
 }
 
 Future<void> _setupUsecases() async {
-  serviceLoc
-      .registerLazySingleton(() => LoginUseCase(serviceLoc<AuthRepository>()));
-  serviceLoc.registerLazySingleton(
-      () => RegisterUseCase(serviceLoc<AuthRepository>()));
-  serviceLoc.registerLazySingleton(
-      () => FetchPostsUseCase(serviceLoc<PostRepository>()));
-  serviceLoc.registerLazySingleton(
-      () => LikePostUseCase(serviceLoc<PostRepository>()));
-  serviceLoc.registerLazySingleton(
-      () => FetchUserPostsUseCase(serviceLoc<PostRepository>()));
-  serviceLoc.registerLazySingleton(
-      () => DisLikePostUseCase(serviceLoc<PostRepository>()));
-  serviceLoc.registerLazySingleton(
-      () => SearchUsersUseCase(serviceLoc<UserProfileRepository>()));
-  serviceLoc.registerLazySingleton(
-      () => FetchProfileUseCase(serviceLoc<UserProfileRepository>()));
-  serviceLoc.registerLazySingleton(
-      () => FollowUserUseCase(serviceLoc<UserProfileRepository>()));
-  serviceLoc.registerLazySingleton(
-      () => UnFollowUserUseCase(serviceLoc<UserProfileRepository>()));
+  sl.registerLazySingleton(() => LoginUseCase(sl<AuthRepository>()));
+  sl.registerLazySingleton(() => RegistrationUseCase(sl<AuthRepository>()));
+  sl.registerLazySingleton(() => LogoutUsecase(sl<AuthRepository>()));
+  sl.registerLazySingleton(() => IsLoggedInUsecase(sl<AuthRepository>()));
+  sl.registerLazySingleton(() => AuthUserUsecase(sl<AuthRepository>()));
+
+  sl.registerLazySingleton(() => FetchPostsUseCase(sl<PostRepository>()));
+  sl.registerLazySingleton(() => LikePostUseCase(sl<PostRepository>()));
+  sl.registerLazySingleton(() => FetchUserPostsUseCase(sl<PostRepository>()));
+  sl.registerLazySingleton(() => DisLikePostUseCase(sl<PostRepository>()));
+  sl.registerLazySingleton(
+      () => SearchUsersUseCase(sl<UserProfileRepository>()));
+  sl.registerLazySingleton(
+      () => FetchProfileUseCase(sl<UserProfileRepository>()));
+  sl.registerLazySingleton(
+      () => FollowUserUseCase(sl<UserProfileRepository>()));
+  sl.registerLazySingleton(
+      () => UnFollowUserUseCase(sl<UserProfileRepository>()));
 }
 
 Future<void> _setupStates() async {
-  serviceLoc.registerFactory(() => LoginScreenBloc(serviceLoc<LoginUseCase>()));
-  serviceLoc
-      .registerFactory(() => SignUpScreenBloc(serviceLoc<RegisterUseCase>()));
-  serviceLoc.registerFactory(() => SearchScreenBloc(
-      serviceLoc<SearchUsersUseCase>(),
-      serviceLoc<FollowUserUseCase>(),
-      serviceLoc<UnFollowUserUseCase>()));
-  serviceLoc.registerFactory(() => PostsScreenBloc(
-      serviceLoc<FetchPostsUseCase>(),
-      serviceLoc<FetchUserPostsUseCase>(),
-      serviceLoc<LikePostUseCase>(),
-      serviceLoc<DisLikePostUseCase>()));
-  serviceLoc.registerFactory(() => ProfileBloc(
-        serviceLoc<FetchProfileUseCase>(),
-        serviceLoc<FollowUserUseCase>(),
-        serviceLoc<UnFollowUserUseCase>(),
+  sl.registerCachedFactory(
+    () => AuthBloc(
+      registrationUseCase: sl<RegistrationUseCase>(),
+      loginUseCase: sl<LoginUseCase>(),
+      logoutUseCase: sl<LogoutUsecase>(),
+      isLoggedInUseCase: sl<IsLoggedInUsecase>(),
+      authUserUsecase: sl<AuthUserUsecase>(),
+    ),
+  );
+
+  sl.registerFactory(() => SearchScreenBloc(sl<SearchUsersUseCase>(),
+      sl<FollowUserUseCase>(), sl<UnFollowUserUseCase>()));
+  sl.registerFactory(() => PostsScreenBloc(
+      sl<FetchPostsUseCase>(),
+      sl<FetchUserPostsUseCase>(),
+      sl<LikePostUseCase>(),
+      sl<DisLikePostUseCase>()));
+  sl.registerFactory(() => ProfileBloc(
+        sl<FetchProfileUseCase>(),
+        sl<FollowUserUseCase>(),
+        sl<UnFollowUserUseCase>(),
       ));
 }

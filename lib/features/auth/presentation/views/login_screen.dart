@@ -4,7 +4,7 @@ import 'package:tafaling/configs/routes/route_name.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/core/widgets/app_logo.dart';
 import 'package:tafaling/core/widgets/app_text_input.dart';
-import 'package:tafaling/features/auth/presentation/login_screen/bloc/login_screen_bloc.dart';
+import 'package:tafaling/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:tafaling/injection_container.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -22,7 +22,13 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => serviceLoc<LoginScreenBloc>(),
+      create: (context) => AuthBloc(
+        registrationUseCase: sl.get(),
+        loginUseCase: sl.get(),
+        logoutUseCase: sl.get(),
+        isLoggedInUseCase: sl.get(),
+        authUserUsecase: sl.get(),
+      ),
       child: Scaffold(
         appBar: AppBar(
           title: Text("Login"),
@@ -38,12 +44,12 @@ class _LoginScreenState extends State<LoginScreen> {
               begin: Alignment.topCenter,
             ),
           ),
-          child: BlocListener<LoginScreenBloc, LoginScreenState>(
+          child: BlocListener<AuthBloc, AuthState>(
             listener: (context, state) {
-              if (state is LoggedIn) {
+              if (state is Authenticated) {
                 Navigator.pushReplacementNamed(context, RoutesName.homePage);
               }
-              if (state is LoginError) {
+              if (state is AuthError) {
                 ScaffoldMessenger.of(context)
                     .showSnackBar(SnackBar(content: Text(state.message)));
               }
@@ -59,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         width: 200,
                       ),
                       const SizedBox(height: 20),
-                      BlocBuilder<LoginScreenBloc, LoginScreenState>(
+                      BlocBuilder<AuthBloc, AuthState>(
                         builder: (context, state) {
                           return Column(
                             spacing: 10,
@@ -67,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               AppTextInput(
                                 controller: usernameController,
                                 label: 'Username',
-                                errorText: state is LoginValidationError
+                                errorText: state is AuthValidationError
                                     ? state.errors['email']?.isNotEmpty == true
                                         ? state.errors['email']![0]
                                         : null
@@ -78,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               AppTextInput(
                                 controller: passwordController,
                                 label: 'Password',
-                                errorText: state is LoginValidationError
+                                errorText: state is AuthValidationError
                                     ? state.errors['password']?.isNotEmpty ==
                                             true
                                         ? state.errors['password']![0]
@@ -102,16 +108,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                               const SizedBox(height: 20),
-                              if (state is LoginLoading)
+                              if (state is AuthLoading)
                                 CircularProgressIndicator(),
-                              if (state is! LoginLoading)
+                              if (state is! AuthLoading)
                                 ElevatedButton(
                                   onPressed: () {
-                                    context
-                                        .read<LoginScreenBloc>()
-                                        .add(LoginEvent(
-                                          usernameController.text,
-                                          passwordController.text,
+                                    context.read<AuthBloc>().add(LoginEvent(
+                                          username: usernameController.text,
+                                          password: passwordController.text,
                                         ));
                                   },
                                   style: ElevatedButton.styleFrom(

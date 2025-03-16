@@ -12,7 +12,7 @@ class AppSharedPref {
   static const _accessToken = 'access_token';
   static const _refreshToken = 'refresh_token';
   static const _onboarding = 'onboarding';
-  static final SharedPreferences sharedPref = serviceLoc<SharedPreferences>();
+  static final SharedPreferences sharedPref = sl<SharedPreferences>();
 
   // Language
   static Future<void> setAppLocale(String locale) async {

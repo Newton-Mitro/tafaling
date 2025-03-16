@@ -30,11 +30,11 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<String> register(String name, String email, String password,
+  Future<AuthUserModel> register(String name, String email, String password,
       String confirmPassword) async {
     var result =
         await remoteDataSource.register(name, email, password, confirmPassword);
-    return result;
+    return result as AuthUserModel;
   }
 
   @override
@@ -43,9 +43,26 @@ class AuthRepositoryImpl implements AuthRepository {
     return remoteDataSource.logout();
   }
 
+  @override
   Future<bool> isLoggedIn() async {
     final token = await AppSharedPref.getAccessToken();
     return token != null;
+  }
+
+  @override
+  Future<AuthUserModel?> authUser() async {
+    final user = await AppSharedPref.getAuthUser();
+    final accessToken = await AppSharedPref.getAccessToken();
+    final refreshToken = await AppSharedPref.getRefreshToken();
+    if (user != null && accessToken != null && refreshToken != null) {
+      return AuthUserModel(
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+        user: user,
+      );
+    }
+
+    return null;
   }
 
   Future<void> _clearToken() async {

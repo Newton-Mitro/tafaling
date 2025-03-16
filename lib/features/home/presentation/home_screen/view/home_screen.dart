@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => serviceLoc<PostsScreenBloc>()),
+        BlocProvider(create: (context) => sl<PostsScreenBloc>()),
       ],
       child: HomeScreenBody(isBottomSheetOpen: _isBottomSheetOpen),
     );
