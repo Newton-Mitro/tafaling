@@ -17,7 +17,7 @@ class ApiClient {
           sendTimeout: const Duration(seconds: 10),
           receiveTimeout: const Duration(seconds: 30)),
     )
-      ..interceptors.add(AuthInterceptor(dio: Dio()))
+      ..interceptors.add(XAuthInterceptor(dio: Dio()))
       ..interceptors.add(LogInterceptor());
     return dio;
   }

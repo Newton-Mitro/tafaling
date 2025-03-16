@@ -26,10 +26,13 @@ class AuthInterceptor extends Interceptor {
 
       // Check if token is expired and log out if needed
       if (JwtDecoder.isExpired(accessToken!)) {
-        await AppSharedPref.removeAuthUser();
-        await AppSharedPref.removeAccessToken();
-        await AppSharedPref.removeRefreshToken();
-        navigatorKey.currentState?.pushReplacementNamed(RoutesName.loginPage);
+        final newRefreshToken = await _handleTokenRefresh();
+        if (newRefreshToken != null) {
+          options.headers["Authorization"] = "Bearer $newRefreshToken";
+
+          // Repeat the failed request with the new token
+          handler.next(options);
+        }
       }
     }
 
@@ -37,20 +40,22 @@ class AuthInterceptor extends Interceptor {
     handler.next(options);
   }
 
-  @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) async {
-    if (response.statusCode == 401) {
-      final newToken = await _handleTokenRefresh();
-      if (newToken != null) {
-        response.requestOptions.headers["Authorization"] = "Bearer $newToken";
+  // @override
+  // void onResponse(Response response, ResponseInterceptorHandler handler) async {
+  //   if (response.statusCode == 401) {
+  //     final newToken = await _handleTokenRefresh();
+  //     if (newToken != null) {
+  //       response.requestOptions.headers["Authorization"] = "Bearer $newToken";
 
-        // Repeat the failed request with the new token
-        final retryResponse = await dio.fetch(response.requestOptions);
-        return handler.resolve(retryResponse);
-      }
-    }
-    handler.next(response);
-  }
+  //       // Repeat the failed request with the new token
+  //       final retryResponse = await dio.fetch(response.requestOptions);
+  //       return handler.resolve(retryResponse);
+  //     } else {
+  //       await _logout();
+  //     }
+  //   }
+  //   handler.next(response);
+  // }
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
@@ -70,7 +75,11 @@ class AuthInterceptor extends Interceptor {
   Future<String?> _handleTokenRefresh() async {
     try {
       refreshToken = await AppSharedPref.getRefreshToken();
+
       if (refreshToken == null) return null;
+      if (JwtDecoder.isExpired(refreshToken!)) {
+        await _logout();
+      }
 
       final response = await dio.get(
         'https://devapi.tafaling.com/api/auth/refresh',
@@ -93,7 +102,7 @@ class AuthInterceptor extends Interceptor {
         await _logout();
       }
     } on DioException {
-      await _logout();
+      return null;
     }
     return null;
   }

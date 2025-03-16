@@ -2,9 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthInterceptor extends Interceptor {
+class XAuthInterceptor extends Interceptor {
   Dio dio;
-  AuthInterceptor({required this.dio});
+  XAuthInterceptor({required this.dio});
 
   @override
   void onRequest(

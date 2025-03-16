@@ -30,8 +30,9 @@ class _LinkPreviewerState extends State<LinkPreviewer> {
       final metadata = await AnyLinkPreview.getMetadata(
         link: widget.url,
         cache: const Duration(days: 2),
-        proxyUrl:
-            "https://thingproxy.freeboard.io/fetch/", // Needed for web support
+        proxyUrl: "https://corsproxy.org/",
+        userAgent:
+            "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.199 Mobile Safari/537.36",
       );
 
       if (mounted) {

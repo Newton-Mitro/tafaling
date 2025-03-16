@@ -43,15 +43,23 @@ class _PostsScreenState extends State<PostsScreen> {
                       scrollDirection: Axis.vertical,
                       controller: _pageController,
                       itemCount: state.posts.length,
+                      physics: const PageScrollPhysics(),
                       allowImplicitScrolling: true,
                       onPageChanged: (index) {
-                        selectedPostNotifier.value = index;
-                        print("onchange: $index");
-                        print("selectedPage 1: $selectedPost");
+                        if (index == state.posts.length - 1 &&
+                            !state.isFetching) {
+                          print("$index == ${state.posts.length}");
+                          context
+                              .read<PostsScreenBloc>()
+                              .add(const FetchPostsEvent());
+                        }
+                        // Update currentPage on page change
+                        context
+                            .read<PostsScreenBloc>()
+                            .add(PageChangeEvent(currentPage: index));
                       },
                       itemBuilder: (context, index) {
-                        print("onbuild: $index");
-                        print("selectedPage 2: $selectedPost");
+                        print("currentPage: ${state.currentPage}");
                         return PostViewer(
                           postModel: state.posts[index],
                         );

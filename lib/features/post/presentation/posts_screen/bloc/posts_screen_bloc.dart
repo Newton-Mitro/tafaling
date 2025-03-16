@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/core/utils/app_shared_pref.dart';
-import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
 import 'package:tafaling/features/post/domain/usecases/dis_like_post_usecase.dart';
 import 'package:tafaling/features/post/domain/usecases/fetch_posts_usecase.dart';
@@ -13,7 +12,7 @@ import 'package:tafaling/features/post/domain/usecases/like_post_usecase.dart';
 part 'posts_screen_event.dart';
 part 'posts_screen_state.dart';
 
-const int postsPerPage = 50;
+const int postsPerPage = 5;
 
 class PostsScreenBloc extends Bloc<PostsScreenEvent, PostsScreenState> {
   final FetchPostsUseCase fetchPostsUseCase;
@@ -112,11 +111,13 @@ class PostsScreenBloc extends Bloc<PostsScreenEvent, PostsScreenState> {
         posts = await fetchUserPostsUseCase(userId, startRecord, postsPerPage);
       }
 
+      print(posts.length);
+
       _fetchPage++;
 
       emit(state.copyWith(
-        posts: state.posts + posts,
-        isFetching: true, // Set isFetching to false after fetch is complete
+        posts: [...state.posts + posts],
+        isFetching: true,
       ));
     } catch (error) {
       emit(state.copyWith(
