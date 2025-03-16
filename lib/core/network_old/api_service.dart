@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:tafaling/core/constants/api_config.dart';
 import 'package:tafaling/core/errors/exceptions.dart';
 import 'package:tafaling/core/utils/app_shared_pref.dart';
 
 class ApiService {
   final Dio _dio = Dio(BaseOptions(
-    baseUrl: 'https://devapi.tafaling.com/api',
+    baseUrl: ApiConfig.baseUrl,
     connectTimeout: const Duration(seconds: 50),
     receiveTimeout: const Duration(seconds: 50),
   ));

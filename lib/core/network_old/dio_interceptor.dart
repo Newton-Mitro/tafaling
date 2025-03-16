@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:tafaling/configs/routes/route_name.dart';
+import 'package:tafaling/core/constants/api_config.dart';
 import 'package:tafaling/core/utils/app_shared_pref.dart';
 import 'package:tafaling/features/auth/data/models/auth_user_model.dart';
-import 'package:tafaling/my_app.dart';
 
 class AuthInterceptor extends Interceptor {
   final Dio dio;
@@ -82,7 +81,7 @@ class AuthInterceptor extends Interceptor {
       }
 
       final response = await dio.get(
-        'https://devapi.tafaling.com/api/auth/refresh',
+        '${ApiConfig.baseUrl}/auth/refresh',
         options: Options(
           headers: {
             'Authorization': 'Bearer $refreshToken',
@@ -111,6 +110,6 @@ class AuthInterceptor extends Interceptor {
     await AppSharedPref.removeAuthUser();
     await AppSharedPref.removeAccessToken();
     await AppSharedPref.removeRefreshToken();
-    navigatorKey.currentState?.pushReplacementNamed(RoutesName.loginPage);
+    print("refresh token expired and token cleared.");
   }
 }

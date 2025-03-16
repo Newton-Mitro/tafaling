@@ -1,5 +1,6 @@
 import 'package:tafaling/core/errors/exceptions.dart';
 import 'package:tafaling/core/network_old/network_info.dart';
+import 'package:tafaling/core/utils/app_shared_pref.dart';
 import 'package:tafaling/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:tafaling/features/auth/data/models/auth_user_model.dart';
 import 'package:tafaling/features/auth/domain/repositories/auth_repository.dart';
@@ -38,6 +39,18 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<String> logout() async {
+    await _clearToken();
     return remoteDataSource.logout();
+  }
+
+  Future<bool> isLoggedIn() async {
+    final token = await AppSharedPref.getAccessToken();
+    return token != null;
+  }
+
+  Future<void> _clearToken() async {
+    await AppSharedPref.removeAccessToken();
+    await AppSharedPref.removeRefreshToken();
+    await AppSharedPref.removeAuthUser();
   }
 }

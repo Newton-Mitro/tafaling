@@ -20,7 +20,3 @@ final class LoginEvent extends LoginScreenEvent {
 final class CheckLoginStatusEvent extends LoginScreenEvent {
   const CheckLoginStatusEvent();
 }
-
-final class LogoutEvent extends LoginScreenEvent {
-  const LogoutEvent();
-}
