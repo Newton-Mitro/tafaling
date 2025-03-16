@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:tafaling/core/errors/exceptions.dart';
+import 'package:tafaling/core/resources/response_state.dart';
 import 'package:tafaling/features/auth/data/models/auth_user_model.dart';
+import 'package:tafaling/features/auth/domain/entities/auth_user_entity.dart';
 import 'package:tafaling/features/auth/domain/usecases/auth_user_usecase.dart';
 import 'package:tafaling/features/auth/domain/usecases/is_logged_in_usecase.dart';
 import 'package:tafaling/features/auth/domain/usecases/login_usecase.dart';
@@ -32,12 +34,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           email: event.username,
           password: event.password,
         );
-        final user = await loginUseCase.call(
+        final responseState = await loginUseCase.call(
           params: loginParams,
         );
-        emit(Authenticated(user));
-      } on Map<String, dynamic> catch (errors) {
-        emit(AuthValidationError(errors));
+        if (responseState is ResponseSuccess && responseState.data != null) {
+          emit(Authenticated(responseState.data!));
+        }
+
+        if (responseState is ResponseFailed && responseState.error != null) {
+          emit(AuthError("Login failed: Invalid credentials"));
+        }
       } catch (e) {
         if (e is ValidationException) {
           emit(AuthValidationError(e.errors));
@@ -56,16 +62,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           password: event.password,
           confirmPassword: event.confirmPassword,
         );
-        final authUser = await registrationUseCase.call(
+        final responseState = await registrationUseCase.call(
           params: registrationParams,
         );
-        emit(
-          Authenticated(authUser),
-        );
-      } on Map<String, dynamic> catch (errors) {
-        emit(
-          AuthValidationError(errors),
-        );
+        if (responseState is ResponseSuccess && responseState.data != null) {
+          emit(Authenticated(responseState.data!));
+        }
+
+        if (responseState is ResponseFailed && responseState.error != null) {
+          emit(AuthError("Registration failed"));
+        }
       } catch (e) {
         if (e is ValidationException) {
           emit(AuthValidationError(e.errors));
@@ -83,16 +89,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     on<CheckAuthEvent>((event, emit) async {
-      final isLoggedIn = await isLoggedInUseCase.call();
+      final responseState = await isLoggedInUseCase.call();
 
-      if (isLoggedIn) {
-        final user = await authUserUsecase.call();
-        if (user != null) {
-          emit(Authenticated(user));
-        } else {
+      if (responseState is ResponseSuccess && responseState.data == true) {
+        final userResponseState = await authUserUsecase.call();
+        if (userResponseState is ResponseSuccess &&
+            userResponseState.data != null) {
+          emit(Authenticated(userResponseState.data!));
+        }
+        if (userResponseState is ResponseFailed &&
+            userResponseState.error != null) {
           emit(Unauthenticated());
         }
-      } else {
+      }
+
+      if (responseState is ResponseFailed && responseState.error != null) {
         emit(Unauthenticated());
       }
     });

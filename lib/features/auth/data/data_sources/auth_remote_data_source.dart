@@ -8,9 +8,9 @@ import 'package:tafaling/features/user/data/models/user_model.dart';
 
 abstract class AuthRemoteDataSource {
   Future<AuthUserModel> login(String email, String password);
-  Future<String> register(
+  Future<AuthUserModel> register(
       String name, String email, String password, String confirmPassword);
-  Future<String> logout();
+  Future<void> logout();
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -47,7 +47,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<String> register(String name, String email, String password,
+  Future<AuthUserModel> register(String name, String email, String password,
       String confirmPassword) async {
     try {
       final response = await apiService.post(
@@ -72,14 +72,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<String> logout() async {
-    final response = await authApiService.get(
+  Future<void> logout() async {
+    await authApiService.get(
       '/auth/logout',
     );
-    if (response.statusCode == 201) {
-      return response.data;
-    } else {
-      throw Exception('Failed to register');
-    }
   }
 }

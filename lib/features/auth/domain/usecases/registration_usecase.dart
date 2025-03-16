@@ -1,5 +1,6 @@
+import 'package:tafaling/core/resources/response_state.dart';
 import 'package:tafaling/core/usecases/usecase.dart';
-import 'package:tafaling/features/auth/data/models/auth_user_model.dart';
+import 'package:tafaling/features/auth/domain/entities/auth_user_entity.dart';
 import 'package:tafaling/features/auth/domain/repositories/auth_repository.dart';
 
 final class RegistrationParams {
@@ -16,13 +17,15 @@ final class RegistrationParams {
   });
 }
 
-class RegistrationUseCase extends UseCase<AuthUserModel, RegistrationParams> {
+class RegistrationUseCase
+    extends UseCase<ResponseState<AuthUserEntity>, RegistrationParams> {
   final AuthRepository repository;
 
   RegistrationUseCase(this.repository);
 
   @override
-  Future<AuthUserModel> call({RegistrationParams? params}) async {
+  Future<ResponseState<AuthUserEntity>> call(
+      {RegistrationParams? params}) async {
     if (params == null) {
       throw Exception("Params cannot be null");
     }
@@ -34,6 +37,6 @@ class RegistrationUseCase extends UseCase<AuthUserModel, RegistrationParams> {
       params.confirmPassword,
     );
 
-    return authUser as AuthUserModel;
+    return authUser;
   }
 }

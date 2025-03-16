@@ -7,3 +7,8 @@ class ValidationException implements Exception {
 
   ValidationException(this.errors);
 }
+
+class NetworkException implements Exception {
+  final String message;
+  NetworkException([this.message = "No internet connection"]);
+}

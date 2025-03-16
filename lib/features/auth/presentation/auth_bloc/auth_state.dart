@@ -12,7 +12,7 @@ final class AuthInitial extends AuthState {}
 final class AuthLoading extends AuthState {}
 
 final class Authenticated extends AuthState {
-  final AuthUserModel authUser;
+  final AuthUserEntity authUser;
   const Authenticated(this.authUser);
 }
 
