@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cached_video_player_plus/cached_video_player_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:tafaling/core/utils/app_context.dart';
 
 class VideoPostViewer extends StatefulWidget {
   const VideoPostViewer(
@@ -114,12 +115,12 @@ class _MyVideoPlayerState extends State<VideoPostViewer> {
                 right: 20,
                 child: SliderTheme(
                   data: SliderTheme.of(context).copyWith(
-                    trackHeight: 2, // Thinner track
-                    activeTrackColor: Colors.black54, // Darker active color
-                    inactiveTrackColor: Colors.black38, // Darker inactive color
-                    thumbColor: Colors.black54, // Darker thumb
+                    trackHeight: 2,
+                    activeTrackColor: context.theme.colorScheme.primary,
+                    inactiveTrackColor: const Color.fromARGB(96, 66, 66, 66),
+                    thumbColor: context.theme.colorScheme.error,
                     thumbShape: const RoundSliderThumbShape(
-                      enabledThumbRadius: 6, // Smaller thumb
+                      enabledThumbRadius: 6,
                     ),
                     overlayColor:
                         Colors.black26.withOpacity(0.2), // Lighter overlay

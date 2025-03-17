@@ -73,12 +73,13 @@ class UserProfileScreen extends StatelessWidget {
               'Profile',
             ),
             actions: [
-              IconButton(
-                icon: const Icon(Icons.logout),
-                onPressed: () {
-                  // More Actions
-                },
-              ),
+              if (authUserNotifier.value?.id == userId)
+                IconButton(
+                  icon: const Icon(Icons.logout),
+                  onPressed: () {
+                    // More Actions
+                  },
+                ),
             ],
           ),
           body: SafeArea(
