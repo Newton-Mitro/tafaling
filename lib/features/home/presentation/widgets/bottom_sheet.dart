@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/configs/routes/route_name.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/core/widgets/app_logo.dart';
 import 'package:tafaling/features/home/presentation/widgets/button_widget.dart';
-import 'package:tafaling/features/home/presentation/widgets/close_button.dart';
-import 'package:tafaling/features/post/presentation/posts_screen/bloc/posts_screen_bloc.dart';
 
 class CustomBottomSheet extends StatelessWidget {
   const CustomBottomSheet({super.key});
@@ -15,7 +12,6 @@ class CustomBottomSheet extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
 
     return Container(
-      height: screenSize.height,
       width: screenSize.width,
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -34,8 +30,13 @@ class CustomBottomSheet extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const CloseBottomSheetButton(),
-          const SizedBox(height: 20),
+          Align(
+            alignment: Alignment.topRight,
+            child: IconButton(
+              icon: const Icon(Icons.close, color: Colors.white),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ),
           const AppLogo(width: 200),
           const SizedBox(height: 50),
           CustomButton(context, 'Login', RoutesName.loginPage),
@@ -44,7 +45,7 @@ class CustomBottomSheet extends StatelessWidget {
               style: TextStyle(fontSize: 16, color: Colors.white70)),
           const SizedBox(height: 10),
           CustomButton(context, 'Register', RoutesName.registerPage),
-          const SizedBox(height: 20),
+          const SizedBox(height: 50),
         ],
       ),
     );

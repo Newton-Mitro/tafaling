@@ -1,6 +1,10 @@
+import 'package:tafaling/core/errors/error_message.dart';
+
 class ServerException implements Exception {
   final String message;
-  ServerException([this.message = "Internal Server Error"]);
+  ServerException({
+    this.message = ErrorMessage.serverError,
+  });
 
   @override
   String toString() => "ServerException: $message";
@@ -8,7 +12,9 @@ class ServerException implements Exception {
 
 class CacheException implements Exception {
   final String message;
-  CacheException([this.message = "Cache error occurred"]);
+  CacheException({
+    this.message = ErrorMessage.cacheError,
+  });
 
   @override
   String toString() => "CacheException: $message";
@@ -16,7 +22,11 @@ class CacheException implements Exception {
 
 class ValidationException implements Exception {
   final Map<String, dynamic> errors;
-  ValidationException(this.errors);
+  final String message;
+  ValidationException({
+    required this.errors,
+    this.message = ErrorMessage.serverError,
+  });
 
   @override
   String toString() => "ValidationException: $errors";
@@ -24,7 +34,9 @@ class ValidationException implements Exception {
 
 class NetworkException implements Exception {
   final String message;
-  NetworkException([this.message = "No internet connection"]);
+  NetworkException({
+    this.message = ErrorMessage.noInternet,
+  });
 
   @override
   String toString() => "NetworkException: $message";
@@ -32,8 +44,9 @@ class NetworkException implements Exception {
 
 class UnauthorizedException implements Exception {
   final String message;
-  UnauthorizedException(
-      [this.message = "Unauthorized: Please check your credentials."]);
+  UnauthorizedException({
+    this.message = ErrorMessage.unauthorized,
+  });
 
   @override
   String toString() => "UnauthorizedException: $message";
@@ -41,7 +54,9 @@ class UnauthorizedException implements Exception {
 
 class ForbiddenException implements Exception {
   final String message;
-  ForbiddenException([this.message = "Forbidden: Access is denied."]);
+  ForbiddenException({
+    this.message = ErrorMessage.forbidden,
+  });
 
   @override
   String toString() => "ForbiddenException: $message";

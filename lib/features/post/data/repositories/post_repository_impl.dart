@@ -1,5 +1,5 @@
 import 'package:tafaling/core/errors/exceptions.dart';
-import 'package:tafaling/core/network_old/network_info.dart';
+import 'package:tafaling/core/network/network_info.dart';
 import 'package:tafaling/features/post/data/data_sources/post_remote_data_source.dart';
 import 'package:tafaling/features/post/data/models/like_model.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';

@@ -19,7 +19,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool _isPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -113,20 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     : null,
                                 prefixIcon:
                                     const Icon(Icons.lock, color: Colors.white),
-                                obscureText: !_isPasswordVisible,
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    _isPasswordVisible
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                    color: Colors.white,
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      _isPasswordVisible = !_isPasswordVisible;
-                                    });
-                                  },
-                                ),
+                                obscureText: true,
                               ),
                               const SizedBox(height: 20),
                               if (state is AuthLoading)

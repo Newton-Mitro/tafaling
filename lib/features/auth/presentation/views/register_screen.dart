@@ -24,9 +24,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final TextEditingController confirmPasswordController =
       TextEditingController(text: '');
 
-  final bool _obscurePassword = true;
-  final bool _obscureConfirmPassword = true;
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -134,7 +131,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     ? state.errors['password']![0]
                                     : null
                                 : null,
-                            obscureText: _obscurePassword,
+                            obscureText: true,
                           ),
                           AppTextInput(
                             controller: confirmPasswordController,
@@ -146,7 +143,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     ? state.errors['confirm_password']![0]
                                     : null
                                 : null,
-                            obscureText: _obscureConfirmPassword,
+                            obscureText: true,
                           ),
                           const SizedBox(height: 20),
                           BlocBuilder<AuthBloc, AuthState>(

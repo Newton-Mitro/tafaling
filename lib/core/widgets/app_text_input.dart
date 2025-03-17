@@ -6,8 +6,7 @@ class AppTextInput extends StatefulWidget {
   final String? errorText;
   final Icon? prefixIcon;
   final bool obscureText;
-  final IconButton? suffixIcon;
-  final TextInputType keyboardType; // Added keyboardType property
+  final TextInputType keyboardType;
 
   const AppTextInput({
     super.key,
@@ -16,8 +15,7 @@ class AppTextInput extends StatefulWidget {
     this.errorText,
     this.prefixIcon,
     this.obscureText = false,
-    this.suffixIcon,
-    this.keyboardType = TextInputType.text, // Default value
+    this.keyboardType = TextInputType.text,
   });
 
   @override
@@ -25,18 +23,13 @@ class AppTextInput extends StatefulWidget {
 }
 
 class _AppTextInputState extends State<AppTextInput> {
-  late ValueNotifier<bool> _obscureTextNotifier;
+  late bool isObscured;
 
   @override
   void initState() {
     super.initState();
-    _obscureTextNotifier = ValueNotifier<bool>(widget.obscureText);
-  }
-
-  @override
-  void dispose() {
-    _obscureTextNotifier.dispose();
-    super.dispose();
+    isObscured =
+        widget.obscureText; // Initialize with widget's obscureText value
   }
 
   @override
@@ -46,48 +39,43 @@ class _AppTextInputState extends State<AppTextInput> {
       children: [
         SizedBox(
           height: 50,
-          child: ValueListenableBuilder<bool>(
-            valueListenable: _obscureTextNotifier,
-            builder: (context, isObscured, child) {
-              return TextField(
-                controller: widget.controller,
-                obscureText: isObscured,
-                keyboardType: widget.keyboardType, // Added here
-                decoration: InputDecoration(
-                  labelText: widget.label,
-                  labelStyle: const TextStyle(color: Colors.white),
-                  prefixIcon: widget.prefixIcon,
-                  filled: true,
-                  fillColor: const Color(0xFF004C55).withOpacity(0.7),
-                  hintStyle: const TextStyle(color: Colors.white54),
-                  focusedBorder: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    borderSide: BorderSide(color: Colors.teal, width: 2.0),
-                  ),
-                  enabledBorder: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                  ),
-                  isDense: true,
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                  suffixIcon: widget.suffixIcon ??
-                      (widget.obscureText
-                          ? IconButton(
-                              icon: Icon(
-                                  isObscured
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                  color: Colors.white),
-                              onPressed: () {
-                                _obscureTextNotifier.value = !isObscured;
-                              },
-                            )
-                          : null),
-                ),
-                style: const TextStyle(color: Colors.white),
-              );
-            },
+          child: TextField(
+            controller: widget.controller,
+            obscureText: isObscured,
+            keyboardType: widget.keyboardType,
+            decoration: InputDecoration(
+              labelText: widget.label,
+              labelStyle: const TextStyle(color: Colors.white),
+              prefixIcon: widget.prefixIcon,
+              filled: true,
+              fillColor: const Color(0xFF004C55).withOpacity(0.7),
+              hintStyle: const TextStyle(color: Colors.white54),
+              focusedBorder: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                borderSide: BorderSide(color: Colors.teal, width: 2.0),
+              ),
+              enabledBorder: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                borderSide: BorderSide(color: Colors.grey, width: 1.0),
+              ),
+              isDense: true,
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+              suffixIcon: widget.obscureText
+                  ? IconButton(
+                      icon: Icon(
+                        isObscured ? Icons.visibility_off : Icons.visibility,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isObscured = !isObscured;
+                        });
+                      },
+                    )
+                  : null,
+            ),
+            style: const TextStyle(color: Colors.white),
           ),
         ),
         if (widget.errorText != null)

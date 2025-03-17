@@ -1,6 +1,6 @@
 import 'package:tafaling/core/errors/exceptions.dart';
 import 'package:tafaling/core/errors/failures.dart';
-import 'package:tafaling/core/network_old/network_info.dart';
+import 'package:tafaling/core/network/network_info.dart';
 import 'package:tafaling/core/resources/response_state.dart';
 import 'package:tafaling/core/utils/app_shared_pref.dart';
 import 'package:tafaling/features/auth/data/data_sources/auth_remote_data_source.dart';
@@ -32,7 +32,7 @@ class AuthRepositoryImpl implements AuthRepository {
           return FailedData(UnauthorizedFailure());
         }
 
-        return FailedData(ServerFailure(e.toString()));
+        return FailedData(ServerFailure());
       }
     } else {
       return FailedData(NetworkFailure());
@@ -60,7 +60,7 @@ class AuthRepositoryImpl implements AuthRepository {
           return FailedData(UnauthorizedFailure());
         }
 
-        return FailedData(ServerFailure(e.toString()));
+        return FailedData(ServerFailure());
       }
     } else {
       return FailedData(NetworkFailure());
@@ -75,7 +75,7 @@ class AuthRepositoryImpl implements AuthRepository {
         final result = await remoteDataSource.logout();
         return SuccessData(result);
       } catch (e) {
-        return FailedData(ServerFailure(e.toString()));
+        return FailedData(ServerFailure());
       }
     } else {
       return FailedData(NetworkFailure());
@@ -88,7 +88,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final token = await AppSharedPref.getAccessToken();
       return SuccessData(token != null);
     } catch (e) {
-      return FailedData(ServerFailure(e.toString()));
+      return FailedData(ServerFailure());
     }
   }
 
@@ -105,10 +105,10 @@ class AuthRepositoryImpl implements AuthRepository {
           refreshToken: refreshToken,
         ));
       } else {
-        return FailedData(ServerFailure('User not found'));
+        return FailedData(ServerFailure(message: 'User not found'));
       }
     } catch (e) {
-      return FailedData(ServerFailure(e.toString()));
+      return FailedData(ServerFailure());
     }
   }
 
@@ -119,7 +119,7 @@ class AuthRepositoryImpl implements AuthRepository {
       await AppSharedPref.removeAuthUser();
       return SuccessData(null);
     } catch (e) {
-      return FailedData(ServerFailure(e.toString()));
+      return FailedData(ServerFailure());
     }
   }
 }

@@ -68,26 +68,18 @@ class ApiService {
         if (errorResponse != null) {
           final errors = errorResponse['errors'] as Map<String, dynamic>;
           throw ValidationException(
-            errors,
+            errors: errors,
           );
         }
         break;
       case HttpStatus.unauthorized:
-        throw UnauthorizedException(
-          'Unauthorized: Please check your credentials.',
-        );
+        throw UnauthorizedException();
       case HttpStatus.forbidden:
-        throw ForbiddenException(
-          'Forbidden: Access is denied.',
-        );
+        throw ForbiddenException();
       case HttpStatus.internalServerError:
-        throw ServerException(
-          e.response != null ? e.response?.data['error'] : "error occurred",
-        );
+        throw ServerException();
       default:
-        throw ServerException(
-          'Network error: ${statusCode ?? 'Unknown'} - ${e.message}',
-        );
+        throw ServerException();
     }
   }
 }

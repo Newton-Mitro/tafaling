@@ -1,8 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:tafaling/core/errors/error_message.dart';
 
 abstract class Failure extends Equatable {
   final String message;
-  const Failure(this.message);
+  const Failure({required this.message});
 
   @override
   List<Object?> get props => [message];
@@ -11,29 +12,29 @@ abstract class Failure extends Equatable {
 final class ValidationFailure extends Failure {
   final Map<String, dynamic> errors;
 
-  const ValidationFailure(this.errors, [super.message = "Validation failed"]);
+  const ValidationFailure(this.errors,
+      {super.message = ErrorMessage.validationError});
 
   @override
   List<Object?> get props => [message, errors];
 }
 
 final class ServerFailure extends Failure {
-  const ServerFailure([super.message = "Server failure"]);
+  const ServerFailure({super.message = ErrorMessage.serverError});
 }
 
 final class CacheFailure extends Failure {
-  const CacheFailure([super.message = "Cache failure"]);
+  const CacheFailure({super.message = ErrorMessage.cacheError});
 }
 
 final class NetworkFailure extends Failure {
-  const NetworkFailure([super.message = "No internet connection"]);
+  const NetworkFailure({super.message = ErrorMessage.noInternet});
 }
 
 final class UnauthorizedFailure extends Failure {
-  const UnauthorizedFailure(
-      [super.message = "Unauthorized: Please check your credentials."]);
+  const UnauthorizedFailure({super.message = ErrorMessage.unauthorized});
 }
 
 final class ForbiddenFailure extends Failure {
-  const ForbiddenFailure([super.message = "Forbidden: Access is denied."]);
+  const ForbiddenFailure({super.message = ErrorMessage.forbidden});
 }

@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:tafaling/core/network_old/api_service.dart';
-import 'package:tafaling/core/network_old/auth_api_service.dart';
+import 'package:tafaling/core/network/api_service.dart';
+import 'package:tafaling/core/network/auth_api_service.dart';
 import 'package:tafaling/features/post/data/models/like_model.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
 

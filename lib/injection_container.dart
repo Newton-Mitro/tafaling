@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tafaling/core/network_old/api_service.dart';
-import 'package:tafaling/core/network_old/auth_api_service.dart';
-import 'package:tafaling/core/network_old/network_info.dart';
+import 'package:tafaling/core/network/api_service.dart';
+import 'package:tafaling/core/network/auth_api_service.dart';
+import 'package:tafaling/core/network/network_info.dart';
 import 'package:tafaling/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:tafaling/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:tafaling/features/auth/domain/repositories/auth_repository.dart';

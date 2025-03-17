@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:tafaling/core/constants/api_config.dart';
 import 'package:tafaling/core/errors/exceptions.dart';
-import 'package:tafaling/core/network_old/auth_interceptor.dart';
+import 'package:tafaling/core/network/auth_interceptor.dart';
 
 class AuthApiService {
   final Dio _dio;
@@ -70,26 +70,18 @@ class AuthApiService {
         if (errorResponse != null) {
           final errors = errorResponse['errors'] as Map<String, dynamic>;
           throw ValidationException(
-            errors,
+            errors: errors,
           );
         }
         break;
       case HttpStatus.unauthorized:
-        throw UnauthorizedException(
-          'Unauthorized: Please check your credentials.',
-        );
+        throw UnauthorizedException();
       case HttpStatus.forbidden:
-        throw ForbiddenException(
-          'Forbidden: Access is denied.',
-        );
+        throw ForbiddenException();
       case HttpStatus.internalServerError:
-        throw ServerException(
-          e.response != null ? e.response?.data['error'] : "error occurred",
-        );
+        throw ServerException();
       default:
-        throw ServerException(
-          'Network error: ${statusCode ?? 'Unknown'} - ${e.message}',
-        );
+        throw ServerException();
     }
   }
 }

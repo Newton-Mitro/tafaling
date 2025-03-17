@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:tafaling/core/errors/failures.dart';
 import 'package:tafaling/core/resources/response_state.dart';
 import 'package:tafaling/features/auth/domain/entities/auth_user_entity.dart';
