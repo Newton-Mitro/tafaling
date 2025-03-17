@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:tafaling/core/constants/api_config.dart';
@@ -91,7 +93,7 @@ class AuthInterceptor extends Interceptor {
         ),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == HttpStatus.ok) {
         final data = response.data!['data'];
         var res = AuthUserModel.fromJson(data);
         await AppSharedPref.setAccessToken(res.accessToken);

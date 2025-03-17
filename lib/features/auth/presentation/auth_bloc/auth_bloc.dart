@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:tafaling/core/errors/failures.dart';
 import 'package:tafaling/core/resources/response_state.dart';
 import 'package:tafaling/features/auth/domain/entities/auth_user_entity.dart';
 import 'package:tafaling/features/auth/domain/usecases/auth_user_usecase.dart';
@@ -39,7 +41,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
 
       if (dataState is FailedData && dataState.error != null) {
-        emit(AuthError("Login failed: Invalid credentials"));
+        switch (dataState.error) {
+          case NetworkFailure():
+            emit(AuthError(dataState.error!.message));
+            break;
+          case UnauthorizedFailure():
+            emit(AuthError(dataState.error!.message));
+            break;
+          case ServerFailure():
+            emit(AuthError(dataState.error!.message));
+            break;
+          case CacheFailure():
+            emit(AuthError(dataState.error!.message));
+            break;
+          default:
+            emit(AuthError(dataState.error!.message));
+        }
       }
 
       if (dataState is ValidationFailedData &&
@@ -59,12 +76,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final dataState = await registrationUseCase.call(
         params: registrationParams,
       );
+
       if (dataState is SuccessData && dataState.data != null) {
         emit(Authenticated(dataState.data!));
       }
 
       if (dataState is FailedData && dataState.error != null) {
-        emit(AuthError("Registration failed"));
+        switch (dataState.error) {
+          case NetworkFailure():
+            emit(AuthError(dataState.error!.message));
+            break;
+          case UnauthorizedFailure():
+            emit(AuthError(dataState.error!.message));
+            break;
+          case ServerFailure():
+            emit(AuthError(dataState.error!.message));
+            break;
+          case CacheFailure():
+            emit(AuthError(dataState.error!.message));
+            break;
+          default:
+            emit(AuthError(dataState.error!.message));
+        }
       }
 
       if (dataState is ValidationFailedData &&
