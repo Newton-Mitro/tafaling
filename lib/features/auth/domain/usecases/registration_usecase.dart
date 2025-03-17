@@ -18,23 +18,18 @@ final class RegistrationParams {
 }
 
 class RegistrationUseCase
-    extends UseCase<ResponseState<AuthUserEntity>, RegistrationParams> {
+    extends UseCase<DataState<AuthUserEntity>, RegistrationParams> {
   final AuthRepository repository;
 
   RegistrationUseCase(this.repository);
 
   @override
-  Future<ResponseState<AuthUserEntity>> call(
-      {RegistrationParams? params}) async {
-    if (params == null) {
-      throw Exception("Params cannot be null");
-    }
-
+  Future<DataState<AuthUserEntity>> call({RegistrationParams? params}) async {
     final authUser = await repository.register(
-      params.name,
-      params.email,
-      params.password,
-      params.confirmPassword,
+      params?.name ?? '',
+      params?.email ?? '',
+      params?.password ?? '',
+      params?.confirmPassword ?? '',
     );
 
     return authUser;

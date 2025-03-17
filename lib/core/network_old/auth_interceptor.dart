@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:tafaling/core/constants/api_config.dart';
+import 'package:tafaling/core/errors/exceptions.dart';
 import 'package:tafaling/core/utils/app_shared_pref.dart';
 import 'package:tafaling/features/auth/data/models/auth_user_model.dart';
 
@@ -18,7 +19,7 @@ class AuthInterceptor extends Interceptor {
     accessToken = await AppSharedPref.getAccessToken();
 
     options.headers['Accept'] = 'application/json';
-    options.validateStatus = (status) => status != null && status < 500;
+    // options.validateStatus = (status) => status != null && status < 500;
 
     if (accessToken != null) {
       options.headers['Authorization'] = 'Bearer $accessToken';
@@ -100,8 +101,8 @@ class AuthInterceptor extends Interceptor {
       } else {
         await _logout();
       }
-    } on DioException {
-      return null;
+    } catch (e) {
+      await _logout();
     }
     return null;
   }
@@ -110,6 +111,6 @@ class AuthInterceptor extends Interceptor {
     await AppSharedPref.removeAuthUser();
     await AppSharedPref.removeAccessToken();
     await AppSharedPref.removeRefreshToken();
-    print("refresh token expired and token cleared.");
+    throw UnauthorizedException();
   }
 }

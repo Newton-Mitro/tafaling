@@ -1,22 +1,21 @@
-import 'package:tafaling/core/errors/exceptions.dart';
 import 'package:tafaling/core/errors/failures.dart';
 
-abstract class ResponseState<T> {
+abstract class DataState<T> {
   final T? data;
   final Failure? error;
-  final ValidationException? errors;
+  final ValidationFailure? errors;
 
-  const ResponseState({this.data, this.error, this.errors});
+  const DataState({this.data, this.error, this.errors});
 }
 
-class ResponseSuccess<T> extends ResponseState<T> {
-  const ResponseSuccess(T data) : super(data: data);
+class SuccessData<T> extends DataState<T> {
+  const SuccessData(T data) : super(data: data);
 }
 
-class ResponseFailed<T> extends ResponseState<T> {
-  const ResponseFailed(Failure error) : super(error: error);
+class FailedData<T> extends DataState<T> {
+  const FailedData(Failure error) : super(error: error);
 }
 
-class ValidationFailed<T> extends ResponseState<T> {
-  const ValidationFailed(ValidationException errors) : super(errors: errors);
+class ValidationFailedData<T> extends DataState<T> {
+  const ValidationFailedData(ValidationFailure errors) : super(errors: errors);
 }

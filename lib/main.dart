@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tafaling/core/utils/app_shared_pref.dart';
-import 'package:tafaling/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
 import 'package:tafaling/features/user/presentation/user_profile_screen/bloc/profile_bloc.dart';
 import 'package:tafaling/injection_container.dart';

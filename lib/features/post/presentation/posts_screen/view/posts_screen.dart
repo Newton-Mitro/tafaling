@@ -20,8 +20,10 @@ class _PostsScreenState extends State<PostsScreen> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: selectedPostNotifier.value);
-    context.read<PostsScreenBloc>().add(const FetchPostsEvent());
+    _pageController = PageController(
+      initialPage: context.read<PostsScreenBloc>().state.currentPage,
+    );
+    context.read<PostsScreenBloc>().add(FetchPostsEvent());
   }
 
   @override
@@ -55,18 +57,15 @@ class _PostsScreenState extends State<PostsScreen> {
                     onPageChanged: (index) {
                       if (index == state.posts.length - 1 &&
                           !state.isFetching) {
-                        print("$index == ${state.posts.length}");
                         context
                             .read<PostsScreenBloc>()
                             .add(const FetchPostsEvent());
                       }
-                      // Update currentPage on page change
                       context
                           .read<PostsScreenBloc>()
                           .add(PageChangeEvent(currentPage: index));
                     },
                     itemBuilder: (context, index) {
-                      print("currentPage: ${state.currentPage}");
                       return PostViewer(
                         postModel: state.posts[index],
                       );
@@ -79,7 +78,6 @@ class _PostsScreenState extends State<PostsScreen> {
 
             return const Stack(
               children: [
-                // Page content (empty for now while fetching)
                 Center(
                   child: CircularProgressIndicator(),
                 ),

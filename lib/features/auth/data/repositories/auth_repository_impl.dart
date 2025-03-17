@@ -1,3 +1,4 @@
+import 'package:tafaling/core/errors/exceptions.dart';
 import 'package:tafaling/core/errors/failures.dart';
 import 'package:tafaling/core/network_old/network_info.dart';
 import 'package:tafaling/core/resources/response_state.dart';
@@ -13,25 +14,33 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this.remoteDataSource, this.networkService);
 
   @override
-  Future<ResponseState<AuthUserModel>> login(
-      String email, String password) async {
+  Future<DataState<AuthUserModel>> login(
+      String? email, String? password) async {
     if (await networkService.isConnected == true) {
       try {
         final result = await remoteDataSource.login(
           email,
           password,
         );
-        return ResponseSuccess(result);
+        return SuccessData(result);
       } catch (e) {
-        return ResponseFailed(ServerFailure(e.toString()));
+        if (e is ValidationException) {
+          return ValidationFailedData(ValidationFailure(e.errors));
+        }
+
+        if (e is UnauthorizedException) {
+          return FailedData(UnauthorizedFailure());
+        }
+
+        return FailedData(ServerFailure(e.toString()));
       }
     } else {
-      return ResponseFailed(NetworkFailure());
+      return FailedData(NetworkFailure());
     }
   }
 
   @override
-  Future<ResponseState<AuthUserModel>> register(String name, String email,
+  Future<DataState<AuthUserModel>> register(String name, String email,
       String password, String confirmPassword) async {
     if (await networkService.isConnected == true) {
       try {
@@ -41,68 +50,76 @@ class AuthRepositoryImpl implements AuthRepository {
           password,
           confirmPassword,
         );
-        return ResponseSuccess(result);
+        return SuccessData(result);
       } catch (e) {
-        return ResponseFailed(ServerFailure(e.toString()));
+        if (e is ValidationException) {
+          return ValidationFailedData(ValidationFailure(e.errors));
+        }
+
+        if (e is UnauthorizedException) {
+          return FailedData(UnauthorizedFailure());
+        }
+
+        return FailedData(ServerFailure(e.toString()));
       }
     } else {
-      return ResponseFailed(NetworkFailure());
+      return FailedData(NetworkFailure());
     }
   }
 
   @override
-  Future<ResponseState<void>> logout() async {
+  Future<DataState<void>> logout() async {
     if (await networkService.isConnected == true) {
       try {
         await _clearToken();
         final result = await remoteDataSource.logout();
-        return ResponseSuccess(result);
+        return SuccessData(result);
       } catch (e) {
-        return ResponseFailed(ServerFailure(e.toString()));
+        return FailedData(ServerFailure(e.toString()));
       }
     } else {
-      return ResponseFailed(NetworkFailure());
+      return FailedData(NetworkFailure());
     }
   }
 
   @override
-  Future<ResponseState<bool>> isLoggedIn() async {
+  Future<DataState<bool>> isLoggedIn() async {
     try {
       final token = await AppSharedPref.getAccessToken();
-      return ResponseSuccess(token != null);
+      return SuccessData(token != null);
     } catch (e) {
-      return ResponseFailed(ServerFailure(e.toString()));
+      return FailedData(ServerFailure(e.toString()));
     }
   }
 
   @override
-  Future<ResponseState<AuthUserModel>> authUser() async {
+  Future<DataState<AuthUserModel>> authUser() async {
     try {
       final user = await AppSharedPref.getAuthUser();
       final accessToken = await AppSharedPref.getAccessToken();
       final refreshToken = await AppSharedPref.getRefreshToken();
       if (user != null && accessToken != null && refreshToken != null) {
-        return ResponseSuccess(AuthUserModel(
+        return SuccessData(AuthUserModel(
           user: user,
           accessToken: accessToken,
           refreshToken: refreshToken,
         ));
       } else {
-        return ResponseFailed(ServerFailure('User not found'));
+        return FailedData(ServerFailure('User not found'));
       }
     } catch (e) {
-      return ResponseFailed(ServerFailure(e.toString()));
+      return FailedData(ServerFailure(e.toString()));
     }
   }
 
-  Future<ResponseState<void>> _clearToken() async {
+  Future<DataState<void>> _clearToken() async {
     try {
       await AppSharedPref.removeAccessToken();
       await AppSharedPref.removeRefreshToken();
       await AppSharedPref.removeAuthUser();
-      return ResponseSuccess(null);
+      return SuccessData(null);
     } catch (e) {
-      return ResponseFailed(ServerFailure(e.toString()));
+      return FailedData(ServerFailure(e.toString()));
     }
   }
 }

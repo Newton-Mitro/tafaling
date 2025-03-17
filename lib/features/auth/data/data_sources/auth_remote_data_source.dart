@@ -7,7 +7,7 @@ import 'package:tafaling/features/auth/data/models/auth_user_model.dart';
 import 'package:tafaling/features/user/data/models/user_model.dart';
 
 abstract class AuthRemoteDataSource {
-  Future<AuthUserModel> login(String email, String password);
+  Future<AuthUserModel> login(String? email, String? password);
   Future<AuthUserModel> register(
       String name, String email, String password, String confirmPassword);
   Future<void> logout();
@@ -21,7 +21,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       {required this.apiService, required this.authApiService});
 
   @override
-  Future<AuthUserModel> login(String email, String password) async {
+  Future<AuthUserModel> login(String? email, String? password) async {
     try {
       final response = await apiService.post(
         '/auth/login',
@@ -39,7 +39,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         await AppSharedPref.setRefreshToken(res.refreshToken);
         return res;
       } else {
-        throw Exception('Unexpected response: ${response.statusCode}');
+        throw Exception('Login failed');
       }
     } catch (e) {
       rethrow;

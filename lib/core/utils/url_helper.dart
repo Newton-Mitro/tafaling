@@ -1,4 +1,4 @@
-class UrlExtractor {
+class UrlHelper {
   static List<String> extractUrls(String text) {
     RegExp urlRegex = RegExp(
       r'((http|https):\/\/[^\s]+)',

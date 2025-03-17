@@ -13,20 +13,16 @@ final class LoginParams {
   });
 }
 
-class LoginUseCase extends UseCase<ResponseState<AuthUserEntity>, LoginParams> {
+class LoginUseCase extends UseCase<DataState<AuthUserEntity>, LoginParams> {
   final AuthRepository repository;
 
   LoginUseCase(this.repository);
 
   @override
-  Future<ResponseState<AuthUserEntity>> call({LoginParams? params}) async {
-    if (params == null) {
-      throw Exception("Params cannot be null");
-    }
-
+  Future<DataState<AuthUserEntity>> call({LoginParams? params}) async {
     final loggedInUser = await repository.login(
-      params.email,
-      params.password,
+      params?.email,
+      params?.password,
     );
 
     return loggedInUser;

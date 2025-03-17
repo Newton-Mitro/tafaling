@@ -1,7 +1,9 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:tafaling/core/constants/api_config.dart';
 import 'package:tafaling/core/errors/exceptions.dart';
-import 'package:tafaling/core/network_old/dio_interceptor.dart';
+import 'package:tafaling/core/network_old/auth_interceptor.dart';
 
 class AuthApiService {
   final Dio _dio;
@@ -51,7 +53,6 @@ class AuthApiService {
         ));
   }
 
-  /// Helper method to execute a request and handle errors
   Future<Response> _performRequest(Future<Response> Function() request) async {
     try {
       return await request();
@@ -61,28 +62,34 @@ class AuthApiService {
     }
   }
 
-  /// Custom error handling based on DioException
   void _handleDioError(DioException e) {
     final statusCode = e.response?.statusCode;
-
     switch (statusCode) {
-      case 400:
+      case HttpStatus.badRequest:
         final Map<String, dynamic>? errorResponse = e.response?.data;
         if (errorResponse != null) {
           final errors = errorResponse['errors'] as Map<String, dynamic>;
-          throw ValidationException(errors);
+          throw ValidationException(
+            errors,
+          );
         }
         break;
-      case 401:
-        throw Exception('Unauthorized: Please check your credentials.');
-      case 403:
-        throw Exception('Forbidden: Access is denied.');
-      case 500:
-        throw Exception(
-            e.response != null ? e.response?.data['error'] : "error occurred");
+      case HttpStatus.unauthorized:
+        throw UnauthorizedException(
+          'Unauthorized: Please check your credentials.',
+        );
+      case HttpStatus.forbidden:
+        throw ForbiddenException(
+          'Forbidden: Access is denied.',
+        );
+      case HttpStatus.internalServerError:
+        throw ServerException(
+          e.response != null ? e.response?.data['error'] : "error occurred",
+        );
       default:
-        throw Exception(
-            'Network error: ${statusCode ?? 'Unknown'} - ${e.message}');
+        throw ServerException(
+          'Network error: ${statusCode ?? 'Unknown'} - ${e.message}',
+        );
     }
   }
 }

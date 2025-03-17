@@ -8,14 +8,32 @@ abstract class Failure extends Equatable {
   List<Object?> get props => [message];
 }
 
-class ServerFailure extends Failure {
+final class ValidationFailure extends Failure {
+  final Map<String, dynamic> errors;
+
+  const ValidationFailure(this.errors, [super.message = "Validation failed"]);
+
+  @override
+  List<Object?> get props => [message, errors];
+}
+
+final class ServerFailure extends Failure {
   const ServerFailure([super.message = "Server failure"]);
 }
 
-class CacheFailure extends Failure {
+final class CacheFailure extends Failure {
   const CacheFailure([super.message = "Cache failure"]);
 }
 
-class NetworkFailure extends Failure {
+final class NetworkFailure extends Failure {
   const NetworkFailure([super.message = "No internet connection"]);
+}
+
+final class UnauthorizedFailure extends Failure {
+  const UnauthorizedFailure(
+      [super.message = "Unauthorized: Please check your credentials."]);
+}
+
+final class ForbiddenFailure extends Failure {
+  const ForbiddenFailure([super.message = "Forbidden: Access is denied."]);
 }

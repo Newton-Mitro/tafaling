@@ -6,13 +6,13 @@ import 'package:tafaling/features/auth/domain/repositories/auth_repository.dart'
 final class AuthUserParams {}
 
 class AuthUserUsecase
-    extends UseCase<ResponseState<AuthUserEntity>, AuthUserParams> {
+    extends UseCase<DataState<AuthUserEntity>, AuthUserParams> {
   final AuthRepository repository;
 
   AuthUserUsecase(this.repository);
 
   @override
-  Future<ResponseState<AuthUserEntity>> call({AuthUserParams? params}) async {
+  Future<DataState<AuthUserEntity>> call({AuthUserParams? params}) async {
     if (params == null) {
       throw Exception("Params cannot be null");
     }

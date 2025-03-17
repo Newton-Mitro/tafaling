@@ -57,7 +57,6 @@ class AppSharedPref {
   static Future<void> setAccessToken(String accessToken) async {
     sharedPref.setString(_accessToken, accessToken);
     accessTokenNotifier.value = accessToken;
-    selectedPostNotifier.value = 0;
   }
 
   static Future<String?> getAccessToken() async {
@@ -68,7 +67,6 @@ class AppSharedPref {
   static Future<void> removeAccessToken() async {
     sharedPref.remove(_accessToken);
     accessTokenNotifier.value = null;
-    selectedPostNotifier.value = 0;
   }
 
   // Refresh Token

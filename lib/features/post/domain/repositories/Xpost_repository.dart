@@ -3,10 +3,10 @@ import 'package:tafaling/features/post/data/models/like_model.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 
 abstract class XPostRepository {
-  Future<ResponseState<List<PostEntity>>> getPosts(
+  Future<DataState<List<PostEntity>>> getPosts(
       int userId, int startRecord, int pageSize);
-  Future<ResponseState<List<PostEntity>>> getUserPosts(
+  Future<DataState<List<PostEntity>>> getUserPosts(
       int userId, int startRecord, int pageSize);
-  Future<ResponseState<LikeModel>> likePost(int postId);
-  Future<ResponseState<LikeModel>> disLikePost(int postId);
+  Future<DataState<LikeModel>> likePost(int postId);
+  Future<DataState<LikeModel>> disLikePost(int postId);
 }

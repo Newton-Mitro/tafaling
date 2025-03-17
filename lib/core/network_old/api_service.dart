@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:tafaling/core/constants/api_config.dart';
 import 'package:tafaling/core/errors/exceptions.dart';
@@ -59,25 +61,33 @@ class ApiService {
   }
 
   void _handleDioError(DioException e) {
-    switch (e.response?.statusCode) {
-      case 400:
+    final statusCode = e.response?.statusCode;
+    switch (statusCode) {
+      case HttpStatus.badRequest:
         final Map<String, dynamic>? errorResponse = e.response?.data;
         if (errorResponse != null) {
           final errors = errorResponse['errors'] as Map<String, dynamic>;
-          throw ValidationException(errors);
+          throw ValidationException(
+            errors,
+          );
         }
         break;
-      case 401:
-        // Potentially handle token expiration here
-        throw Exception('Unauthorized: Please check your credentials.');
-      case 403:
-        throw Exception('Forbidden: Access is denied.');
-      case 500:
-        throw Exception(
-            e.response != null ? e.response?.data['error'] : "error occurred");
+      case HttpStatus.unauthorized:
+        throw UnauthorizedException(
+          'Unauthorized: Please check your credentials.',
+        );
+      case HttpStatus.forbidden:
+        throw ForbiddenException(
+          'Forbidden: Access is denied.',
+        );
+      case HttpStatus.internalServerError:
+        throw ServerException(
+          e.response != null ? e.response?.data['error'] : "error occurred",
+        );
       default:
-        throw Exception(
-            'Network error: ${e.response?.statusCode ?? 'Unknown'} - ${e.message}');
+        throw ServerException(
+          'Network error: ${statusCode ?? 'Unknown'} - ${e.message}',
+        );
     }
   }
 }

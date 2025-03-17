@@ -4,13 +4,13 @@ import 'package:tafaling/features/auth/domain/repositories/auth_repository.dart'
 
 final class IsLoggedInParams {}
 
-class IsLoggedInUsecase extends UseCase<ResponseState<bool>, IsLoggedInParams> {
+class IsLoggedInUsecase extends UseCase<DataState<bool>, IsLoggedInParams> {
   final AuthRepository repository;
 
   IsLoggedInUsecase(this.repository);
 
   @override
-  Future<ResponseState<bool>> call({IsLoggedInParams? params}) async {
+  Future<DataState<bool>> call({IsLoggedInParams? params}) async {
     return await repository.isLoggedIn();
   }
 }

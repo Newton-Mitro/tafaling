@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tafaling/core/utils/url_extractor.dart';
+import 'package:tafaling/core/utils/url_helper.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
 import 'package:tafaling/features/post/presentation/widgets/image_post_viewer.dart';
 import 'package:tafaling/features/post/presentation/widgets/link_post_viewer.dart';
@@ -53,7 +53,7 @@ class _PostViewerState extends State<PostViewer> {
   Widget build(BuildContext context) {
     final int attachmentCount = widget.postModel.attachments.length;
     final List<String> extractedUrls =
-        UrlExtractor.extractUrls(widget.postModel.body ?? '');
+        UrlHelper.extractUrls(widget.postModel.body ?? '');
 
     return Stack(
       children: [

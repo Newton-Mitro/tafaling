@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:any_link_preview/any_link_preview.dart';
-import 'package:tafaling/core/utils/url_extractor.dart';
+import 'package:tafaling/core/utils/url_helper.dart';
 import 'package:tafaling/features/post/presentation/widgets/youtube_video_player.dart';
 
 class LinkPreviewer extends StatefulWidget {
@@ -20,7 +20,7 @@ class _LinkPreviewerState extends State<LinkPreviewer> {
   @override
   void initState() {
     super.initState();
-    if (!UrlExtractor.isYouTubeUrl(widget.url)) {
+    if (!UrlHelper.isYouTubeUrl(widget.url)) {
       _fetchMetadata();
     }
   }
@@ -54,7 +54,7 @@ class _LinkPreviewerState extends State<LinkPreviewer> {
 
   @override
   Widget build(BuildContext context) {
-    if (UrlExtractor.isYouTubeUrl(widget.url)) {
+    if (UrlHelper.isYouTubeUrl(widget.url)) {
       return Container(
         alignment: Alignment.center,
         child: YouTubeVideoPlayer(videoUrl: widget.url),

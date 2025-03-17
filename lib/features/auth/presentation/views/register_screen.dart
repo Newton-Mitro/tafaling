@@ -15,11 +15,12 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController nameController = TextEditingController(text: '');
+  final TextEditingController emailController = TextEditingController(text: '');
+  final TextEditingController passwordController =
+      TextEditingController(text: '');
   final TextEditingController confirmPasswordController =
-      TextEditingController();
+      TextEditingController(text: '');
 
   final bool _obscurePassword = true;
   final bool _obscureConfirmPassword = true;
