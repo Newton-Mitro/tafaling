@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:tafaling/features/user/data/models/user_model.dart';
+import 'package:tafaling/features/user/data/data_sources/following_data.dart';
 import 'package:tafaling/features/user/presentation/widgets/user_tile.dart';
 
-class FollowingUsersScreen extends StatelessWidget {
-  final int itemCount;
-  final List<UserModel> users;
-
+class FollowingUsersScreen extends StatefulWidget {
   const FollowingUsersScreen({
     super.key,
-    required this.itemCount,
-    required this.users,
   });
 
   @override
+  State<FollowingUsersScreen> createState() => _FollowingUsersScreenState();
+}
+
+class _FollowingUsersScreenState extends State<FollowingUsersScreen> {
+  @override
   Widget build(BuildContext context) {
     // Check if there are no users
-    if (itemCount == 0) {
+    if (followingUsers.isEmpty) {
       return Center(
         child: Text(
           'Not following anyone',
@@ -26,9 +26,9 @@ class FollowingUsersScreen extends StatelessWidget {
 
     // Build the user list if there are users
     return ListView.builder(
-      itemCount: itemCount,
+      itemCount: followingUsers.length,
       itemBuilder: (context, index) {
-        var user = users[index];
+        var user = followingUsers[index];
 
         return UserTile(
           userAvatar: user.profilePicture ?? '',
