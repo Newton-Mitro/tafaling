@@ -5,6 +5,7 @@ import 'package:tafaling/core/network/api_service.dart';
 import 'package:tafaling/core/network/auth_api_service.dart';
 import 'package:tafaling/features/post/data/models/like_model.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
+import 'package:tafaling/features/user/data/models/user_model.dart';
 
 abstract class PostRemoteDataSource {
   Future<List<PostModel>> fetchPosts(int userId, int startRecord, int pageSize);
@@ -117,4 +118,29 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
       rethrow;
     }
   }
+
+  // @override
+  // Future<List<UserModel>> getFollowingUsers(int userId) async {
+  //   final response = await authApiService.get(
+  //     '/posts/liked/users',
+  //     queryParameters: {'post_id': userId, 'start_record': 0, 'page_size': 5},
+  //   );
+
+  //   return _handleResponse<List<UserModel>>(response, (data) {
+  //     var followers =
+  //         (data['data'] as List)
+  //             .map((user) => UserModel.fromJson(user))
+  //             .toList();
+  //     return followers;
+  //   });
+  // }
 }
+
+// POST http://127.0.0.1:8000/api/posts/remove
+// Content-Type: application/json
+// Accept: application/json
+// Authorization: Bearer {{auth_token}}
+
+// {
+//     "post_id": 37
+// }
