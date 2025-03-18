@@ -7,9 +7,9 @@ Tafaling is a dynamic social media platform designed to connect users through en
 ## Splash Screen Generate
 
 ```
-dart run flutter_native_splash:create --path=/home/newton/Documents/workspace/RnD/tafaling/splash/flutter_native_splash-acceptance.yaml
+dart run flutter_native_splash:create --path=./splash/flutter_native_splash-acceptance.yaml
 dart run flutter_native_splash:remove
-dart run flutter_native_splash:remove --path=/home/newton/Documents/workspace/RnD/tafaling/splash/flutter_native_splash-acceptance.yaml
+dart run flutter_native_splash:remove --path=./splash/flutter_native_splash-acceptance.yaml
 ```
 
 ## Generate Launcher Icon

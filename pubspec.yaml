@@ -1,10 +1,10 @@
 name: tafaling
 description: "Tafaling is a dynamic social media platform designed to connect users through engaging content, real-time interactions, and personalized experiences. Whether you want to share your thoughts, post multimedia content, or engage in meaningful conversations, Tafaling offers a seamless and intuitive interface to keep you connected with your community."
-publish_to: "none"
-version: 0.1.0
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 1.0.0+1
 
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.7.0
 
 dependencies:
   android_intent_plus: ^5.3.0
