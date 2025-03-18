@@ -61,6 +61,8 @@ class _PostsScreenState extends State<PostsScreen> {
                       physics: const PageScrollPhysics(),
                       allowImplicitScrolling: true,
                       onPageChanged: (index) {
+                        print("index $index");
+                        print("total posts: ${state.posts.length}");
                         if (index == state.posts.length - 1 &&
                             !state.isFetching) {
                           context.read<PostsScreenBloc>().add(

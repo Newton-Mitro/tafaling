@@ -106,7 +106,7 @@ class PostsScreenBloc extends Bloc<PostsScreenEvent, PostsScreenState> {
       emit(
         state.copyWith(
           posts: [...state.posts + dataState.data!],
-          isFetching: true,
+          isFetching: false,
         ),
       );
       _fetchPage++;
