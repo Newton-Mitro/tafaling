@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tafaling/core/resources/response_state.dart';
 import 'package:tafaling/core/utils/app_shared_pref.dart';
 import 'package:tafaling/features/user/data/models/search_user_model.dart';
 import 'package:tafaling/features/user/domain/usecases/follow_user_usecase.dart';
@@ -16,7 +17,7 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchState> {
   final UnFollowUserUseCase unFollowUserUseCase;
 
   int _fetchPage = 1;
-  bool _hasMore = true; // Indicates if there are more pages to fetch
+  bool _hasMore = true;
 
   SearchScreenBloc(
     this.searchUsersUseCase,
@@ -29,7 +30,6 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchState> {
     on<UnFollowUserEvent>(_onUnFollowUserEvent);
   }
 
-  /// Fetch user credentials (userId and accessToken)
   Future<Map<String, dynamic>> _getUserCredentials() async {
     var user = await AppSharedPref.getAuthUser();
     var accessToken = await AppSharedPref.getAccessToken();
@@ -37,67 +37,94 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchState> {
   }
 
   Future<void> _onFollowUserEvent(
-      FollowUserEvent event, Emitter<SearchState> emit) async {
-    final res = await followUserUseCase(event.followingUserId);
+    FollowUserEvent event,
+    Emitter<SearchState> emit,
+  ) async {
+    emit(SearchLoading());
+    final followUserPrams = FollowUserParams(
+      followingUserId: event.followingUserId,
+    );
+    final dataState = await followUserUseCase(params: followUserPrams);
+    if (dataState is SuccessData && dataState.data != null) {
+      final updatedUsers = _updateSearchUsers(event.followingUserId);
+      emit(SearchLoaded(updatedUsers));
+    }
 
-    final updatedUsers = _updateSearchUsers(event.followingUserId);
-    emit(SearchLoaded(updatedUsers));
+    if (dataState is FailedData && dataState.error != null) {
+      emit(SearchError(dataState.error!.message));
+    }
   }
 
   Future<void> _onUnFollowUserEvent(
-      UnFollowUserEvent event, Emitter<SearchState> emit) async {
-    final res = await unFollowUserUseCase(event.followingUserId);
-    final updatedUsers = _updateSearchUsers(event.followingUserId);
-    emit(SearchLoaded(updatedUsers));
-    // update search user model
+    UnFollowUserEvent event,
+    Emitter<SearchState> emit,
+  ) async {
+    emit(SearchLoading());
+    final unFolloUserParams = UnFollowUserParams(
+      followingUserId: event.followingUserId,
+    );
+    final dataState = await unFollowUserUseCase(params: unFolloUserParams);
+
+    if (dataState is SuccessData && dataState.data != null) {
+      final updatedUsers = _updateSearchUsers(event.followingUserId);
+      emit(SearchLoaded(updatedUsers));
+    }
+
+    if (dataState is FailedData && dataState.error != null) {
+      emit(SearchError(dataState.error!.message));
+    }
   }
 
   List<SearchUserModel> _updateSearchUsers(int postId) {
-    final postIndex = (state as SearchLoaded)
-        .users
-        .indexWhere((user) => user.userId == postId);
+    final postIndex = (state as SearchLoaded).users.indexWhere(
+      (user) => user.userId == postId,
+    );
     if (postIndex == -1) return (state as SearchLoaded).users;
 
     final isFollowing = !(state as SearchLoaded).users[postIndex].isFollowing;
     final updatedPost = (state as SearchLoaded).users[postIndex].copyWith(
-          isFollowing: isFollowing,
-        );
+      isFollowing: isFollowing,
+    );
 
-    final updatedPosts =
-        List<SearchUserModel>.from((state as SearchLoaded).users)
-          ..[postIndex] = updatedPost;
+    final updatedPosts = List<SearchUserModel>.from(
+      (state as SearchLoaded).users,
+    )..[postIndex] = updatedPost;
 
     return updatedPosts;
   }
 
-  /// Handle the [SearchUsersEvent] to fetch and load user data
   Future<void> _onSearchUsersEvent(
-      SearchUsersEvent event, Emitter<SearchState> emit) async {
-    final List<SearchUserModel> currentUsers = state is SearchLoaded
-        ? List<SearchUserModel>.from((state as SearchLoaded).users)
-        : [];
+    SearchUsersEvent event,
+    Emitter<SearchState> emit,
+  ) async {
+    final List<SearchUserModel> currentUsers =
+        state is SearchLoaded
+            ? List<SearchUserModel>.from((state as SearchLoaded).users)
+            : [];
 
-    emit(SearchLoading()); // Emit loading state for more users
+    emit(SearchLoading());
 
-    try {
-      final credentials = await _getUserCredentials();
-      final userId = credentials['userId'];
+    final credentials = await _getUserCredentials();
+    final userId = credentials['userId'];
 
-      // Fetch new users from the use case
-      final newUsers = await searchUsersUseCase(
-        userId,
-        event.searchText,
-        0,
-        50,
-      );
+    final searchUsersParams = SearchUsersParams(
+      searchText: event.searchText,
+      userId: userId,
+      startRecord: 0,
+      pageSize: 50,
+    );
 
-      emit(SearchLoaded(newUsers)); // Emit the loaded state with users
-    } catch (e) {
-      emit(SearchError('Failed to load users'));
+    final dataState = await searchUsersUseCase(params: searchUsersParams);
+
+    if (dataState is SuccessData && dataState.data != null) {
+      emit(SearchLoaded(dataState.data!));
+    }
+
+    if (dataState is FailedData && dataState.error != null) {
+      emit(SearchError(dataState.error!.message));
     }
   }
 
-  /// Handle the [ResetSearchEvent] to reset the search state
   void _onResetSearchEvent(ResetSearchEvent event, Emitter<SearchState> emit) {
     _fetchPage = 1;
     _hasMore = true;

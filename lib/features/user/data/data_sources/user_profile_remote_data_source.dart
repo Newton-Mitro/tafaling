@@ -10,17 +10,22 @@ abstract class UserProfileRemoteDataSource {
   Future<FollowUnFollowModel> followUser(int followingUserId);
   Future<FollowUnFollowModel> unFollowUser(int followingUserId);
   Future<List<PostModel>> fetchProfile(
-      int userId, int startRecord, int pageSize);
+    int userId,
+    int startRecord,
+    int pageSize,
+  );
   Future<List<SearchUserModel>> searchUsers(
-      int userId, String searchText, int startRecord, int pageSize);
+    int userId,
+    String searchText,
+    int startRecord,
+    int pageSize,
+  );
 }
 
 class UserProfileRemoteDataSourceImpl implements UserProfileRemoteDataSource {
   final AuthApiService authApiService;
 
-  UserProfileRemoteDataSourceImpl({
-    required this.authApiService,
-  });
+  UserProfileRemoteDataSourceImpl({required this.authApiService});
 
   @override
   Future<FollowUnFollowModel> followUser(int followingUserId) async {
@@ -50,46 +55,53 @@ class UserProfileRemoteDataSourceImpl implements UserProfileRemoteDataSource {
 
   @override
   Future<List<PostModel>> fetchProfile(
-      int userId, int startRecord, int pageSize) async {
+    int userId,
+    int startRecord,
+    int pageSize,
+  ) async {
     final response = await authApiService.get(
       '/user/search/profile/$userId',
-      queryParameters: {
-        'start_record': startRecord,
-        'page_size': pageSize,
-      },
+      queryParameters: {'start_record': startRecord, 'page_size': pageSize},
     );
 
     return _handleResponse<List<PostModel>>(response, (data) {
-      var posts = (data['data'] as List)
-          .map((post) => PostModel.fromJson(post))
-          .toList();
+      var posts =
+          (data['data'] as List)
+              .map((post) => PostModel.fromJson(post))
+              .toList();
       return posts;
     });
   }
 
   @override
   Future<List<SearchUserModel>> searchUsers(
-      int userId, String searchText, int startRecord, int pageSize) async {
+    int userId,
+    String searchText,
+    int startRecord,
+    int pageSize,
+  ) async {
     final response = await authApiService.get(
       '/user/search/user/$userId',
       queryParameters: {
         'start_record': startRecord,
         'page_size': pageSize,
-        'search_text': searchText
+        'search_text': searchText,
       },
     );
 
     return _handleResponse<List<SearchUserModel>>(response, (data) {
-      var posts = (data['data'] as List)
-          .map((post) => SearchUserModel.fromJson(post))
-          .toList();
+      var posts =
+          (data['data'] as List)
+              .map((post) => SearchUserModel.fromJson(post))
+              .toList();
       return posts;
     });
   }
 
-  // Private method to handle API response
   Future<T> _handleResponse<T>(
-      dynamic response, T Function(Map<String, dynamic>) parser) async {
+    dynamic response,
+    T Function(Map<String, dynamic>) parser,
+  ) async {
     if (response.statusCode == HttpStatus.ok ||
         response.statusCode == HttpStatus.created) {
       try {
@@ -100,7 +112,8 @@ class UserProfileRemoteDataSourceImpl implements UserProfileRemoteDataSource {
       }
     } else {
       throw Exception(
-          'Unexpected response: ${response.statusCode}, ${response.data}');
+        'Unexpected response: ${response.statusCode}, ${response.data}',
+      );
     }
   }
 }

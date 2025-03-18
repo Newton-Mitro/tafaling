@@ -1,5 +1,7 @@
 import 'package:tafaling/core/errors/exceptions.dart';
+import 'package:tafaling/core/errors/failures.dart';
 import 'package:tafaling/core/network/network_info.dart';
+import 'package:tafaling/core/resources/response_state.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
 import 'package:tafaling/features/user/data/data_sources/user_profile_remote_data_source.dart';
 import 'package:tafaling/features/user/data/models/follow_un_follow_model.dart';
@@ -13,86 +15,90 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   UserProfileRepositoryImpl(this.remoteDataSource, this.networkService);
 
   @override
-  Future<FollowUnFollowModel> followUser(int followingUserId) async {
+  Future<DataState<FollowUnFollowModel>> followUser(int followingUserId) async {
     if (await networkService.isConnected == true) {
       try {
-        return await remoteDataSource.followUser(followingUserId);
-      } on ServerException {
-        throw Exception('Server exception.');
+        final result = await remoteDataSource.followUser(followingUserId);
+        return SuccessData(result);
+      } catch (e) {
+        if (e is UnauthorizedException) {
+          return FailedData(UnauthorizedFailure());
+        }
+        return FailedData(ServerFailure());
       }
     } else {
-      try {
-        // TODO: Local data source impl
-        // return remoteDataSource.fetchPosts(startRecord, startRecord);
-      } on CacheException {
-        throw Exception('No local data found');
-      }
+      return FailedData(NetworkFailure());
     }
-    throw Exception('Server exception.');
   }
 
   @override
-  Future<FollowUnFollowModel> unFollowUser(int followingUserId) async {
+  Future<DataState<FollowUnFollowModel>> unFollowUser(
+    int followingUserId,
+  ) async {
     if (await networkService.isConnected == true) {
       try {
-        return await remoteDataSource.unFollowUser(followingUserId);
-      } on ServerException {
-        throw Exception('Server exception.');
+        final result = await remoteDataSource.unFollowUser(followingUserId);
+        return SuccessData(result);
+      } catch (e) {
+        if (e is UnauthorizedException) {
+          return FailedData(UnauthorizedFailure());
+        }
+        return FailedData(ServerFailure());
       }
     } else {
-      try {
-        // TODO: Local data source impl
-        // return remoteDataSource.fetchPosts(startRecord, startRecord);
-      } on CacheException {
-        throw Exception('No local data found');
-      }
+      return FailedData(NetworkFailure());
     }
-    throw Exception('Server exception.');
   }
 
   @override
-  Future<List<PostModel>> fetchProfile(
-      int userId, int startRecord, int pageSize) async {
+  Future<DataState<List<PostModel>>> fetchProfile(
+    int userId,
+    int startRecord,
+    int pageSize,
+  ) async {
     if (await networkService.isConnected == true) {
       try {
-        var posts =
-            await remoteDataSource.fetchProfile(userId, startRecord, pageSize);
-
-        return posts;
-      } on ServerException {
-        throw Exception('Server exception.');
+        var posts = await remoteDataSource.fetchProfile(
+          userId,
+          startRecord,
+          pageSize,
+        );
+        return SuccessData(posts);
+      } catch (e) {
+        if (e is UnauthorizedException) {
+          return FailedData(UnauthorizedFailure());
+        }
+        return FailedData(ServerFailure());
       }
     } else {
-      try {
-        // TODO: Local data source impl
-        // return remoteDataSource.fetchPosts(startRecord, startRecord);
-      } on CacheException {
-        throw Exception('No local data found');
-      }
+      return FailedData(NetworkFailure());
     }
-    throw Exception('Server exception.');
   }
 
   @override
-  Future<List<SearchUserModel>> searchUsers(
-      int userId, String searchText, int startRecord, int pageSize) async {
+  Future<DataState<List<SearchUserModel>>> searchUsers(
+    int userId,
+    String searchText,
+    int startRecord,
+    int pageSize,
+  ) async {
     if (await networkService.isConnected == true) {
       try {
         var users = await remoteDataSource.searchUsers(
-            userId, searchText, startRecord, pageSize);
-
-        return users;
-      } on ServerException {
-        throw Exception('Server exception.');
+          userId,
+          searchText,
+          startRecord,
+          pageSize,
+        );
+        return SuccessData(users);
+      } catch (e) {
+        if (e is UnauthorizedException) {
+          return FailedData(UnauthorizedFailure());
+        }
+        return FailedData(ServerFailure());
       }
     } else {
-      try {
-        // TODO: Local data source impl
-        // return remoteDataSource.fetchPosts(startRecord, startRecord);
-      } on CacheException {
-        throw Exception('No local data found');
-      }
+      return FailedData(NetworkFailure());
     }
-    throw Exception('Server exception.');
   }
 }

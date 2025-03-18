@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tafaling/core/utils/app_shared_pref.dart';
 
+import 'package:tafaling/core/resources/response_state.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
 import 'package:tafaling/features/user/data/models/user_model.dart';
 import 'package:tafaling/features/user/domain/usecases/fetch_profile_usecase.dart';
@@ -22,65 +22,61 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     this.fetchProfileUseCase,
     this.followUserUseCase,
     this.unFollowUserUseCase,
-  ) : super(const ProfileState(
-          loading: false,
-          posts: [],
-          error: '',
-        )) {
+  ) : super(const ProfileState(loading: false, posts: [], error: '')) {
     on<FetchProfileEvent>(_onFetchProfile);
     on<FollowUserEvent>(_onFollowUserEvent);
     on<UnFollowUserEvent>(_onUnFollowUserEvent);
   }
 
-  Future<Map<String, dynamic>> _getUserCredentials() async {
-    var user = await AppSharedPref.getAuthUser();
-    var accessToken = await AppSharedPref.getAccessToken();
-    return {'userId': user?.id, 'accessToken': accessToken};
-  }
-
-  // Handles fetching posts
   void _onFetchProfile(
-      FetchProfileEvent event, Emitter<ProfileState> emit) async {
-    final credentials = await _getUserCredentials();
-    final accessToken = credentials['accessToken'];
-
+    FetchProfileEvent event,
+    Emitter<ProfileState> emit,
+  ) async {
     emit(state.copyWith(loading: true));
 
-    try {
-      // final oldPosts = state.posts;
-      var startRecord = (postsPerPage * (event.fetchPage - 1));
-      final newPosts =
-          await _fetchNewPosts(accessToken, event.userId, startRecord);
-      // Append new posts to the existing list
-      final updatedPosts = List<PostModel>.from(state.posts)..addAll(newPosts);
-      emit(state.copyWith(loading: false, error: '', posts: updatedPosts));
-    } catch (e) {
-      emit(state.copyWith(loading: false, error: e.toString()));
-    }
-  }
+    var startRecord = (postsPerPage * (event.fetchPage - 1));
+    final fetchProfileParams = FetchProfileParams(
+      userId: event.userId,
+      startRecord: startRecord,
+      pageSize: postsPerPage,
+    );
 
-  // Fetch new posts based on the access token and user data
-  Future<List<PostModel>> _fetchNewPosts(
-      String? accessToken, int userId, int startRecord) {
-    if (accessToken == null) {
-      return fetchProfileUseCase.call(-1, startRecord, postsPerPage);
+    final dataState = await fetchProfileUseCase.call(
+      params: fetchProfileParams,
+    );
+    if (dataState is SuccessData && dataState.data != null) {
+      final updatedPosts = List<PostModel>.from(state.posts)
+        ..addAll(dataState.data!);
+      emit(state.copyWith(posts: updatedPosts, loading: false));
     }
-    return fetchProfileUseCase.call(userId, startRecord, postsPerPage);
+
+    if (dataState is FailedData && dataState.error != null) {
+      emit(state.copyWith(error: dataState.error!.message, loading: false));
+    }
   }
 
   Future<void> _onFollowUserEvent(
-      FollowUserEvent event, Emitter<ProfileState> emit) async {
+    FollowUserEvent event,
+    Emitter<ProfileState> emit,
+  ) async {
     emit(state.copyWith(loading: true));
-    await followUserUseCase(event.followingUserId);
-
+    final followUserParams = FollowUserParams(
+      followingUserId: event.followingUserId,
+    );
+    await followUserUseCase.call(params: followUserParams);
     final updatedPosts = _updateSearchUsers(event.followingUserId);
     emit(state.copyWith(posts: updatedPosts, loading: false));
   }
 
   Future<void> _onUnFollowUserEvent(
-      UnFollowUserEvent event, Emitter<ProfileState> emit) async {
+    UnFollowUserEvent event,
+    Emitter<ProfileState> emit,
+  ) async {
     emit(state.copyWith(loading: true));
-    await unFollowUserUseCase(event.followingUserId);
+    final unFollowUserParams = UnFollowUserParams(
+      followingUserId: event.followingUserId,
+    );
+    await unFollowUserUseCase(params: unFollowUserParams);
     final updatedPosts = _updateSearchUsers(event.followingUserId);
     emit(state.copyWith(posts: updatedPosts, loading: false));
   }
@@ -91,9 +87,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       isFollowing: isFollowing,
     );
     final updatedPost = state.posts[0].copyWith(creator: updatedUser);
-
     final updatedPosts = List<PostModel>.from(state.posts)..[0] = updatedPost;
-
     return updatedPosts;
   }
 }
