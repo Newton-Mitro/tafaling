@@ -23,23 +23,20 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AuthBloc(
-        registrationUseCase: sl.get(),
-        loginUseCase: sl.get(),
-        logoutUseCase: sl.get(),
-        isLoggedInUseCase: sl.get(),
-        authUserUsecase: sl.get(),
-      ),
+      create:
+          (context) => AuthBloc(
+            registrationUseCase: sl.get(),
+            loginUseCase: sl.get(),
+            logoutUseCase: sl.get(),
+          ),
       child: Scaffold(
-        appBar: AppBar(
-          title: Text("Login"),
-        ),
+        appBar: AppBar(title: Text("Login")),
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
                 context.theme.colorScheme.primary,
-                context.theme.colorScheme.secondary
+                context.theme.colorScheme.secondary,
               ],
               end: Alignment.bottomCenter,
               begin: Alignment.topCenter,
@@ -81,9 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const AppLogo(
-                        width: 200,
-                      ),
+                      const AppLogo(width: 200),
                       const SizedBox(height: 20),
                       BlocBuilder<AuthBloc, AuthState>(
                         builder: (context, state) {
@@ -93,25 +88,34 @@ class _LoginScreenState extends State<LoginScreen> {
                               AppTextInput(
                                 controller: usernameController,
                                 label: 'Username',
-                                errorText: state is AuthValidationError
-                                    ? state.errors['email']?.isNotEmpty == true
-                                        ? state.errors['email']![0]
-                                        : null
-                                    : null,
-                                prefixIcon: const Icon(Icons.person,
-                                    color: Colors.white),
+                                errorText:
+                                    state is AuthValidationError
+                                        ? state.errors['email']?.isNotEmpty ==
+                                                true
+                                            ? state.errors['email']![0]
+                                            : null
+                                        : null,
+                                prefixIcon: const Icon(
+                                  Icons.person,
+                                  color: Colors.white,
+                                ),
                               ),
                               AppTextInput(
                                 controller: passwordController,
                                 label: 'Password',
-                                errorText: state is AuthValidationError
-                                    ? state.errors['password']?.isNotEmpty ==
-                                            true
-                                        ? state.errors['password']![0]
-                                        : null
-                                    : null,
-                                prefixIcon:
-                                    const Icon(Icons.lock, color: Colors.white),
+                                errorText:
+                                    state is AuthValidationError
+                                        ? state
+                                                    .errors['password']
+                                                    ?.isNotEmpty ==
+                                                true
+                                            ? state.errors['password']![0]
+                                            : null
+                                        : null,
+                                prefixIcon: const Icon(
+                                  Icons.lock,
+                                  color: Colors.white,
+                                ),
                                 obscureText: true,
                               ),
                               const SizedBox(height: 20),
@@ -120,16 +124,18 @@ class _LoginScreenState extends State<LoginScreen> {
                               if (state is! AuthLoading)
                                 ElevatedButton(
                                   onPressed: () {
-                                    context.read<AuthBloc>().add(LoginEvent(
-                                          username: usernameController.text,
-                                          password: passwordController.text,
-                                        ));
+                                    context.read<AuthBloc>().add(
+                                      LoginEvent(
+                                        username: usernameController.text,
+                                        password: passwordController.text,
+                                      ),
+                                    );
                                   },
                                   style: ElevatedButton.styleFrom(
                                     padding: EdgeInsets.symmetric(
                                       horizontal:
                                           MediaQuery.of(context).size.width *
-                                              0.1,
+                                          0.1,
                                       vertical: 10,
                                     ),
                                     backgroundColor: Colors.tealAccent,

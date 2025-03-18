@@ -19,33 +19,30 @@ class RegistrationScreen extends StatefulWidget {
 class _RegistrationScreenState extends State<RegistrationScreen> {
   final TextEditingController nameController = TextEditingController(text: '');
   final TextEditingController emailController = TextEditingController(text: '');
-  final TextEditingController passwordController =
-      TextEditingController(text: '');
-  final TextEditingController confirmPasswordController =
-      TextEditingController(text: '');
+  final TextEditingController passwordController = TextEditingController(
+    text: '',
+  );
+  final TextEditingController confirmPasswordController = TextEditingController(
+    text: '',
+  );
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AuthBloc(
-        registrationUseCase: sl.get(),
-        loginUseCase: sl.get(),
-        logoutUseCase: sl.get(),
-        isLoggedInUseCase: sl.get(),
-        authUserUsecase: sl.get(),
-      ),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Register",
+      create:
+          (context) => AuthBloc(
+            registrationUseCase: sl.get(),
+            loginUseCase: sl.get(),
+            logoutUseCase: sl.get(),
           ),
-        ),
+      child: Scaffold(
+        appBar: AppBar(title: Text("Register")),
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
                 context.theme.colorScheme.primary,
-                context.theme.colorScheme.secondary
+                context.theme.colorScheme.secondary,
               ],
               end: Alignment.bottomCenter,
               begin: Alignment.topCenter,
@@ -94,56 +91,64 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         spacing: 10,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          AppLogo(
-                            width: 200,
-                          ),
+                          AppLogo(width: 200),
                           const SizedBox(height: 20),
                           AppTextInput(
                             controller: nameController,
                             label: 'Name',
-                            errorText: state is AuthValidationError
-                                ? state.errors['name']?.isNotEmpty == true
-                                    ? state.errors['name']![0]
-                                    : null
-                                : null,
-                            prefixIcon: Icon(
-                              Icons.person,
-                            ),
+                            errorText:
+                                state is AuthValidationError
+                                    ? state.errors['name']?.isNotEmpty == true
+                                        ? state.errors['name']![0]
+                                        : null
+                                    : null,
+                            prefixIcon: Icon(Icons.person),
                           ),
                           AppTextInput(
                             controller: emailController,
                             label: 'Email',
-                            errorText: state is AuthValidationError
-                                ? state.errors['email']?.isNotEmpty == true
-                                    ? state.errors['email']![0]
-                                    : null
-                                : null,
-                            prefixIcon: Icon(
-                              Icons.email,
-                            ),
+                            errorText:
+                                state is AuthValidationError
+                                    ? state.errors['email']?.isNotEmpty == true
+                                        ? state.errors['email']![0]
+                                        : null
+                                    : null,
+                            prefixIcon: Icon(Icons.email),
                             keyboardType: TextInputType.emailAddress,
                           ),
                           AppTextInput(
                             controller: passwordController,
                             label: 'Password',
-                            errorText: state is AuthValidationError
-                                ? state.errors['password']?.isNotEmpty == true
-                                    ? state.errors['password']![0]
-                                    : null
-                                : null,
+                            errorText:
+                                state is AuthValidationError
+                                    ? state.errors['password']?.isNotEmpty ==
+                                            true
+                                        ? state.errors['password']![0]
+                                        : null
+                                    : null,
                             obscureText: true,
+                            prefixIcon: const Icon(
+                              Icons.lock,
+                              color: Colors.white,
+                            ),
                           ),
                           AppTextInput(
                             controller: confirmPasswordController,
                             label: 'Confirm Password',
-                            errorText: state is AuthValidationError
-                                ? state.errors['confirm_password']
-                                            ?.isNotEmpty ==
-                                        true
-                                    ? state.errors['confirm_password']![0]
-                                    : null
-                                : null,
+                            errorText:
+                                state is AuthValidationError
+                                    ? state
+                                                .errors['confirm_password']
+                                                ?.isNotEmpty ==
+                                            true
+                                        ? state.errors['confirm_password']![0]
+                                        : null
+                                    : null,
                             obscureText: true,
+                            prefixIcon: const Icon(
+                              Icons.lock,
+                              color: Colors.white,
+                            ),
                           ),
                           const SizedBox(height: 20),
                           BlocBuilder<AuthBloc, AuthState>(
@@ -153,17 +158,21 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               }
                               return ElevatedButton(
                                 onPressed: () {
-                                  context.read<AuthBloc>().add(RegisterEvent(
-                                        name: nameController.text,
-                                        email: emailController.text,
-                                        password: passwordController.text,
-                                        confirmPassword:
-                                            confirmPasswordController.text,
-                                      ));
+                                  context.read<AuthBloc>().add(
+                                    RegisterEvent(
+                                      name: nameController.text,
+                                      email: emailController.text,
+                                      password: passwordController.text,
+                                      confirmPassword:
+                                          confirmPasswordController.text,
+                                    ),
+                                  );
                                 },
                                 style: ElevatedButton.styleFrom(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 10),
+                                    horizontal: 20,
+                                    vertical: 10,
+                                  ),
                                   backgroundColor: Colors.tealAccent,
                                 ),
                                 child: const Text('Register'),
