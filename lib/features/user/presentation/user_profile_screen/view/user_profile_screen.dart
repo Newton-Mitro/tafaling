@@ -1,6 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tafaling/configs/routes/route_name.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
@@ -123,40 +123,32 @@ class UserProfileScreen extends StatelessWidget {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   const SizedBox(height: 10),
-                                  SizedBox(
-                                    width: 100,
-                                    child: Container(
-                                      width: 100,
-                                      height: 100,
-                                      padding: const EdgeInsets.all(1),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(50),
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(50),
-                                        child:
-                                            profilePic.isNotEmpty
-                                                ? Image.network(
-                                                  profilePic,
-                                                  fit: BoxFit.cover,
-                                                  errorBuilder: (
-                                                    context,
-                                                    error,
-                                                    stackTrace,
-                                                  ) {
-                                                    return Image.asset(
-                                                      'assets/images/avatar.png',
-                                                      fit: BoxFit.cover,
-                                                    );
-                                                  },
-                                                )
-                                                : Image.asset(
-                                                  'assets/images/avatar.png',
-                                                  fit: BoxFit.cover,
-                                                ),
-                                      ),
-                                    ),
+                                  CachedNetworkImage(
+                                    imageUrl: profilePic,
+                                    imageBuilder:
+                                        (context, imageProvider) => ClipOval(
+                                          child: Image(
+                                            image: imageProvider,
+                                            fit: BoxFit.cover,
+                                            width: 100, // Set width
+                                            height: 100, // Set height
+                                          ),
+                                        ),
+                                    placeholder:
+                                        (context, url) => SizedBox(
+                                          width: 100,
+                                          height: 100,
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                    errorWidget:
+                                        (context, url, error) => ClipOval(
+                                          child: Image.asset(
+                                            'assets/images/misc/avatar.png',
+                                            fit: BoxFit.cover,
+                                            width: 100, // Ensure same size
+                                            height: 100, // Ensure same size
+                                          ),
+                                        ),
                                   ),
                                   const SizedBox(height: 10),
                                   Text(

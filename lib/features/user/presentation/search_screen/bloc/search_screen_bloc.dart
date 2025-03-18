@@ -40,7 +40,7 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchState> {
     FollowUserEvent event,
     Emitter<SearchState> emit,
   ) async {
-    emit(SearchLoading());
+    // emit(SearchLoading());
     final followUserPrams = FollowUserParams(
       followingUserId: event.followingUserId,
     );
@@ -59,7 +59,7 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchState> {
     UnFollowUserEvent event,
     Emitter<SearchState> emit,
   ) async {
-    emit(SearchLoading());
+    // emit(SearchLoading());
     final unFolloUserParams = UnFollowUserParams(
       followingUserId: event.followingUserId,
     );

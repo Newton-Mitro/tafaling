@@ -1,12 +1,31 @@
-import 'package:tafaling/features/post/data/models/post_model.dart';
+import 'package:tafaling/core/resources/response_state.dart';
+import 'package:tafaling/core/usecases/usecase.dart';
+import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/post/domain/repositories/post_repository.dart';
 
-class FetchUserPostsUseCase {
+final class FetchUserPostsPrams {
+  final int userId;
+  final int startRecord;
+  final int pageSize;
+  const FetchUserPostsPrams({
+    required this.userId,
+    required this.startRecord,
+    required this.pageSize,
+  });
+}
+
+class FetchUserPostsUseCase
+    extends UseCase<DataState<List<PostEntity>>, FetchUserPostsPrams> {
   final PostRepository repository;
 
   FetchUserPostsUseCase(this.repository);
 
-  Future<List<PostModel>> call(int userId, int startRecord, int pageSize) {
-    return repository.fetchUserPosts(userId, startRecord, pageSize);
+  @override
+  Future<DataState<List<PostEntity>>> call({FetchUserPostsPrams? params}) {
+    return repository.fetchUserPosts(
+      params?.userId ?? 0,
+      params?.startRecord ?? 0,
+      params?.pageSize ?? 0,
+    );
   }
 }

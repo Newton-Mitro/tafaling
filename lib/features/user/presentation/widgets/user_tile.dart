@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 
@@ -25,12 +26,34 @@ class UserTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: context.theme.colorScheme.surface,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       child: ListTile(
-        leading: CircleAvatar(
-          backgroundImage: NetworkImage(userAvatar),
+        leading: CachedNetworkImage(
+          imageUrl: userAvatar,
+          imageBuilder:
+              (context, imageProvider) => ClipOval(
+                child: Image(
+                  image: imageProvider,
+                  fit: BoxFit.cover,
+                  width: 40, // Set width
+                  height: 40, // Set height
+                ),
+              ),
+          placeholder:
+              (context, url) => SizedBox(
+                width: 40,
+                height: 40,
+                child: CircularProgressIndicator(),
+              ),
+          errorWidget:
+              (context, url, error) => ClipOval(
+                child: Image.asset(
+                  'assets/images/misc/avatar.png',
+                  fit: BoxFit.cover,
+                  width: 40, // Ensure same size
+                  height: 40, // Ensure same size
+                ),
+              ),
         ),
         title: Text(
           userName,
@@ -45,11 +68,14 @@ class UserTile extends StatelessWidget {
             ElevatedButton(
               onPressed: () => onFollowToggle(),
               style: ElevatedButton.styleFrom(
-                backgroundColor: isFollowing
-                    ? const Color.fromARGB(255, 13, 82, 14)
-                    : const Color.fromARGB(255, 6, 47, 82),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                backgroundColor:
+                    isFollowing
+                        ? const Color.fromARGB(255, 13, 82, 14)
+                        : const Color.fromARGB(255, 6, 47, 82),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 5,
+                ),
                 minimumSize: const Size(70, 30),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.0),
@@ -60,25 +86,25 @@ class UserTile extends StatelessWidget {
                 style: const TextStyle(color: Colors.white, fontSize: 12),
               ),
             ),
-            friendshipStatus == 2 // If already friends
+            friendshipStatus ==
+                    2 // If already friends
                 ? IconButton(
-                    icon: const Icon(
-                      Icons.person,
-                      color: Colors.white70,
-                    ),
-                    onPressed: () {},
-                  )
+                  icon: const Icon(Icons.person, color: Colors.white70),
+                  onPressed: () {},
+                )
                 : IconButton(
-                    icon: Icon(
-                      friendshipStatus == 1
-                          ? Icons.person_remove // Pending friend request
-                          : Icons.person_add, // Not friends
-                      color: friendshipStatus == 1
-                          ? const Color.fromARGB(255, 13, 82, 14)
-                          : const Color.fromARGB(255, 6, 47, 82),
-                    ),
-                    onPressed: () => onFriendRequestToggle(),
+                  icon: Icon(
+                    friendshipStatus == 1
+                        ? Icons
+                            .person_remove // Pending friend request
+                        : Icons.person_add, // Not friends
+                    color:
+                        friendshipStatus == 1
+                            ? const Color.fromARGB(255, 13, 82, 14)
+                            : const Color.fromARGB(255, 6, 47, 82),
                   ),
+                  onPressed: () => onFriendRequestToggle(),
+                ),
           ],
         ),
         onTap: () => onViewProfile(),

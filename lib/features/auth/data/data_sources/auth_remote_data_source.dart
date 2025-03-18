@@ -9,7 +9,11 @@ import 'package:tafaling/features/user/data/models/user_model.dart';
 abstract class AuthRemoteDataSource {
   Future<AuthUserModel> login(String? email, String? password);
   Future<AuthUserModel> register(
-      String name, String email, String password, String confirmPassword);
+    String name,
+    String email,
+    String password,
+    String confirmPassword,
+  );
   Future<void> logout();
 }
 
@@ -17,18 +21,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final ApiService apiService;
   final AuthApiService authApiService;
 
-  AuthRemoteDataSourceImpl(
-      {required this.apiService, required this.authApiService});
+  AuthRemoteDataSourceImpl({
+    required this.apiService,
+    required this.authApiService,
+  });
 
   @override
   Future<AuthUserModel> login(String? email, String? password) async {
     try {
       final response = await apiService.post(
         '/auth/login',
-        data: {
-          'email': email,
-          'password': password,
-        },
+        data: {'email': email, 'password': password},
       );
 
       if (response.statusCode == HttpStatus.ok) {
@@ -47,8 +50,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<AuthUserModel> register(String name, String email, String password,
-      String confirmPassword) async {
+  Future<AuthUserModel> register(
+    String name,
+    String email,
+    String password,
+    String confirmPassword,
+  ) async {
     try {
       final response = await apiService.post(
         '/auth/register',
@@ -56,11 +63,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           'name': name,
           'email': email,
           'password': password,
-          'password_confirmation': confirmPassword
+          'password_confirmation': confirmPassword,
         },
       );
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == HttpStatus.created) {
         final data = response.data!['message'];
         return data;
       } else {
@@ -73,8 +80,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<void> logout() async {
-    await authApiService.get(
-      '/auth/logout',
-    );
+    await authApiService.get('/auth/logout');
   }
 }

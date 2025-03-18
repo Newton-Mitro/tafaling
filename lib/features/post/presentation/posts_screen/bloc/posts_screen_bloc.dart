@@ -1,7 +1,7 @@
-import 'dart:math';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tafaling/core/errors/failures.dart';
+import 'package:tafaling/core/resources/response_state.dart';
 import 'package:tafaling/core/utils/app_shared_pref.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
 import 'package:tafaling/features/post/domain/usecases/dis_like_post_usecase.dart';
@@ -26,42 +26,31 @@ class PostsScreenBloc extends Bloc<PostsScreenEvent, PostsScreenState> {
     this.fetchUserPostsUseCase,
     this.likePostUseCase,
     this.disLikePostUseCase,
-  ) : super(const PostsScreenState(
-            isFetching: false,
-            posts: [],
-            currentPage: 0,
-            error: '',
-            loggedInUserId: 0,
-            loggedInState: 0,
-            profileUserId: 0,
-            profileState: 0)) {
+  ) : super(
+        const PostsScreenState(
+          isFetching: false,
+          posts: [],
+          currentPage: 0,
+          error: '',
+        ),
+      ) {
     _onLoadState();
 
     on<LikePostEvent>(_onPostInteraction);
     on<DisLikePostEvent>(_onPostInteraction);
-    on<FetchUserProfileEvent>(_onFetchUserProfile);
     on<PageChangeEvent>(_onPageChange);
     on<InitPostsScreenEvent>(_onInitPostsScreen);
     on<FetchPostsEvent>(_onFetchPosts);
   }
 
   _onLoadState() async {
-    final credentials = await _getUserCredentials();
-    final userId = credentials['userId'];
-    final accessToken = credentials['accessToken'];
-    emit(state.copyWith(
-        isFetching: false,
-        posts: state.posts,
-        currentPage: state.currentPage,
-        error: '',
-        loggedInUserId: userId != null && accessToken != null ? userId : 0,
-        loggedInState: 0,
-        profileUserId: 0,
-        profileState: 0));
+    emit(state.copyWith(isFetching: false, posts: state.posts, error: ''));
   }
 
   Future<void> _onInitPostsScreen(
-      InitPostsScreenEvent event, Emitter<PostsScreenState> emit) async {
+    InitPostsScreenEvent event,
+    Emitter<PostsScreenState> emit,
+  ) async {
     emit(
       state.copyWith(
         isFetching: false,
@@ -83,89 +72,96 @@ class PostsScreenBloc extends Bloc<PostsScreenEvent, PostsScreenState> {
   }
 
   Future<void> _onPageChange(
-      PageChangeEvent event, Emitter<PostsScreenState> emit) async {
+    PageChangeEvent event,
+    Emitter<PostsScreenState> emit,
+  ) async {
     if (event.currentPage != state.currentPage) {
       emit(state.copyWith(currentPage: event.currentPage));
     }
   }
 
   Future<void> _onFetchPosts(
-      FetchPostsEvent event, Emitter<PostsScreenState> emit) async {
-    try {
-      emit(state.copyWith(
-        isFetching: true,
-        posts: state.posts,
-      ));
+    FetchPostsEvent event,
+    Emitter<PostsScreenState> emit,
+  ) async {
+    emit(state.copyWith(isFetching: true, posts: state.posts));
 
-      final credentials = await _getUserCredentials();
-      final userId = credentials['userId'];
-      final accessToken = credentials['accessToken'];
+    final credentials = await _getUserCredentials();
+    final userId = credentials['userId'];
+    final accessToken = credentials['accessToken'];
 
-      int startRecord = postsPerPage * (_fetchPage - 1);
-      List<PostModel> posts = [];
+    int startRecord = postsPerPage * (_fetchPage - 1);
 
-      // Fetch posts based on authentication status
-      if (accessToken == null) {
-        posts = await fetchPostsUseCase(-1, startRecord, postsPerPage);
-      } else if (userId != null) {
-        posts = await fetchUserPostsUseCase(userId, startRecord, postsPerPage);
-      }
+    // Fetch posts based on authentication status
+    DataState dataState = FailedData(ServerFailure());
+    if (accessToken == null) {
+      final fetchUserParams = FetchPostsPrams(
+        userId: -1,
+        startRecord: startRecord,
+        pageSize: postsPerPage,
+      );
 
-      print(posts.length);
+      dataState = await fetchPostsUseCase(params: fetchUserParams);
+    } else if (userId != null) {
+      final fetchUserDataParams = FetchUserPostsPrams(
+        userId: userId,
+        startRecord: startRecord,
+        pageSize: postsPerPage,
+      );
 
+      dataState = await fetchUserPostsUseCase(params: fetchUserDataParams);
+    }
+
+    if (dataState is SuccessData && dataState.data != null) {
+      emit(
+        state.copyWith(
+          posts: [...state.posts + dataState.data!],
+          isFetching: true,
+        ),
+      );
       _fetchPage++;
-
-      emit(state.copyWith(
-        posts: [...state.posts + posts],
-        isFetching: true,
-      ));
-    } catch (error) {
-      emit(state.copyWith(
-        isFetching: false,
-        error: error.toString(),
-      ));
-    } finally {
-      emit(state.copyWith(
-        isFetching: false,
-        error: '',
-      ));
+    }
+    if (dataState is FailedData && dataState.error != null) {
+      emit(state.copyWith(isFetching: false, error: dataState.error!.message));
     }
   }
 
   Future<void> _onPostInteraction(
-      PostsScreenEvent event, Emitter<PostsScreenState> emit) async {
-    final credentials = await _getUserCredentials();
-    final userId = credentials['userId'];
-    final accessToken = credentials['accessToken'];
-    if (accessToken == null) {
-      emit(state.copyWith(
-          loggedInUserId: 0,
-          loggedInState: Random().nextInt(100) + 50, // Temporary random state
-          profileUserId: 0,
-          profileState: 0));
-      return;
-    }
+    PostsScreenEvent event,
+    Emitter<PostsScreenState> emit,
+  ) async {
+    final isLikeEvent = event is LikePostEvent;
+    final postId = isLikeEvent ? (event).id : (event as DisLikePostEvent).id;
 
-    final isLike = event is LikePostEvent;
-    final postId = isLike ? (event).id : (event as DisLikePostEvent).id;
+    final likeParam = LikePostPrams(postId: postId);
+    final disLikeParam = DisLikePostPrams(postId: postId);
 
-    try {
-      final likeModel = isLike
-          ? await likePostUseCase(postId)
-          : await disLikePostUseCase(postId);
-      final updatedPosts =
-          _updatePostLikeStatus(postId, likeModel.likeCount, isLike ? 1 : 0);
+    emit(state.copyWith(isFetching: true));
+
+    final dataState =
+        isLikeEvent
+            ? await likePostUseCase(params: likeParam)
+            : await disLikePostUseCase(params: disLikeParam);
+    if (dataState is SuccessData) {
+      final updatedPosts = _updatePostLikeStatus(
+        postId,
+        dataState.data?.likeCount ?? 0,
+        isLikeEvent ? 1 : 0,
+      );
 
       emit(state.copyWith(posts: updatedPosts));
-    } catch (error) {
-      emit(state.copyWith(error: error.toString()));
-    } finally {
-      emit(state.copyWith(isFetching: false));
+    }
+
+    if (dataState is FailedData && dataState.error != null) {
+      emit(state.copyWith(isFetching: false, error: dataState.error!.message));
     }
   }
 
   List<PostModel> _updatePostLikeStatus(
-      int postId, int likeCount, int isLiked) {
+    int postId,
+    int likeCount,
+    int isLiked,
+  ) {
     final postIndex = state.posts.indexWhere((post) => post.id == postId);
     if (postIndex == -1) return state.posts;
 
@@ -178,25 +174,5 @@ class PostsScreenBloc extends Bloc<PostsScreenEvent, PostsScreenState> {
       ..[postIndex] = updatedPost;
 
     return updatedPosts;
-  }
-
-  Future<void> _onFetchUserProfile(
-      FetchUserProfileEvent event, Emitter<PostsScreenState> emit) async {
-    final credentials = await _getUserCredentials();
-    final userId = credentials['userId'];
-    final accessToken = credentials['accessToken'];
-    if (accessToken == null) {
-      emit(state.copyWith(
-          loggedInUserId: 0,
-          loggedInState: 0,
-          profileUserId: 0,
-          profileState: Random().nextInt(100) + 50)); // Temporary random state
-    } else {
-      emit(state.copyWith(
-          loggedInUserId: 0,
-          loggedInState: 0,
-          profileUserId: event.userId,
-          profileState: Random().nextInt(100) + 50)); // Temporary random state
-    }
   }
 }

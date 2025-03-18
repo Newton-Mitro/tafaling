@@ -9,7 +9,10 @@ import 'package:tafaling/features/post/data/models/post_model.dart';
 abstract class PostRemoteDataSource {
   Future<List<PostModel>> fetchPosts(int userId, int startRecord, int pageSize);
   Future<List<PostModel>> fetchUserPosts(
-      int userId, int startRecord, int pageSize);
+    int userId,
+    int startRecord,
+    int pageSize,
+  );
   Future<LikeModel> likePost(int postId);
   Future<LikeModel> disLikePost(int postId);
 }
@@ -25,82 +28,93 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
 
   @override
   Future<List<PostModel>> fetchPosts(
-      int userId, int startRecord, int pageSize) async {
-    final response = await apiService.get(
-      '/posts/v2/all/$userId',
-      queryParameters: {
-        'start_record': startRecord,
-        'page_size': pageSize,
-      },
-    );
+    int userId,
+    int startRecord,
+    int pageSize,
+  ) async {
+    try {
+      final response = await apiService.get(
+        '/posts/v2/all/$userId',
+        queryParameters: {'start_record': startRecord, 'page_size': pageSize},
+      );
 
-    return _handleResponse<List<PostModel>>(response, (data) {
-      var posts = (data['data'] as List)
-          .map((post) => PostModel.fromJson(post))
-          .toList();
-      return posts;
-    });
+      if (response.statusCode == HttpStatus.ok) {
+        final data = response.data!['data'];
+        final List<PostModel> posts =
+            (data as List).map((post) => PostModel.fromJson(post)).toList();
+        return posts;
+      } else {
+        throw Exception('Post fetching failed');
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
   Future<List<PostModel>> fetchUserPosts(
-      int userId, int startRecord, int pageSize) async {
-    final response = await authApiService.get(
-      '/posts/v2/user/$userId',
-      queryParameters: {
-        'start_record': startRecord,
-        'page_size': pageSize,
-      },
-    );
+    int userId,
+    int startRecord,
+    int pageSize,
+  ) async {
+    try {
+      final response = await authApiService.get(
+        '/posts/v2/user/$userId',
+        queryParameters: {'start_record': startRecord, 'page_size': pageSize},
+      );
 
-    return _handleResponse<List<PostModel>>(response, (data) {
-      var posts = (data['data'] as List)
-          .map((post) => PostModel.fromJson(post))
-          .toList();
-      return posts;
-    });
+      if (response.statusCode == HttpStatus.ok) {
+        final data = response.data!['data'];
+        final List<PostModel> posts =
+            (data as List).map((post) => PostModel.fromJson(post)).toList();
+        return posts;
+      } else {
+        throw Exception('Post fetching failed');
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
   Future<LikeModel> likePost(int postId) async {
-    final response = await authApiService.post(
-      '/posts/add_post_like',
-      data: {"post_id": postId},
-    );
+    try {
+      final response = await authApiService.post(
+        '/posts/add_post_like',
+        data: {"post_id": postId},
+      );
 
-    return _handleResponse<LikeModel>(response, (data) {
-      var likeData = jsonDecode(data['data']);
-      return LikeModel(likeCount: likeData['LikeCount']);
-    });
+      if (response.statusCode == HttpStatus.created) {
+        final data = response.data!['data'];
+        final decodedData = jsonDecode(data);
+        final likeData = LikeModel.fromJson(decodedData);
+        return likeData;
+      } else {
+        throw Exception('Post fetching failed');
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
   Future<LikeModel> disLikePost(int postId) async {
-    final response = await authApiService.post(
-      '/posts/remove_post_like',
-      data: {"post_id": postId},
-    );
+    try {
+      final response = await authApiService.post(
+        '/posts/remove_post_like',
+        data: {"post_id": postId},
+      );
 
-    return _handleResponse<LikeModel>(response, (data) {
-      var likeData = jsonDecode(data['data']);
-      return LikeModel(likeCount: likeData['LikeCount']);
-    });
-  }
-
-  // Private method to handle API response
-  Future<T> _handleResponse<T>(
-      dynamic response, T Function(Map<String, dynamic>) parser) async {
-    if (response.statusCode == HttpStatus.ok ||
-        response.statusCode == HttpStatus.created) {
-      try {
-        final data = response.data as Map<String, dynamic>;
-        return parser(data);
-      } catch (e) {
-        throw Exception('Failed to parse response data: ${e.toString()}');
+      if (response.statusCode == HttpStatus.created) {
+        final data = response.data!['data'];
+        final decodedData = jsonDecode(data);
+        final likeData = LikeModel.fromJson(decodedData);
+        return likeData;
+      } else {
+        throw Exception('Post fetching failed');
       }
-    } else {
-      throw Exception(
-          'Unexpected response: ${response.statusCode}, ${response.data}');
+    } catch (e) {
+      rethrow;
     }
   }
 }

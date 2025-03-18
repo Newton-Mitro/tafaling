@@ -1,5 +1,7 @@
 import 'package:tafaling/core/errors/exceptions.dart';
+import 'package:tafaling/core/errors/failures.dart';
 import 'package:tafaling/core/network/network_info.dart';
+import 'package:tafaling/core/resources/response_state.dart';
 import 'package:tafaling/features/post/data/data_sources/post_remote_data_source.dart';
 import 'package:tafaling/features/post/data/models/like_model.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
@@ -12,86 +14,130 @@ class PostRepositoryImpl implements PostRepository {
   PostRepositoryImpl(this.remoteDataSource, this.networkService);
 
   @override
-  Future<List<PostModel>> fetchPosts(
-      int userId, int startRecord, int pageSize) async {
+  Future<DataState<List<PostModel>>> fetchPosts(
+    int userId,
+    int startRecord,
+    int pageSize,
+  ) async {
     if (await networkService.isConnected == true) {
       try {
-        var posts =
-            await remoteDataSource.fetchPosts(userId, startRecord, pageSize);
+        var posts = await remoteDataSource.fetchPosts(
+          userId,
+          startRecord,
+          pageSize,
+        );
 
-        return posts;
-      } on ServerException {
-        throw Exception('Server exception.');
+        return SuccessData(posts);
+      } catch (e) {
+        if (e is UnauthorizedException) {
+          return FailedData(UnauthorizedFailure());
+        }
+        return FailedData(ServerFailure());
       }
     } else {
       try {
         // TODO: Local data source impl
-        // return remoteDataSource.fetchPosts(startRecord, startRecord);
-      } on CacheException {
-        throw Exception('No local data found');
+        var posts = await remoteDataSource.fetchPosts(
+          userId,
+          startRecord,
+          pageSize,
+        );
+
+        return SuccessData(posts);
+      } catch (e) {
+        if (e is CacheException) {
+          return FailedData(CacheFailure());
+        }
+        return FailedData(ServerFailure());
       }
     }
-    throw Exception('Server exception.');
   }
 
   @override
-  Future<List<PostModel>> fetchUserPosts(
-      int userId, int startRecord, int pageSize) async {
+  Future<DataState<List<PostModel>>> fetchUserPosts(
+    int userId,
+    int startRecord,
+    int pageSize,
+  ) async {
     if (await networkService.isConnected == true) {
       try {
         var posts = await remoteDataSource.fetchUserPosts(
-            userId, startRecord, pageSize);
+          userId,
+          startRecord,
+          pageSize,
+        );
 
-        return posts;
-      } on ServerException {
-        throw Exception('Server exception.');
+        return SuccessData(posts);
+      } catch (e) {
+        if (e is UnauthorizedException) {
+          return FailedData(UnauthorizedFailure());
+        }
+        return FailedData(ServerFailure());
       }
     } else {
       try {
         // TODO: Local data source impl
-        // return remoteDataSource.fetchPosts(startRecord, startRecord);
-      } on CacheException {
-        throw Exception('No local data found');
+        var posts = await remoteDataSource.fetchUserPosts(
+          userId,
+          startRecord,
+          pageSize,
+        );
+
+        return SuccessData(posts);
+      } catch (e) {
+        if (e is CacheException) {
+          return FailedData(CacheFailure());
+        }
+        return FailedData(ServerFailure());
       }
     }
-    throw Exception('Server exception.');
   }
 
   @override
-  Future<LikeModel> likePost(int postId) async {
+  Future<DataState<LikeModel>> likePost(int postId) async {
     if (await networkService.isConnected == true) {
       try {
-        return await remoteDataSource.likePost(postId);
-      } on ServerException {
-        throw Exception('Server exception.');
+        return SuccessData(await remoteDataSource.likePost(postId));
+      } catch (e) {
+        if (e is UnauthorizedException) {
+          return FailedData(UnauthorizedFailure());
+        }
+        return FailedData(ServerFailure());
       }
     } else {
       try {
         // TODO: Local data source impl
-        // return remoteDataSource.fetchPosts(startRecord, startRecord);
-      } on CacheException {
-        throw Exception('No local data found');
+        return SuccessData(await remoteDataSource.likePost(postId));
+      } catch (e) {
+        if (e is CacheException) {
+          return FailedData(CacheFailure());
+        }
+        return FailedData(ServerFailure());
       }
     }
-    throw Exception('Server exception.');
   }
 
   @override
-  Future<LikeModel> disLikePost(int postId) async {
+  Future<DataState<LikeModel>> disLikePost(int postId) async {
     if (await networkService.isConnected == true) {
       try {
-        return await remoteDataSource.disLikePost(postId);
-      } on ServerException {
-        throw Exception('Server exception.');
+        return SuccessData(await remoteDataSource.disLikePost(postId));
+      } catch (e) {
+        if (e is UnauthorizedException) {
+          return FailedData(UnauthorizedFailure());
+        }
+        return FailedData(ServerFailure());
       }
     } else {
       try {
         // TODO: Local data source impl
-        // return remoteDataSource.fetchPosts(startRecord, startRecord);
-      } on CacheException {
-        throw Exception('No local data found');
+        return SuccessData(await remoteDataSource.disLikePost(postId));
+      } catch (e) {
+        if (e is CacheException) {
+          return FailedData(CacheFailure());
+        }
+        return FailedData(ServerFailure());
       }
     }
-    throw Exception('Server exception.');
   }
 }
