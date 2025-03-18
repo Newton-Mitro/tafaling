@@ -34,17 +34,11 @@ class PostsScreenBloc extends Bloc<PostsScreenEvent, PostsScreenState> {
           error: '',
         ),
       ) {
-    _onLoadState();
-
     on<LikePostEvent>(_onPostInteraction);
     on<DisLikePostEvent>(_onPostInteraction);
     on<PageChangeEvent>(_onPageChange);
     on<InitPostsScreenEvent>(_onInitPostsScreen);
     on<FetchPostsEvent>(_onFetchPosts);
-  }
-
-  _onLoadState() async {
-    emit(state.copyWith(isFetching: false, posts: state.posts, error: ''));
   }
 
   Future<void> _onInitPostsScreen(
@@ -57,10 +51,6 @@ class PostsScreenBloc extends Bloc<PostsScreenEvent, PostsScreenState> {
         posts: state.posts,
         currentPage: state.currentPage,
         error: '',
-        loggedInUserId: 0,
-        loggedInState: 0,
-        profileUserId: 0,
-        profileState: 0,
       ),
     );
   }
