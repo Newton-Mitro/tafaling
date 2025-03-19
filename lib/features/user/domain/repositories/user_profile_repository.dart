@@ -1,7 +1,6 @@
 import 'package:tafaling/core/resources/response_state.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/user/domain/entities/follow_unfollow_entity.dart';
-import 'package:tafaling/features/user/domain/entities/search_user_entity.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 
 abstract class UserProfileRepository {
@@ -12,7 +11,7 @@ abstract class UserProfileRepository {
     int startRecord,
     int pageSize,
   );
-  Future<DataState<List<SearchUserEntity>>> searchUsers(
+  Future<DataState<List<UserEntity>>> searchUsers(
     int userId,
     String searchText,
     int startRecord,

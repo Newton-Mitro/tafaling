@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
-import 'package:tafaling/features/post/presentation/widgets/read_more_text.dart';
+import 'package:tafaling/features/post/presentation/widgets/main_post_viewer/read_more_text.dart';
 
 class PostBodyText extends StatefulWidget {
   final PostEntity postModel;

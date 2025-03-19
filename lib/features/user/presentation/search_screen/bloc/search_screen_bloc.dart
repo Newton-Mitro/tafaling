@@ -1,8 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/core/resources/response_state.dart';
 import 'package:tafaling/core/utils/app_shared_pref.dart';
-import 'package:tafaling/features/user/data/models/search_user_model.dart';
-import 'package:tafaling/features/user/domain/entities/search_user_entity.dart';
+import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/domain/usecases/follow_user_usecase.dart';
 import 'package:tafaling/features/user/domain/usecases/search_users_usecase.dart';
 import 'package:tafaling/features/user/domain/usecases/un_follow_user_usecase.dart';
@@ -76,9 +75,9 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchState> {
     }
   }
 
-  List<SearchUserEntity> _updateSearchUsers(int postId) {
+  List<UserEntity> _updateSearchUsers(int postId) {
     final postIndex = (state as SearchLoaded).users.indexWhere(
-      (user) => user.userId == postId,
+      (user) => user.id == postId,
     );
     if (postIndex == -1) return (state as SearchLoaded).users;
 
@@ -87,9 +86,8 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchState> {
       isFollowing: isFollowing,
     );
 
-    final updatedPosts = List<SearchUserEntity>.from(
-      (state as SearchLoaded).users,
-    )..[postIndex] = updatedPost;
+    final updatedPosts = List<UserEntity>.from((state as SearchLoaded).users)
+      ..[postIndex] = updatedPost;
 
     return updatedPosts;
   }
@@ -98,9 +96,9 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchState> {
     SearchUsersEvent event,
     Emitter<SearchState> emit,
   ) async {
-    final List<SearchUserModel> currentUsers =
+    final List<UserEntity> currentUsers =
         state is SearchLoaded
-            ? List<SearchUserModel>.from((state as SearchLoaded).users)
+            ? List<UserEntity>.from((state as SearchLoaded).users)
             : [];
 
     emit(SearchLoading());

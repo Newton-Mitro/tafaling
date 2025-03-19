@@ -1,8 +1,18 @@
 part of 'following_users_bloc.dart';
 
-sealed class FollowingUsersEvent extends Equatable {
+abstract class FollowingUsersEvent extends Equatable {
   const FollowingUsersEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
+}
+
+class FetchFollowingUsers extends FollowingUsersEvent {
+  final int userId;
+  final int page;
+
+  const FetchFollowingUsers({required this.userId, required this.page});
+
+  @override
+  List<Object?> get props => [userId, page];
 }

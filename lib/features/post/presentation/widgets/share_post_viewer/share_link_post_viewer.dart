@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:tafaling/core/utils/url_helper.dart';
-import 'package:tafaling/features/post/presentation/widgets/youtube_video_player.dart';
+import 'package:tafaling/features/post/presentation/widgets/share_post_viewer/share_youtube_video_player.dart';
 
-class LinkPreviewer extends StatefulWidget {
+class ShareLinkPreviewer extends StatefulWidget {
   final String url;
 
-  const LinkPreviewer({super.key, required this.url});
+  const ShareLinkPreviewer({super.key, required this.url});
 
   @override
-  State<LinkPreviewer> createState() => _LinkPreviewerState();
+  State<ShareLinkPreviewer> createState() => _ShareLinkPreviewerState();
 }
 
-class _LinkPreviewerState extends State<LinkPreviewer> {
+class _ShareLinkPreviewerState extends State<ShareLinkPreviewer> {
   Metadata? _metadata;
   bool _isLoading = true;
   bool _hasError = false;
@@ -57,21 +57,22 @@ class _LinkPreviewerState extends State<LinkPreviewer> {
     if (UrlHelper.isYouTubeUrl(widget.url)) {
       return Container(
         alignment: Alignment.center,
-        child: YouTubeVideoPlayer(videoUrl: widget.url),
+        child: ShareYouTubeVideoPlayer(videoUrl: widget.url),
       );
     }
 
     return _isLoading
         ? const Center(child: CircularProgressIndicator())
         : _hasError
-            ? _buildErrorWidget()
-            : _buildPreviewWidget();
+        ? _buildErrorWidget()
+        : _buildPreviewWidget();
   }
 
   Widget _buildErrorWidget() {
     return Container(
-        alignment: Alignment.center,
-        child: Image.asset('assets/images/misc/no_preview.png'));
+      alignment: Alignment.center,
+      child: Image.asset('assets/images/misc/no_preview.png'),
+    );
   }
 
   Widget _buildPreviewWidget() {
@@ -109,22 +110,13 @@ class _LinkPreviewerState extends State<LinkPreviewer> {
           if (_metadata?.title != null)
             Text(
               _metadata!.title!,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           if (_metadata?.desc != null)
-            Text(
-              _metadata!.desc!,
-              style: const TextStyle(fontSize: 14),
-            ),
+            Text(_metadata!.desc!, style: const TextStyle(fontSize: 14)),
           Text(
             widget.url,
-            style: const TextStyle(
-              fontSize: 12,
-              color: Colors.blue,
-            ),
+            style: const TextStyle(fontSize: 12, color: Colors.blue),
           ),
         ],
       ),

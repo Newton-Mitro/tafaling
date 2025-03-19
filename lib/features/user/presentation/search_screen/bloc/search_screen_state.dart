@@ -7,7 +7,7 @@ class SearchInitial extends SearchState {}
 class SearchLoading extends SearchState {}
 
 class SearchLoaded extends SearchState {
-  final List<SearchUserEntity> users;
+  final List<UserEntity> users;
 
   SearchLoaded(this.users);
 }

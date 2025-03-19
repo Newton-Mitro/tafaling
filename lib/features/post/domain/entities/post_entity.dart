@@ -14,6 +14,7 @@ class PostEntity extends Equatable {
   final String? createdAt;
   final String? expireDate;
   final bool isLiked;
+  final List<PostEntity> shareDetails;
 
   const PostEntity({
     required this.id,
@@ -27,6 +28,7 @@ class PostEntity extends Equatable {
     this.createdAt,
     this.expireDate,
     this.isLiked = false,
+    required this.shareDetails,
   });
 
   PostEntity copyWith({
@@ -41,6 +43,7 @@ class PostEntity extends Equatable {
     String? createdAt,
     String? expireDate,
     bool? isLiked,
+    List<PostEntity>? shareDetails,
   }) {
     return PostEntity(
       id: id ?? this.id,
@@ -54,6 +57,7 @@ class PostEntity extends Equatable {
       createdAt: createdAt ?? this.createdAt,
       expireDate: expireDate ?? this.expireDate,
       isLiked: isLiked ?? this.isLiked,
+      shareDetails: shareDetails ?? this.shareDetails,
     );
   }
 
@@ -70,5 +74,6 @@ class PostEntity extends Equatable {
     createdAt,
     expireDate,
     isLiked,
+    shareDetails, // Ensure this is part of the comparison
   ];
 }

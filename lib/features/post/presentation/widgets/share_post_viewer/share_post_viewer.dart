@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:tafaling/core/utils/url_helper.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
-import 'package:tafaling/features/post/presentation/widgets/image_post_viewer.dart';
-import 'package:tafaling/features/post/presentation/widgets/link_post_viewer.dart';
-import 'package:tafaling/features/post/presentation/widgets/post_body_text.dart';
-import 'package:tafaling/features/post/presentation/widgets/post_sidebar.dart';
-import 'package:tafaling/features/post/presentation/widgets/video_post_viewer.dart';
+import 'package:tafaling/features/post/presentation/widgets/share_post_viewer/share_image_post_viewer.dart';
+import 'package:tafaling/features/post/presentation/widgets/share_post_viewer/share_link_post_viewer.dart';
+import 'package:tafaling/features/post/presentation/widgets/share_post_viewer/share_post_body_text.dart';
+import 'package:tafaling/features/post/presentation/widgets/share_post_viewer/share_post_sidebar.dart';
+import 'package:tafaling/features/post/presentation/widgets/share_post_viewer/share_video_post_viewer.dart';
 
-class PostViewer extends StatefulWidget {
+class SharePostViewer extends StatefulWidget {
   final PostEntity postModel;
-  const PostViewer({super.key, required this.postModel});
+  const SharePostViewer({super.key, required this.postModel});
 
   @override
-  State<PostViewer> createState() => _PostViewerState();
+  State<SharePostViewer> createState() => _SharePostViewerState();
 }
 
-class _PostViewerState extends State<PostViewer> {
+class _SharePostViewerState extends State<SharePostViewer> {
   late final PageController _attachmentController;
 
   @override
@@ -68,11 +68,11 @@ class _PostViewerState extends State<PostViewer> {
               final mimeType = attachment.mimeType.toLowerCase();
 
               if (mimeType.contains("image")) {
-                return ImagePostViewer(
+                return ShareImagePostViewer(
                   attachmentUrl: '${attachment.fileURL}/${attachment.fileName}',
                 );
               } else if (mimeType.contains("video")) {
-                return VideoPostViewer(
+                return ShareVideoPostViewer(
                   attachmentUrl: '${attachment.fileURL}/${attachment.fileName}',
                   autoPlay: true,
                 );
@@ -82,9 +82,9 @@ class _PostViewerState extends State<PostViewer> {
             },
           )
         else if (extractedUrls.isNotEmpty)
-          LinkPreviewer(url: extractedUrls.first)
+          ShareLinkPreviewer(url: extractedUrls.first)
         else
-          const SizedBox.shrink(), // Show nothing if no URL is available
+          const SizedBox.shrink(),
         // Navigation Arrows (Only if multiple attachments exist)
         if (attachmentCount > 1) ...[
           Positioned(
@@ -104,9 +104,15 @@ class _PostViewerState extends State<PostViewer> {
             ),
           ),
         ],
+        // Center(
+        //   child: Text(
+        //     "Shared Post",
+        //     style: TextStyle(color: Colors.amber, fontSize: 25),
+        //   ),
+        // ),
 
-        PostBodyText(postModel: widget.postModel),
-        PostSidebar(postModel: widget.postModel),
+        // SharePostBodyText(postModel: widget.postModel),
+        SharePostSidebar(postModel: widget.postModel),
       ],
     );
   }

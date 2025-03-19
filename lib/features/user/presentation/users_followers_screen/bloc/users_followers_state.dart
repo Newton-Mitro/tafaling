@@ -1,10 +1,58 @@
 part of 'users_followers_bloc.dart';
 
-sealed class UsersFollowersState extends Equatable {
-  const UsersFollowersState();
-  
+abstract class UserFollowersState extends Equatable {
+  const UserFollowersState();
+
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
-final class UsersFollowersInitial extends UsersFollowersState {}
+class UserFollowersInitial extends UserFollowersState {}
+
+class UserFollowersLoading extends UserFollowersState {}
+
+class UserFollowersLoadingMore extends UserFollowersState {}
+
+class UserFollowersLoaded extends UserFollowersState {
+  final List<UserEntity> followers;
+
+  const UserFollowersLoaded({required this.followers});
+
+  @override
+  List<Object?> get props => [followers];
+}
+
+class UserFollowersLoadedWithMore extends UserFollowersState {
+  final List<UserEntity> followers;
+  final bool hasMore;
+
+  const UserFollowersLoadedWithMore({
+    required this.followers,
+    required this.hasMore,
+  });
+
+  @override
+  List<Object?> get props => [followers, hasMore];
+}
+
+class UserFollowersError extends UserFollowersState {
+  final String message;
+
+  const UserFollowersError({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}
+
+class UserFollowersErrorWithMore extends UserFollowersState {
+  final String message;
+  final List<UserEntity> followers;
+
+  const UserFollowersErrorWithMore({
+    required this.message,
+    required this.followers,
+  });
+
+  @override
+  List<Object?> get props => [message, followers];
+}

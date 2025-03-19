@@ -4,8 +4,8 @@ import 'package:tafaling/configs/routes/route_name.dart';
 import 'package:tafaling/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
 import 'package:tafaling/features/post/presentation/posts_screen/bloc/posts_screen_bloc.dart';
-import 'package:tafaling/features/post/presentation/widgets/post_viewer.dart';
-import 'package:tafaling/features/post/presentation/widgets/post_top_navigation.dart';
+import 'package:tafaling/features/post/presentation/widgets/main_post_viewer/post_viewer.dart';
+import 'package:tafaling/features/post/presentation/widgets/main_post_viewer/post_top_navigation.dart';
 import 'package:tafaling/injection_container.dart';
 
 class PostsScreen extends StatefulWidget {

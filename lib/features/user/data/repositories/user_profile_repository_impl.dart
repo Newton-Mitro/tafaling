@@ -5,7 +5,6 @@ import 'package:tafaling/core/resources/response_state.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
 import 'package:tafaling/features/user/data/data_sources/user_profile_remote_data_source.dart';
 import 'package:tafaling/features/user/data/models/follow_un_follow_model.dart';
-import 'package:tafaling/features/user/data/models/search_user_model.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/domain/repositories/user_profile_repository.dart';
 
@@ -77,7 +76,7 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   }
 
   @override
-  Future<DataState<List<SearchUserModel>>> searchUsers(
+  Future<DataState<List<UserEntity>>> searchUsers(
     int userId,
     String searchText,
     int startRecord,
@@ -108,9 +107,24 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
     int targetUserId,
     int startRecord,
     int pageSize,
-  ) {
-    // TODO: implement getFollowers
-    throw UnimplementedError();
+  ) async {
+    if (await networkService.isConnected == true) {
+      try {
+        var users = await remoteDataSource.getFollowers(
+          targetUserId,
+          startRecord,
+          pageSize,
+        );
+        return SuccessData(users);
+      } catch (e) {
+        if (e is UnauthorizedException) {
+          return FailedData(UnauthorizedFailure());
+        }
+        return FailedData(ServerFailure());
+      }
+    } else {
+      return FailedData(NetworkFailure());
+    }
   }
 
   @override
@@ -118,8 +132,23 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
     int targetUserId,
     int startRecord,
     int pageSize,
-  ) {
-    // TODO: implement getFollowingUsers
-    throw UnimplementedError();
+  ) async {
+    if (await networkService.isConnected == true) {
+      try {
+        var users = await remoteDataSource.getFollowingUsers(
+          targetUserId,
+          startRecord,
+          pageSize,
+        );
+        return SuccessData(users);
+      } catch (e) {
+        if (e is UnauthorizedException) {
+          return FailedData(UnauthorizedFailure());
+        }
+        return FailedData(ServerFailure());
+      }
+    } else {
+      return FailedData(NetworkFailure());
+    }
   }
 }

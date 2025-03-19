@@ -15,27 +15,36 @@ class PostModel extends PostEntity {
     super.createdAt,
     super.expireDate,
     super.isLiked,
+    required super.shareDetails,
   });
 
-  factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
-    id: json["postId"] as int,
-    userId: json["userId"] as int,
-    body: json["body"] as String?,
-    privacyId: json["privacyId"] as int,
-    createdBy: json["createdBy"] as int,
-    creator: UserModel.fromJson(json["creator"] ?? {}),
-    attachments:
-        (json["attachments"] as List<dynamic>? ?? [])
-            .map(
-              (item) => AttachmentModel.fromJson(item as Map<String, dynamic>),
-            )
-            .toList()
-            .cast<AttachmentModel>(),
-    likeCount: json["likeCount"] ?? 0,
-    createdAt: json["createdAt"] as String?,
-    expireDate: json["expireDate"] as String?,
-    isLiked: (json["isLiked"] ?? 0) == 1, // Convert int to bool
-  );
+  factory PostModel.fromJson(Map<String, dynamic> json) {
+    return PostModel(
+      id: json["postId"] as int,
+      userId: json["userId"] as int,
+      body: json["body"] as String?,
+      privacyId: json["privacyId"] as int,
+      createdBy: json["createdBy"] as int,
+      creator: UserModel.fromJson(json["creator"] ?? {}),
+      attachments:
+          (json["attachments"] as List<dynamic>?)
+              ?.map(
+                (item) =>
+                    AttachmentModel.fromJson(item as Map<String, dynamic>),
+              )
+              .toList() ??
+          [],
+      likeCount: json["likeCount"] ?? 0,
+      createdAt: json["createdAt"] as String?,
+      expireDate: json["expireDate"] as String?,
+      isLiked: (json["isLiked"] ?? 0) == 1, // Convert int to bool
+      shareDetails:
+          (json["shareDetails"] as List<dynamic>?)
+              ?.map((item) => PostModel.fromJson(item as Map<String, dynamic>))
+              .toList() ??
+          [],
+    );
+  }
 
   Map<String, dynamic> toJson() {
     return {
@@ -50,7 +59,7 @@ class PostModel extends PostEntity {
       "likeCount": likeCount,
       "createdAt": createdAt,
       "expireDate": expireDate,
-      "isLiked": isLiked == true ? 1 : 0, // Convert bool to int
+      "isLiked": isLiked ? 1 : 0, // Convert bool to int
     };
   }
 }

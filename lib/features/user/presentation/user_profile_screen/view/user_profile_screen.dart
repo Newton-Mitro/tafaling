@@ -6,17 +6,19 @@ import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
+import 'package:tafaling/features/user/presentation/following_users_screen/bloc/following_users_bloc.dart';
+import 'package:tafaling/features/user/presentation/users_followers_screen/bloc/users_followers_bloc.dart';
+import 'package:tafaling/features/user/presentation/users_followers_screen/view/users_followers_screen.dart';
 import 'package:tafaling/features/user/presentation/widgets/profile_posts_grid.dart';
 import 'package:tafaling/features/user/presentation/user_profile_screen/bloc/profile_bloc.dart';
 import 'package:tafaling/features/user/presentation/widgets/follow_status.dart';
 import 'package:tafaling/features/user/presentation/following_users_screen/view/following_users_screen.dart';
-import 'package:tafaling/features/user/presentation/users_followers_screen/view/users_followers_screen.dart';
 import 'package:tafaling/injection_container.dart';
 
 final profileTabs = [
   Tab(text: 'Posts'),
   Tab(text: 'Following'),
-  Tab(text: 'followers'),
+  Tab(text: 'Followers'),
 ];
 
 class UserProfileScreen extends StatelessWidget {
@@ -39,6 +41,8 @@ class UserProfileScreen extends StatelessWidget {
                   ),
         ),
         BlocProvider(create: (context) => sl<AuthBloc>()),
+        BlocProvider(create: (context) => sl<UserFollowersBloc>()),
+        BlocProvider(create: (context) => sl<FollowingUsersBloc>()),
       ],
       child: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
@@ -351,8 +355,8 @@ class UserProfileScreen extends StatelessWidget {
                           itemCount: myPosts.length,
                           myPosts: myPosts,
                         ),
-                        FollowingUsersScreen(),
-                        UsersFollowersScreen(),
+                        FollowingUsersScreen(userId: userId),
+                        UsersFollowersScreen(userId: userId),
                       ],
                     ),
                   ),

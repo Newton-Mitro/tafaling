@@ -10,14 +10,22 @@ import 'package:tafaling/features/user/data/models/user_model.dart';
 abstract class UserProfileRemoteDataSource {
   Future<FollowUnFollowModel> followUser(int followingUserId);
   Future<FollowUnFollowModel> unFollowUser(int followingUserId);
-  Future<List<UserModel>> getFollowingUsers(int targetUserId);
-  Future<List<UserModel>> getFollowers(int targetUserId);
+  Future<List<UserModel>> getFollowingUsers(
+    int targetUserId,
+    int startRecord,
+    int pageSize,
+  );
+  Future<List<UserModel>> getFollowers(
+    int targetUserId,
+    int startRecord,
+    int pageSize,
+  );
   Future<List<PostModel>> fetchProfile(
     int userId,
     int startRecord,
     int pageSize,
   );
-  Future<List<SearchUserModel>> searchUsers(
+  Future<List<UserModel>> searchUsers(
     int userId,
     String searchText,
     int startRecord,
@@ -78,7 +86,7 @@ class UserProfileRemoteDataSourceImpl implements UserProfileRemoteDataSource {
 
   // user/search/profile/v2/1?start_record=0&page_size=3
   @override
-  Future<List<SearchUserModel>> searchUsers(
+  Future<List<UserModel>> searchUsers(
     int userId,
     String searchText,
     int startRecord,
@@ -93,10 +101,10 @@ class UserProfileRemoteDataSourceImpl implements UserProfileRemoteDataSource {
       },
     );
 
-    return _handleResponse<List<SearchUserModel>>(response, (data) {
+    return _handleResponse<List<UserModel>>(response, (data) {
       var posts =
           (data['data'] as List)
-              .map((post) => SearchUserModel.fromJson(post))
+              .map((post) => UserModel.fromJson(post))
               .toList();
       return posts;
     });
@@ -122,7 +130,11 @@ class UserProfileRemoteDataSourceImpl implements UserProfileRemoteDataSource {
   }
 
   @override
-  Future<List<UserModel>> getFollowers(int targetUserId) async {
+  Future<List<UserModel>> getFollowers(
+    int targetUserId,
+    int startRecord,
+    int pageSize,
+  ) async {
     final response = await authApiService.get(
       '/user/get/followers',
       queryParameters: {
@@ -142,7 +154,11 @@ class UserProfileRemoteDataSourceImpl implements UserProfileRemoteDataSource {
   }
 
   @override
-  Future<List<UserModel>> getFollowingUsers(int targetUserId) async {
+  Future<List<UserModel>> getFollowingUsers(
+    int targetUserId,
+    int startRecord,
+    int pageSize,
+  ) async {
     final response = await authApiService.get(
       '/user/get/following/$targetUserId',
       queryParameters: {

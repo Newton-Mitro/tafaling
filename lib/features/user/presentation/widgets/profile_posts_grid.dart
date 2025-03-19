@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
-import 'package:tafaling/features/post/presentation/widgets/video_post_viewer.dart';
+import 'package:tafaling/features/post/presentation/widgets/main_post_viewer/video_post_viewer.dart';
 
 class ProfilePostsGrid extends StatelessWidget {
   final int itemCount;

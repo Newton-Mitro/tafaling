@@ -1,4 +1,5 @@
-import 'dart:async'; // Import for Timer
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/configs/routes/route_name.dart';
@@ -65,11 +66,16 @@ class _SearchScreenState extends State<SearchScreen> {
                     vertical: 8, // Reduce vertical padding
                     horizontal: 12, // Adjust horizontal padding
                   ),
-                  prefixIcon:
-                      const Icon(Icons.search, color: Colors.white70, size: 20),
+                  prefixIcon: const Icon(
+                    Icons.search,
+                    color: Colors.white70,
+                    size: 20,
+                  ),
                   hintText: 'Search users',
-                  hintStyle:
-                      const TextStyle(fontSize: 14, color: Colors.white70),
+                  hintStyle: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.white70,
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20.0), // Smaller radius
                     borderSide: BorderSide.none,
@@ -86,7 +92,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 builder: (context, state) {
                   if (state is SearchInitial) {
                     return const Center(
-                        child: Text('Start typing to search...'));
+                      child: Text('Start typing to search...'),
+                    );
                   } else if (state is SearchLoading) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (state is SearchLoaded) {
@@ -98,25 +105,23 @@ class _SearchScreenState extends State<SearchScreen> {
                       itemBuilder: (context, index) {
                         final user = users[index];
                         return UserTile(
-                          userAvatar: user.profilePicture ?? '',
-                          userName: user.name,
-                          isFollowing: user.isFollowing,
-                          friendshipStatus: 2,
+                          user: user, // Todo:
+
                           onFollowToggle: () {
-                            context
-                                .read<SearchScreenBloc>()
-                                .add(FollowUserEvent(user.userId));
+                            context.read<SearchScreenBloc>().add(
+                              FollowUserEvent(user.id),
+                            );
                           },
                           onFriendRequestToggle: () {
-                            context
-                                .read<SearchScreenBloc>()
-                                .add(UnFollowUserEvent(user.userId));
+                            context.read<SearchScreenBloc>().add(
+                              UnFollowUserEvent(user.id),
+                            );
                           },
                           onViewProfile: () {
                             Navigator.pushNamed(
                               context,
                               RoutesName.userProfilePage,
-                              arguments: user.userId,
+                              arguments: user.id,
                             );
                           },
                         );
@@ -124,8 +129,10 @@ class _SearchScreenState extends State<SearchScreen> {
                     );
                   } else if (state is SearchError) {
                     return Center(
-                      child: Text(state.message,
-                          style: const TextStyle(color: Colors.red)),
+                      child: Text(
+                        state.message,
+                        style: const TextStyle(color: Colors.red),
+                      ),
                     );
                   }
                   return const SizedBox.shrink();
