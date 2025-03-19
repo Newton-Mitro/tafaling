@@ -4,17 +4,14 @@ class FollowUnFollowModel extends FollowUnFollowEntity {
   const FollowUnFollowModel({required super.followingCount});
 
   factory FollowUnFollowModel.fromJson(Map<String, dynamic> json) {
-    return FollowUnFollowModel(
-      followingCount: json['FollowingCount'] as int,
-    );
+    return FollowUnFollowModel(followingCount: json['FollowingCount'] as int);
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'FollowingCount': followingCount,
-    };
+    return {'FollowingCount': followingCount};
   }
 
+  @override
   FollowUnFollowModel copyWith({int? followingCount}) {
     return FollowUnFollowModel(
       followingCount: followingCount ?? this.followingCount,

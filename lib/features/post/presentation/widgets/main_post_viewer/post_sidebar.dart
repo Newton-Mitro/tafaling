@@ -85,6 +85,17 @@ class PostSidebar extends StatelessWidget {
                   showCustomBottomSheet(context);
                 }
               },
+              () {
+                if (accessTokenNotifier.value != null) {
+                  Navigator.pushNamed(
+                    context,
+                    RoutesName.postLikedUsersPage,
+                    arguments: postModel?.id,
+                  );
+                } else {
+                  showCustomBottomSheet(context);
+                }
+              },
             ),
             _buildSidebarActionButton(
               FontAwesomeIcons.solidShareFromSquare,
@@ -95,6 +106,10 @@ class PostSidebar extends StatelessWidget {
                 } else {
                   showCustomBottomSheet(context);
                 }
+              },
+              () {
+                // Action when clicking the like count text
+                print("share count tapped!");
               },
             ),
             _buildSidebarActionButton(
@@ -107,6 +122,10 @@ class PostSidebar extends StatelessWidget {
                   showCustomBottomSheet(context);
                 }
               },
+              () {
+                // Action when clicking the like count text
+                print("comment count tapped!");
+              },
             ),
           ],
         ),
@@ -118,25 +137,32 @@ class PostSidebar extends StatelessWidget {
     IconData icon,
     int count,
     Color color,
-    VoidCallback onTap,
+    VoidCallback onIconTap, // Action for the icon
+    VoidCallback onTextTap, // Action for the text
   ) {
     return Column(
       children: [
-        IconButton(icon: FaIcon(icon, color: color), onPressed: onTap),
+        IconButton(
+          icon: FaIcon(icon, color: color),
+          onPressed: onIconTap, // Action for icon
+        ),
         Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: onTap,
+            onTap: onTextTap, // Action for text
             borderRadius: BorderRadius.circular(20),
             splashColor: Colors.white.withOpacity(0.3),
             child: Container(
               width: 30,
               height: 30,
               alignment: Alignment.center,
-              decoration: BoxDecoration(shape: BoxShape.circle),
-              child: Text(
-                count.toString(),
-                style: const TextStyle(fontSize: 14, color: Colors.white),
+              decoration: const BoxDecoration(shape: BoxShape.circle),
+              child: TextButton(
+                onPressed: onTextTap, // Separate action for text
+                child: Text(
+                  count.toString(),
+                  style: const TextStyle(fontSize: 14, color: Colors.white),
+                ),
               ),
             ),
           ),

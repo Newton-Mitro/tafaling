@@ -17,10 +17,12 @@ import 'package:tafaling/features/post/domain/repositories/post_repository.dart'
 import 'package:tafaling/features/post/domain/usecases/dis_like_post_usecase.dart';
 import 'package:tafaling/features/post/domain/usecases/fetch_posts_usecase.dart';
 import 'package:tafaling/features/post/domain/usecases/fetch_user_posts_usecase.dart';
+import 'package:tafaling/features/post/domain/usecases/get_post_liked_users_usecase.dart';
 import 'package:tafaling/features/post/domain/usecases/like_post_usecase.dart';
+import 'package:tafaling/features/post/presentation/post_liked_users_screen/bloc/post_liked_users_bloc.dart';
 import 'package:tafaling/features/post/presentation/posts_screen/bloc/posts_screen_bloc.dart';
-import 'package:tafaling/features/user/data/data_sources/user_profile_remote_data_source.dart';
-import 'package:tafaling/features/user/data/repositories/user_profile_repository_impl.dart';
+import 'package:tafaling/features/user/data/data_sources/users_remote_data_source.dart';
+import 'package:tafaling/features/user/data/repositories/user_repository_impl.dart';
 import 'package:tafaling/features/user/domain/repositories/user_profile_repository.dart';
 import 'package:tafaling/features/user/domain/usecases/fetch_profile_usecase.dart';
 import 'package:tafaling/features/user/domain/usecases/follow_user_usecase.dart';
@@ -63,7 +65,7 @@ Future<void> _setupDatasources() async {
   sl.registerLazySingleton<PostRemoteDataSource>(
     () => PostRemoteDataSourceImpl(apiService: sl(), authApiService: sl()),
   );
-  sl.registerLazySingleton<UserProfileRemoteDataSource>(
+  sl.registerLazySingleton<UsersRemoteDataSource>(
     () => UserProfileRemoteDataSourceImpl(authApiService: sl()),
   );
 }
@@ -75,8 +77,8 @@ Future<void> _setupRepositories() async {
   sl.registerLazySingleton<PostRepository>(
     () => PostRepositoryImpl(sl(), sl()),
   );
-  sl.registerLazySingleton<UserProfileRepository>(
-    () => UserProfileRepositoryImpl(sl(), sl()),
+  sl.registerLazySingleton<UserRepository>(
+    () => UserRepositoryImpl(sl(), sl()),
   );
 }
 
@@ -89,24 +91,18 @@ Future<void> _setupUsecases() async {
   sl.registerLazySingleton(() => LikePostUseCase(sl<PostRepository>()));
   sl.registerLazySingleton(() => FetchUserPostsUseCase(sl<PostRepository>()));
   sl.registerLazySingleton(() => DisLikePostUseCase(sl<PostRepository>()));
+
   sl.registerLazySingleton(
-    () => GetFollowersUseCase(sl<UserProfileRepository>()),
+    () => GetPostLikedUsersUsecase(sl<PostRepository>()),
   );
   sl.registerLazySingleton(
-    () => GetFollowingUsersUseCase(sl<UserProfileRepository>()),
+    () => GetFollowingUsersUseCase(sl<UserRepository>()),
   );
-  sl.registerLazySingleton(
-    () => SearchUsersUseCase(sl<UserProfileRepository>()),
-  );
-  sl.registerLazySingleton(
-    () => FetchProfileUseCase(sl<UserProfileRepository>()),
-  );
-  sl.registerLazySingleton(
-    () => FollowUserUseCase(sl<UserProfileRepository>()),
-  );
-  sl.registerLazySingleton(
-    () => UnFollowUserUseCase(sl<UserProfileRepository>()),
-  );
+  sl.registerLazySingleton(() => SearchUsersUseCase(sl<UserRepository>()));
+  sl.registerLazySingleton(() => FetchProfileUseCase(sl<UserRepository>()));
+  sl.registerLazySingleton(() => FollowUserUseCase(sl<UserRepository>()));
+  sl.registerLazySingleton(() => UnFollowUserUseCase(sl<UserRepository>()));
+  sl.registerLazySingleton(() => GetFollowersUseCase(sl<UserRepository>()));
 }
 
 Future<void> _setupStates() async {
@@ -147,6 +143,12 @@ Future<void> _setupStates() async {
   sl.registerFactory(
     () => FollowingUsersBloc(
       getFollowingUsersUseCase: sl<GetFollowingUsersUseCase>(),
+    ),
+  );
+
+  sl.registerFactory(
+    () => PostLikedUsersBloc(
+      getPostLikedUsersUsecase: sl<GetPostLikedUsersUsecase>(),
     ),
   );
 }

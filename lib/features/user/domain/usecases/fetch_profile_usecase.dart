@@ -17,7 +17,7 @@ final class FetchProfileParams {
 
 class FetchProfileUseCase
     extends UseCase<DataState<List<PostEntity>>, FetchProfileParams> {
-  final UserProfileRepository repository;
+  final UserRepository repository;
 
   FetchProfileUseCase(this.repository);
 

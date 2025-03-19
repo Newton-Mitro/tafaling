@@ -11,7 +11,7 @@ final class FollowUserParams {
 
 class FollowUserUseCase
     extends UseCase<DataState<FollowUnFollowEntity>, FollowUserParams> {
-  final UserProfileRepository repository;
+  final UserRepository repository;
 
   FollowUserUseCase(this.repository);
 

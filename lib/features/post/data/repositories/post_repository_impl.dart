@@ -6,6 +6,7 @@ import 'package:tafaling/features/post/data/data_sources/post_remote_data_source
 import 'package:tafaling/features/post/data/models/like_model.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
 import 'package:tafaling/features/post/domain/repositories/post_repository.dart';
+import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 
 class PostRepositoryImpl implements PostRepository {
   final PostRemoteDataSource remoteDataSource;
@@ -132,6 +133,46 @@ class PostRepositoryImpl implements PostRepository {
       try {
         // TODO: Local data source impl
         return SuccessData(await remoteDataSource.disLikePost(postId));
+      } catch (e) {
+        if (e is CacheException) {
+          return FailedData(CacheFailure());
+        }
+        return FailedData(ServerFailure());
+      }
+    }
+  }
+
+  @override
+  Future<DataState<List<UserEntity>>> getLikeUserByPost(
+    int postId,
+    int startRecord,
+    int pageSize,
+  ) async {
+    if (await networkService.isConnected == true) {
+      try {
+        return SuccessData(
+          await remoteDataSource.getLikeUserByPost(
+            postId,
+            startRecord,
+            pageSize,
+          ),
+        );
+      } catch (e) {
+        if (e is UnauthorizedException) {
+          return FailedData(UnauthorizedFailure());
+        }
+        return FailedData(ServerFailure());
+      }
+    } else {
+      try {
+        // TODO: Local data source impl
+        return SuccessData(
+          await remoteDataSource.getLikeUserByPost(
+            postId,
+            startRecord,
+            pageSize,
+          ),
+        );
       } catch (e) {
         if (e is CacheException) {
           return FailedData(CacheFailure());

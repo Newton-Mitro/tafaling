@@ -29,6 +29,7 @@ class ReactionModel extends ReactionEntity {
     };
   }
 
+  @override
   ReactionModel copyWith({
     int? reactionId,
     int? postId,

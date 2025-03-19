@@ -54,7 +54,7 @@ class _UsersFollowersScreenState extends State<UsersFollowersScreen> {
               state is UserFollowersLoadedWithMore) {
             final followers =
                 state is UserFollowersLoadedWithMore
-                    ? (state as UserFollowersLoadedWithMore).followers
+                    ? (state).followers
                     : (state as UserFollowersLoaded).followers;
 
             return ListView.builder(

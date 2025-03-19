@@ -3,16 +3,16 @@ import 'package:tafaling/core/errors/failures.dart';
 import 'package:tafaling/core/network/network_info.dart';
 import 'package:tafaling/core/resources/response_state.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
-import 'package:tafaling/features/user/data/data_sources/user_profile_remote_data_source.dart';
+import 'package:tafaling/features/user/data/data_sources/users_remote_data_source.dart';
 import 'package:tafaling/features/user/data/models/follow_un_follow_model.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/domain/repositories/user_profile_repository.dart';
 
-class UserProfileRepositoryImpl implements UserProfileRepository {
-  final UserProfileRemoteDataSource remoteDataSource;
+class UserRepositoryImpl implements UserRepository {
+  final UsersRemoteDataSource remoteDataSource;
   final NetworkService networkService;
 
-  UserProfileRepositoryImpl(this.remoteDataSource, this.networkService);
+  UserRepositoryImpl(this.remoteDataSource, this.networkService);
 
   @override
   Future<DataState<FollowUnFollowModel>> followUser(int followingUserId) async {

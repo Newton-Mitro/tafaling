@@ -19,7 +19,7 @@ final class SearchUsersParams {
 
 class SearchUsersUseCase
     extends UseCase<DataState<List<UserEntity>>, SearchUsersParams> {
-  final UserProfileRepository repository;
+  final UserRepository repository;
 
   SearchUsersUseCase(this.repository);
 

@@ -50,6 +50,7 @@ class AttachmentModel extends AttachmentEntity {
     };
   }
 
+  @override
   AttachmentModel copyWith({
     int? attachmentId,
     int? postId,

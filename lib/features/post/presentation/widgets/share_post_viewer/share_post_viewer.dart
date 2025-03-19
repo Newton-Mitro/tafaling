@@ -3,7 +3,6 @@ import 'package:tafaling/core/utils/url_helper.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/post/presentation/widgets/share_post_viewer/share_image_post_viewer.dart';
 import 'package:tafaling/features/post/presentation/widgets/share_post_viewer/share_link_post_viewer.dart';
-import 'package:tafaling/features/post/presentation/widgets/share_post_viewer/share_post_body_text.dart';
 import 'package:tafaling/features/post/presentation/widgets/share_post_viewer/share_post_sidebar.dart';
 import 'package:tafaling/features/post/presentation/widgets/share_post_viewer/share_video_post_viewer.dart';
 

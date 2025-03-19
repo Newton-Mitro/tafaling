@@ -26,6 +26,7 @@ class SharedLinkModel extends SharedLinkEntity {
     };
   }
 
+  @override
   SharedLinkModel copyWith({
     String? url,
     String? title,

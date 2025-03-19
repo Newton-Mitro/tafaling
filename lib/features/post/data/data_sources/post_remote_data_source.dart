@@ -17,7 +17,11 @@ abstract class PostRemoteDataSource {
   Future<String> removePost(int postId);
   Future<LikeModel> likePost(int postId);
   Future<LikeModel> disLikePost(int postId);
-  Future<List<UserModel>> getLikeUserByPost(int userId);
+  Future<List<UserModel>> getLikeUserByPost(
+    int postId,
+    int startRecord,
+    int pageSize,
+  );
 }
 
 class PostRemoteDataSourceImpl implements PostRemoteDataSource {
@@ -122,10 +126,18 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   }
 
   @override
-  Future<List<UserModel>> getLikeUserByPost(int userId) async {
+  Future<List<UserModel>> getLikeUserByPost(
+    int postId,
+    int startRecord,
+    int pageSize,
+  ) async {
     final response = await authApiService.get(
       '/posts/liked/users',
-      queryParameters: {'post_id': userId, 'start_record': 0, 'page_size': 5},
+      queryParameters: {
+        'post_id': postId,
+        'start_record': startRecord,
+        'page_size': pageSize,
+      },
     );
 
     final users =

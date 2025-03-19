@@ -17,7 +17,7 @@ final class GetFollowingUsersParams {
 
 class GetFollowingUsersUseCase
     extends UseCase<DataState<List<UserEntity>>, GetFollowingUsersParams> {
-  final UserProfileRepository repository;
+  final UserRepository repository;
 
   GetFollowingUsersUseCase(this.repository);
 
