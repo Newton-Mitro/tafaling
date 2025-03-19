@@ -36,6 +36,26 @@ class UserModel extends UserEntity {
     );
   }
 
+  factory UserModel.fromJsonForPostLikeUser(Map<String, dynamic> json) {
+    return UserModel(
+      id: json['likedByUserId'] ?? 0,
+      name: json['likedByUserName'] ?? 'unknown',
+      userName: json['likedByUserName'] ?? 'unknown',
+      email: json['email'] ?? 'unknown',
+      emailVerifiedAt:
+          json['email_verified_at'] != null
+              ? DateTime.parse(json['email_verified_at'])
+              : null,
+      profilePicture: json['likedByUserProfile'] as String?,
+      coverPhoto: json['likedByUserCover'] as String?,
+      followers: json['likedByUserFollowers'] ?? 0,
+      following: json['likedByUserFollowing'] ?? 0,
+      totalLikeCount: json['total_like_count'] ?? 0,
+      isFollowing: json['isFollowing'] ?? false,
+      friendshipStatus: json['friendship_status'] ?? 0,
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'user_id': id,

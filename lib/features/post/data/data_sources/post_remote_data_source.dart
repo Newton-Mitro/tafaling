@@ -142,7 +142,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
 
     final users =
         (response.data['data'] as List)
-            .map((user) => UserModel.fromJson(user))
+            .map((user) => UserModel.fromJsonForPostLikeUser(user))
             .toList();
     return users;
   }
