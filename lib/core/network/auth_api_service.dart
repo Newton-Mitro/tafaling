@@ -17,40 +17,62 @@ class AuthApiService {
     _dio.interceptors.add(AuthInterceptor(_dio));
   }
 
-  Future<Response> get(String endpoint,
-      {Map<String, dynamic>? queryParameters, Options? options}) async {
-    return _performRequest(() => _dio.get(
-          endpoint,
-          queryParameters: queryParameters,
-          options: options ?? Options(),
-        ));
-  }
-
-  Future<Response> post(String endpoint,
-      {required Map<String, dynamic> data, Options? options}) async {
+  Future<Response> get(
+    String endpoint, {
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+  }) async {
     return _performRequest(
-        () => _dio.post(endpoint, data: data, options: options ?? Options()));
+      () => _dio.get(
+        endpoint,
+        queryParameters: queryParameters,
+        options: options ?? Options(),
+      ),
+    );
   }
 
-  Future<Response> put(String endpoint,
-      {required Map<String, dynamic> data, Options? options}) async {
+  Future<Response> post(
+    String endpoint, {
+    required Map<String, dynamic> data,
+    Options? options,
+  }) async {
     return _performRequest(
-        () => _dio.put(endpoint, data: data, options: options ?? Options()));
+      () => _dio.post(endpoint, data: data, options: options ?? Options()),
+    );
   }
 
-  Future<Response> patch(String endpoint,
-      {required Map<String, dynamic> data, Options? options}) async {
+  Future<Response> put(
+    String endpoint, {
+    required Map<String, dynamic> data,
+    Options? options,
+  }) async {
     return _performRequest(
-        () => _dio.patch(endpoint, data: data, options: options ?? Options()));
+      () => _dio.put(endpoint, data: data, options: options ?? Options()),
+    );
   }
 
-  Future<Response> delete(String endpoint,
-      {Map<String, dynamic>? queryParameters, Options? options}) async {
-    return _performRequest(() => _dio.delete(
-          endpoint,
-          queryParameters: queryParameters,
-          options: options ?? Options(),
-        ));
+  Future<Response> patch(
+    String endpoint, {
+    required Map<String, dynamic> data,
+    Options? options,
+  }) async {
+    return _performRequest(
+      () => _dio.patch(endpoint, data: data, options: options ?? Options()),
+    );
+  }
+
+  Future<Response> delete(
+    String endpoint, {
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+  }) async {
+    return _performRequest(
+      () => _dio.delete(
+        endpoint,
+        queryParameters: queryParameters,
+        options: options ?? Options(),
+      ),
+    );
   }
 
   Future<Response> _performRequest(Future<Response> Function() request) async {
@@ -69,9 +91,7 @@ class AuthApiService {
         final Map<String, dynamic>? errorResponse = e.response?.data;
         if (errorResponse != null) {
           final errors = errorResponse['errors'] as Map<String, dynamic>;
-          throw ValidationException(
-            errors: errors,
-          );
+          throw ValidationException(errors: errors);
         }
         break;
       case HttpStatus.unauthorized:
@@ -81,7 +101,7 @@ class AuthApiService {
       case HttpStatus.internalServerError:
         throw ServerException();
       default:
-        throw ServerException();
+        throw Exception(e.message);
     }
   }
 }

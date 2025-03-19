@@ -2,7 +2,7 @@ part of 'posts_screen_bloc.dart';
 
 class PostsScreenState extends Equatable {
   final bool isFetching;
-  final List<PostModel> posts;
+  final List<PostEntity> posts;
   final String? error;
   final int currentPage;
 
@@ -16,7 +16,7 @@ class PostsScreenState extends Equatable {
   // Copy with method to update state immutably
   PostsScreenState copyWith({
     bool? isFetching,
-    List<PostModel>? posts,
+    List<PostEntity>? posts,
     int? currentPage,
     String? error,
     int? loggedInUserId,

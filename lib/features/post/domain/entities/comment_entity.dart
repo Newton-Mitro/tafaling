@@ -1,4 +1,6 @@
-class CommentEntity {
+import 'package:equatable/equatable.dart';
+
+class CommentEntity extends Equatable {
   final int commentId;
   final int postId;
   final String content;
@@ -14,4 +16,32 @@ class CommentEntity {
     required this.createdAt,
     this.replies = const [],
   });
+
+  CommentEntity copyWith({
+    int? commentId,
+    int? postId,
+    String? content,
+    int? createdBy,
+    DateTime? createdAt,
+    List<CommentEntity>? replies,
+  }) {
+    return CommentEntity(
+      commentId: commentId ?? this.commentId,
+      postId: postId ?? this.postId,
+      content: content ?? this.content,
+      createdBy: createdBy ?? this.createdBy,
+      createdAt: createdAt ?? this.createdAt,
+      replies: replies ?? this.replies,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+    commentId,
+    postId,
+    content,
+    createdBy,
+    createdAt,
+    replies,
+  ];
 }

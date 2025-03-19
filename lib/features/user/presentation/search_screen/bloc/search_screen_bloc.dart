@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/core/resources/response_state.dart';
 import 'package:tafaling/core/utils/app_shared_pref.dart';
 import 'package:tafaling/features/user/data/models/search_user_model.dart';
+import 'package:tafaling/features/user/domain/entities/search_user_entity.dart';
 import 'package:tafaling/features/user/domain/usecases/follow_user_usecase.dart';
 import 'package:tafaling/features/user/domain/usecases/search_users_usecase.dart';
 import 'package:tafaling/features/user/domain/usecases/un_follow_user_usecase.dart';
@@ -75,7 +76,7 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchState> {
     }
   }
 
-  List<SearchUserModel> _updateSearchUsers(int postId) {
+  List<SearchUserEntity> _updateSearchUsers(int postId) {
     final postIndex = (state as SearchLoaded).users.indexWhere(
       (user) => user.userId == postId,
     );
@@ -86,7 +87,7 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchState> {
       isFollowing: isFollowing,
     );
 
-    final updatedPosts = List<SearchUserModel>.from(
+    final updatedPosts = List<SearchUserEntity>.from(
       (state as SearchLoaded).users,
     )..[postIndex] = updatedPost;
 

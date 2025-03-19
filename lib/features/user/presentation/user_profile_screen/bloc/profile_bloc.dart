@@ -2,8 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:tafaling/core/resources/response_state.dart';
-import 'package:tafaling/features/post/data/models/post_model.dart';
-import 'package:tafaling/features/user/data/models/user_model.dart';
+import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/user/domain/usecases/fetch_profile_usecase.dart';
 import 'package:tafaling/features/user/domain/usecases/follow_user_usecase.dart';
 import 'package:tafaling/features/user/domain/usecases/un_follow_user_usecase.dart';
@@ -45,7 +44,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       params: fetchProfileParams,
     );
     if (dataState is SuccessData && dataState.data != null) {
-      final updatedPosts = List<PostModel>.from(state.posts)
+      final updatedPosts = List<PostEntity>.from(state.posts)
         ..addAll(dataState.data!);
       emit(state.copyWith(posts: updatedPosts, loading: false));
     }
@@ -81,13 +80,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(state.copyWith(posts: updatedPosts, loading: false));
   }
 
-  List<PostModel> _updateSearchUsers(int userId) {
+  List<PostEntity> _updateSearchUsers(int userId) {
     final isFollowing = !state.posts[0].creator.isFollowing;
-    final updatedUser = (state.posts[0].creator as UserModel).copyWith(
+    final updatedUser = (state.posts[0].creator).copyWith(
       isFollowing: isFollowing,
     );
     final updatedPost = state.posts[0].copyWith(creator: updatedUser);
-    final updatedPosts = List<PostModel>.from(state.posts)..[0] = updatedPost;
+    final updatedPosts = List<PostEntity>.from(state.posts)..[0] = updatedPost;
     return updatedPosts;
   }
 }

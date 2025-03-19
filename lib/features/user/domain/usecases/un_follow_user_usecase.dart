@@ -1,6 +1,6 @@
 import 'package:tafaling/core/resources/response_state.dart';
 import 'package:tafaling/core/usecases/usecase.dart';
-import 'package:tafaling/features/user/data/models/follow_un_follow_model.dart';
+import 'package:tafaling/features/user/domain/entities/follow_unfollow_entity.dart';
 import 'package:tafaling/features/user/domain/repositories/user_profile_repository.dart';
 
 final class UnFollowUserParams {
@@ -10,13 +10,13 @@ final class UnFollowUserParams {
 }
 
 class UnFollowUserUseCase
-    extends UseCase<DataState<FollowUnFollowModel>, UnFollowUserParams> {
+    extends UseCase<DataState<FollowUnFollowEntity>, UnFollowUserParams> {
   final UserProfileRepository repository;
 
   UnFollowUserUseCase(this.repository);
 
   @override
-  Future<DataState<FollowUnFollowModel>> call({
+  Future<DataState<FollowUnFollowEntity>> call({
     UnFollowUserParams? params,
   }) async {
     final followingCount = await repository.unFollowUser(

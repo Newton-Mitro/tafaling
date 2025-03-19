@@ -17,7 +17,8 @@ class CommentModel extends CommentEntity {
       content: json['content'] as String,
       createdBy: json['createdBy'] as int,
       createdAt: DateTime.parse(json['createdAt']),
-      replies: (json['replies'] as List<dynamic>?)
+      replies:
+          (json['replies'] as List<dynamic>?)
               ?.map((reply) => CommentModel.fromJson(reply))
               .toList() ??
           [],
@@ -34,23 +35,5 @@ class CommentModel extends CommentEntity {
       'replies':
           replies.map((reply) => (reply as CommentModel).toJson()).toList(),
     };
-  }
-
-  CommentModel copyWith({
-    int? commentId,
-    int? postId,
-    String? content,
-    int? createdBy,
-    DateTime? createdAt,
-    List<CommentModel>? replies,
-  }) {
-    return CommentModel(
-      commentId: commentId ?? this.commentId,
-      postId: postId ?? this.postId,
-      content: content ?? this.content,
-      createdBy: createdBy ?? this.createdBy,
-      createdAt: createdAt ?? this.createdAt,
-      replies: replies ?? this.replies,
-    );
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/core/errors/failures.dart';
 import 'package:tafaling/core/resources/response_state.dart';
 import 'package:tafaling/core/utils/app_shared_pref.dart';
-import 'package:tafaling/features/post/data/models/post_model.dart';
+import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/post/domain/usecases/dis_like_post_usecase.dart';
 import 'package:tafaling/features/post/domain/usecases/fetch_posts_usecase.dart';
 import 'package:tafaling/features/post/domain/usecases/fetch_user_posts_usecase.dart';
@@ -147,7 +147,7 @@ class PostsScreenBloc extends Bloc<PostsScreenEvent, PostsScreenState> {
     }
   }
 
-  List<PostModel> _updatePostLikeStatus(
+  List<PostEntity> _updatePostLikeStatus(
     int postId,
     int likeCount,
     int isLiked,
@@ -160,7 +160,7 @@ class PostsScreenBloc extends Bloc<PostsScreenEvent, PostsScreenState> {
       isLiked: isLiked == 1,
     );
 
-    final updatedPosts = List<PostModel>.from(state.posts)
+    final updatedPosts = List<PostEntity>.from(state.posts)
       ..[postIndex] = updatedPost;
 
     return updatedPosts;

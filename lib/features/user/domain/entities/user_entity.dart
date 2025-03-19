@@ -29,19 +29,49 @@ class UserEntity extends Equatable {
     this.friendshipStatus = 0,
   });
 
+  UserEntity copyWith({
+    int? id,
+    String? name,
+    String? userName,
+    String? email,
+    DateTime? emailVerifiedAt,
+    String? profilePicture,
+    String? coverPhoto,
+    int? followers,
+    int? following,
+    int? totalLikeCount,
+    bool? isFollowing,
+    int? friendshipStatus,
+  }) {
+    return UserEntity(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      userName: userName ?? this.userName,
+      email: email ?? this.email,
+      emailVerifiedAt: emailVerifiedAt ?? this.emailVerifiedAt,
+      profilePicture: profilePicture ?? this.profilePicture,
+      coverPhoto: coverPhoto ?? this.coverPhoto,
+      followers: followers ?? this.followers,
+      following: following ?? this.following,
+      totalLikeCount: totalLikeCount ?? this.totalLikeCount,
+      isFollowing: isFollowing ?? this.isFollowing,
+      friendshipStatus: friendshipStatus ?? this.friendshipStatus,
+    );
+  }
+
   @override
   List<Object?> get props => [
-        id,
-        name,
-        userName,
-        email,
-        emailVerifiedAt,
-        profilePicture,
-        coverPhoto,
-        followers,
-        following,
-        totalLikeCount,
-        isFollowing,
-        friendshipStatus
-      ];
+    id,
+    name,
+    userName,
+    email,
+    emailVerifiedAt,
+    profilePicture,
+    coverPhoto,
+    followers,
+    following,
+    totalLikeCount,
+    isFollowing,
+    friendshipStatus,
+  ];
 }

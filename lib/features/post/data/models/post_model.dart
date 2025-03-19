@@ -18,22 +18,24 @@ class PostModel extends PostEntity {
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
-        id: json["postId"] as int,
-        userId: json["userId"] as int,
-        body: json["body"] as String?,
-        privacyId: json["privacyId"] as int,
-        createdBy: json["createdBy"] as int,
-        creator: UserModel.fromJson(json["creator"] ?? {}),
-        attachments: (json["attachments"] as List<dynamic>? ?? [])
-            .map((item) =>
-                AttachmentModel.fromJson(item as Map<String, dynamic>))
+    id: json["postId"] as int,
+    userId: json["userId"] as int,
+    body: json["body"] as String?,
+    privacyId: json["privacyId"] as int,
+    createdBy: json["createdBy"] as int,
+    creator: UserModel.fromJson(json["creator"] ?? {}),
+    attachments:
+        (json["attachments"] as List<dynamic>? ?? [])
+            .map(
+              (item) => AttachmentModel.fromJson(item as Map<String, dynamic>),
+            )
             .toList()
             .cast<AttachmentModel>(),
-        likeCount: json["likeCount"] ?? 0,
-        createdAt: json["createdAt"] as String?,
-        expireDate: json["expireDate"] as String?,
-        isLiked: (json["isLiked"] ?? 0) == 1, // Convert int to bool
-      );
+    likeCount: json["likeCount"] ?? 0,
+    createdAt: json["createdAt"] as String?,
+    expireDate: json["expireDate"] as String?,
+    isLiked: (json["isLiked"] ?? 0) == 1, // Convert int to bool
+  );
 
   Map<String, dynamic> toJson() {
     return {
@@ -50,34 +52,5 @@ class PostModel extends PostEntity {
       "expireDate": expireDate,
       "isLiked": isLiked == true ? 1 : 0, // Convert bool to int
     };
-  }
-
-  PostModel copyWith({
-    int? id,
-    int? userId,
-    String? body,
-    int? privacyId,
-    int? createdBy,
-    UserModel? creator,
-    List<AttachmentModel>? attachments,
-    int? likeCount,
-    String? createdAt,
-    String? expireDate,
-    bool? isLiked,
-  }) {
-    return PostModel(
-      id: id ?? this.id,
-      userId: userId ?? this.userId,
-      body: body ?? this.body,
-      privacyId: privacyId ?? this.privacyId,
-      createdBy: createdBy ?? this.createdBy,
-      creator: creator ?? this.creator as UserModel,
-      attachments: attachments ??
-          this.attachments.map((e) => e as AttachmentModel).toList(),
-      likeCount: likeCount ?? this.likeCount,
-      createdAt: createdAt ?? this.createdAt,
-      expireDate: expireDate ?? this.expireDate,
-      isLiked: isLiked ?? this.isLiked,
-    );
   }
 }

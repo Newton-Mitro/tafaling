@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tafaling/core/utils/url_helper.dart';
-import 'package:tafaling/features/post/data/models/post_model.dart';
+import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/post/presentation/widgets/image_post_viewer.dart';
 import 'package:tafaling/features/post/presentation/widgets/link_post_viewer.dart';
 import 'package:tafaling/features/post/presentation/widgets/post_body_text.dart';
@@ -8,7 +8,7 @@ import 'package:tafaling/features/post/presentation/widgets/post_sidebar.dart';
 import 'package:tafaling/features/post/presentation/widgets/video_post_viewer.dart';
 
 class PostViewer extends StatefulWidget {
-  final PostModel postModel;
+  final PostEntity postModel;
   const PostViewer({super.key, required this.postModel});
 
   @override
@@ -52,8 +52,9 @@ class _PostViewerState extends State<PostViewer> {
   @override
   Widget build(BuildContext context) {
     final int attachmentCount = widget.postModel.attachments.length;
-    final List<String> extractedUrls =
-        UrlHelper.extractUrls(widget.postModel.body ?? '');
+    final List<String> extractedUrls = UrlHelper.extractUrls(
+      widget.postModel.body ?? '',
+    );
 
     return Stack(
       children: [
@@ -84,7 +85,6 @@ class _PostViewerState extends State<PostViewer> {
           LinkPreviewer(url: extractedUrls.first)
         else
           const SizedBox.shrink(), // Show nothing if no URL is available
-
         // Navigation Arrows (Only if multiple attachments exist)
         if (attachmentCount > 1) ...[
           Positioned(

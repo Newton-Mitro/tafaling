@@ -29,18 +29,46 @@ class PostEntity extends Equatable {
     this.isLiked = false,
   });
 
+  PostEntity copyWith({
+    int? id,
+    int? userId,
+    String? body,
+    int? privacyId,
+    int? createdBy,
+    UserEntity? creator,
+    List<AttachmentEntity>? attachments,
+    int? likeCount,
+    String? createdAt,
+    String? expireDate,
+    bool? isLiked,
+  }) {
+    return PostEntity(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      body: body ?? this.body,
+      privacyId: privacyId ?? this.privacyId,
+      createdBy: createdBy ?? this.createdBy,
+      creator: creator ?? this.creator,
+      attachments: attachments ?? this.attachments,
+      likeCount: likeCount ?? this.likeCount,
+      createdAt: createdAt ?? this.createdAt,
+      expireDate: expireDate ?? this.expireDate,
+      isLiked: isLiked ?? this.isLiked,
+    );
+  }
+
   @override
   List<Object?> get props => [
-        id,
-        userId,
-        body,
-        privacyId,
-        createdBy,
-        creator,
-        attachments,
-        likeCount,
-        createdAt,
-        expireDate,
-        isLiked,
-      ];
+    id,
+    userId,
+    body,
+    privacyId,
+    createdBy,
+    creator,
+    attachments,
+    likeCount,
+    createdAt,
+    expireDate,
+    isLiked,
+  ];
 }

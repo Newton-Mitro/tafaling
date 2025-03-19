@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tafaling/core/utils/app_context.dart';
-import 'package:tafaling/features/post/data/models/post_model.dart';
+import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 
 class ReadMoreText extends StatefulWidget {
-  final PostModel postModel;
+  final PostEntity postModel;
   final int maxLines;
   final bool isExpanded;
   final VoidCallback? onClick; // Add onClick callback
@@ -47,14 +47,9 @@ class _ReadMoreTextState extends State<ReadMoreText> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                '...',
-                style: context.theme.textTheme.bodySmall,
-              ),
+              Text('...', style: context.theme.textTheme.bodySmall),
               TextButton(
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                ),
+                style: TextButton.styleFrom(padding: EdgeInsets.zero),
                 onPressed: () {
                   if (widget.onClick != null) {
                     widget.onClick!(); // Call the onClick function

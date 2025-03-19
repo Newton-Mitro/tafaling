@@ -2,7 +2,7 @@ part of 'profile_bloc.dart';
 
 class ProfileState extends Equatable {
   final bool loading;
-  final List<PostModel> posts;
+  final List<PostEntity> posts;
   final String error;
 
   const ProfileState({
@@ -13,7 +13,7 @@ class ProfileState extends Equatable {
 
   ProfileState copyWith({
     bool? loading,
-    List<PostModel>? posts,
+    List<PostEntity>? posts,
     String? error,
   }) {
     return ProfileState(

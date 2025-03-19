@@ -10,8 +10,8 @@ import 'package:tafaling/features/user/data/models/user_model.dart';
 abstract class UserProfileRemoteDataSource {
   Future<FollowUnFollowModel> followUser(int followingUserId);
   Future<FollowUnFollowModel> unFollowUser(int followingUserId);
-  Future<List<UserModel>> getFollowingUsers(int userId);
-  Future<List<UserModel>> getFollowers(int userId);
+  Future<List<UserModel>> getFollowingUsers(int targetUserId);
+  Future<List<UserModel>> getFollowers(int targetUserId);
   Future<List<PostModel>> fetchProfile(
     int userId,
     int startRecord,
@@ -122,11 +122,11 @@ class UserProfileRemoteDataSourceImpl implements UserProfileRemoteDataSource {
   }
 
   @override
-  Future<List<UserModel>> getFollowers(int userId) async {
+  Future<List<UserModel>> getFollowers(int targetUserId) async {
     final response = await authApiService.get(
       '/user/get/followers',
       queryParameters: {
-        'target_user_id': userId,
+        'target_user_id': targetUserId,
         'start_record': 0,
         'page_size': 5,
       },
@@ -142,11 +142,11 @@ class UserProfileRemoteDataSourceImpl implements UserProfileRemoteDataSource {
   }
 
   @override
-  Future<List<UserModel>> getFollowingUsers(int userId) async {
+  Future<List<UserModel>> getFollowingUsers(int targetUserId) async {
     final response = await authApiService.get(
-      '/user/get/following/$userId',
+      '/user/get/following/$targetUserId',
       queryParameters: {
-        'target_user_id': userId,
+        'target_user_id': targetUserId,
         'start_record': 0,
         'page_size': 5,
       },

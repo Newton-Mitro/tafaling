@@ -6,6 +6,7 @@ import 'package:tafaling/features/post/data/models/post_model.dart';
 import 'package:tafaling/features/user/data/data_sources/user_profile_remote_data_source.dart';
 import 'package:tafaling/features/user/data/models/follow_un_follow_model.dart';
 import 'package:tafaling/features/user/data/models/search_user_model.dart';
+import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/domain/repositories/user_profile_repository.dart';
 
 class UserProfileRepositoryImpl implements UserProfileRepository {
@@ -100,5 +101,25 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
     } else {
       return FailedData(NetworkFailure());
     }
+  }
+
+  @override
+  Future<DataState<List<UserEntity>>> getFollowers(
+    int targetUserId,
+    int startRecord,
+    int pageSize,
+  ) {
+    // TODO: implement getFollowers
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataState<List<UserEntity>>> getFollowingUsers(
+    int targetUserId,
+    int startRecord,
+    int pageSize,
+  ) {
+    // TODO: implement getFollowingUsers
+    throw UnimplementedError();
   }
 }

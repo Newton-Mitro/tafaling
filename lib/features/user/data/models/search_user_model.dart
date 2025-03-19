@@ -62,6 +62,7 @@ class SearchUserModel extends SearchUserEntity {
     };
   }
 
+  @override
   SearchUserModel copyWith({
     int? userId,
     String? userName,

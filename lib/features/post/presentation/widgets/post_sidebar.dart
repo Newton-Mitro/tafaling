@@ -5,11 +5,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tafaling/configs/routes/route_name.dart';
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
 import 'package:tafaling/features/home/presentation/widgets/bottom_sheet.dart';
-import 'package:tafaling/features/post/data/models/post_model.dart';
+import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/post/presentation/posts_screen/bloc/posts_screen_bloc.dart';
 
 class PostSidebar extends StatelessWidget {
-  final PostModel? postModel;
+  final PostEntity? postModel;
 
   const PostSidebar({super.key, required this.postModel});
 
@@ -56,14 +56,13 @@ class PostSidebar extends StatelessWidget {
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(35),
-                          child: profileImage.isNotEmpty
-                              ? CachedNetworkImage(
-                                  imageUrl: profileImage,
-                                )
-                              : Image.asset(
-                                  'assets/images/misc/avatar.png',
-                                  fit: BoxFit.cover,
-                                ),
+                          child:
+                              profileImage.isNotEmpty
+                                  ? CachedNetworkImage(imageUrl: profileImage)
+                                  : Image.asset(
+                                    'assets/images/misc/avatar.png',
+                                    fit: BoxFit.cover,
+                                  ),
                         ),
                       ),
                     ),
@@ -77,9 +76,10 @@ class PostSidebar extends StatelessWidget {
               postModel?.isLiked == true ? Colors.red : Colors.white,
               () {
                 if (accessTokenNotifier.value != null) {
-                  final event = postModel?.isLiked == true
-                      ? DisLikePostEvent(postModel?.id ?? 0)
-                      : LikePostEvent(postModel?.id ?? 0);
+                  final event =
+                      postModel?.isLiked == true
+                          ? DisLikePostEvent(postModel?.id ?? 0)
+                          : LikePostEvent(postModel?.id ?? 0);
                   context.read<PostsScreenBloc>().add(event);
                 } else {
                   showCustomBottomSheet(context);
@@ -115,13 +115,14 @@ class PostSidebar extends StatelessWidget {
   }
 
   Widget _buildSidebarActionButton(
-      IconData icon, int count, Color color, VoidCallback onTap) {
+    IconData icon,
+    int count,
+    Color color,
+    VoidCallback onTap,
+  ) {
     return Column(
       children: [
-        IconButton(
-          icon: FaIcon(icon, color: color),
-          onPressed: onTap,
-        ),
+        IconButton(icon: FaIcon(icon, color: color), onPressed: onTap),
         Material(
           color: Colors.transparent,
           child: InkWell(
@@ -132,15 +133,10 @@ class PostSidebar extends StatelessWidget {
               width: 30,
               height: 30,
               alignment: Alignment.center,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-              ),
+              decoration: BoxDecoration(shape: BoxShape.circle),
               child: Text(
                 count.toString(),
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
-                ),
+                style: const TextStyle(fontSize: 14, color: Colors.white),
               ),
             ),
           ),

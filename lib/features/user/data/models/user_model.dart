@@ -22,9 +22,10 @@ class UserModel extends UserEntity {
       name: json['name'] ?? 'unknown',
       userName: json['user_name'] ?? 'unknown',
       email: json['email'] ?? 'unknown',
-      emailVerifiedAt: json['email_verified_at'] != null
-          ? DateTime.parse(json['email_verified_at'])
-          : null,
+      emailVerifiedAt:
+          json['email_verified_at'] != null
+              ? DateTime.parse(json['email_verified_at'])
+              : null,
       profilePicture: json['profile_picture'] as String?,
       coverPhoto: json['cover_photo'] as String?,
       followers: json['followers'] ?? 0,
@@ -52,6 +53,7 @@ class UserModel extends UserEntity {
     };
   }
 
+  @override
   UserModel copyWith({
     int? id,
     String? name,

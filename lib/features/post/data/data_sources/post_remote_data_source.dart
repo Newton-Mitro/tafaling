@@ -14,8 +14,10 @@ abstract class PostRemoteDataSource {
     int startRecord,
     int pageSize,
   );
+  Future<String> removePost(int postId);
   Future<LikeModel> likePost(int postId);
   Future<LikeModel> disLikePost(int postId);
+  Future<List<UserModel>> getLikeUserByPost(int userId);
 }
 
 class PostRemoteDataSourceImpl implements PostRemoteDataSource {
@@ -119,28 +121,36 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
     }
   }
 
-  // @override
-  // Future<List<UserModel>> getFollowingUsers(int userId) async {
-  //   final response = await authApiService.get(
-  //     '/posts/liked/users',
-  //     queryParameters: {'post_id': userId, 'start_record': 0, 'page_size': 5},
-  //   );
+  @override
+  Future<List<UserModel>> getLikeUserByPost(int userId) async {
+    final response = await authApiService.get(
+      '/posts/liked/users',
+      queryParameters: {'post_id': userId, 'start_record': 0, 'page_size': 5},
+    );
 
-  //   return _handleResponse<List<UserModel>>(response, (data) {
-  //     var followers =
-  //         (data['data'] as List)
-  //             .map((user) => UserModel.fromJson(user))
-  //             .toList();
-  //     return followers;
-  //   });
-  // }
+    final users =
+        (response.data['data'] as List)
+            .map((user) => UserModel.fromJson(user))
+            .toList();
+    return users;
+  }
+
+  @override
+  Future<String> removePost(int postId) async {
+    try {
+      final response = await authApiService.post(
+        '/posts/remove',
+        data: {"post_id": postId},
+      );
+
+      if (response.statusCode == HttpStatus.ok) {
+        final res = response.data!['data'];
+        return res;
+      } else {
+        throw Exception('Post fetching failed');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
-
-// POST http://127.0.0.1:8000/api/posts/remove
-// Content-Type: application/json
-// Accept: application/json
-// Authorization: Bearer {{auth_token}}
-
-// {
-//     "post_id": 37
-// }

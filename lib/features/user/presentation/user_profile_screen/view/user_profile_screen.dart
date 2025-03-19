@@ -1,10 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tafaling/configs/routes/route_name.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
-import 'package:tafaling/features/post/data/models/post_model.dart';
+import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/user/presentation/widgets/profile_posts_grid.dart';
 import 'package:tafaling/features/user/presentation/user_profile_screen/bloc/profile_bloc.dart';
 import 'package:tafaling/features/user/presentation/widgets/follow_status.dart';
@@ -41,9 +42,9 @@ class UserProfileScreen extends StatelessWidget {
       ],
       child: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
-          if (state.loading) {
-            return Center(child: CircularProgressIndicator());
-          }
+          // if (state.loading) {
+          //   return Center(child: CircularProgressIndicator());
+          // }
 
           if (state.error.isNotEmpty) {
             return Center(child: Text('Error: ${state.error}'));
@@ -60,7 +61,7 @@ class UserProfileScreen extends StatelessWidget {
 
   Widget _buildProfilePage(
     BuildContext context,
-    List<PostModel> posts,
+    List<PostEntity> posts,
     ProfileState state,
   ) {
     var profilePic = posts[0].creator.profilePicture ?? '';
@@ -69,7 +70,8 @@ class UserProfileScreen extends StatelessWidget {
     var followers = posts[0].creator.followers;
     var following = posts[0].creator.following;
     var isFollowing = posts[0].creator.isFollowing;
-    List<PostModel> myPosts = posts.isNotEmpty && posts[0].id != 0 ? posts : [];
+    List<PostEntity> myPosts =
+        posts.isNotEmpty && posts[0].id != 0 ? posts : [];
 
     return PopScope(
       child: DefaultTabController(
@@ -77,7 +79,7 @@ class UserProfileScreen extends StatelessWidget {
         child: BlocListener<AuthBloc, AuthState>(
           listener: (context, authState) {
             if (authState is Unauthenticated) {
-              // Navigator.pushReplacementNamed(context, RoutesName.homePage);
+              Navigator.pushReplacementNamed(context, RoutesName.homePage);
               selectedPageNotifier.value = 0;
             }
           },

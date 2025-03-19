@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tafaling/core/utils/app_context.dart';
-import 'package:tafaling/features/post/data/models/post_model.dart';
+import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/post/presentation/widgets/video_post_viewer.dart';
 
 class ProfilePostsGrid extends StatelessWidget {
   final int itemCount;
-  final List<PostModel> myPosts;
+  final List<PostEntity> myPosts;
 
   const ProfilePostsGrid({
     super.key,
@@ -22,7 +22,9 @@ class ProfilePostsGrid extends StatelessWidget {
         child: Text(
           'No posts available',
           style: TextStyle(
-              fontSize: 18, color: context.theme.colorScheme.onSurface),
+            fontSize: 18,
+            color: context.theme.colorScheme.onSurface,
+          ),
         ),
       );
     }
@@ -37,9 +39,10 @@ class ProfilePostsGrid extends StatelessWidget {
       ),
       itemCount: itemCount,
       itemBuilder: (context, index) {
-        final post = myPosts[index].attachments.isNotEmpty
-            ? myPosts[index].attachments.first
-            : null;
+        final post =
+            myPosts[index].attachments.isNotEmpty
+                ? myPosts[index].attachments.first
+                : null;
         final thumbnailUrl =
             post != null ? "${post.fileURL}/${post.fileName}" : '';
 
@@ -48,30 +51,35 @@ class ProfilePostsGrid extends StatelessWidget {
         return Container(
           margin: const EdgeInsets.all(2),
           decoration: BoxDecoration(
-            border:
-                Border.all(color: context.theme.colorScheme.surface, width: 2),
+            border: Border.all(
+              color: context.theme.colorScheme.surface,
+              width: 2,
+            ),
             borderRadius: BorderRadius.circular(8),
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(6),
-            child: mimeType.contains("image")
-                ? CachedNetworkImage(
-                    imageUrl: thumbnailUrl,
-                    fit: BoxFit.cover,
-                    errorWidget: (context, url, error) =>
-                        Image.asset('assets/images/misc/no_preview.png'),
-                  )
-                : mimeType.contains("video")
+            child:
+                mimeType.contains("image")
+                    ? CachedNetworkImage(
+                      imageUrl: thumbnailUrl,
+                      fit: BoxFit.cover,
+                      errorWidget:
+                          (context, url, error) =>
+                              Image.asset('assets/images/misc/no_preview.png'),
+                    )
+                    : mimeType.contains("video")
                     ? VideoPostViewer(
-                        attachmentUrl: thumbnailUrl,
-                        autoPlay: false,
-                      )
+                      attachmentUrl: thumbnailUrl,
+                      autoPlay: false,
+                    )
                     : CachedNetworkImage(
-                        imageUrl: thumbnailUrl,
-                        fit: BoxFit.cover,
-                        errorWidget: (context, url, error) =>
-                            Image.asset('assets/images/misc/no_preview.png'),
-                      ),
+                      imageUrl: thumbnailUrl,
+                      fit: BoxFit.cover,
+                      errorWidget:
+                          (context, url, error) =>
+                              Image.asset('assets/images/misc/no_preview.png'),
+                    ),
           ),
         );
       },
