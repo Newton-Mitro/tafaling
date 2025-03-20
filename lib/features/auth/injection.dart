@@ -1,32 +1,45 @@
-// import 'package:get_it/get_it.dart';
-// import 'data/index.dart'; // Import barrel files
-// import 'domain/index.dart';
-// import 'presentation/index.dart';
+import 'package:get_it/get_it.dart';
+import 'package:tafaling/core/index.dart';
+import 'data/index.dart';
+import 'domain/index.dart';
+import 'presentation/index.dart';
 
-// final sl = GetIt.instance;
+final sl = GetIt.instance;
 
-// void registerAuthModule() {
-//   // Data Sources
-//   sl.registerLazySingleton<AuthRemoteDataSource>(
-//     () => AuthRemoteDataSourceImpl(apiService: sl(), authApiService: sl()),
-//   );
+void registerAuthModule() {
+  // Register Data Sources
+  sl.registerLazySingleton<AuthDataSource>(
+    () => AuthRemoteDataSourceImpl(
+      apiService: sl<ApiService>(),
+      authApiService: sl<AuthApiService>(),
+    ),
+  );
 
-//   // Repository
-//   sl.registerLazySingleton<AuthRepository>(
-//     () => AuthRepositoryImpl(sl(), sl()),
-//   );
+  // Register Repository
+  // sl.registerLazySingleton<AuthRepository>(
+  //   () => AuthRepositoryImpl(
+  //     remoteDataSource: sl<AuthDataSource>(),
+  //     networkService: sl<NetworkService>(),
+  //   ),
+  // );
 
-//   // Use Cases
-//   sl.registerLazySingleton(() => LoginUseCase(sl<AuthRepository>()));
-//   sl.registerLazySingleton(() => RegistrationUseCase(sl<AuthRepository>()));
-//   sl.registerLazySingleton(() => LogoutUseCase(sl<AuthRepository>()));
+  // Register Use Cases
+  sl.registerLazySingleton<LoginUseCase>(
+    () => LoginUseCase(authRepository: sl<AuthRepository>()),
+  );
+  sl.registerLazySingleton<RegistrationUseCase>(
+    () => RegistrationUseCase(authRepository: sl<AuthRepository>()),
+  );
+  sl.registerLazySingleton<LogoutUsecase>(
+    () => LogoutUsecase(authRepository: sl<AuthRepository>()),
+  );
 
-//   // Bloc
-//   sl.registerFactory(
-//     () => AuthBloc(
-//       registrationUseCase: sl(),
-//       loginUseCase: sl(),
-//       logoutUseCase: sl(),
-//     ),
-//   );
-// }
+  // Register Bloc
+  sl.registerFactory<AuthBloc>(
+    () => AuthBloc(
+      registrationUseCase: sl<RegistrationUseCase>(),
+      loginUseCase: sl<LoginUseCase>(),
+      logoutUseCase: sl<LogoutUsecase>(),
+    ),
+  );
+}

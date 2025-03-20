@@ -3,21 +3,11 @@ import 'dart:io';
 import 'package:tafaling/core/network/api_service.dart';
 import 'package:tafaling/core/network/auth_api_service.dart';
 import 'package:tafaling/core/utils/app_shared_pref.dart';
+import 'package:tafaling/features/auth/data/data_sources/auth_data_source.dart';
 import 'package:tafaling/features/auth/data/models/auth_user_model.dart';
 import 'package:tafaling/features/user/data/models/user_model.dart';
 
-abstract class AuthRemoteDataSource {
-  Future<AuthUserModel> login(String? email, String? password);
-  Future<AuthUserModel> register(
-    String name,
-    String email,
-    String password,
-    String confirmPassword,
-  );
-  Future<void> logout();
-}
-
-class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
+class AuthRemoteDataSourceImpl implements AuthDataSource {
   final ApiService apiService;
   final AuthApiService authApiService;
 

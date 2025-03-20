@@ -7,20 +7,17 @@ final class LoginParams {
   final String email;
   final String password;
 
-  LoginParams({
-    required this.email,
-    required this.password,
-  });
+  LoginParams({required this.email, required this.password});
 }
 
 class LoginUseCase extends UseCase<DataState<AuthUserEntity>, LoginParams> {
-  final AuthRepository repository;
+  final AuthRepository authRepository;
 
-  LoginUseCase(this.repository);
+  LoginUseCase({required this.authRepository});
 
   @override
   Future<DataState<AuthUserEntity>> call({LoginParams? params}) async {
-    final loggedInUser = await repository.login(
+    final loggedInUser = await authRepository.login(
       params?.email,
       params?.password,
     );

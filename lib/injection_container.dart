@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tafaling/core/network/api_service.dart';
 import 'package:tafaling/core/network/auth_api_service.dart';
 import 'package:tafaling/core/network/network_info.dart';
+import 'package:tafaling/features/auth/data/data_sources/auth_data_source.dart';
 import 'package:tafaling/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:tafaling/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:tafaling/features/auth/domain/repositories/auth_repository.dart';
@@ -42,7 +43,7 @@ var sl = GetIt.instance;
 Future<void> getInit() async {
   await _setupComponents();
   await _setupDatasources();
-  await _setupRepositories();
+  // await _setupRepositories();
   await _setupUsecases();
   await _setupStates();
 }
@@ -61,7 +62,7 @@ Future<void> _setupComponents() async {
 }
 
 Future<void> _setupDatasources() async {
-  sl.registerLazySingleton<AuthRemoteDataSource>(
+  sl.registerLazySingleton<AuthDataSource>(
     () => AuthRemoteDataSourceImpl(apiService: sl(), authApiService: sl()),
   );
   sl.registerLazySingleton<PostRemoteDataSource>(
@@ -72,22 +73,22 @@ Future<void> _setupDatasources() async {
   );
 }
 
-Future<void> _setupRepositories() async {
-  sl.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(sl(), sl()),
-  );
-  sl.registerLazySingleton<PostRepository>(
-    () => PostRepositoryImpl(sl(), sl()),
-  );
-  sl.registerLazySingleton<UserRepository>(
-    () => UserRepositoryImpl(sl(), sl()),
-  );
-}
+// Future<void> _setupRepositories() async {
+//   sl.registerLazySingleton<AuthRepository>(
+//     () => AuthRepositoryImpl(sl(), sl()),
+//   );
+//   sl.registerLazySingleton<PostRepository>(
+//     () => PostRepositoryImpl(sl(), sl()),
+//   );
+//   sl.registerLazySingleton<UserRepository>(
+//     () => UserRepositoryImpl(sl(), sl()),
+//   );
+// }
 
 Future<void> _setupUsecases() async {
-  sl.registerLazySingleton(() => LoginUseCase(sl<AuthRepository>()));
-  sl.registerLazySingleton(() => RegistrationUseCase(sl<AuthRepository>()));
-  sl.registerLazySingleton(() => LogoutUsecase(sl<AuthRepository>()));
+  // sl.registerLazySingleton(() => LoginUseCase(sl<AuthRepository>()));
+  // sl.registerLazySingleton(() => RegistrationUseCase(sl<AuthRepository>()));
+  // sl.registerLazySingleton(() => LogoutUsecase(sl<AuthRepository>()));
 
   sl.registerLazySingleton(() => FetchPostsUseCase(sl<PostRepository>()));
   sl.registerLazySingleton(() => LikePostUseCase(sl<PostRepository>()));

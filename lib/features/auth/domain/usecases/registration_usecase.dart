@@ -19,13 +19,13 @@ final class RegistrationParams {
 
 class RegistrationUseCase
     extends UseCase<DataState<AuthUserEntity>, RegistrationParams> {
-  final AuthRepository repository;
+  final AuthRepository authRepository;
 
-  RegistrationUseCase(this.repository);
+  RegistrationUseCase({required this.authRepository});
 
   @override
   Future<DataState<AuthUserEntity>> call({RegistrationParams? params}) async {
-    final authUser = await repository.register(
+    final authUser = await authRepository.register(
       params?.name ?? '',
       params?.email ?? '',
       params?.password ?? '',
