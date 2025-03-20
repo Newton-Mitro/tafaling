@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:tafaling/core/network/auth_api_service.dart';
-import 'package:tafaling/features/post/data/models/post_model.dart';
 import 'package:tafaling/features/user/data/models/follow_un_follow_model.dart';
 import 'package:tafaling/features/user/data/models/user_model.dart';
 
@@ -19,7 +18,7 @@ abstract class UsersRemoteDataSource {
     int startRecord,
     int pageSize,
   );
-  Future<List<PostModel>> fetchProfile(
+  Future<List<UserModel>> fetchProfile(
     int userId,
     int startRecord,
     int pageSize,
@@ -64,22 +63,22 @@ class UserProfileRemoteDataSourceImpl implements UsersRemoteDataSource {
   }
 
   @override
-  Future<List<PostModel>> fetchProfile(
+  Future<List<UserModel>> fetchProfile(
     int userId,
     int startRecord,
     int pageSize,
   ) async {
     final response = await authApiService.get(
-      '/user/search/profile/$userId',
+      'user/search/profile/v2/$userId',
       queryParameters: {'start_record': startRecord, 'page_size': pageSize},
     );
 
-    return _handleResponse<List<PostModel>>(response, (data) {
-      var posts =
+    return _handleResponse<List<UserModel>>(response, (data) {
+      var users =
           (data['data'] as List)
-              .map((post) => PostModel.fromJson(post))
+              .map((post) => UserModel.fromJsonCammel(post))
               .toList();
-      return posts;
+      return users;
     });
   }
 
@@ -103,7 +102,7 @@ class UserProfileRemoteDataSourceImpl implements UsersRemoteDataSource {
     return _handleResponse<List<UserModel>>(response, (data) {
       var posts =
           (data['data'] as List)
-              .map((post) => UserModel.fromJson(post))
+              .map((post) => UserModel.fromJsonCammel(post))
               .toList();
       return posts;
     });
@@ -146,7 +145,7 @@ class UserProfileRemoteDataSourceImpl implements UsersRemoteDataSource {
     return _handleResponse<List<UserModel>>(response, (data) {
       var followers =
           (data['data'] as List)
-              .map((user) => UserModel.fromJson(user))
+              .map((user) => UserModel.fromJsonForFollower(user))
               .toList();
       return followers;
     });
@@ -170,7 +169,7 @@ class UserProfileRemoteDataSourceImpl implements UsersRemoteDataSource {
     return _handleResponse<List<UserModel>>(response, (data) {
       var followers =
           (data['data'] as List)
-              .map((user) => UserModel.fromJson(user))
+              .map((user) => UserModel.fromJsonForFollowing(user))
               .toList();
       return followers;
     });

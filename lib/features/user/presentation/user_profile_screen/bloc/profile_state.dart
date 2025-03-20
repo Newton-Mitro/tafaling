@@ -1,28 +1,17 @@
 part of 'profile_bloc.dart';
 
-class ProfileState extends Equatable {
-  final bool loading;
-  final List<PostEntity> posts;
-  final String error;
-
-  const ProfileState({
-    required this.loading,
-    required this.posts,
-    required this.error,
-  });
-
-  ProfileState copyWith({
-    bool? loading,
-    List<PostEntity>? posts,
-    String? error,
-  }) {
-    return ProfileState(
-      loading: loading ?? this.loading,
-      posts: posts ?? this.posts,
-      error: error ?? this.error,
-    );
-  }
+sealed class ProfileState extends Equatable {
+  const ProfileState();
 
   @override
-  List<Object> get props => [loading, posts, error];
+  List<Object> get props => [];
+}
+
+final class ProfileInitial extends ProfileState {}
+
+final class ProfileLoading extends ProfileState {}
+
+final class ProfileLoaded extends ProfileState {
+  final UserEntity user;
+  const ProfileLoaded(this.user);
 }

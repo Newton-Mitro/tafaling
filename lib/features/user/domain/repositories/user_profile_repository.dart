@@ -1,12 +1,11 @@
 import 'package:tafaling/core/resources/response_state.dart';
-import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/user/domain/entities/follow_unfollow_entity.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 
 abstract class UserRepository {
   Future<DataState<FollowUnFollowEntity>> followUser(int followingUserId);
   Future<DataState<FollowUnFollowEntity>> unFollowUser(int followingUserId);
-  Future<DataState<List<PostEntity>>> fetchProfile(
+  Future<DataState<List<UserEntity>>> fetchProfile(
     int userId,
     int startRecord,
     int pageSize,

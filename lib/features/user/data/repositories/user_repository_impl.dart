@@ -2,9 +2,9 @@ import 'package:tafaling/core/errors/exceptions.dart';
 import 'package:tafaling/core/errors/failures.dart';
 import 'package:tafaling/core/network/network_info.dart';
 import 'package:tafaling/core/resources/response_state.dart';
-import 'package:tafaling/features/post/data/models/post_model.dart';
 import 'package:tafaling/features/user/data/data_sources/users_remote_data_source.dart';
 import 'package:tafaling/features/user/data/models/follow_un_follow_model.dart';
+import 'package:tafaling/features/user/data/models/user_model.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/domain/repositories/user_profile_repository.dart';
 
@@ -51,7 +51,7 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<DataState<List<PostModel>>> fetchProfile(
+  Future<DataState<List<UserModel>>> fetchProfile(
     int userId,
     int startRecord,
     int pageSize,

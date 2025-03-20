@@ -91,8 +91,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         spacing: 10,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          AppLogo(width: 200),
-                          const SizedBox(height: 20),
+                          AppLogo(width: 150, height: 150),
+                          const SizedBox(height: 50),
                           AppTextInput(
                             controller: nameController,
                             label: 'Name',

@@ -4,12 +4,13 @@ import 'package:tafaling/features/auth/presentation/views/login_screen.dart';
 import 'package:tafaling/features/auth/presentation/views/register_screen.dart';
 import 'package:tafaling/features/home/presentation/home_screen/view/home_screen.dart';
 import 'package:tafaling/features/post/presentation/post_liked_users_screen/view/post_liked_users_screen.dart';
+import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/presentation/search_screen/view/search_screen.dart';
 import 'package:tafaling/features/user/presentation/user_profile_screen/view/user_profile_screen.dart';
 
 class AppRoutes {
   Route<dynamic> onGenerateRoutes(RouteSettings settings) {
-    final args = settings.arguments;
+    final Object? args = settings.arguments;
 
     switch (settings.name) {
       case RoutesName.homePage:
@@ -22,7 +23,7 @@ class AppRoutes {
         return _materialRoute(const RegistrationScreen());
 
       case RoutesName.userProfilePage:
-        return _materialRoute(UserProfileScreen(userId: args));
+        return _materialRoute(UserProfileScreen(user: args as UserEntity));
 
       case RoutesName.searchUser:
         return _materialRoute(SearchScreen());

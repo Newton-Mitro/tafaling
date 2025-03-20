@@ -2,9 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tafaling/configs/routes/route_name.dart';
 import 'package:tafaling/features/user/presentation/search_screen/bloc/search_screen_bloc.dart';
-import 'package:tafaling/features/user/presentation/widgets/user_tile.dart';
+import 'package:tafaling/features/user/presentation/widgets/user_tile/user_tile.dart';
 import 'package:tafaling/injection_container.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -106,24 +105,23 @@ class _SearchScreenState extends State<SearchScreen> {
                         final user = users[index];
                         return UserTile(
                           user: user, // Todo:
-
-                          onFollowToggle: () {
-                            context.read<SearchScreenBloc>().add(
-                              FollowUserEvent(user.id),
-                            );
-                          },
-                          onFriendRequestToggle: () {
-                            context.read<SearchScreenBloc>().add(
-                              UnFollowUserEvent(user.id),
-                            );
-                          },
-                          onViewProfile: () {
-                            Navigator.pushNamed(
-                              context,
-                              RoutesName.userProfilePage,
-                              arguments: user.id,
-                            );
-                          },
+                          // onFollowToggle: () {
+                          //   context.read<SearchScreenBloc>().add(
+                          //     FollowUserEvent(user.id),
+                          //   );
+                          // },
+                          // onFriendRequestToggle: () {
+                          //   context.read<SearchScreenBloc>().add(
+                          //     UnFollowUserEvent(user.id),
+                          //   );
+                          // },
+                          // onViewProfile: () {
+                          //   Navigator.pushNamed(
+                          //     context,
+                          //     RoutesName.userProfilePage,
+                          //     arguments: user.id,
+                          //   );
+                          // },
                         );
                       },
                     );

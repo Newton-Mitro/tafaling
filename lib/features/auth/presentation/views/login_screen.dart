@@ -78,8 +78,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const AppLogo(width: 200),
-                      const SizedBox(height: 20),
+                      AppLogo(width: 150, height: 150),
+                      const SizedBox(height: 50),
                       BlocBuilder<AuthBloc, AuthState>(
                         builder: (context, state) {
                           return Column(

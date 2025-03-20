@@ -7,24 +7,17 @@ sealed class ProfileEvent extends Equatable {
   List<Object> get props => [];
 }
 
-final class FetchProfileEvent extends ProfileEvent {
-  final int fetchPage;
-  final int userId;
-
-  const FetchProfileEvent({required this.fetchPage, required this.userId});
-
-  @override
-  List<Object> get props => [fetchPage];
+class LoadUserProfileEvent extends ProfileEvent {
+  final UserEntity user;
+  const LoadUserProfileEvent(this.user);
 }
 
 class FollowUserEvent extends ProfileEvent {
-  final int followingUserId;
-
-  const FollowUserEvent(this.followingUserId);
+  final int userId;
+  const FollowUserEvent(this.userId);
 }
 
-class UnFollowUserEvent extends ProfileEvent {
-  final int followingUserId;
-
-  const UnFollowUserEvent(this.followingUserId);
+class UnfollowUserEvent extends ProfileEvent {
+  final int userId;
+  const UnfollowUserEvent(this.userId);
 }

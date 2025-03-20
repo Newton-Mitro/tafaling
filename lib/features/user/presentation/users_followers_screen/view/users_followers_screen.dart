@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/features/user/presentation/users_followers_screen/bloc/users_followers_bloc.dart';
-import 'package:tafaling/features/user/presentation/widgets/user_tile.dart';
+import 'package:tafaling/features/user/presentation/widgets/user_tile/user_tile.dart';
 
 class UsersFollowersScreen extends StatefulWidget {
   final int userId;
@@ -65,12 +65,7 @@ class _UsersFollowersScreenState extends State<UsersFollowersScreen> {
               itemBuilder: (context, index) {
                 if (index < followers.length) {
                   final user = followers[index];
-                  return UserTile(
-                    user: user,
-                    onFollowToggle: () {},
-                    onFriendRequestToggle: () {},
-                    onViewProfile: () {},
-                  );
+                  return UserTile(user: user);
                 } else {
                   return Center(child: CircularProgressIndicator());
                 }

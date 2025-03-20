@@ -33,7 +33,7 @@ class SharePostSidebar extends StatelessWidget {
                   Navigator.pushNamed(
                     context,
                     RoutesName.userProfilePage,
-                    arguments: postModel?.creator.id,
+                    arguments: postModel?.creator,
                   );
                 } else {
                   showCustomBottomSheet(context);

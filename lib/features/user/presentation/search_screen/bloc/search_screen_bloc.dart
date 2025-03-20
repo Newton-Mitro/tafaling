@@ -26,70 +26,12 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchState> {
   ) : super(SearchInitial()) {
     on<SearchUsersEvent>(_onSearchUsersEvent);
     on<ResetSearchEvent>(_onResetSearchEvent);
-    on<FollowUserEvent>(_onFollowUserEvent);
-    on<UnFollowUserEvent>(_onUnFollowUserEvent);
   }
 
   Future<Map<String, dynamic>> _getUserCredentials() async {
     var user = await AppSharedPref.getAuthUser();
     var accessToken = await AppSharedPref.getAccessToken();
     return {'userId': user?.id, 'accessToken': accessToken};
-  }
-
-  Future<void> _onFollowUserEvent(
-    FollowUserEvent event,
-    Emitter<SearchState> emit,
-  ) async {
-    // emit(SearchLoading());
-    final followUserPrams = FollowUserParams(
-      followingUserId: event.followingUserId,
-    );
-    final dataState = await followUserUseCase(params: followUserPrams);
-    if (dataState is SuccessData && dataState.data != null) {
-      final updatedUsers = _updateSearchUsers(event.followingUserId);
-      emit(SearchLoaded(updatedUsers));
-    }
-
-    if (dataState is FailedData && dataState.error != null) {
-      emit(SearchError(dataState.error!.message));
-    }
-  }
-
-  Future<void> _onUnFollowUserEvent(
-    UnFollowUserEvent event,
-    Emitter<SearchState> emit,
-  ) async {
-    // emit(SearchLoading());
-    final unFolloUserParams = UnFollowUserParams(
-      followingUserId: event.followingUserId,
-    );
-    final dataState = await unFollowUserUseCase(params: unFolloUserParams);
-
-    if (dataState is SuccessData && dataState.data != null) {
-      final updatedUsers = _updateSearchUsers(event.followingUserId);
-      emit(SearchLoaded(updatedUsers));
-    }
-
-    if (dataState is FailedData && dataState.error != null) {
-      emit(SearchError(dataState.error!.message));
-    }
-  }
-
-  List<UserEntity> _updateSearchUsers(int postId) {
-    final postIndex = (state as SearchLoaded).users.indexWhere(
-      (user) => user.id == postId,
-    );
-    if (postIndex == -1) return (state as SearchLoaded).users;
-
-    final isFollowing = !(state as SearchLoaded).users[postIndex].isFollowing;
-    final updatedPost = (state as SearchLoaded).users[postIndex].copyWith(
-      isFollowing: isFollowing,
-    );
-
-    final updatedPosts = List<UserEntity>.from((state as SearchLoaded).users)
-      ..[postIndex] = updatedPost;
-
-    return updatedPosts;
   }
 
   Future<void> _onSearchUsersEvent(

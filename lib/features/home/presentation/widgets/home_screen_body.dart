@@ -30,7 +30,9 @@ class HomeScreenBody extends StatelessWidget {
       const FriendsScreen(),
       const CreatePostScreen(),
       const InboxScreen(),
-      UserProfileScreen(userId: authUserNotifier.value?.id),
+      authUserNotifier.value != null
+          ? UserProfileScreen(user: authUserNotifier.value!)
+          : SizedBox.shrink(),
     ];
     return screens[selectedPage];
   }

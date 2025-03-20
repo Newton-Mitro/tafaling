@@ -5,57 +5,58 @@ import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/domain/usecases/follow_user_usecase.dart';
 import 'package:tafaling/features/user/domain/usecases/un_follow_user_usecase.dart';
 
-part 'profile_event.dart';
-part 'profile_state.dart';
+part 'user_tile_event.dart';
+part 'user_tile_state.dart';
 
-class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
+class UserTileBloc extends Bloc<UserTileEvent, UserTileState> {
   final FollowUserUseCase followUserUseCase;
   final UnFollowUserUseCase unFollowUserUseCase;
 
-  ProfileBloc(this.followUserUseCase, this.unFollowUserUseCase)
-    : super(ProfileInitial()) {
-    on<LoadUserProfileEvent>(_onProfileLoadEvent);
+  UserTileBloc(this.followUserUseCase, this.unFollowUserUseCase)
+    : super(UserTileInitial()) {
+    on<LoadUserEvent>(_onUserTileLoadEvent);
     on<FollowUserEvent>(_onFollowUserEvent);
     on<UnfollowUserEvent>(_onUnfollowUserEvent);
   }
 
-  void _onProfileLoadEvent(
-    LoadUserProfileEvent event,
-    Emitter<ProfileState> emit,
+  void _onUserTileLoadEvent(
+    LoadUserEvent event,
+    Emitter<UserTileState> emit,
   ) async {
-    emit(ProfileLoaded(event.user));
+    emit(UserTileLoading());
+    emit(UserTileLoaded(event.user));
   }
 
   void _onFollowUserEvent(
     FollowUserEvent event,
-    Emitter<ProfileState> emit,
+    Emitter<UserTileState> emit,
   ) async {
-    if (state is ProfileLoaded) {
-      final currentUser = (state as ProfileLoaded).user;
+    if (state is UserTileLoaded) {
+      final currentUser = (state as UserTileLoaded).user;
 
-      emit(ProfileLoading());
+      emit(UserTileLoading());
       final followUserPrams = FollowUserParams(followingUserId: event.userId);
       final dataState = await followUserUseCase(params: followUserPrams);
       if (dataState is SuccessData && dataState.data != null) {
-        emit(ProfileLoaded(currentUser.copyWith(isFollowing: true)));
+        emit(UserTileLoaded(currentUser.copyWith(isFollowing: true)));
       }
     }
   }
 
   void _onUnfollowUserEvent(
     UnfollowUserEvent event,
-    Emitter<ProfileState> emit,
+    Emitter<UserTileState> emit,
   ) async {
-    if (state is ProfileLoaded) {
-      final currentUser = (state as ProfileLoaded).user;
+    if (state is UserTileLoaded) {
+      final currentUser = (state as UserTileLoaded).user;
 
-      emit(ProfileLoading());
+      emit(UserTileLoading());
       final unfollowUserPrams = UnFollowUserParams(
         followingUserId: event.userId,
       );
       final dataState = await unFollowUserUseCase(params: unfollowUserPrams);
       if (dataState is SuccessData && dataState.data != null) {
-        emit(ProfileLoaded(currentUser.copyWith(isFollowing: false)));
+        emit(UserTileLoaded(currentUser.copyWith(isFollowing: false)));
       }
     }
   }

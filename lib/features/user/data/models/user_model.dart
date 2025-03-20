@@ -16,6 +16,66 @@ class UserModel extends UserEntity {
     super.friendshipStatus,
   });
 
+  factory UserModel.fromJsonCammel(Map<String, dynamic> json) {
+    return UserModel(
+      id: json['userId'] ?? 0,
+      name: json['name'] ?? 'unknown',
+      userName: json['userName'] ?? 'unknown',
+      email: json['email'] ?? 'unknown',
+      emailVerifiedAt:
+          json['emailVerifiedAt'] != null
+              ? DateTime.parse(json['emailVerifiedAt'])
+              : null,
+      profilePicture: json['profilePicture'] as String?,
+      coverPhoto: json['coverPhoto'] as String?,
+      followers: json['followers'] ?? 0,
+      following: json['following'] ?? 0,
+      totalLikeCount: json['totalLikeCount'] ?? 0,
+      isFollowing: json['isFollowing'] ?? false,
+      friendshipStatus: json['friendshipStatus'] ?? 0,
+    );
+  }
+
+  factory UserModel.fromJsonForFollowing(Map<String, dynamic> json) {
+    return UserModel(
+      id: json['followingUserId'] ?? 0,
+      name: json['name'] ?? 'unknown',
+      userName: json['userName'] ?? 'unknown',
+      email: json['email'] ?? 'unknown',
+      emailVerifiedAt:
+          json['emailVerifiedAt'] != null
+              ? DateTime.parse(json['emailVerifiedAt'])
+              : null,
+      profilePicture: json['profilePicture'] as String?,
+      coverPhoto: json['coverPhoto'] as String?,
+      followers: json['followers'] ?? 0,
+      following: json['following'] ?? 0,
+      totalLikeCount: json['totalLikeCount'] ?? 0,
+      isFollowing: json['isFollowing'] ?? false,
+      friendshipStatus: json['friendshipStatus'] ?? 0,
+    );
+  }
+
+  factory UserModel.fromJsonForFollower(Map<String, dynamic> json) {
+    return UserModel(
+      id: json['followerUserId'] ?? 0,
+      name: json['name'] ?? 'unknown',
+      userName: json['userName'] ?? 'unknown',
+      email: json['email'] ?? 'unknown',
+      emailVerifiedAt:
+          json['emailVerifiedAt'] != null
+              ? DateTime.parse(json['emailVerifiedAt'])
+              : null,
+      profilePicture: json['profilePicture'] as String?,
+      coverPhoto: json['coverPhoto'] as String?,
+      followers: json['followers'] ?? 0,
+      following: json['following'] ?? 0,
+      totalLikeCount: json['totalLikeCount'] ?? 0,
+      isFollowing: json['isFollowing'] ?? false,
+      friendshipStatus: json['friendshipStatus'] ?? 0,
+    );
+  }
+
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       id: json['user_id'] ?? 0,

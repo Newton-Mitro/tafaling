@@ -9,15 +9,3 @@ class SearchUsersEvent extends SearchScreenEvent {
 }
 
 class ResetSearchEvent extends SearchScreenEvent {}
-
-class FollowUserEvent extends SearchScreenEvent {
-  final int followingUserId;
-
-  FollowUserEvent(this.followingUserId);
-}
-
-class UnFollowUserEvent extends SearchScreenEvent {
-  final int followingUserId;
-
-  UnFollowUserEvent(this.followingUserId);
-}

@@ -6,6 +6,7 @@ import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
+import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/presentation/following_users_screen/bloc/following_users_bloc.dart';
 import 'package:tafaling/features/user/presentation/users_followers_screen/bloc/users_followers_bloc.dart';
 import 'package:tafaling/features/user/presentation/users_followers_screen/view/users_followers_screen.dart';
@@ -22,9 +23,9 @@ final profileTabs = [
 ];
 
 class UserProfileScreen extends StatelessWidget {
-  final Object? userId;
+  final UserEntity user;
 
-  const UserProfileScreen({super.key, this.userId});
+  const UserProfileScreen({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -32,50 +33,18 @@ class UserProfileScreen extends StatelessWidget {
       providers: [
         BlocProvider(
           create:
-              (context) =>
-                  sl<ProfileBloc>()..add(
-                    FetchProfileEvent(
-                      userId: (userId ?? 0) as int,
-                      fetchPage: 1,
-                    ),
-                  ),
+              (context) => sl<ProfileBloc>()..add(LoadUserProfileEvent(user)),
         ),
         BlocProvider(create: (context) => sl<AuthBloc>()),
         BlocProvider(create: (context) => sl<UserFollowersBloc>()),
         BlocProvider(create: (context) => sl<FollowingUsersBloc>()),
       ],
-      child: BlocBuilder<ProfileBloc, ProfileState>(
-        builder: (context, state) {
-          // if (state.loading) {
-          //   return Center(child: CircularProgressIndicator());
-          // }
-
-          if (state.error.isNotEmpty) {
-            return Center(child: Text('Error: ${state.error}'));
-          }
-
-          if (state.posts.isNotEmpty) {
-            return _buildProfilePage(context, state.posts, state);
-          }
-          return Container();
-        },
-      ),
+      child: _buildProfilePage(context),
     );
   }
 
-  Widget _buildProfilePage(
-    BuildContext context,
-    List<PostEntity> posts,
-    ProfileState state,
-  ) {
-    var profilePic = posts[0].creator.profilePicture ?? '';
-    var userId = posts[0].creator.id;
-    var userName = posts[0].creator.name;
-    var followers = posts[0].creator.followers;
-    var following = posts[0].creator.following;
-    var isFollowing = posts[0].creator.isFollowing;
-    List<PostEntity> myPosts =
-        posts.isNotEmpty && posts[0].id != 0 ? posts : [];
+  Widget _buildProfilePage(BuildContext context) {
+    List<PostEntity> myPosts = []; // TODO: need implementation
 
     return PopScope(
       child: DefaultTabController(
@@ -91,11 +60,9 @@ class UserProfileScreen extends StatelessWidget {
             builder: (context, authState) {
               return Scaffold(
                 appBar: AppBar(
-                  automaticallyImplyLeading:
-                      userId == authUserNotifier.value?.id ? false : true,
                   title: const Text('Profile'),
                   actions: [
-                    if (authUserNotifier.value?.id == userId)
+                    if (authUserNotifier.value?.id == user.id)
                       authState is AuthLoading
                           ? SizedBox(
                             width: 20,
@@ -125,212 +92,246 @@ class UserProfileScreen extends StatelessWidget {
                           expandedHeight: 350.0,
                           flexibleSpace: FlexibleSpaceBar(
                             background: SingleChildScrollView(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const SizedBox(height: 10),
-                                  CachedNetworkImage(
-                                    imageUrl: profilePic,
-                                    imageBuilder:
-                                        (context, imageProvider) => ClipOval(
-                                          child: Image(
-                                            image: imageProvider,
-                                            fit: BoxFit.cover,
-                                            width: 100, // Set width
-                                            height: 100, // Set height
-                                          ),
-                                        ),
-                                    placeholder:
-                                        (context, url) => SizedBox(
-                                          width: 100,
-                                          height: 100,
-                                          child: CircularProgressIndicator(),
-                                        ),
-                                    errorWidget:
-                                        (context, url, error) => ClipOval(
-                                          child: Image.asset(
-                                            'assets/images/misc/avatar.png',
-                                            fit: BoxFit.cover,
-                                            width: 100, // Ensure same size
-                                            height: 100, // Ensure same size
-                                          ),
-                                        ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    userName,
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      FollowStatus(
-                                        label: "Following",
-                                        value: following.toString(),
-                                        onPressed: () {},
-                                      ),
-                                      FollowStatus(
-                                        label: "Followers",
-                                        value: followers.toString(),
-                                        onPressed: () {},
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 20),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      // Show "Edit Profile" and "Share Profile" if it's the authenticated user's profile
-                                      if (userId ==
-                                          authUserNotifier.value?.id) ...[
-                                        FilledButton(
-                                          child: Text(
-                                            "Edit Profile",
-                                            style:
-                                                context
-                                                    .theme
-                                                    .textTheme
-                                                    .labelMedium,
-                                          ),
-                                          onPressed: () {
-                                            // Edit Profile Action
-                                          },
-                                        ),
-                                        const SizedBox(width: 10),
-                                        FilledButton(
-                                          child: Text(
-                                            "Share Profile",
-                                            style:
-                                                context
-                                                    .theme
-                                                    .textTheme
-                                                    .labelMedium,
-                                          ),
-                                          onPressed: () {
-                                            // Share Profile Action
-                                          },
-                                        ),
-                                      ]
-                                      // If it's not the authenticated user's profile, show "Follow/Unfollow" buttons
-                                      else ...[
-                                        isFollowing
-                                            ? state.loading
-                                                ? CircularProgressIndicator(
-                                                  color: Colors.red,
-                                                )
-                                                : FilledButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                        backgroundColor:
-                                                            Color.fromARGB(
-                                                              255,
-                                                              13,
-                                                              82,
-                                                              14,
-                                                            ),
-                                                      ),
-                                                  child: Text(
-                                                    "Unfollow",
-                                                    style:
-                                                        context
-                                                            .theme
-                                                            .textTheme
-                                                            .labelMedium,
+                              child: BlocBuilder<ProfileBloc, ProfileState>(
+                                builder: (context, state) {
+                                  if (state is ProfileLoaded) {
+                                    return Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const SizedBox(height: 10),
+                                        CachedNetworkImage(
+                                          imageUrl:
+                                              state.user.profilePicture ?? '',
+                                          imageBuilder:
+                                              (context, imageProvider) =>
+                                                  ClipOval(
+                                                    child: Image(
+                                                      image: imageProvider,
+                                                      fit: BoxFit.cover,
+                                                      width: 100, // Set width
+                                                      height: 100, // Set height
+                                                    ),
                                                   ),
-                                                  onPressed: () {
-                                                    context
-                                                        .read<ProfileBloc>()
-                                                        .add(
-                                                          UnFollowUserEvent(
-                                                            userId,
-                                                          ),
-                                                        );
-                                                  },
-                                                )
-                                            : state.loading
-                                            ? CircularProgressIndicator(
-                                              color: Colors.red,
-                                            )
-                                            : FilledButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Color.fromARGB(
-                                                  255,
-                                                  6,
-                                                  47,
-                                                  82,
+                                          placeholder:
+                                              (context, url) => SizedBox(
+                                                width: 100,
+                                                height: 100,
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                          errorWidget:
+                                              (context, url, error) => ClipOval(
+                                                child: Image.asset(
+                                                  'assets/images/misc/avatar.png',
+                                                  fit: BoxFit.cover,
+                                                  width:
+                                                      100, // Ensure same size
+                                                  height:
+                                                      100, // Ensure same size
                                                 ),
                                               ),
-                                              child: Text(
-                                                "Follow",
-                                                style:
-                                                    context
-                                                        .theme
-                                                        .textTheme
-                                                        .labelMedium,
-                                              ),
-                                              onPressed: () {
-                                                context.read<ProfileBloc>().add(
-                                                  FollowUserEvent(userId),
-                                                );
-                                              },
-                                            ),
-                                        const SizedBox(width: 10),
-                                        FilledButton(
-                                          child: Text(
-                                            "Message",
-                                            style:
-                                                context
-                                                    .theme
-                                                    .textTheme
-                                                    .labelMedium,
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          state.user.name,
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
                                           ),
-                                          onPressed: () {
-                                            // Share Profile Action
-                                          },
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            FollowStatus(
+                                              label: "Following",
+                                              value:
+                                                  state.user.following
+                                                      .toString(),
+                                              onPressed: () {},
+                                            ),
+                                            FollowStatus(
+                                              label: "Followers",
+                                              value:
+                                                  state.user.followers
+                                                      .toString(),
+                                              onPressed: () {},
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 20),
+                                        Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            // Show "Edit Profile" and "Share Profile" if it's the authenticated user's profile
+                                            if (state.user.id ==
+                                                authUserNotifier.value?.id) ...[
+                                              FilledButton(
+                                                child: Text(
+                                                  "Edit Profile",
+                                                  style:
+                                                      context
+                                                          .theme
+                                                          .textTheme
+                                                          .labelMedium,
+                                                ),
+                                                onPressed: () {
+                                                  // Edit Profile Action
+                                                },
+                                              ),
+                                              const SizedBox(width: 10),
+                                              FilledButton(
+                                                child: Text(
+                                                  "Share Profile",
+                                                  style:
+                                                      context
+                                                          .theme
+                                                          .textTheme
+                                                          .labelMedium,
+                                                ),
+                                                onPressed: () {
+                                                  // Share Profile Action
+                                                },
+                                              ),
+                                            ]
+                                            // If it's not the authenticated user's profile, show "Follow/Unfollow" buttons
+                                            else ...[
+                                              state.user.isFollowing
+                                                  ? state is ProfileLoading
+                                                      ? CircularProgressIndicator(
+                                                        color: Colors.red,
+                                                      )
+                                                      : FilledButton(
+                                                        style:
+                                                            ElevatedButton.styleFrom(
+                                                              backgroundColor:
+                                                                  Color.fromARGB(
+                                                                    255,
+                                                                    13,
+                                                                    82,
+                                                                    14,
+                                                                  ),
+                                                            ),
+                                                        child: Text(
+                                                          "Unfollow",
+                                                          style:
+                                                              context
+                                                                  .theme
+                                                                  .textTheme
+                                                                  .labelMedium,
+                                                        ),
+                                                        onPressed: () {
+                                                          context
+                                                              .read<
+                                                                ProfileBloc
+                                                              >()
+                                                              .add(
+                                                                UnfollowUserEvent(
+                                                                  state.user.id,
+                                                                ),
+                                                              );
+                                                        },
+                                                      )
+                                                  : state is ProfileLoading
+                                                  ? CircularProgressIndicator(
+                                                    color: Colors.red,
+                                                  )
+                                                  : FilledButton(
+                                                    style:
+                                                        ElevatedButton.styleFrom(
+                                                          backgroundColor:
+                                                              Color.fromARGB(
+                                                                255,
+                                                                6,
+                                                                47,
+                                                                82,
+                                                              ),
+                                                        ),
+                                                    child: Text(
+                                                      "Follow",
+                                                      style:
+                                                          context
+                                                              .theme
+                                                              .textTheme
+                                                              .labelMedium,
+                                                    ),
+                                                    onPressed: () {
+                                                      context
+                                                          .read<ProfileBloc>()
+                                                          .add(
+                                                            FollowUserEvent(
+                                                              user.id,
+                                                            ),
+                                                          );
+                                                    },
+                                                  ),
+                                              const SizedBox(width: 10),
+                                              FilledButton(
+                                                child: Text(
+                                                  "Message",
+                                                  style:
+                                                      context
+                                                          .theme
+                                                          .textTheme
+                                                          .labelMedium,
+                                                ),
+                                                onPressed: () {
+                                                  // Share Profile Action
+                                                },
+                                              ),
+                                            ],
+                                            // Always show "Message" and "My Icon Button"
+                                          ],
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFF0B4B4A),
+                                            borderRadius: BorderRadius.circular(
+                                              5.0,
+                                            ),
+                                          ),
+                                          child: const Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 5,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        const Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 20,
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'This is a short bio about the user. It can include interests, hobbies, or anything the user wants to share.',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
-                                      // Always show "Message" and "My Icon Button"
-                                    ],
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFF0B4B4A),
-                                      borderRadius: BorderRadius.circular(5.0),
-                                    ),
-                                    child: const Padding(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 5,
+                                    );
+                                  }
+                                  return Container(
+                                    height: 300,
+                                    alignment: Alignment.center,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        color: Colors.amber,
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  const Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 20,
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'This is a short bio about the user. It can include interests, hobbies, or anything the user wants to share.',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                  );
+                                },
                               ),
                             ),
                           ),
@@ -355,8 +356,8 @@ class UserProfileScreen extends StatelessWidget {
                           itemCount: myPosts.length,
                           myPosts: myPosts,
                         ),
-                        FollowingUsersScreen(userId: userId),
-                        UsersFollowersScreen(userId: userId),
+                        FollowingUsersScreen(userId: user.id),
+                        UsersFollowersScreen(userId: user.id),
                       ],
                     ),
                   ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/features/post/presentation/post_liked_users_screen/bloc/post_liked_users_bloc.dart';
-import 'package:tafaling/features/user/presentation/widgets/user_tile.dart';
+import 'package:tafaling/features/user/presentation/widgets/user_tile/user_tile.dart';
 import 'package:tafaling/injection_container.dart';
 
 class PostLikedUsersScreen extends StatefulWidget {
@@ -79,12 +79,7 @@ class _PostLikedUsersScreenState extends State<PostLikedUsersScreen> {
                 itemBuilder: (context, index) {
                   if (index < followers.length) {
                     final user = followers[index];
-                    return UserTile(
-                      user: user,
-                      onFollowToggle: () {},
-                      onFriendRequestToggle: () {},
-                      onViewProfile: () {},
-                    );
+                    return UserTile(user: user);
                   } else {
                     return const Center(child: CircularProgressIndicator());
                   }

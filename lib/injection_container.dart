@@ -34,6 +34,7 @@ import 'package:tafaling/features/user/presentation/following_users_screen/bloc/
 import 'package:tafaling/features/user/presentation/user_profile_screen/bloc/profile_bloc.dart';
 import 'package:tafaling/features/user/presentation/search_screen/bloc/search_screen_bloc.dart';
 import 'package:tafaling/features/user/presentation/users_followers_screen/bloc/users_followers_bloc.dart';
+import 'package:tafaling/features/user/presentation/widgets/user_tile/bloc/user_tile_bloc.dart';
 
 var sl = GetIt.instance;
 
@@ -130,7 +131,7 @@ Future<void> _setupStates() async {
   );
   sl.registerFactory(
     () => ProfileBloc(
-      sl<FetchProfileUseCase>(),
+      // sl<FetchProfileUseCase>(),
       sl<FollowUserUseCase>(),
       sl<UnFollowUserUseCase>(),
     ),
@@ -150,5 +151,9 @@ Future<void> _setupStates() async {
     () => PostLikedUsersBloc(
       getPostLikedUsersUsecase: sl<GetPostLikedUsersUsecase>(),
     ),
+  );
+
+  sl.registerFactory(
+    () => UserTileBloc(sl<FollowUserUseCase>(), sl<UnFollowUserUseCase>()),
   );
 }

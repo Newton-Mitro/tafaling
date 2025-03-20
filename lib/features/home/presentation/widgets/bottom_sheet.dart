@@ -17,7 +17,7 @@ class CustomBottomSheet extends StatelessWidget {
         gradient: LinearGradient(
           colors: [
             context.theme.colorScheme.primary,
-            context.theme.colorScheme.secondary
+            context.theme.colorScheme.secondary,
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -37,12 +37,14 @@ class CustomBottomSheet extends StatelessWidget {
               onPressed: () => Navigator.pop(context),
             ),
           ),
-          const AppLogo(width: 200),
+          const AppLogo(width: 100, height: 100),
           const SizedBox(height: 50),
           CustomButton(context, 'Login', RoutesName.loginPage),
           const SizedBox(height: 10),
-          const Text('or',
-              style: TextStyle(fontSize: 16, color: Colors.white70)),
+          const Text(
+            'or',
+            style: TextStyle(fontSize: 16, color: Colors.white70),
+          ),
           const SizedBox(height: 10),
           CustomButton(context, 'Register', RoutesName.registerPage),
           const SizedBox(height: 50),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tafaling/core/utils/app_shared_pref.dart';
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
-import 'package:tafaling/features/user/presentation/user_profile_screen/bloc/profile_bloc.dart';
 import 'package:tafaling/injection_container.dart';
 import 'package:tafaling/core/widgets/language_selector/bloc/language_bloc.dart';
 import 'package:tafaling/core/widgets/theme_switcher/bloc/theme_bloc.dart';
@@ -18,19 +17,13 @@ void main() async {
   accessTokenNotifier.value = accessToken;
   runApp(
     MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => LanguageBloc()..add(LoadLocaleEvent()),
-          ),
-          BlocProvider(
-            create: (context) => ThemeBloc()..add(LoadThemeEvent()),
-          ),
-          BlocProvider(
-            create: (context) => ProfileBloc(sl.get(), sl.get(), sl.get()),
-          ),
-        ],
-        child: MyApp(
-          onBoarding: onBoarding,
-        )),
+      providers: [
+        BlocProvider(
+          create: (context) => LanguageBloc()..add(LoadLocaleEvent()),
+        ),
+        BlocProvider(create: (context) => ThemeBloc()..add(LoadThemeEvent())),
+      ],
+      child: MyApp(onBoarding: onBoarding),
+    ),
   );
 }

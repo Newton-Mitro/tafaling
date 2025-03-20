@@ -81,6 +81,8 @@ class AuthApiService {
     } on DioException catch (e) {
       _handleDioError(e);
       rethrow;
+    } catch (e) {
+      rethrow;
     }
   }
 
