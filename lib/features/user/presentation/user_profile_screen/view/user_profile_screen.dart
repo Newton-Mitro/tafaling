@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tafaling/configs/routes/route_name.dart';
+import 'package:tafaling/app_configs/routes/route_name.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tafaling/configs/routes/route_name.dart';
+import 'package:tafaling/app_configs/routes/route_name.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/core/utils/app_shared_pref.dart';
 import 'package:tafaling/features/home/data/constants/onboarding_list_items.dart';
@@ -21,9 +21,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return Scaffold(
       body: PageView.builder(
         itemCount: OnboardingListItems.listItems.length,
-        onPageChanged: (value) => setState(() {
-          isLastPage = value == OnboardingListItems.listItems.length - 1;
-        }),
+        onPageChanged:
+            (value) => setState(() {
+              isLastPage = value == OnboardingListItems.listItems.length - 1;
+            }),
         controller: _pageController,
         itemBuilder: (context, index) {
           return Stack(
@@ -41,8 +42,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 color: const Color.fromARGB(80, 0, 0, 0),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20,
+                  horizontal: 10,
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -61,70 +64,66 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     isLastPage
                         ? getStartedButton(context)
                         : Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              FilledButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      WidgetStatePropertyAll<Color>(
-                                          context.theme.colorScheme.primary),
-                                  foregroundColor:
-                                      WidgetStatePropertyAll<Color>(
-                                          context.theme.colorScheme.onPrimary),
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            FilledButton(
+                              style: ButtonStyle(
+                                backgroundColor: WidgetStatePropertyAll<Color>(
+                                  context.theme.colorScheme.primary,
                                 ),
-                                onPressed: () {
-                                  if ((_pageController.page ?? 0).round() > 0) {
-                                    _pageController.previousPage(
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      curve: Curves.easeIn,
-                                    );
-                                  }
-                                },
-                                child: Text(
-                                  'Previous',
-                                  style: context.theme.textTheme.labelSmall,
+                                foregroundColor: WidgetStatePropertyAll<Color>(
+                                  context.theme.colorScheme.onPrimary,
                                 ),
                               ),
-                              SmoothPageIndicator(
-                                controller: _pageController,
-                                count: OnboardingListItems.listItems.length,
-                                effect: ExpandingDotsEffect(
-                                  dotColor: context.theme.colorScheme.primary,
-                                  activeDotColor:
-                                      context.theme.colorScheme.error,
-                                  dotHeight: 10,
-                                  dotWidth: 10,
-                                  spacing: 5,
+                              onPressed: () {
+                                if ((_pageController.page ?? 0).round() > 0) {
+                                  _pageController.previousPage(
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeIn,
+                                  );
+                                }
+                              },
+                              child: Text(
+                                'Previous',
+                                style: context.theme.textTheme.labelSmall,
+                              ),
+                            ),
+                            SmoothPageIndicator(
+                              controller: _pageController,
+                              count: OnboardingListItems.listItems.length,
+                              effect: ExpandingDotsEffect(
+                                dotColor: context.theme.colorScheme.primary,
+                                activeDotColor: context.theme.colorScheme.error,
+                                dotHeight: 10,
+                                dotWidth: 10,
+                                spacing: 5,
+                              ),
+                            ),
+                            FilledButton(
+                              style: ButtonStyle(
+                                backgroundColor: WidgetStatePropertyAll<Color>(
+                                  context.theme.colorScheme.primary,
+                                ),
+                                foregroundColor: WidgetStatePropertyAll<Color>(
+                                  context.theme.colorScheme.onPrimary,
                                 ),
                               ),
-                              FilledButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      WidgetStatePropertyAll<Color>(
-                                          context.theme.colorScheme.primary),
-                                  foregroundColor:
-                                      WidgetStatePropertyAll<Color>(
-                                          context.theme.colorScheme.onPrimary),
-                                ),
-                                onPressed: () {
-                                  if ((_pageController.page ?? 0).round() <
-                                      OnboardingListItems.listItems.length -
-                                          1) {
-                                    _pageController.nextPage(
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      curve: Curves.easeIn,
-                                    );
-                                  }
-                                },
-                                child: Text(
-                                  'Next',
-                                  style: context.theme.textTheme.labelSmall,
-                                ),
+                              onPressed: () {
+                                if ((_pageController.page ?? 0).round() <
+                                    OnboardingListItems.listItems.length - 1) {
+                                  _pageController.nextPage(
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeIn,
+                                  );
+                                }
+                              },
+                              child: Text(
+                                'Next',
+                                style: context.theme.textTheme.labelSmall,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
+                        ),
                   ],
                 ),
               ),
@@ -146,9 +145,6 @@ Widget getStartedButton(BuildContext context) {
       AppSharedPref.setOnboardingStatus(false);
       Navigator.popAndPushNamed(context, RoutesName.homePage);
     },
-    child: Text(
-      'Get Started',
-      style: context.theme.textTheme.labelSmall,
-    ),
+    child: Text('Get Started', style: context.theme.textTheme.labelSmall),
   );
 }

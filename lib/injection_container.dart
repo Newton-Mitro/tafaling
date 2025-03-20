@@ -19,8 +19,9 @@ import 'package:tafaling/features/post/domain/usecases/fetch_posts_usecase.dart'
 import 'package:tafaling/features/post/domain/usecases/fetch_user_posts_usecase.dart';
 import 'package:tafaling/features/post/domain/usecases/get_post_liked_users_usecase.dart';
 import 'package:tafaling/features/post/domain/usecases/like_post_usecase.dart';
-import 'package:tafaling/features/post/presentation/post_liked_users_screen/bloc/post_liked_users_bloc.dart';
-import 'package:tafaling/features/post/presentation/posts_screen/bloc/posts_screen_bloc.dart';
+import 'package:tafaling/features/post/presentation/views/post_liked_users_screen/bloc/post_liked_users_bloc.dart';
+import 'package:tafaling/features/post/presentation/views/posts_screen/bloc/posts_screen_bloc.dart';
+import 'package:tafaling/features/user/data/data_sources/user_data_source.dart';
 import 'package:tafaling/features/user/data/data_sources/users_remote_data_source.dart';
 import 'package:tafaling/features/user/data/repositories/user_repository_impl.dart';
 import 'package:tafaling/features/user/domain/repositories/user_profile_repository.dart';
@@ -66,7 +67,7 @@ Future<void> _setupDatasources() async {
   sl.registerLazySingleton<PostRemoteDataSource>(
     () => PostRemoteDataSourceImpl(apiService: sl(), authApiService: sl()),
   );
-  sl.registerLazySingleton<UsersRemoteDataSource>(
+  sl.registerLazySingleton<UsersDataSource>(
     () => UserProfileRemoteDataSourceImpl(authApiService: sl()),
   );
 }

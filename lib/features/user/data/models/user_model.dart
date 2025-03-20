@@ -16,6 +16,26 @@ class UserModel extends UserEntity {
     super.friendshipStatus,
   });
 
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      id: json['user_id'] ?? 0,
+      name: json['name'] ?? 'unknown',
+      userName: json['user_name'] ?? 'unknown',
+      email: json['email'] ?? 'unknown',
+      emailVerifiedAt:
+          json['email_verified_at'] != null
+              ? DateTime.parse(json['email_verified_at'])
+              : null,
+      profilePicture: json['profile_picture'] as String?,
+      coverPhoto: json['cover_photo'] as String?,
+      followers: json['followers'] ?? 0,
+      following: json['following'] ?? 0,
+      totalLikeCount: json['total_like_count'] ?? 0,
+      isFollowing: json['is_following'] ?? false,
+      friendshipStatus: json['friendship_status'] ?? 0,
+    );
+  }
+
   factory UserModel.fromJsonCammel(Map<String, dynamic> json) {
     return UserModel(
       id: json['userId'] ?? 0,
@@ -33,6 +53,26 @@ class UserModel extends UserEntity {
       totalLikeCount: json['totalLikeCount'] ?? 0,
       isFollowing: json['isFollowing'] ?? false,
       friendshipStatus: json['friendshipStatus'] ?? 0,
+    );
+  }
+
+  factory UserModel.fromJsonForSuggestedUser(Map<String, dynamic> json) {
+    return UserModel(
+      id: json['user_id'] ?? 0,
+      name: json['user_name'] ?? 'unknown',
+      userName: json['user_name'] ?? 'unknown',
+      email: json['email'] ?? 'unknown',
+      emailVerifiedAt:
+          json['email_verifiedAt'] != null
+              ? DateTime.parse(json['email_verified_at'])
+              : null,
+      profilePicture: json['profile_picture'] as String?,
+      coverPhoto: json['cover_photo'] as String?,
+      followers: json['followers'] ?? 0,
+      following: json['following'] ?? 0,
+      totalLikeCount: json['total_like_count'] ?? 0,
+      isFollowing: json['is_following'] ?? false,
+      friendshipStatus: json['friendship_status'] ?? 0,
     );
   }
 
@@ -76,26 +116,6 @@ class UserModel extends UserEntity {
     );
   }
 
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(
-      id: json['user_id'] ?? 0,
-      name: json['name'] ?? 'unknown',
-      userName: json['user_name'] ?? 'unknown',
-      email: json['email'] ?? 'unknown',
-      emailVerifiedAt:
-          json['email_verified_at'] != null
-              ? DateTime.parse(json['email_verified_at'])
-              : null,
-      profilePicture: json['profile_picture'] as String?,
-      coverPhoto: json['cover_photo'] as String?,
-      followers: json['followers'] ?? 0,
-      following: json['following'] ?? 0,
-      totalLikeCount: json['total_like_count'] ?? 0,
-      isFollowing: json['is_following'] ?? false,
-      friendshipStatus: json['friendship_status'] ?? 0,
-    );
-  }
-
   factory UserModel.fromJsonForPostLikeUser(Map<String, dynamic> json) {
     return UserModel(
       id: json['likedByUserId'] ?? 0,
@@ -131,36 +151,5 @@ class UserModel extends UserEntity {
       'is_following': isFollowing,
       'friendship_status': friendshipStatus,
     };
-  }
-
-  @override
-  UserModel copyWith({
-    int? id,
-    String? name,
-    String? userName,
-    String? email,
-    DateTime? emailVerifiedAt,
-    String? profilePicture,
-    String? coverPhoto,
-    int? followers,
-    int? following,
-    int? totalLikeCount,
-    bool? isFollowing,
-    int? friendshipStatus,
-  }) {
-    return UserModel(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      userName: userName ?? this.userName,
-      email: email ?? this.email,
-      emailVerifiedAt: emailVerifiedAt ?? this.emailVerifiedAt,
-      profilePicture: profilePicture ?? this.profilePicture,
-      coverPhoto: coverPhoto ?? this.coverPhoto,
-      followers: followers ?? this.followers,
-      following: following ?? this.following,
-      totalLikeCount: totalLikeCount ?? this.totalLikeCount,
-      isFollowing: isFollowing ?? this.isFollowing,
-      friendshipStatus: friendshipStatus ?? this.friendshipStatus,
-    );
   }
 }

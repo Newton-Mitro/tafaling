@@ -3,8 +3,8 @@ import 'package:tafaling/features/home/presentation/widgets/app_bottom_navigatio
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
 import 'package:tafaling/features/user/presentation/friends_screen/view/friends_screen.dart';
 import 'package:tafaling/features/home/presentation/home_screen/view/inbox_screen.dart';
-import 'package:tafaling/features/post/presentation/create_post_screen/view/create_post_screen.dart';
-import 'package:tafaling/features/post/presentation/posts_screen/view/posts_screen.dart';
+import 'package:tafaling/features/post/presentation/views/create_post_screen/view/create_post_screen.dart';
+import 'package:tafaling/features/post/presentation/views/posts_screen/view/posts_screen.dart';
 import 'package:tafaling/features/user/presentation/user_profile_screen/view/user_profile_screen.dart';
 
 class HomeScreenBody extends StatelessWidget {

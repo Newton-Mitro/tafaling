@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:tafaling/configs/values/dimensions/app_dimensions.dart';
-import 'package:tafaling/configs/values/dimensions/large_app_dimensions.dart';
-import 'package:tafaling/configs/values/dimensions/medium_app_dimensions.dart';
-import 'package:tafaling/configs/values/dimensions/small_app_dimensions.dart';
-import 'package:tafaling/configs/styles/app_text_style.dart';
-import 'package:tafaling/configs/styles/large_text_style.dart';
-import 'package:tafaling/configs/styles/medium_text_style.dart';
-import 'package:tafaling/configs/styles/small_text_style.dart';
+import 'package:tafaling/app_configs/values/dimensions/app_dimensions.dart';
+import 'package:tafaling/app_configs/values/dimensions/large_app_dimensions.dart';
+import 'package:tafaling/app_configs/values/dimensions/medium_app_dimensions.dart';
+import 'package:tafaling/app_configs/values/dimensions/small_app_dimensions.dart';
+import 'package:tafaling/app_configs/styles/app_text_style.dart';
+import 'package:tafaling/app_configs/styles/large_text_style.dart';
+import 'package:tafaling/app_configs/styles/medium_text_style.dart';
+import 'package:tafaling/app_configs/styles/small_text_style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum DeviceType { Mobile, Tablet, Desktop }

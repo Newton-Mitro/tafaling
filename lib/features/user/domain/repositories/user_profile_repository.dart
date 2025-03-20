@@ -4,12 +4,15 @@ import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 
 abstract class UserRepository {
   Future<DataState<FollowUnFollowEntity>> followUser(int followingUserId);
+
   Future<DataState<FollowUnFollowEntity>> unFollowUser(int followingUserId);
+
   Future<DataState<List<UserEntity>>> fetchProfile(
     int userId,
     int startRecord,
     int pageSize,
   );
+
   Future<DataState<List<UserEntity>>> searchUsers(
     int userId,
     String searchText,
@@ -22,8 +25,15 @@ abstract class UserRepository {
     int startRecord,
     int pageSize,
   );
+
   Future<DataState<List<UserEntity>>> getFollowers(
     int targetUserId,
+    int startRecord,
+    int pageSize,
+  );
+
+  Future<DataState<List<UserEntity>>> getSuggestedUsers(
+    int userId,
     int startRecord,
     int pageSize,
   );

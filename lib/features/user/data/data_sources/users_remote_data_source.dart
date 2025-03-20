@@ -2,36 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:tafaling/core/network/auth_api_service.dart';
+import 'package:tafaling/features/user/data/data_sources/user_data_source.dart';
 import 'package:tafaling/features/user/data/models/follow_un_follow_model.dart';
 import 'package:tafaling/features/user/data/models/user_model.dart';
 
-abstract class UsersRemoteDataSource {
-  Future<FollowUnFollowModel> followUser(int followingUserId);
-  Future<FollowUnFollowModel> unFollowUser(int followingUserId);
-  Future<List<UserModel>> getFollowingUsers(
-    int targetUserId,
-    int startRecord,
-    int pageSize,
-  );
-  Future<List<UserModel>> getFollowers(
-    int targetUserId,
-    int startRecord,
-    int pageSize,
-  );
-  Future<List<UserModel>> fetchProfile(
-    int userId,
-    int startRecord,
-    int pageSize,
-  );
-  Future<List<UserModel>> searchUsers(
-    int userId,
-    String searchText,
-    int startRecord,
-    int pageSize,
-  );
-}
-
-class UserProfileRemoteDataSourceImpl implements UsersRemoteDataSource {
+class UserProfileRemoteDataSourceImpl implements UsersDataSource {
   final AuthApiService authApiService;
 
   UserProfileRemoteDataSourceImpl({required this.authApiService});
@@ -170,6 +145,26 @@ class UserProfileRemoteDataSourceImpl implements UsersRemoteDataSource {
       var followers =
           (data['data'] as List)
               .map((user) => UserModel.fromJsonForFollowing(user))
+              .toList();
+      return followers;
+    });
+  }
+
+  @override
+  Future<List<UserModel>> getSuggestedUsers(
+    int userId,
+    int startRecord,
+    int pageSize,
+  ) async {
+    final response = await authApiService.get(
+      '/user/profile/suggestion',
+      queryParameters: {'userId': userId, 'start_record': 0, 'page_size': 5},
+    );
+
+    return _handleResponse<List<UserModel>>(response, (data) {
+      var followers =
+          (data['data'] as List)
+              .map((user) => UserModel.fromJsonForSuggestedUser(user))
               .toList();
       return followers;
     });
