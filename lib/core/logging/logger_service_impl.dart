@@ -1,5 +1,4 @@
 import 'package:logger/logger.dart';
-
 import 'logger_service.dart';
 
 class LoggerServiceImpl implements LoggerService {
@@ -27,5 +26,20 @@ class LoggerServiceImpl implements LoggerService {
   @override
   void logError(String message, [dynamic error, StackTrace? stackTrace]) {
     _logger.e(message, error: error, stackTrace: stackTrace);
+  }
+
+  @override
+  void logDebug(String message) {
+    _logger.d(message);
+  }
+
+  @override
+  void logFatal(String message, [dynamic error, StackTrace? stackTrace]) {
+    _logger.f(message, error: error, stackTrace: stackTrace);
+  }
+
+  @override
+  void logTrace(String message) {
+    _logger.t(message);
   }
 }

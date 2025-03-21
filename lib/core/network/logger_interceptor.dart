@@ -1,45 +1,79 @@
-import 'package:dio/dio.dart';
 import 'dart:convert';
+import 'package:dio/dio.dart';
+import 'package:tafaling/core/logging/logger_service.dart';
 
 class LoggerInterceptor extends Interceptor {
+  final LoggerService loggerService;
+
+  LoggerInterceptor({required this.loggerService});
+
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    print("📤 REQUEST: ${options.method} ${options.uri}");
-    print("Headers: ${options.headers}");
+    final buffer = StringBuffer();
+    buffer.writeln("╔════════════════════════════════════════");
+    buffer.writeln("║ 📤 REQUEST: ${options.method} ${options.uri}");
+    buffer.writeln("║ Headers: ${jsonEncode(options.headers)}");
+
     if (options.data != null) {
       try {
-        print("Body: ${jsonEncode(options.data)}");
+        buffer.writeln("║ Body: ${_prettyJson(options.data)}");
       } catch (_) {
-        print("Body: ${options.data}");
+        buffer.writeln("║ Body: ${options.data}");
       }
     }
-    return handler.next(options);
+    buffer.writeln("╚════════════════════════════════════════");
+
+    loggerService.logInfo(buffer.toString());
+    handler.next(options);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    print(
-        "📥 RESPONSE [${response.statusCode}]: ${response.requestOptions.uri}");
-    print("Headers: ${response.headers}");
+    final buffer = StringBuffer();
+    buffer.writeln("╔════════════════════════════════════════");
+    buffer.writeln(
+      "║ ✅ RESPONSE [${response.statusCode}]: ${response.requestOptions.uri}",
+    );
+    buffer.writeln("║ Headers: ${jsonEncode(response.headers.map)}");
+
     try {
-      print("Data: ${jsonEncode(response.data)}");
+      buffer.writeln("║ Data: ${_prettyJson(response.data)}");
     } catch (_) {
-      print("Data: ${response.data}");
+      buffer.writeln("║ Data: ${response.data}");
     }
-    return handler.next(response);
+    buffer.writeln("╚════════════════════════════════════════");
+
+    loggerService.logDebug(buffer.toString());
+    handler.next(response);
   }
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    print("❌ ERROR [${err.response?.statusCode}]: ${err.requestOptions.uri}");
-    print("Message: ${err.message}");
+    final buffer = StringBuffer();
+    buffer.writeln("╔════════════════════════════════════════");
+    buffer.writeln(
+      "║ ❌ ERROR [${err.response?.statusCode}]: ${err.requestOptions.uri}",
+    );
+    buffer.writeln("║ Message: ${err.message}");
+
     if (err.response != null) {
       try {
-        print("Error Data: ${jsonEncode(err.response?.data)}");
+        buffer.writeln("║ Error Data: ${_prettyJson(err.response?.data)}");
       } catch (_) {
-        print("Error Data: ${err.response?.data}");
+        buffer.writeln("║ Error Data: ${err.response?.data}");
       }
     }
-    return handler.next(err);
+    buffer.writeln("╚════════════════════════════════════════");
+
+    loggerService.logError(buffer.toString());
+    handler.next(err);
+  }
+
+  String _prettyJson(dynamic json) {
+    try {
+      return const JsonEncoder.withIndent('  ').convert(json);
+    } catch (_) {
+      return json.toString();
+    }
   }
 }

@@ -19,28 +19,21 @@ class AuthInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    // Retrieve tokens
     accessToken = await localStorage.getString(Constants.accessTokenKey);
 
     options.headers['Accept'] = 'application/json';
-    // options.validateStatus = (status) => status != null && status < 500;
 
     if (accessToken != null) {
       options.headers['Authorization'] = 'Bearer $accessToken';
 
-      // Check if token is expired and log out if needed
       if (JwtDecoder.isExpired(accessToken!)) {
         final newRefreshToken = await _handleTokenRefresh();
         if (newRefreshToken != null) {
           options.headers["Authorization"] = "Bearer $newRefreshToken";
-
-          // Repeat the failed request with the new token
-          handler.next(options);
         }
       }
     }
 
-    // Ensure only one handler call
     handler.next(options);
   }
 
@@ -51,9 +44,12 @@ class AuthInterceptor extends Interceptor {
       if (newToken != null) {
         err.requestOptions.headers["Authorization"] = "Bearer $newToken";
 
-        // Repeat the failed request with the new token
-        final retryResponse = await dio.fetch(err.requestOptions);
-        return handler.resolve(retryResponse);
+        try {
+          final retryResponse = await dio.fetch(err.requestOptions);
+          return handler.resolve(retryResponse);
+        } catch (e) {
+          return handler.next(err);
+        }
       }
     }
     return handler.next(err);
@@ -62,10 +58,9 @@ class AuthInterceptor extends Interceptor {
   Future<String?> _handleTokenRefresh() async {
     try {
       refreshToken = await localStorage.getString(Constants.refreshTokenKey);
-
-      if (refreshToken == null) return null;
-      if (JwtDecoder.isExpired(refreshToken!)) {
+      if (refreshToken == null || JwtDecoder.isExpired(refreshToken!)) {
         await _logout();
+        return null;
       }
 
       final response = await dio.get(
@@ -79,20 +74,22 @@ class AuthInterceptor extends Interceptor {
       );
 
       if (response.statusCode == HttpStatus.ok) {
-        final data = response.data!['data'];
-        var res = AuthUserModel.fromJson(data);
-        await localStorage.saveString(
-          Constants.accessTokenKey,
-          res.accessToken,
-        );
-        await localStorage.saveString(
-          Constants.refreshTokenKey,
-          res.refreshToken,
-        );
-        return res.accessToken;
-      } else {
-        await _logout();
+        final data = response.data?['data'];
+        if (data != null) {
+          var res = AuthUserModel.fromJson(data);
+          await localStorage.saveString(
+            Constants.accessTokenKey,
+            res.accessToken,
+          );
+          await localStorage.saveString(
+            Constants.refreshTokenKey,
+            res.refreshToken,
+          );
+          return res.accessToken;
+        }
       }
+
+      await _logout();
     } catch (e) {
       await _logout();
     }

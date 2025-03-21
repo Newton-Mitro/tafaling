@@ -52,7 +52,7 @@ class UserProfileScreen extends StatelessWidget {
         child: BlocListener<AuthBloc, AuthState>(
           listener: (context, authState) {
             if (authState is Unauthenticated) {
-              Navigator.pushReplacementNamed(context, RoutesName.homePage);
+              Navigator.pushReplacementNamed(context, RoutesName.root);
               selectedPageNotifier.value = 0;
             }
           },

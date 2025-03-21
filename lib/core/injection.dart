@@ -26,7 +26,10 @@ Future<void> registerCoreServices() async {
   // Core Services
   sl.registerLazySingleton<LocalStorage>(() => LocalStorageImpl());
   sl.registerLazySingleton<ApiService>(
-    () => ApiService(localStorage: sl<LocalStorage>()),
+    () => ApiService(
+      localStorage: sl<LocalStorage>(),
+      loggerService: sl<LoggerService>(),
+    ),
   );
 
   // Register Bloc

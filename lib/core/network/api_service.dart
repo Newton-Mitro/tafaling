@@ -1,22 +1,24 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:tafaling/core/constants/constants.dart';
 import 'package:tafaling/core/index.dart';
 
 class ApiService {
   final Dio _dio;
   final LocalStorage localStorage;
+  final LoggerService loggerService;
 
-  ApiService({required this.localStorage}) : _dio = Dio() {
+  ApiService({required this.localStorage, required this.loggerService})
+    : _dio = Dio() {
     _dio.options = BaseOptions(
       baseUrl: ApiConfig.baseUrl,
       connectTimeout: const Duration(seconds: 50),
       receiveTimeout: const Duration(seconds: 50),
     );
-    _dio.interceptors.add(
+    _dio.interceptors.addAll([
       AuthInterceptor(dio: _dio, localStorage: localStorage),
-    );
+      LoggerInterceptor(loggerService: loggerService),
+    ]);
   }
 
   Future<Response> get(
@@ -79,12 +81,6 @@ class ApiService {
 
   Future<Response> _performRequest(Future<Response> Function() request) async {
     try {
-      var accessToken = await localStorage.getString(Constants.accessTokenKey);
-
-      if (accessToken != null) {
-        _dio.options.headers['Authorization'] = 'Bearer $accessToken';
-      }
-
       return await request();
     } on DioException catch (e) {
       _handleDioError(e);
