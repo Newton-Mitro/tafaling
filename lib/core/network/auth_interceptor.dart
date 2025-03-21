@@ -90,16 +90,16 @@ class AuthInterceptor extends Interceptor {
       }
 
       await _logout();
+      return null;
     } catch (e) {
       await _logout();
+      return null;
     }
-    return null;
   }
 
   Future<void> _logout() async {
     await localStorage.remove(Constants.accessTokenKey);
     await localStorage.remove(Constants.refreshTokenKey);
     await localStorage.remove(Constants.authUserKey);
-    throw UnauthorizedException();
   }
 }

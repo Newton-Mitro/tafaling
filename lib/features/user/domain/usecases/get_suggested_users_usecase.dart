@@ -17,13 +17,13 @@ final class GetSuggestedUsersParams {
 
 class GetSuggestedUsersUseCase
     extends UseCase<DataState<List<UserEntity>>, GetSuggestedUsersParams> {
-  final UserRepository repository;
+  final UserRepository userRepository;
 
-  GetSuggestedUsersUseCase(this.repository);
+  GetSuggestedUsersUseCase({required this.userRepository});
 
   @override
   Future<DataState<List<UserEntity>>> call({GetSuggestedUsersParams? params}) {
-    return repository.getSuggestedUsers(
+    return userRepository.getSuggestedUsers(
       params?.userId ?? 0,
       params?.startRecord ?? 0,
       params?.pageSize ?? 10,

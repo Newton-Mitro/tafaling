@@ -27,7 +27,9 @@ class HomeScreenBody extends StatelessWidget {
   Widget _getScreen(int selectedPage) {
     final List<Widget> screens = [
       const PostsScreen(),
-      const FriendsScreen(),
+      authUserNotifier.value != null
+          ? FriendsScreen(userId: authUserNotifier.value!.id)
+          : SizedBox.shrink(),
       const CreatePostScreen(),
       const InboxScreen(),
       authUserNotifier.value != null

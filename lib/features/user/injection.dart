@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:tafaling/core/index.dart';
+import 'package:tafaling/features/user/presentation/friends_screen/bloc/friends_bloc.dart';
 import 'package:tafaling/features/user/presentation/widgets/user_tile/bloc/user_tile_bloc.dart';
 import 'data/index.dart';
 import 'domain/index.dart';
@@ -40,6 +41,9 @@ void registerUserModule() {
   sl.registerLazySingleton(
     () => SearchUsersUseCase(userRepository: sl<UserRepository>()),
   );
+  sl.registerLazySingleton(
+    () => GetSuggestedUsersUseCase(userRepository: sl<UserRepository>()),
+  );
 
   // Bloc
   sl.registerFactory(
@@ -69,5 +73,9 @@ void registerUserModule() {
       followUserUseCase: sl<FollowUserUseCase>(),
       unFollowUserUseCase: sl<UnFollowUserUseCase>(),
     ),
+  );
+
+  sl.registerFactory(
+    () => FriendsBloc(getSuggestedUsersUseCase: sl<GetSuggestedUsersUseCase>()),
   );
 }
