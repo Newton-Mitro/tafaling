@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:tafaling/core/bloc/app_state_bloc.dart';
 import 'package:tafaling/core/logging/logger_service.dart';
 import 'package:tafaling/core/logging/logger_service_impl.dart';
 import 'package:tafaling/core/network/network_info.dart';
@@ -24,11 +25,14 @@ Future<void> registerCoreServices() async {
   );
 
   // Core Services
+  sl.registerFactory<AppStateBloc>(() => AppStateBloc());
+
   sl.registerLazySingleton<LocalStorage>(() => LocalStorageImpl());
   sl.registerLazySingleton<ApiService>(
     () => ApiService(
       localStorage: sl<LocalStorage>(),
       loggerService: sl<LoggerService>(),
+      appStateBloc: sl<AppStateBloc>(),
     ),
   );
 

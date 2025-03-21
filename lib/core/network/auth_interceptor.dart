@@ -2,17 +2,25 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:tafaling/core/bloc/app_state_bloc.dart';
+import 'package:tafaling/core/constants/api_config.dart';
 import 'package:tafaling/core/constants/constants.dart';
-import 'package:tafaling/core/index.dart';
+import 'package:tafaling/core/utils/local_storage.dart';
 import 'package:tafaling/features/auth/data/models/auth_user_model.dart';
 
 class AuthInterceptor extends Interceptor {
   final Dio dio;
   final LocalStorage localStorage;
+  final AppStateBloc appStateBloc;
+
   late String? accessToken;
   late String? refreshToken;
 
-  AuthInterceptor({required this.dio, required this.localStorage});
+  AuthInterceptor({
+    required this.dio,
+    required this.localStorage,
+    required this.appStateBloc,
+  });
 
   @override
   void onRequest(
@@ -101,5 +109,6 @@ class AuthInterceptor extends Interceptor {
     await localStorage.remove(Constants.accessTokenKey);
     await localStorage.remove(Constants.refreshTokenKey);
     await localStorage.remove(Constants.authUserKey);
+    appStateBloc.add(LogoutEvent());
   }
 }

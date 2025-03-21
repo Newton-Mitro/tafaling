@@ -42,6 +42,10 @@ class UserTileBloc extends Bloc<UserTileEvent, UserTileState> {
       if (dataState is SuccessData && dataState.data != null) {
         emit(UserTileLoaded(currentUser.copyWith(isFollowing: true)));
       }
+
+      if (dataState is FailedData) {
+        emit(UserTileLoaded(currentUser.copyWith(isFollowing: false)));
+      }
     }
   }
 
@@ -59,6 +63,10 @@ class UserTileBloc extends Bloc<UserTileEvent, UserTileState> {
       final dataState = await unFollowUserUseCase(params: unfollowUserPrams);
       if (dataState is SuccessData && dataState.data != null) {
         emit(UserTileLoaded(currentUser.copyWith(isFollowing: false)));
+      }
+
+      if (dataState is FailedData) {
+        emit(UserTileLoaded(currentUser.copyWith(isFollowing: true)));
       }
     }
   }

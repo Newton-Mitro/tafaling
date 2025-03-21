@@ -1,22 +1,31 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:tafaling/core/bloc/app_state_bloc.dart';
 import 'package:tafaling/core/index.dart';
 
 class ApiService {
   final Dio _dio;
   final LocalStorage localStorage;
   final LoggerService loggerService;
+  final AppStateBloc appStateBloc;
 
-  ApiService({required this.localStorage, required this.loggerService})
-    : _dio = Dio() {
+  ApiService({
+    required this.localStorage,
+    required this.loggerService,
+    required this.appStateBloc,
+  }) : _dio = Dio() {
     _dio.options = BaseOptions(
       baseUrl: ApiConfig.baseUrl,
       connectTimeout: const Duration(seconds: 50),
       receiveTimeout: const Duration(seconds: 50),
     );
     _dio.interceptors.addAll([
-      AuthInterceptor(dio: _dio, localStorage: localStorage),
+      AuthInterceptor(
+        dio: _dio,
+        localStorage: localStorage,
+        appStateBloc: appStateBloc,
+      ),
       LoggerInterceptor(loggerService: loggerService),
     ]);
   }
