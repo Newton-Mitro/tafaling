@@ -12,8 +12,10 @@ class UserTileBloc extends Bloc<UserTileEvent, UserTileState> {
   final FollowUserUseCase followUserUseCase;
   final UnFollowUserUseCase unFollowUserUseCase;
 
-  UserTileBloc(this.followUserUseCase, this.unFollowUserUseCase)
-    : super(UserTileInitial()) {
+  UserTileBloc({
+    required this.followUserUseCase,
+    required this.unFollowUserUseCase,
+  }) : super(UserTileInitial()) {
     on<LoadUserEvent>(_onUserTileLoadEvent);
     on<FollowUserEvent>(_onFollowUserEvent);
     on<UnfollowUserEvent>(_onUnfollowUserEvent);

@@ -1,19 +1,17 @@
 import 'dart:io';
 
-import 'package:tafaling/core/network/api_service.dart';
-import 'package:tafaling/core/network/auth_api_service.dart';
-import 'package:tafaling/core/utils/app_shared_pref.dart';
+import 'package:tafaling/core/constants/constants.dart';
+import 'package:tafaling/core/index.dart';
 import 'package:tafaling/features/auth/data/data_sources/auth_data_source.dart';
 import 'package:tafaling/features/auth/data/models/auth_user_model.dart';
-import 'package:tafaling/features/user/data/models/user_model.dart';
 
 class AuthRemoteDataSourceImpl implements AuthDataSource {
   final ApiService apiService;
-  final AuthApiService authApiService;
+  final LocalStorage localStorage;
 
   AuthRemoteDataSourceImpl({
     required this.apiService,
-    required this.authApiService,
+    required this.localStorage,
   });
 
   @override
@@ -27,9 +25,20 @@ class AuthRemoteDataSourceImpl implements AuthDataSource {
       if (response.statusCode == HttpStatus.ok) {
         final data = response.data!['data'];
         AuthUserModel res = AuthUserModel.fromJson(data);
-        await AppSharedPref.setAuthUser(res.user as UserModel);
-        await AppSharedPref.setAccessToken(res.accessToken);
-        await AppSharedPref.setRefreshToken(res.refreshToken);
+
+        await localStorage.saveString(
+          Constants.accessTokenKey,
+          res.accessToken,
+        );
+        await localStorage.saveString(
+          Constants.refreshTokenKey,
+          res.refreshToken,
+        );
+        await localStorage.saveString(
+          Constants.authUserKey,
+          res.user.toString(),
+        );
+
         return res;
       } else {
         throw Exception('Login failed');
@@ -70,6 +79,6 @@ class AuthRemoteDataSourceImpl implements AuthDataSource {
 
   @override
   Future<void> logout() async {
-    await authApiService.get('/auth/logout');
+    await apiService.get('/auth/logout');
   }
 }

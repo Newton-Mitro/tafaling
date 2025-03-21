@@ -1,99 +1,93 @@
-import 'dart:convert';
+// import 'dart:convert';
 
-import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
-import 'package:tafaling/features/user/data/models/user_model.dart';
-import 'package:tafaling/injection_container.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:tafaling/core/injection.dart';
+// import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
+// import 'package:tafaling/features/user/data/models/user_model.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
-class AppSharedPref {
-  static const _localeKey = 'app_locale';
-  static const _themeKey = 'app_theme';
-  static const _authUser = 'auth_user';
-  static const _accessToken = 'access_token';
-  static const _refreshToken = 'refresh_token';
-  static const _onboarding = 'onboarding';
-  static final SharedPreferences sharedPref = sl<SharedPreferences>();
+// class AppSharedPref {
+//   static final SharedPreferences sharedPref = sl<SharedPreferences>();
 
-  // Language
-  static Future<void> setAppLocale(String locale) async {
-    sharedPref.setString(_localeKey, locale);
-  }
+//   // Language
+//   static Future<void> setAppLocale(String locale) async {
+//     sharedPref.setString(localeKey, locale);
+//   }
 
-  static Future<String> getAppLocale() async {
-    return sharedPref.getString(_localeKey) ?? 'en';
-  }
+//   static Future<String> getAppLocale() async {
+//     return sharedPref.getString(localeKey) ?? 'en';
+//   }
 
-  // Theme
-  static Future<void> setAppTheme(String theme) async {
-    sharedPref.setString(_themeKey, theme);
-  }
+//   // Theme
+//   static Future<void> setAppTheme(String theme) async {
+//     sharedPref.setString(themeKey, theme);
+//   }
 
-  static Future<String> getAppTheme() async {
-    return sharedPref.getString(_themeKey) ?? 'light';
-  }
+//   static Future<String> getAppTheme() async {
+//     return sharedPref.getString(themeKey) ?? 'light';
+//   }
 
-  // Auth User
-  static Future<void> setAuthUser(UserModel authUser) async {
-    String jsonAuthUser = jsonEncode(authUser.toJson());
-    sharedPref.setString(_authUser, jsonAuthUser);
-    authUserNotifier.value = authUser;
-  }
+//   // Auth User
+//   static Future<void> setAuthUser(UserModel authUser) async {
+//     String jsonAuthUser = jsonEncode(authUser.toJson());
+//     sharedPref.setString(authUserKey, jsonAuthUser);
+//     authUserNotifier.value = authUser;
+//   }
 
-  static Future<void> removeAuthUser() async {
-    sharedPref.remove(_authUser);
-    authUserNotifier.value = null;
-  }
+//   static Future<void> removeAuthUser() async {
+//     sharedPref.remove(authUserKey);
+//     authUserNotifier.value = null;
+//   }
 
-  static Future<UserModel?> getAuthUser() async {
-    final sharedPref = await SharedPreferences.getInstance();
-    var authUser = sharedPref.getString(_authUser);
-    if (authUser != null) {
-      return UserModel.fromJson(jsonDecode(authUser));
-    }
-    return null;
-  }
+//   static Future<UserModel?> getAuthUser() async {
+//     final sharedPref = await SharedPreferences.getInstance();
+//     var authUser = sharedPref.getString(authUserKey);
+//     if (authUser != null) {
+//       return UserModel.fromJson(jsonDecode(authUser));
+//     }
+//     return null;
+//   }
 
-  // Access Token
-  static Future<void> setAccessToken(String accessToken) async {
-    sharedPref.setString(_accessToken, accessToken);
-    accessTokenNotifier.value = accessToken;
-  }
+//   // Access Token
+//   static Future<void> setAccessToken(String accessToken) async {
+//     sharedPref.setString(accessTokenKey, accessToken);
+//     accessTokenNotifier.value = accessToken;
+//   }
 
-  static Future<String?> getAccessToken() async {
-    final sharedPref = await SharedPreferences.getInstance();
-    return sharedPref.getString(_accessToken);
-  }
+//   static Future<String?> getAccessToken() async {
+//     final sharedPref = await SharedPreferences.getInstance();
+//     return sharedPref.getString(accessTokenKey);
+//   }
 
-  static Future<void> removeAccessToken() async {
-    sharedPref.remove(_accessToken);
-    accessTokenNotifier.value = null;
-  }
+//   static Future<void> removeAccessToken() async {
+//     sharedPref.remove(accessTokenKey);
+//     accessTokenNotifier.value = null;
+//   }
 
-  // Refresh Token
-  static Future<void> setRefreshToken(String refreshToken) async {
-    sharedPref.setString(_refreshToken, refreshToken);
-  }
+//   // Refresh Token
+//   static Future<void> setRefreshToken(String refreshToken) async {
+//     sharedPref.setString(refreshTokenKey, refreshToken);
+//   }
 
-  static Future<String?> getRefreshToken() async {
-    return sharedPref.getString(_refreshToken);
-  }
+//   static Future<String?> getRefreshToken() async {
+//     return sharedPref.getString(refreshTokenKey);
+//   }
 
-  static Future<void> removeRefreshToken() async {
-    sharedPref.remove(_refreshToken);
-  }
+//   static Future<void> removeRefreshToken() async {
+//     sharedPref.remove(refreshTokenKey);
+//   }
 
-  // Onboarding
-  static Future<void> setOnboardingStatus(bool status) async {
-    sharedPref.setBool(_onboarding, status);
-  }
+//   // Onboarding
+//   static Future<void> setOnboardingStatus(bool status) async {
+//     sharedPref.setBool(onboardingKey, status);
+//   }
 
-  static Future<bool> getOnboardingStatus() async {
-    final sharedPref = await SharedPreferences.getInstance();
-    return sharedPref.getBool(_onboarding) ?? true;
-  }
+//   static Future<bool> getOnboardingStatus() async {
+//     final sharedPref = await SharedPreferences.getInstance();
+//     return sharedPref.getBool(onboardingKey) ?? true;
+//   }
 
-  // Clear all
-  static Future<void> clearAll() async {
-    sharedPref.clear();
-  }
-}
+//   // Clear all
+//   static Future<void> clearAll() async {
+//     sharedPref.clear();
+//   }
+// }

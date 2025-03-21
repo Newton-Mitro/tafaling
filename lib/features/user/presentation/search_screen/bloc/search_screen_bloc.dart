@@ -1,10 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tafaling/core/resources/response_state.dart';
-import 'package:tafaling/core/utils/app_shared_pref.dart';
+import 'package:tafaling/core/constants/constants.dart';
+import 'package:tafaling/core/index.dart';
+import 'package:tafaling/features/user/data/models/user_model.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
-import 'package:tafaling/features/user/domain/usecases/follow_user_usecase.dart';
 import 'package:tafaling/features/user/domain/usecases/search_users_usecase.dart';
-import 'package:tafaling/features/user/domain/usecases/un_follow_user_usecase.dart';
 
 part 'search_screen_event.dart';
 part 'search_screen_state.dart';
@@ -13,25 +14,17 @@ const int postsPerPage = 10;
 
 class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchState> {
   final SearchUsersUseCase searchUsersUseCase;
-  final FollowUserUseCase followUserUseCase;
-  final UnFollowUserUseCase unFollowUserUseCase;
+  final LocalStorage localStorage;
 
   int _fetchPage = 1;
   bool _hasMore = true;
 
-  SearchScreenBloc(
-    this.searchUsersUseCase,
-    this.followUserUseCase,
-    this.unFollowUserUseCase,
-  ) : super(SearchInitial()) {
+  SearchScreenBloc({
+    required this.searchUsersUseCase,
+    required this.localStorage,
+  }) : super(SearchInitial()) {
     on<SearchUsersEvent>(_onSearchUsersEvent);
     on<ResetSearchEvent>(_onResetSearchEvent);
-  }
-
-  Future<Map<String, dynamic>> _getUserCredentials() async {
-    var user = await AppSharedPref.getAuthUser();
-    var accessToken = await AppSharedPref.getAccessToken();
-    return {'userId': user?.id, 'accessToken': accessToken};
   }
 
   Future<void> _onSearchUsersEvent(
@@ -45,12 +38,12 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchState> {
 
     emit(SearchLoading());
 
-    final credentials = await _getUserCredentials();
-    final userId = credentials['userId'];
+    final authUser = await localStorage.getString(Constants.authUserKey);
+    final user = UserModel.fromJson(jsonDecode(authUser ?? ''));
 
     final searchUsersParams = SearchUsersParams(
       searchText: event.searchText,
-      userId: userId,
+      userId: user.id,
       startRecord: 0,
       pageSize: 50,
     );

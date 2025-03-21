@@ -1,13 +1,15 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tafaling/core/errors/failures.dart';
-import 'package:tafaling/core/resources/response_state.dart';
-import 'package:tafaling/core/utils/app_shared_pref.dart';
+import 'package:tafaling/core/constants/constants.dart';
+import 'package:tafaling/core/index.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/post/domain/usecases/dis_like_post_usecase.dart';
 import 'package:tafaling/features/post/domain/usecases/fetch_posts_usecase.dart';
 import 'package:tafaling/features/post/domain/usecases/fetch_user_posts_usecase.dart';
 import 'package:tafaling/features/post/domain/usecases/like_post_usecase.dart';
+import 'package:tafaling/features/user/data/models/user_model.dart';
 
 part 'posts_screen_event.dart';
 part 'posts_screen_state.dart';
@@ -19,21 +21,23 @@ class PostsScreenBloc extends Bloc<PostsScreenEvent, PostsScreenState> {
   final FetchUserPostsUseCase fetchUserPostsUseCase;
   final LikePostUseCase likePostUseCase;
   final DisLikePostUseCase disLikePostUseCase;
+  final LocalStorage localStorage;
   int _fetchPage = 1;
 
-  PostsScreenBloc(
-    this.fetchPostsUseCase,
-    this.fetchUserPostsUseCase,
-    this.likePostUseCase,
-    this.disLikePostUseCase,
-  ) : super(
-        const PostsScreenState(
-          isFetching: false,
-          posts: [],
-          currentPage: 0,
-          error: '',
-        ),
-      ) {
+  PostsScreenBloc({
+    required this.fetchPostsUseCase,
+    required this.fetchUserPostsUseCase,
+    required this.likePostUseCase,
+    required this.disLikePostUseCase,
+    required this.localStorage,
+  }) : super(
+         const PostsScreenState(
+           isFetching: false,
+           posts: [],
+           currentPage: 0,
+           error: '',
+         ),
+       ) {
     on<LikePostEvent>(_onPostInteraction);
     on<DisLikePostEvent>(_onPostInteraction);
     on<PageChangeEvent>(_onPageChange);
@@ -56,9 +60,14 @@ class PostsScreenBloc extends Bloc<PostsScreenEvent, PostsScreenState> {
   }
 
   Future<Map<String, dynamic>> _getUserCredentials() async {
-    final accessToken = await AppSharedPref.getAccessToken();
-    final user = await AppSharedPref.getAuthUser();
-    return {'userId': user?.id, 'accessToken': accessToken};
+    final accessToken = await localStorage.getString(Constants.accessTokenKey);
+
+    final authUser = await localStorage.getString(Constants.authUserKey);
+    if (authUser == null) {
+      return {'userId': null, 'accessToken': accessToken};
+    }
+    final user = UserModel.fromJson(jsonDecode(authUser));
+    return {'userId': user.id, 'accessToken': accessToken};
   }
 
   Future<void> _onPageChange(

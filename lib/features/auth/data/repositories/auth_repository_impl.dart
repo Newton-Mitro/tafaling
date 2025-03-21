@@ -1,20 +1,18 @@
-import 'package:tafaling/core/errors/exceptions.dart';
-import 'package:tafaling/core/errors/failures.dart';
-import 'package:tafaling/core/network/network_info.dart';
-import 'package:tafaling/core/resources/response_state.dart';
-import 'package:tafaling/core/utils/app_shared_pref.dart';
+import 'package:tafaling/core/constants/constants.dart';
+import 'package:tafaling/core/index.dart';
 import 'package:tafaling/features/auth/data/index.dart';
 import 'package:tafaling/features/auth/domain/repositories/auth_repository.dart';
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  final AuthDataSource remoteDataSource;
-  final NetworkService networkService;
+  final AuthDataSource authDataSource;
+  final NetworkInfo networkInfo;
+  final LocalStorage localStorage;
 
-  AuthRepositoryImpl(
-    Object object, {
-    required this.remoteDataSource,
-    required this.networkService,
+  AuthRepositoryImpl({
+    required this.authDataSource,
+    required this.networkInfo,
+    required this.localStorage,
   });
 
   @override
@@ -22,9 +20,9 @@ class AuthRepositoryImpl implements AuthRepository {
     String? email,
     String? password,
   ) async {
-    if (await networkService.isConnected == true) {
+    if (await networkInfo.isConnected == true) {
       try {
-        final result = await remoteDataSource.login(email, password);
+        final result = await authDataSource.login(email, password);
         return SuccessData(result);
       } catch (e) {
         if (e is ValidationException) {
@@ -49,9 +47,9 @@ class AuthRepositoryImpl implements AuthRepository {
     String password,
     String confirmPassword,
   ) async {
-    if (await networkService.isConnected == true) {
+    if (await networkInfo.isConnected == true) {
       try {
-        final result = await remoteDataSource.register(
+        final result = await authDataSource.register(
           name,
           email,
           password,
@@ -76,9 +74,9 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<DataState<void>> logout() async {
-    if (await networkService.isConnected == true) {
+    if (await networkInfo.isConnected == true) {
       try {
-        final result = await remoteDataSource.logout();
+        final result = await authDataSource.logout();
         await _clearToken();
         return SuccessData(result);
       } catch (e) {
@@ -91,9 +89,9 @@ class AuthRepositoryImpl implements AuthRepository {
 
   Future<DataState<void>> _clearToken() async {
     try {
-      await AppSharedPref.removeAccessToken();
-      await AppSharedPref.removeRefreshToken();
-      await AppSharedPref.removeAuthUser();
+      await localStorage.remove(Constants.accessTokenKey);
+      await localStorage.remove(Constants.refreshTokenKey);
+      await localStorage.remove(Constants.authUserKey);
       authUserNotifier.value = null;
       accessTokenNotifier.value = null;
       selectedPageNotifier.value = 0;

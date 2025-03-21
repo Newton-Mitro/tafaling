@@ -16,13 +16,13 @@ final class GetPostLikedUsersPrams {
 
 class GetPostLikedUsersUsecase
     extends UseCase<DataState<List<UserEntity>>, GetPostLikedUsersPrams> {
-  final PostRepository repository;
+  final PostRepository postRepository;
 
-  GetPostLikedUsersUsecase(this.repository);
+  GetPostLikedUsersUsecase({required this.postRepository});
 
   @override
   Future<DataState<List<UserEntity>>> call({GetPostLikedUsersPrams? params}) {
-    return repository.getLikeUserByPost(
+    return postRepository.getLikeUserByPost(
       params?.postId ?? 0,
       params?.startRecord ?? 0,
       params?.pageSize ?? 0,

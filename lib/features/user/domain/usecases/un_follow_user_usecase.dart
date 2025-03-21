@@ -11,15 +11,15 @@ final class UnFollowUserParams {
 
 class UnFollowUserUseCase
     extends UseCase<DataState<FollowUnFollowEntity>, UnFollowUserParams> {
-  final UserRepository repository;
+  final UserRepository userRepository;
 
-  UnFollowUserUseCase(this.repository);
+  UnFollowUserUseCase({required this.userRepository});
 
   @override
   Future<DataState<FollowUnFollowEntity>> call({
     UnFollowUserParams? params,
   }) async {
-    final followingCount = await repository.unFollowUser(
+    final followingCount = await userRepository.unFollowUser(
       params?.followingUserId ?? 0,
     );
     return followingCount;

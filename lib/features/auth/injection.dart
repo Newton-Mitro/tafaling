@@ -11,17 +11,18 @@ void registerAuthModule() {
   sl.registerLazySingleton<AuthDataSource>(
     () => AuthRemoteDataSourceImpl(
       apiService: sl<ApiService>(),
-      authApiService: sl<AuthApiService>(),
+      localStorage: sl<LocalStorage>(),
     ),
   );
 
   // Register Repository
-  // sl.registerLazySingleton<AuthRepository>(
-  //   () => AuthRepositoryImpl(
-  //     remoteDataSource: sl<AuthDataSource>(),
-  //     networkService: sl<NetworkService>(),
-  //   ),
-  // );
+  sl.registerLazySingleton<AuthRepository>(
+    () => AuthRepositoryImpl(
+      authDataSource: sl<AuthDataSource>(),
+      networkInfo: sl<NetworkInfo>(),
+      localStorage: sl<LocalStorage>(),
+    ),
+  );
 
   // Register Use Cases
   sl.registerLazySingleton<LoginUseCase>(

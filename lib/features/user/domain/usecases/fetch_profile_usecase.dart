@@ -17,13 +17,13 @@ final class FetchProfileParams {
 
 class FetchProfileUseCase
     extends UseCase<DataState<List<UserEntity>>, FetchProfileParams> {
-  final UserRepository repository;
+  final UserRepository userRepository;
 
-  FetchProfileUseCase(this.repository);
+  FetchProfileUseCase({required this.userRepository});
 
   @override
   Future<DataState<List<UserEntity>>> call({FetchProfileParams? params}) async {
-    final userProfile = await repository.fetchProfile(
+    final userProfile = await userRepository.fetchProfile(
       params?.userId ?? 0,
       params?.startRecord ?? 0,
       params?.pageSize ?? 10,

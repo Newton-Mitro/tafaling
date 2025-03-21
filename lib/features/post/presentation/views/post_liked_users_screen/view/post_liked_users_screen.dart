@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tafaling/features/post/injection.dart';
 import 'package:tafaling/features/post/presentation/views/post_liked_users_screen/bloc/post_liked_users_bloc.dart';
 import 'package:tafaling/features/user/presentation/widgets/user_tile/user_tile.dart';
-import 'package:tafaling/injection_container.dart';
 
 class PostLikedUsersScreen extends StatefulWidget {
   final Object? userId; // Change Object? to int directly

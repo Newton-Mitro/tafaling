@@ -19,13 +19,13 @@ final class SearchUsersParams {
 
 class SearchUsersUseCase
     extends UseCase<DataState<List<UserEntity>>, SearchUsersParams> {
-  final UserRepository repository;
+  final UserRepository userRepository;
 
-  SearchUsersUseCase(this.repository);
+  SearchUsersUseCase({required this.userRepository});
 
   @override
   Future<DataState<List<UserEntity>>> call({SearchUsersParams? params}) {
-    return repository.searchUsers(
+    return userRepository.searchUsers(
       params?.userId ?? 0,
       params?.searchText ?? '',
       params?.startRecord ?? 0,

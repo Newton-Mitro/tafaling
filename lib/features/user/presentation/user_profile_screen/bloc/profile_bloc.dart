@@ -12,8 +12,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final FollowUserUseCase followUserUseCase;
   final UnFollowUserUseCase unFollowUserUseCase;
 
-  ProfileBloc(this.followUserUseCase, this.unFollowUserUseCase)
-    : super(ProfileInitial()) {
+  ProfileBloc({
+    required this.followUserUseCase,
+    required this.unFollowUserUseCase,
+  }) : super(ProfileInitial()) {
     on<LoadUserProfileEvent>(_onProfileLoadEvent);
     on<FollowUserEvent>(_onFollowUserEvent);
     on<UnfollowUserEvent>(_onUnfollowUserEvent);

@@ -10,12 +10,12 @@ final class DisLikePostPrams {
 
 class DisLikePostUseCase
     extends UseCase<DataState<LikeEntity>, DisLikePostPrams> {
-  final PostRepository repository;
+  final PostRepository postRepository;
 
-  DisLikePostUseCase(this.repository);
+  DisLikePostUseCase({required this.postRepository});
 
   @override
   Future<DataState<LikeEntity>> call({DisLikePostPrams? params}) {
-    return repository.disLikePost(params?.postId ?? 0);
+    return postRepository.disLikePost(params?.postId ?? 0);
   }
 }

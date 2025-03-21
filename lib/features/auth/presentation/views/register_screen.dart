@@ -6,8 +6,9 @@ import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/core/widgets/app_logo.dart';
 import 'package:tafaling/core/widgets/app_text_input.dart';
 import 'package:tafaling/core/widgets/network_error_dialog.dart';
-import 'package:tafaling/features/auth/presentation/auth_bloc/auth_bloc.dart';
-import 'package:tafaling/injection_container.dart';
+import 'package:tafaling/features/auth/injection.dart';
+
+import '../index.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -29,12 +30,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create:
-          (context) => AuthBloc(
-            registrationUseCase: sl.get(),
-            loginUseCase: sl.get(),
-            logoutUseCase: sl.get(),
-          ),
+      create: (context) => sl<AuthBloc>(),
       child: Scaffold(
         appBar: AppBar(title: Text("Register")),
         body: Container(

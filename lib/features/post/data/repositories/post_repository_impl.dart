@@ -2,17 +2,17 @@ import 'package:tafaling/core/errors/exceptions.dart';
 import 'package:tafaling/core/errors/failures.dart';
 import 'package:tafaling/core/network/network_info.dart';
 import 'package:tafaling/core/resources/response_state.dart';
-import 'package:tafaling/features/post/data/data_sources/post_remote_data_source.dart';
+import 'package:tafaling/features/post/data/data_sources/post_data_source.dart';
 import 'package:tafaling/features/post/data/models/like_model.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
 import 'package:tafaling/features/post/domain/repositories/post_repository.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 
 class PostRepositoryImpl implements PostRepository {
-  final PostRemoteDataSource remoteDataSource;
-  final NetworkService networkService;
+  final PostDataSource postDataSource;
+  final NetworkInfo networkInfo;
 
-  PostRepositoryImpl(this.remoteDataSource, this.networkService);
+  PostRepositoryImpl({required this.postDataSource, required this.networkInfo});
 
   @override
   Future<DataState<List<PostModel>>> fetchPosts(
@@ -20,9 +20,9 @@ class PostRepositoryImpl implements PostRepository {
     int startRecord,
     int pageSize,
   ) async {
-    if (await networkService.isConnected == true) {
+    if (await networkInfo.isConnected == true) {
       try {
-        var posts = await remoteDataSource.fetchPosts(
+        var posts = await postDataSource.fetchPosts(
           userId,
           startRecord,
           pageSize,
@@ -38,7 +38,7 @@ class PostRepositoryImpl implements PostRepository {
     } else {
       try {
         // TODO: Local data source impl
-        var posts = await remoteDataSource.fetchPosts(
+        var posts = await postDataSource.fetchPosts(
           userId,
           startRecord,
           pageSize,
@@ -60,9 +60,9 @@ class PostRepositoryImpl implements PostRepository {
     int startRecord,
     int pageSize,
   ) async {
-    if (await networkService.isConnected == true) {
+    if (await networkInfo.isConnected == true) {
       try {
-        var posts = await remoteDataSource.fetchUserPosts(
+        var posts = await postDataSource.fetchUserPosts(
           userId,
           startRecord,
           pageSize,
@@ -78,7 +78,7 @@ class PostRepositoryImpl implements PostRepository {
     } else {
       try {
         // TODO: Local data source impl
-        var posts = await remoteDataSource.fetchUserPosts(
+        var posts = await postDataSource.fetchUserPosts(
           userId,
           startRecord,
           pageSize,
@@ -96,9 +96,9 @@ class PostRepositoryImpl implements PostRepository {
 
   @override
   Future<DataState<LikeModel>> likePost(int postId) async {
-    if (await networkService.isConnected == true) {
+    if (await networkInfo.isConnected == true) {
       try {
-        return SuccessData(await remoteDataSource.likePost(postId));
+        return SuccessData(await postDataSource.likePost(postId));
       } catch (e) {
         if (e is UnauthorizedException) {
           return FailedData(UnauthorizedFailure());
@@ -108,7 +108,7 @@ class PostRepositoryImpl implements PostRepository {
     } else {
       try {
         // TODO: Local data source impl
-        return SuccessData(await remoteDataSource.likePost(postId));
+        return SuccessData(await postDataSource.likePost(postId));
       } catch (e) {
         if (e is CacheException) {
           return FailedData(CacheFailure());
@@ -120,9 +120,9 @@ class PostRepositoryImpl implements PostRepository {
 
   @override
   Future<DataState<LikeModel>> disLikePost(int postId) async {
-    if (await networkService.isConnected == true) {
+    if (await networkInfo.isConnected == true) {
       try {
-        return SuccessData(await remoteDataSource.disLikePost(postId));
+        return SuccessData(await postDataSource.disLikePost(postId));
       } catch (e) {
         if (e is UnauthorizedException) {
           return FailedData(UnauthorizedFailure());
@@ -132,7 +132,7 @@ class PostRepositoryImpl implements PostRepository {
     } else {
       try {
         // TODO: Local data source impl
-        return SuccessData(await remoteDataSource.disLikePost(postId));
+        return SuccessData(await postDataSource.disLikePost(postId));
       } catch (e) {
         if (e is CacheException) {
           return FailedData(CacheFailure());
@@ -148,14 +148,10 @@ class PostRepositoryImpl implements PostRepository {
     int startRecord,
     int pageSize,
   ) async {
-    if (await networkService.isConnected == true) {
+    if (await networkInfo.isConnected == true) {
       try {
         return SuccessData(
-          await remoteDataSource.getLikeUserByPost(
-            postId,
-            startRecord,
-            pageSize,
-          ),
+          await postDataSource.getLikeUserByPost(postId, startRecord, pageSize),
         );
       } catch (e) {
         if (e is UnauthorizedException) {
@@ -167,11 +163,7 @@ class PostRepositoryImpl implements PostRepository {
       try {
         // TODO: Local data source impl
         return SuccessData(
-          await remoteDataSource.getLikeUserByPost(
-            postId,
-            startRecord,
-            pageSize,
-          ),
+          await postDataSource.getLikeUserByPost(postId, startRecord, pageSize),
         );
       } catch (e) {
         if (e is CacheException) {

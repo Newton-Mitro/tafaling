@@ -1,37 +1,60 @@
-// import 'package:get_it/get_it.dart';
-// import 'data/index.dart';
-// import 'domain/index.dart';
-// import 'presentation/index.dart';
+import 'package:get_it/get_it.dart';
+import 'package:tafaling/core/index.dart';
+import 'package:tafaling/features/post/presentation/views/post_liked_users_screen/bloc/post_liked_users_bloc.dart';
+import 'data/index.dart';
+import 'domain/index.dart';
+import 'presentation/index.dart';
 
-// final sl = GetIt.instance;
+final sl = GetIt.instance;
 
-// void registerPostModule() {
-//   // Data Sources
-//   sl.registerLazySingleton<PostRemoteDataSource>(
-//     () => PostRemoteDataSourceImpl(apiService: sl(), authApiService: sl()),
-//   );
+void registerPostModule() {
+  // Data Sources
+  sl.registerLazySingleton<PostDataSource>(
+    () => PostRemoteDataSourceImpl(
+      apiService: sl<ApiService>(),
+      authApiService: sl<ApiService>(),
+    ),
+  );
 
-//   // Repository
-//   sl.registerLazySingleton<PostRepository>(
-//     () => PostRepositoryImpl(sl(), sl()),
-//   );
+  // Repository
+  sl.registerLazySingleton<PostRepository>(
+    () => PostRepositoryImpl(
+      networkInfo: sl<NetworkInfo>(),
+      postDataSource: sl<PostDataSource>(),
+    ),
+  );
 
-//   // Use Cases
-//   sl.registerLazySingleton(() => FetchPostsUseCase(sl<PostRepository>()));
-//   sl.registerLazySingleton(() => LikePostUseCase(sl<PostRepository>()));
-//   sl.registerLazySingleton(() => FetchUserPostsUseCase(sl<PostRepository>()));
-//   sl.registerLazySingleton(() => DisLikePostUseCase(sl<PostRepository>()));
-//   sl.registerLazySingleton(
-//     () => GetPostLikedUsersUsecase(sl<PostRepository>()),
-//   );
+  // Use Cases
+  sl.registerLazySingleton(
+    () => FetchPostsUseCase(postRepository: sl<PostRepository>()),
+  );
+  sl.registerLazySingleton(
+    () => LikePostUseCase(postRepository: sl<PostRepository>()),
+  );
+  sl.registerLazySingleton(
+    () => FetchUserPostsUseCase(postRepository: sl<PostRepository>()),
+  );
+  sl.registerLazySingleton(
+    () => DisLikePostUseCase(postRepository: sl<PostRepository>()),
+  );
+  sl.registerLazySingleton(
+    () => GetPostLikedUsersUsecase(postRepository: sl<PostRepository>()),
+  );
 
-//   // Bloc
-//   sl.registerFactory(
-//     () => PostsScreenBloc(
-//       sl<FetchPostsUseCase>(),
-//       sl<FetchUserPostsUseCase>(),
-//       sl<LikePostUseCase>(),
-//       sl<DisLikePostUseCase>(),
-//     ),
-//   );
-// }
+  // Bloc
+  sl.registerFactory(
+    () => PostsScreenBloc(
+      fetchPostsUseCase: sl<FetchPostsUseCase>(),
+      fetchUserPostsUseCase: sl<FetchUserPostsUseCase>(),
+      likePostUseCase: sl<LikePostUseCase>(),
+      disLikePostUseCase: sl<DisLikePostUseCase>(),
+      localStorage: sl<LocalStorage>(),
+    ),
+  );
+
+  sl.registerFactory(
+    () => PostLikedUsersBloc(
+      getPostLikedUsersUsecase: sl<GetPostLikedUsersUsecase>(),
+    ),
+  );
+}

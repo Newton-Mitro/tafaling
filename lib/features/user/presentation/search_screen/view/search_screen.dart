@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tafaling/features/post/injection.dart';
 import 'package:tafaling/features/user/presentation/search_screen/bloc/search_screen_bloc.dart';
 import 'package:tafaling/features/user/presentation/widgets/user_tile/user_tile.dart';
-import 'package:tafaling/injection_container.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});

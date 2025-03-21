@@ -10,13 +10,16 @@ import 'package:tafaling/features/user/domain/repositories/user_profile_reposito
 
 class UserRepositoryImpl implements UserRepository {
   final UsersDataSource remoteDataSource;
-  final NetworkService networkService;
+  final NetworkInfo networkInfo;
 
-  UserRepositoryImpl(this.remoteDataSource, this.networkService);
+  UserRepositoryImpl({
+    required this.remoteDataSource,
+    required this.networkInfo,
+  });
 
   @override
   Future<DataState<FollowUnFollowModel>> followUser(int followingUserId) async {
-    if (await networkService.isConnected == true) {
+    if (await networkInfo.isConnected == true) {
       try {
         final result = await remoteDataSource.followUser(followingUserId);
         return SuccessData(result);
@@ -35,7 +38,7 @@ class UserRepositoryImpl implements UserRepository {
   Future<DataState<FollowUnFollowModel>> unFollowUser(
     int followingUserId,
   ) async {
-    if (await networkService.isConnected == true) {
+    if (await networkInfo.isConnected == true) {
       try {
         final result = await remoteDataSource.unFollowUser(followingUserId);
         return SuccessData(result);
@@ -56,7 +59,7 @@ class UserRepositoryImpl implements UserRepository {
     int startRecord,
     int pageSize,
   ) async {
-    if (await networkService.isConnected == true) {
+    if (await networkInfo.isConnected == true) {
       try {
         var posts = await remoteDataSource.fetchProfile(
           userId,
@@ -82,7 +85,7 @@ class UserRepositoryImpl implements UserRepository {
     int startRecord,
     int pageSize,
   ) async {
-    if (await networkService.isConnected == true) {
+    if (await networkInfo.isConnected == true) {
       try {
         var users = await remoteDataSource.searchUsers(
           userId,
@@ -108,7 +111,7 @@ class UserRepositoryImpl implements UserRepository {
     int startRecord,
     int pageSize,
   ) async {
-    if (await networkService.isConnected == true) {
+    if (await networkInfo.isConnected == true) {
       try {
         var users = await remoteDataSource.getFollowers(
           targetUserId,
@@ -133,7 +136,7 @@ class UserRepositoryImpl implements UserRepository {
     int startRecord,
     int pageSize,
   ) async {
-    if (await networkService.isConnected == true) {
+    if (await networkInfo.isConnected == true) {
       try {
         var users = await remoteDataSource.getFollowingUsers(
           targetUserId,
@@ -158,7 +161,7 @@ class UserRepositoryImpl implements UserRepository {
     int startRecord,
     int pageSize,
   ) async {
-    if (await networkService.isConnected == true) {
+    if (await networkInfo.isConnected == true) {
       try {
         var users = await remoteDataSource.getSuggestedUsers(
           userId,

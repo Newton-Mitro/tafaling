@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:tafaling/core/network/auth_api_service.dart';
+import 'package:tafaling/core/network/api_service.dart';
 import 'package:tafaling/features/user/data/data_sources/user_data_source.dart';
 import 'package:tafaling/features/user/data/models/follow_un_follow_model.dart';
 import 'package:tafaling/features/user/data/models/user_model.dart';
 
 class UserProfileRemoteDataSourceImpl implements UsersDataSource {
-  final AuthApiService authApiService;
+  final ApiService authApiService;
 
   UserProfileRemoteDataSourceImpl({required this.authApiService});
 

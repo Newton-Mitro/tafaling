@@ -9,12 +9,12 @@ final class LikePostPrams {
 }
 
 class LikePostUseCase extends UseCase<DataState<LikeEntity>, LikePostPrams> {
-  final PostRepository repository;
+  final PostRepository postRepository;
 
-  LikePostUseCase(this.repository);
+  LikePostUseCase({required this.postRepository});
 
   @override
   Future<DataState<LikeEntity>> call({LikePostPrams? params}) {
-    return repository.likePost(params?.postId ?? 0);
+    return postRepository.likePost(params?.postId ?? 0);
   }
 }

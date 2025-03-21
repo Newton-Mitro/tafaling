@@ -1,8 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tafaling/core/utils/local_storage.dart';
+import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
 import 'package:tafaling/features/home/presentation/widgets/home_screen_body.dart';
+import 'package:tafaling/features/post/injection.dart';
 import 'package:tafaling/features/post/presentation/views/posts_screen/bloc/posts_screen_bloc.dart';
-import 'package:tafaling/injection_container.dart';
+import 'package:tafaling/core/constants/constants.dart';
+import 'package:tafaling/features/user/data/models/user_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,7 +18,24 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final bool _isBottomSheetOpen = false;
+  bool _isBottomSheetOpen = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeUser();
+  }
+
+  Future<void> _initializeUser() async {
+    final localStorage = sl<LocalStorage>();
+    final authUser = await localStorage.getString(Constants.authUserKey);
+    if (authUser != null) {
+      authUserNotifier.value = UserModel.fromJson(jsonDecode(authUser));
+    }
+
+    final accessToken = await localStorage.getString(Constants.accessTokenKey);
+    accessTokenNotifier.value = accessToken;
+  }
 
   @override
   Widget build(BuildContext context) {

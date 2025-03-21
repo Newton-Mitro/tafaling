@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/app_configs/routes/route_name.dart';
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
+import 'package:tafaling/features/post/injection.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/presentation/widgets/user_tile/bloc/user_tile_bloc.dart';
-import 'package:tafaling/injection_container.dart';
 
 class UserTile extends StatelessWidget {
   final UserEntity user;

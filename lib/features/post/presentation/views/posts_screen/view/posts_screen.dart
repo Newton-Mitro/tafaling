@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/app_configs/routes/route_name.dart';
 import 'package:tafaling/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
-import 'package:tafaling/features/post/presentation/views/posts_screen/bloc/posts_screen_bloc.dart';
+import 'package:tafaling/features/post/injection.dart';
 import 'package:tafaling/features/post/presentation/views/post_preview_screen/views/post_viewer.dart';
 import 'package:tafaling/features/post/presentation/views/post_preview_screen/widgets/post_top_navigation.dart';
-import 'package:tafaling/injection_container.dart';
+import 'package:tafaling/features/post/presentation/views/posts_screen/bloc/posts_screen_bloc.dart';
 
 class PostsScreen extends StatefulWidget {
   const PostsScreen({super.key});
@@ -61,8 +61,6 @@ class _PostsScreenState extends State<PostsScreen> {
                       physics: const PageScrollPhysics(),
                       allowImplicitScrolling: true,
                       onPageChanged: (index) {
-                        print("index $index");
-                        print("total posts: ${state.posts.length}");
                         if (index == state.posts.length - 1 &&
                             !state.isFetching) {
                           context.read<PostsScreenBloc>().add(

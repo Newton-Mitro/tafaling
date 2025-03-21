@@ -2,23 +2,25 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:tafaling/core/constants/api_config.dart';
-import 'package:tafaling/core/errors/exceptions.dart';
-import 'package:tafaling/core/utils/app_shared_pref.dart';
+import 'package:tafaling/core/constants/constants.dart';
+import 'package:tafaling/core/index.dart';
 import 'package:tafaling/features/auth/data/models/auth_user_model.dart';
 
 class AuthInterceptor extends Interceptor {
   final Dio dio;
+  final LocalStorage localStorage;
   late String? accessToken;
   late String? refreshToken;
 
-  AuthInterceptor(this.dio);
+  AuthInterceptor({required this.dio, required this.localStorage});
 
   @override
   void onRequest(
-      RequestOptions options, RequestInterceptorHandler handler) async {
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
     // Retrieve tokens
-    accessToken = await AppSharedPref.getAccessToken();
+    accessToken = await localStorage.getString(Constants.accessTokenKey);
 
     options.headers['Accept'] = 'application/json';
     // options.validateStatus = (status) => status != null && status < 500;
@@ -42,23 +44,6 @@ class AuthInterceptor extends Interceptor {
     handler.next(options);
   }
 
-  // @override
-  // void onResponse(Response response, ResponseInterceptorHandler handler) async {
-  //   if (response.statusCode == 401) {
-  //     final newToken = await _handleTokenRefresh();
-  //     if (newToken != null) {
-  //       response.requestOptions.headers["Authorization"] = "Bearer $newToken";
-
-  //       // Repeat the failed request with the new token
-  //       final retryResponse = await dio.fetch(response.requestOptions);
-  //       return handler.resolve(retryResponse);
-  //     } else {
-  //       await _logout();
-  //     }
-  //   }
-  //   handler.next(response);
-  // }
-
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     if (err.response?.statusCode == 401) {
@@ -76,7 +61,7 @@ class AuthInterceptor extends Interceptor {
 
   Future<String?> _handleTokenRefresh() async {
     try {
-      refreshToken = await AppSharedPref.getRefreshToken();
+      refreshToken = await localStorage.getString(Constants.refreshTokenKey);
 
       if (refreshToken == null) return null;
       if (JwtDecoder.isExpired(refreshToken!)) {
@@ -96,9 +81,14 @@ class AuthInterceptor extends Interceptor {
       if (response.statusCode == HttpStatus.ok) {
         final data = response.data!['data'];
         var res = AuthUserModel.fromJson(data);
-        await AppSharedPref.setAccessToken(res.accessToken);
-        await AppSharedPref.setRefreshToken(res.refreshToken);
-
+        await localStorage.saveString(
+          Constants.accessTokenKey,
+          res.accessToken,
+        );
+        await localStorage.saveString(
+          Constants.refreshTokenKey,
+          res.refreshToken,
+        );
         return res.accessToken;
       } else {
         await _logout();
@@ -110,9 +100,9 @@ class AuthInterceptor extends Interceptor {
   }
 
   Future<void> _logout() async {
-    await AppSharedPref.removeAuthUser();
-    await AppSharedPref.removeAccessToken();
-    await AppSharedPref.removeRefreshToken();
+    await localStorage.remove(Constants.accessTokenKey);
+    await localStorage.remove(Constants.refreshTokenKey);
+    await localStorage.remove(Constants.authUserKey);
     throw UnauthorizedException();
   }
 }

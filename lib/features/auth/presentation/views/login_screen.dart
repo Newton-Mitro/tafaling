@@ -6,8 +6,9 @@ import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/core/widgets/app_logo.dart';
 import 'package:tafaling/core/widgets/app_text_input.dart';
 import 'package:tafaling/core/widgets/network_error_dialog.dart';
-import 'package:tafaling/features/auth/presentation/auth_bloc/auth_bloc.dart';
-import 'package:tafaling/injection_container.dart';
+import 'package:tafaling/features/auth/injection.dart';
+
+import '../index.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -23,12 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create:
-          (context) => AuthBloc(
-            registrationUseCase: sl.get(),
-            loginUseCase: sl.get(),
-            logoutUseCase: sl.get(),
-          ),
+      create: (context) => sl<AuthBloc>(),
       child: Scaffold(
         appBar: AppBar(title: Text("Login")),
         body: Container(
@@ -45,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: BlocListener<AuthBloc, AuthState>(
             listener: (context, state) {
               if (state is Authenticated) {
-                Navigator.pushReplacementNamed(context, RoutesName.homePage);
+                Navigator.pushReplacementNamed(context, RoutesName.root);
               }
               if (state is AuthError) {
                 if (state.message == "No internet connection") {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tafaling/app_configs/routes/route_name.dart';
+import 'package:tafaling/core/constants/constants.dart';
+import 'package:tafaling/core/index.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/core/utils/app_shared_pref.dart';
 import 'package:tafaling/features/home/data/constants/onboarding_list_items.dart';
@@ -142,7 +144,8 @@ Widget getStartedButton(BuildContext context) {
       foregroundColor: context.theme.colorScheme.onPrimary,
     ),
     onPressed: () {
-      AppSharedPref.setOnboardingStatus(false);
+      final localStorage = sl<LocalStorage>();
+      localStorage.saveBool(Constants.onboardingKey, false);
       Navigator.popAndPushNamed(context, RoutesName.homePage);
     },
     child: Text('Get Started', style: context.theme.textTheme.labelSmall),

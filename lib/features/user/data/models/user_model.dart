@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 
 class UserModel extends UserEntity {
@@ -151,5 +153,10 @@ class UserModel extends UserEntity {
       'is_following': isFollowing,
       'friendship_status': friendshipStatus,
     };
+  }
+
+  @override
+  String toString() {
+    return jsonEncode(toJson());
   }
 }

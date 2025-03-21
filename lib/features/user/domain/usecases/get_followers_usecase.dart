@@ -17,13 +17,13 @@ final class GetFollowersParams {
 
 class GetFollowersUseCase
     extends UseCase<DataState<List<UserEntity>>, GetFollowersParams> {
-  final UserRepository repository;
+  final UserRepository userRepository;
 
-  GetFollowersUseCase(this.repository);
+  GetFollowersUseCase({required this.userRepository});
 
   @override
   Future<DataState<List<UserEntity>>> call({GetFollowersParams? params}) {
-    return repository.getFollowers(
+    return userRepository.getFollowers(
       params?.targetUserId ?? 0,
       params?.startRecord ?? 0,
       params?.pageSize ?? 10,

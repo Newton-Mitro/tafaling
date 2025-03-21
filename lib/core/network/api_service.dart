@@ -1,61 +1,95 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:tafaling/core/constants/api_config.dart';
-import 'package:tafaling/core/errors/exceptions.dart';
-import 'package:tafaling/core/utils/app_shared_pref.dart';
+import 'package:tafaling/core/constants/constants.dart';
+import 'package:tafaling/core/index.dart';
 
 class ApiService {
-  final Dio _dio = Dio(BaseOptions(
-    baseUrl: ApiConfig.baseUrl,
-    connectTimeout: const Duration(seconds: 50),
-    receiveTimeout: const Duration(seconds: 50),
-  ));
+  final Dio _dio;
+  final LocalStorage localStorage;
 
-  Future<Response> get(String endpoint,
-      {Map<String, dynamic>? queryParameters, Options? options}) async {
-    return _performRequest(() =>
-        _dio.get(endpoint, queryParameters: queryParameters, options: options));
+  ApiService({required this.localStorage}) : _dio = Dio() {
+    _dio.options = BaseOptions(
+      baseUrl: ApiConfig.baseUrl,
+      connectTimeout: const Duration(seconds: 50),
+      receiveTimeout: const Duration(seconds: 50),
+    );
+    _dio.interceptors.add(
+      AuthInterceptor(dio: _dio, localStorage: localStorage),
+    );
   }
 
-  Future<Response> post(String endpoint,
-      {required Map<String, dynamic> data, Options? options}) async {
+  Future<Response> get(
+    String endpoint, {
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+  }) async {
     return _performRequest(
-        () => _dio.post(endpoint, data: data, options: options));
+      () => _dio.get(
+        endpoint,
+        queryParameters: queryParameters,
+        options: options ?? Options(),
+      ),
+    );
   }
 
-  Future<Response> put(String endpoint,
-      {required Map<String, dynamic> data, Options? options}) async {
+  Future<Response> post(
+    String endpoint, {
+    required Map<String, dynamic> data,
+    Options? options,
+  }) async {
     return _performRequest(
-        () => _dio.put(endpoint, data: data, options: options));
+      () => _dio.post(endpoint, data: data, options: options ?? Options()),
+    );
   }
 
-  Future<Response> patch(String endpoint,
-      {required Map<String, dynamic> data, Options? options}) async {
+  Future<Response> put(
+    String endpoint, {
+    required Map<String, dynamic> data,
+    Options? options,
+  }) async {
     return _performRequest(
-        () => _dio.patch(endpoint, data: data, options: options));
+      () => _dio.put(endpoint, data: data, options: options ?? Options()),
+    );
   }
 
-  Future<Response> delete(String endpoint,
-      {Map<String, dynamic>? queryParameters, Options? options}) async {
-    return _performRequest(() => _dio.delete(endpoint,
-        queryParameters: queryParameters, options: options));
+  Future<Response> patch(
+    String endpoint, {
+    required Map<String, dynamic> data,
+    Options? options,
+  }) async {
+    return _performRequest(
+      () => _dio.patch(endpoint, data: data, options: options ?? Options()),
+    );
   }
 
-  Future<Response> _performRequest(Future<Response> Function() request,
-      {Options? options}) async {
+  Future<Response> delete(
+    String endpoint, {
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+  }) async {
+    return _performRequest(
+      () => _dio.delete(
+        endpoint,
+        queryParameters: queryParameters,
+        options: options ?? Options(),
+      ),
+    );
+  }
+
+  Future<Response> _performRequest(Future<Response> Function() request) async {
     try {
-      var accessToken = await AppSharedPref.getAccessToken();
-      options ??= Options();
-      options.headers ??= {};
+      var accessToken = await localStorage.getString(Constants.accessTokenKey);
+
       if (accessToken != null) {
-        options.headers!['Authorization'] = 'Bearer $accessToken';
+        _dio.options.headers['Authorization'] = 'Bearer $accessToken';
       }
 
-      final response = await request();
-      return response;
+      return await request();
     } on DioException catch (e) {
       _handleDioError(e);
+      rethrow;
+    } catch (e) {
       rethrow;
     }
   }
@@ -67,9 +101,7 @@ class ApiService {
         final Map<String, dynamic>? errorResponse = e.response?.data;
         if (errorResponse != null) {
           final errors = errorResponse['errors'] as Map<String, dynamic>;
-          throw ValidationException(
-            errors: errors,
-          );
+          throw ValidationException(errors: errors);
         }
         break;
       case HttpStatus.unauthorized:
@@ -79,7 +111,7 @@ class ApiService {
       case HttpStatus.internalServerError:
         throw ServerException();
       default:
-        throw ServerException();
+        throw Exception(e.message);
     }
   }
 }

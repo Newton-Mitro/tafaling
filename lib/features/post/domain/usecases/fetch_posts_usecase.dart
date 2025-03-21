@@ -16,13 +16,13 @@ final class FetchPostsPrams {
 
 class FetchPostsUseCase
     extends UseCase<DataState<List<PostEntity>>, FetchPostsPrams> {
-  final PostRepository repository;
+  final PostRepository postRepository;
 
-  FetchPostsUseCase(this.repository);
+  FetchPostsUseCase({required this.postRepository});
 
   @override
   Future<DataState<List<PostEntity>>> call({FetchPostsPrams? params}) {
-    return repository.fetchPosts(
+    return postRepository.fetchPosts(
       params?.userId ?? 0,
       params?.startRecord ?? 0,
       params?.pageSize ?? 0,
