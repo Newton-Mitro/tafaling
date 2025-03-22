@@ -25,7 +25,9 @@ Future<void> registerCoreServices() async {
   );
 
   // Core Services
-  sl.registerFactory<AppStateBloc>(() => AppStateBloc());
+  sl.registerFactory<AppStateBloc>(
+    () => AppStateBloc()..add(IsAuthenticated()),
+  );
 
   sl.registerLazySingleton<LocalStorage>(() => LocalStorageImpl());
   sl.registerLazySingleton<ApiService>(

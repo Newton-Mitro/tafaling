@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:tafaling/core/bloc/app_state_bloc.dart';
+import 'package:tafaling/core/constants/constants.dart';
 import 'package:tafaling/core/index.dart';
 
 class ApiService {
@@ -110,6 +111,7 @@ class ApiService {
         }
         break;
       case HttpStatus.unauthorized:
+        _logout();
         throw UnauthorizedException();
       case HttpStatus.forbidden:
         throw ForbiddenException();
@@ -118,5 +120,12 @@ class ApiService {
       default:
         throw Exception(e.message);
     }
+  }
+
+  Future<void> _logout() async {
+    await localStorage.remove(Constants.accessTokenKey);
+    await localStorage.remove(Constants.refreshTokenKey);
+    await localStorage.remove(Constants.authUserKey);
+    appStateBloc.add(LogoutEvent());
   }
 }

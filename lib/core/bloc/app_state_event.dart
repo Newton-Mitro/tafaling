@@ -7,6 +7,10 @@ sealed class AppStateEvent extends Equatable {
   List<Object> get props => [];
 }
 
+final class IsAuthenticated extends AppStateEvent {
+  const IsAuthenticated();
+}
+
 final class LogoutEvent extends AppStateEvent {
   const LogoutEvent();
 }

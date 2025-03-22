@@ -30,10 +30,9 @@ class AuthInterceptor extends Interceptor {
     accessToken = await localStorage.getString(Constants.accessTokenKey);
 
     options.headers['Accept'] = 'application/json';
+    options.headers['Authorization'] = 'Bearer $accessToken';
 
     if (accessToken != null) {
-      options.headers['Authorization'] = 'Bearer $accessToken';
-
       if (JwtDecoder.isExpired(accessToken!)) {
         final newRefreshToken = await _handleTokenRefresh();
         if (newRefreshToken != null) {
