@@ -21,10 +21,12 @@ class UserTile extends StatelessWidget {
           if (state is UserTileLoaded) {
             return Card(
               color: Theme.of(context).colorScheme.surface,
+
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: ListTile(
+                minTileHeight: 60,
                 leading: CachedNetworkImage(
                   imageUrl: user.profilePicture ?? '',
                   imageBuilder:

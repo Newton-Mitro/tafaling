@@ -13,7 +13,7 @@ class FollowingUsersBloc
 
   bool hasMoreFollowers = true;
   int currentPage = 1;
-  int pageSize = 100;
+  int pageSize = 10;
 
   FollowingUsersBloc({required this.getFollowingUsersUseCase})
     : super(FollowingUsersInitial()) {

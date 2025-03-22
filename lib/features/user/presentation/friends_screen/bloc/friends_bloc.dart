@@ -11,7 +11,7 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
 
   bool hasMoreFollowers = true;
   int currentPage = 1;
-  int pageSize = 20;
+  int pageSize = 10;
 
   FriendsBloc({required this.getSuggestedUsersUseCase})
     : super(FriendsInitial()) {

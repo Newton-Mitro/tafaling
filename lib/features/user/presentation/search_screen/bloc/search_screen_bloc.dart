@@ -10,7 +10,7 @@ import 'package:tafaling/features/user/domain/usecases/search_users_usecase.dart
 part 'search_screen_event.dart';
 part 'search_screen_state.dart';
 
-const int postsPerPage = 10;
+const int postsPerPage = 5;
 
 class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchState> {
   final SearchUsersUseCase searchUsersUseCase;
