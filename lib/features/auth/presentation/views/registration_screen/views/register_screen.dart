@@ -6,9 +6,8 @@ import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/core/widgets/app_logo.dart';
 import 'package:tafaling/core/widgets/app_text_input.dart';
 import 'package:tafaling/core/widgets/network_error_dialog.dart';
-import 'package:tafaling/features/auth/injection.dart';
-
-import '../index.dart';
+import 'package:tafaling/features/auth/presentation/views/registration_screen/bloc/registration_screen_bloc.dart';
+import 'package:tafaling/features/post/injection.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -30,7 +29,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<AuthBloc>(),
+      create: (context) => sl<RegistrationScreenBloc>(),
       child: Scaffold(
         appBar: AppBar(title: Text("Register")),
         body: Container(
@@ -44,12 +43,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               begin: Alignment.topCenter,
             ),
           ),
-          child: BlocListener<AuthBloc, AuthState>(
+          child: BlocListener<RegistrationScreenBloc, RegistrationState>(
             listener: (context, state) {
-              if (state is Authenticated) {
-                Navigator.pushReplacementNamed(context, RoutesName.homePage);
-              }
-              if (state is AuthError) {
+              if (state is RegistrationErrorState) {
                 if (state.message == "No internet connection") {
                   NetworkErrorDialog.show(context);
                 } else {
@@ -73,7 +69,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 }
               }
 
-              if (state is Authenticated) {
+              if (state is RegistrationSuccessState) {
                 Navigator.pushReplacementNamed(context, RoutesName.homePage);
               }
             },
@@ -81,7 +77,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: SingleChildScrollView(
-                  child: BlocBuilder<AuthBloc, AuthState>(
+                  child: BlocBuilder<RegistrationScreenBloc, RegistrationState>(
                     builder: (context, state) {
                       return Column(
                         spacing: 10,
@@ -93,7 +89,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             controller: nameController,
                             label: 'Name',
                             errorText:
-                                state is AuthValidationError
+                                state is RegistrationValidationErrorState
                                     ? state.errors['name']?.isNotEmpty == true
                                         ? state.errors['name']![0]
                                         : null
@@ -104,7 +100,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             controller: emailController,
                             label: 'Email',
                             errorText:
-                                state is AuthValidationError
+                                state is RegistrationValidationErrorState
                                     ? state.errors['email']?.isNotEmpty == true
                                         ? state.errors['email']![0]
                                         : null
@@ -116,7 +112,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             controller: passwordController,
                             label: 'Password',
                             errorText:
-                                state is AuthValidationError
+                                state is RegistrationValidationErrorState
                                     ? state.errors['password']?.isNotEmpty ==
                                             true
                                         ? state.errors['password']![0]
@@ -132,7 +128,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             controller: confirmPasswordController,
                             label: 'Confirm Password',
                             errorText:
-                                state is AuthValidationError
+                                state is RegistrationValidationErrorState
                                     ? state
                                                 .errors['confirm_password']
                                                 ?.isNotEmpty ==
@@ -147,14 +143,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          BlocBuilder<AuthBloc, AuthState>(
+                          BlocBuilder<
+                            RegistrationScreenBloc,
+                            RegistrationState
+                          >(
                             builder: (context, state) {
-                              if (state is AuthLoading) {
+                              if (state is RegistrationLoadingState) {
                                 return CircularProgressIndicator();
                               }
                               return ElevatedButton(
                                 onPressed: () {
-                                  context.read<AuthBloc>().add(
+                                  context.read<RegistrationScreenBloc>().add(
                                     RegisterEvent(
                                       name: nameController.text,
                                       email: emailController.text,

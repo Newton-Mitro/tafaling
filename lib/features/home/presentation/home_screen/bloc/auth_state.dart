@@ -13,7 +13,8 @@ final class AuthLoading extends AuthState {}
 
 final class Authenticated extends AuthState {
   final AuthUserEntity authUser;
-  const Authenticated(this.authUser);
+  final String accessToken;
+  const Authenticated(this.authUser, this.accessToken);
 }
 
 final class Unauthenticated extends AuthState {}
@@ -21,9 +22,4 @@ final class Unauthenticated extends AuthState {}
 final class AuthError extends AuthState {
   final String message;
   const AuthError(this.message);
-}
-
-final class AuthValidationError extends AuthState {
-  final Map<String, dynamic> errors;
-  const AuthValidationError(this.errors);
 }

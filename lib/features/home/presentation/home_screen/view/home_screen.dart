@@ -20,8 +20,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool _isBottomSheetOpen = false;
-
   @override
   void initState() {
     super.initState();
@@ -54,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Navigator.pushReplacementNamed(context, RoutesName.root);
           }
         },
-        child: HomeScreenBody(isBottomSheetOpen: _isBottomSheetOpen),
+        child: HomeScreenBody(),
       ),
     );
   }

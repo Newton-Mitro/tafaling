@@ -1,14 +1,12 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tafaling/app_configs/routes/route_name.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/core/widgets/app_logo.dart';
 import 'package:tafaling/core/widgets/app_text_input.dart';
 import 'package:tafaling/core/widgets/network_error_dialog.dart';
 import 'package:tafaling/features/auth/injection.dart';
-
-import '../index.dart';
+import 'package:tafaling/features/auth/presentation/views/login_screen/bloc/login_screen_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -24,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<AuthBloc>(),
+      create: (context) => sl<LoginScreenBloc>(),
       child: Scaffold(
         appBar: AppBar(title: Text("Login")),
         body: Container(
@@ -38,12 +36,9 @@ class _LoginScreenState extends State<LoginScreen> {
               begin: Alignment.topCenter,
             ),
           ),
-          child: BlocListener<AuthBloc, AuthState>(
+          child: BlocListener<LoginScreenBloc, LoginScreenState>(
             listener: (context, state) {
-              if (state is Authenticated) {
-                Navigator.pushReplacementNamed(context, RoutesName.root);
-              }
-              if (state is AuthError) {
+              if (state is LoginErrorState) {
                 if (state.message == "No internet connection") {
                   NetworkErrorDialog.show(context);
                 } else {
@@ -76,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       AppLogo(width: 150, height: 150),
                       const SizedBox(height: 50),
-                      BlocBuilder<AuthBloc, AuthState>(
+                      BlocBuilder<LoginScreenBloc, LoginScreenState>(
                         builder: (context, state) {
                           return Column(
                             spacing: 10,
@@ -85,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 controller: usernameController,
                                 label: 'Username',
                                 errorText:
-                                    state is AuthValidationError
+                                    state is LoginValidationErrorState
                                         ? state.errors['email']?.isNotEmpty ==
                                                 true
                                             ? state.errors['email']![0]
@@ -100,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 controller: passwordController,
                                 label: 'Password',
                                 errorText:
-                                    state is AuthValidationError
+                                    state is LoginValidationErrorState
                                         ? state
                                                     .errors['password']
                                                     ?.isNotEmpty ==
@@ -115,12 +110,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 obscureText: true,
                               ),
                               const SizedBox(height: 20),
-                              if (state is AuthLoading)
+                              if (state is LoginLoadingState)
                                 CircularProgressIndicator(),
-                              if (state is! AuthLoading)
+                              if (state is! LoginLoadingState)
                                 ElevatedButton(
                                   onPressed: () {
-                                    context.read<AuthBloc>().add(
+                                    context.read<LoginScreenBloc>().add(
                                       LoginEvent(
                                         username: usernameController.text,
                                         password: passwordController.text,

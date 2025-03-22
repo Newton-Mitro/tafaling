@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/app_configs/routes/route_name.dart';
-import 'package:tafaling/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'package:tafaling/features/home/presentation/home_screen/bloc/auth_bloc.dart';
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
 import 'package:tafaling/features/post/injection.dart';
 import 'package:tafaling/features/post/presentation/views/post_preview_screen/views/post_viewer.dart';

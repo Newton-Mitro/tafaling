@@ -1,1 +1,1 @@
-export 'auth_bloc/auth_bloc.dart';
+export '../../home/presentation/home_screen/bloc/auth_bloc.dart';

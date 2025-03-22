@@ -8,8 +8,7 @@ import 'package:tafaling/features/post/presentation/views/posts_screen/view/post
 import 'package:tafaling/features/user/presentation/user_profile_screen/view/user_profile_screen.dart';
 
 class HomeScreenBody extends StatelessWidget {
-  final bool isBottomSheetOpen;
-  const HomeScreenBody({super.key, required this.isBottomSheetOpen});
+  const HomeScreenBody({super.key});
 
   @override
   Widget build(BuildContext context) {
