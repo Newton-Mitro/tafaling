@@ -1,7 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:tafaling/core/bloc/app_state_bloc.dart';
 import 'package:tafaling/core/logging/logger_service.dart';
 import 'package:tafaling/core/logging/logger_service_impl.dart';
 import 'package:tafaling/core/network/network_info.dart';
@@ -10,6 +8,7 @@ import 'package:tafaling/core/utils/local_storage.dart';
 import 'package:tafaling/core/utils/local_storage_impl.dart';
 import 'package:tafaling/core/widgets/language_selector/bloc/language_bloc.dart';
 import 'package:tafaling/core/widgets/theme_switcher/bloc/theme_bloc.dart';
+import 'package:tafaling/features/auth/auth_module.dart';
 import 'network/api_service.dart';
 
 final sl = GetIt.instance;
@@ -24,17 +23,11 @@ Future<void> registerCoreServices() async {
     () => NetworkInfoImpl(connectivity: sl<Connectivity>()),
   );
 
-  // Core Services
-  sl.registerFactory<AppStateBloc>(
-    () => AppStateBloc()..add(IsAuthenticated()),
-  );
-
   sl.registerLazySingleton<LocalStorage>(() => LocalStorageImpl());
   sl.registerLazySingleton<ApiService>(
     () => ApiService(
       localStorage: sl<LocalStorage>(),
       loggerService: sl<LoggerService>(),
-      appStateBloc: sl<AppStateBloc>(),
     ),
   );
 

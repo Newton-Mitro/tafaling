@@ -57,7 +57,6 @@ class UserProfileRemoteDataSourceImpl implements UsersDataSource {
     });
   }
 
-  // user/search/profile/v2/1?start_record=0&page_size=3
   @override
   Future<List<UserModel>> searchUsers(
     int userId,
@@ -112,8 +111,8 @@ class UserProfileRemoteDataSourceImpl implements UsersDataSource {
       '/user/get/followers',
       queryParameters: {
         'target_user_id': targetUserId,
-        'start_record': 0,
-        'page_size': 5,
+        'start_record': startRecord,
+        'page_size': pageSize,
       },
     );
 
@@ -136,8 +135,8 @@ class UserProfileRemoteDataSourceImpl implements UsersDataSource {
       '/user/get/following/$targetUserId',
       queryParameters: {
         'target_user_id': targetUserId,
-        'start_record': 0,
-        'page_size': 5,
+        'start_record': startRecord,
+        'page_size': pageSize,
       },
     );
 
@@ -158,7 +157,11 @@ class UserProfileRemoteDataSourceImpl implements UsersDataSource {
   ) async {
     final response = await authApiService.get(
       '/user/profile/suggestion',
-      queryParameters: {'userId': userId, 'start_record': 0, 'page_size': 5},
+      queryParameters: {
+        'userId': userId,
+        'start_record': startRecord,
+        'page_size': pageSize,
+      },
     );
 
     return _handleResponse<List<UserModel>>(response, (data) {

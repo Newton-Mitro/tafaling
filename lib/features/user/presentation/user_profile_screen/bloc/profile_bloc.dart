@@ -39,7 +39,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       final followUserPrams = FollowUserParams(followingUserId: event.userId);
       final dataState = await followUserUseCase(params: followUserPrams);
       if (dataState is SuccessData && dataState.data != null) {
-        emit(ProfileLoaded(currentUser.copyWith(isFollowing: true)));
+        emit(
+          ProfileLoaded(
+            currentUser.copyWith(
+              isFollowing: true,
+              followers: dataState.data?.followingCount,
+            ),
+          ),
+        );
       }
     }
   }
@@ -57,7 +64,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       );
       final dataState = await unFollowUserUseCase(params: unfollowUserPrams);
       if (dataState is SuccessData && dataState.data != null) {
-        emit(ProfileLoaded(currentUser.copyWith(isFollowing: false)));
+        emit(
+          ProfileLoaded(
+            currentUser.copyWith(
+              isFollowing: false,
+              followers: dataState.data?.followingCount,
+            ),
+          ),
+        );
       }
     }
   }

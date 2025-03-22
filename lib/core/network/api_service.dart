@@ -1,32 +1,22 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:tafaling/core/bloc/app_state_bloc.dart';
-import 'package:tafaling/core/constants/constants.dart';
 import 'package:tafaling/core/index.dart';
 
 class ApiService {
   final Dio _dio;
   final LocalStorage localStorage;
   final LoggerService loggerService;
-  final AppStateBloc appStateBloc;
 
-  ApiService({
-    required this.localStorage,
-    required this.loggerService,
-    required this.appStateBloc,
-  }) : _dio = Dio() {
+  ApiService({required this.localStorage, required this.loggerService})
+    : _dio = Dio() {
     _dio.options = BaseOptions(
       baseUrl: ApiConfig.baseUrl,
       connectTimeout: const Duration(seconds: 50),
       receiveTimeout: const Duration(seconds: 50),
     );
     _dio.interceptors.addAll([
-      AuthInterceptor(
-        dio: _dio,
-        localStorage: localStorage,
-        appStateBloc: appStateBloc,
-      ),
+      AuthInterceptor(dio: _dio, localStorage: localStorage),
       LoggerInterceptor(loggerService: loggerService),
     ]);
   }
@@ -111,7 +101,6 @@ class ApiService {
         }
         break;
       case HttpStatus.unauthorized:
-        _logout();
         throw UnauthorizedException();
       case HttpStatus.forbidden:
         throw ForbiddenException();
@@ -120,12 +109,5 @@ class ApiService {
       default:
         throw Exception(e.message);
     }
-  }
-
-  Future<void> _logout() async {
-    await localStorage.remove(Constants.accessTokenKey);
-    await localStorage.remove(Constants.refreshTokenKey);
-    await localStorage.remove(Constants.authUserKey);
-    appStateBloc.add(LogoutEvent());
   }
 }

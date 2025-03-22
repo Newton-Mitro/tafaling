@@ -12,7 +12,7 @@ class UserFollowersBloc extends Bloc<UserFollowersEvent, UserFollowersState> {
 
   bool hasMoreFollowers = true;
   int currentPage = 1;
-  int pageSize = 10;
+  int pageSize = 100;
 
   UserFollowersBloc({required this.getFollowersUseCase})
     : super(UserFollowersInitial()) {

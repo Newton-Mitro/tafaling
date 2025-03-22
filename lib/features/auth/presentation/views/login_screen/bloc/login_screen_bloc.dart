@@ -4,22 +4,14 @@ import 'package:tafaling/core/errors/failures.dart';
 import 'package:tafaling/core/resources/response_state.dart';
 import 'package:tafaling/features/auth/domain/entities/auth_user_entity.dart';
 import 'package:tafaling/features/auth/domain/usecases/login_usecase.dart';
-import 'package:tafaling/features/auth/domain/usecases/logout_usecase.dart';
-import 'package:tafaling/features/auth/domain/usecases/registration_usecase.dart';
 
 part 'login_screen_event.dart';
 part 'login_screen_state.dart';
 
 class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
-  final RegistrationUseCase registrationUseCase;
   final LoginUseCase loginUseCase;
-  final LogoutUsecase logoutUseCase;
 
-  LoginScreenBloc({
-    required this.registrationUseCase,
-    required this.loginUseCase,
-    required this.logoutUseCase,
-  }) : super(LoginInitialState()) {
+  LoginScreenBloc({required this.loginUseCase}) : super(LoginInitialState()) {
     on<LoginEvent>((event, emit) async {
       emit(LoginLoadingState());
       final loginParams = LoginParams(

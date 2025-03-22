@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:tafaling/core/constants/constants.dart';
 import 'package:tafaling/core/index.dart';
 import 'package:tafaling/features/auth/data/index.dart';
+import 'package:tafaling/features/auth/domain/entities/auth_user_entity.dart';
 import 'package:tafaling/features/auth/domain/repositories/auth_repository.dart';
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
+import 'package:tafaling/features/user/data/models/user_model.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthDataSource authDataSource;
@@ -96,6 +100,34 @@ class AuthRepositoryImpl implements AuthRepository {
       accessTokenNotifier.value = null;
       selectedPageNotifier.value = 0;
       return SuccessData(null);
+    } catch (e) {
+      return FailedData(ServerFailure());
+    }
+  }
+
+  @override
+  Future<DataState<AuthUserEntity>> getAuthUser() async {
+    try {
+      final authToken = await localStorage.getString(Constants.accessTokenKey);
+      final refreshToken = await localStorage.getString(
+        Constants.refreshTokenKey,
+      );
+      final stringUser = await localStorage.getString(Constants.authUserKey);
+
+      if (stringUser != null && authToken != null && refreshToken != null) {
+        final user = UserModel.fromJson(jsonDecode(stringUser));
+        accessTokenNotifier.value = authToken;
+        authUserNotifier.value = user;
+
+        final AuthUserEntity authUserEntity = AuthUserEntity(
+          accessToken: authToken,
+          refreshToken: refreshToken,
+          user: user,
+        );
+
+        return SuccessData(authUserEntity);
+      }
+      return FailedData(UnauthorizedFailure());
     } catch (e) {
       return FailedData(ServerFailure());
     }

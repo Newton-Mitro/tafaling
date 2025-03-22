@@ -13,8 +13,7 @@ final class AuthLoading extends AuthState {}
 
 final class Authenticated extends AuthState {
   final AuthUserEntity authUser;
-  final String accessToken;
-  const Authenticated(this.authUser, this.accessToken);
+  const Authenticated(this.authUser);
 }
 
 final class Unauthenticated extends AuthState {}

@@ -1,6 +1,7 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tafaling/app_configs/routes/route_name.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/core/widgets/app_logo.dart';
 import 'package:tafaling/core/widgets/app_text_input.dart';
@@ -38,6 +39,10 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           child: BlocListener<LoginScreenBloc, LoginScreenState>(
             listener: (context, state) {
+              if (state is LoginSuccessState) {
+                Navigator.pushReplacementNamed(context, RoutesName.homePage);
+              }
+
               if (state is LoginErrorState) {
                 if (state.message == "No internet connection") {
                   NetworkErrorDialog.show(context);

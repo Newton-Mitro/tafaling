@@ -3,8 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:tafaling/core/errors/failures.dart';
 import 'package:tafaling/core/resources/response_state.dart';
 import 'package:tafaling/features/auth/domain/entities/auth_user_entity.dart';
-import 'package:tafaling/features/auth/domain/usecases/login_usecase.dart';
-import 'package:tafaling/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:tafaling/features/auth/domain/usecases/registration_usecase.dart';
 
 part 'registration_screen_event.dart';
@@ -13,14 +11,9 @@ part 'registration_screen_state.dart';
 class RegistrationScreenBloc
     extends Bloc<RegistrationScreenEvent, RegistrationState> {
   final RegistrationUseCase registrationUseCase;
-  final LoginUseCase loginUseCase;
-  final LogoutUsecase logoutUseCase;
 
-  RegistrationScreenBloc({
-    required this.registrationUseCase,
-    required this.loginUseCase,
-    required this.logoutUseCase,
-  }) : super(RegistrationInitialState()) {
+  RegistrationScreenBloc({required this.registrationUseCase})
+    : super(RegistrationInitialState()) {
     on<RegisterEvent>((event, emit) async {
       emit(RegistrationLoadingState());
       final registrationParams = RegistrationParams(
