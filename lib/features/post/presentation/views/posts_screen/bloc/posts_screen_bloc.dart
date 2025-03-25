@@ -5,10 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/core/constants/constants.dart';
 import 'package:tafaling/core/index.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
-import 'package:tafaling/features/post/domain/usecases/dis_like_post_usecase.dart';
 import 'package:tafaling/features/post/domain/usecases/fetch_posts_usecase.dart';
 import 'package:tafaling/features/post/domain/usecases/fetch_user_posts_usecase.dart';
-import 'package:tafaling/features/post/domain/usecases/like_post_usecase.dart';
 import 'package:tafaling/features/user/data/models/user_model.dart';
 
 part 'posts_screen_event.dart';
@@ -19,16 +17,12 @@ const int postsPerPage = 5;
 class PostsScreenBloc extends Bloc<PostsScreenEvent, PostsScreenState> {
   final FetchPostsUseCase fetchPostsUseCase;
   final FetchUserPostsUseCase fetchUserPostsUseCase;
-  final LikePostUseCase likePostUseCase;
-  final DisLikePostUseCase disLikePostUseCase;
   final LocalStorage localStorage;
   int _fetchPage = 1;
 
   PostsScreenBloc({
     required this.fetchPostsUseCase,
     required this.fetchUserPostsUseCase,
-    required this.likePostUseCase,
-    required this.disLikePostUseCase,
     required this.localStorage,
   }) : super(
          const PostsScreenState(
@@ -38,8 +32,6 @@ class PostsScreenBloc extends Bloc<PostsScreenEvent, PostsScreenState> {
            error: '',
          ),
        ) {
-    on<LikePostEvent>(_onPostInteraction);
-    on<DisLikePostEvent>(_onPostInteraction);
     on<PageChangeEvent>(_onPageChange);
     on<InitPostsScreenEvent>(_onInitPostsScreen);
     on<FetchPostsEvent>(_onFetchPosts);
@@ -123,55 +115,5 @@ class PostsScreenBloc extends Bloc<PostsScreenEvent, PostsScreenState> {
     if (dataState is FailedData && dataState.error != null) {
       emit(state.copyWith(isFetching: false, error: dataState.error!.message));
     }
-  }
-
-  Future<void> _onPostInteraction(
-    PostsScreenEvent event,
-    Emitter<PostsScreenState> emit,
-  ) async {
-    final isLikeEvent = event is LikePostEvent;
-    final postId = isLikeEvent ? (event).id : (event as DisLikePostEvent).id;
-
-    final likeParam = LikePostPrams(postId: postId);
-    final disLikeParam = DisLikePostPrams(postId: postId);
-
-    emit(state.copyWith(isFetching: true));
-
-    final dataState =
-        isLikeEvent
-            ? await likePostUseCase(params: likeParam)
-            : await disLikePostUseCase(params: disLikeParam);
-    if (dataState is SuccessData) {
-      final updatedPosts = _updatePostLikeStatus(
-        postId,
-        dataState.data?.likeCount ?? 0,
-        isLikeEvent ? 1 : 0,
-      );
-
-      emit(state.copyWith(posts: updatedPosts));
-    }
-
-    if (dataState is FailedData && dataState.error != null) {
-      emit(state.copyWith(isFetching: false, error: dataState.error!.message));
-    }
-  }
-
-  List<PostEntity> _updatePostLikeStatus(
-    int postId,
-    int likeCount,
-    int isLiked,
-  ) {
-    final postIndex = state.posts.indexWhere((post) => post.id == postId);
-    if (postIndex == -1) return state.posts;
-
-    final updatedPost = state.posts[postIndex].copyWith(
-      likeCount: likeCount,
-      isLiked: isLiked == 1,
-    );
-
-    final updatedPosts = List<PostEntity>.from(state.posts)
-      ..[postIndex] = updatedPost;
-
-    return updatedPosts;
   }
 }

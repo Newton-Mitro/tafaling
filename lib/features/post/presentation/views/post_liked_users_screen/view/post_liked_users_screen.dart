@@ -70,7 +70,7 @@ class _PostLikedUsersScreenState extends State<PostLikedUsersScreen> {
                     : (state as PostLikedUsersLoaded).followers;
 
             return Scaffold(
-              appBar: AppBar(title: Text("Post Liked Users")),
+              appBar: AppBar(title: Text("Post Likes")),
               body: ListView.builder(
                 controller: _scrollController,
                 itemCount:

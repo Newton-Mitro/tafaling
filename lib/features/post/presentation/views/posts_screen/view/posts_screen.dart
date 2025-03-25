@@ -55,7 +55,14 @@ class _PostsScreenState extends State<PostsScreen> {
                     );
                   },
                   itemBuilder: (context, index) {
-                    return PostViewer(postModel: state.posts[index]);
+                    if (state.posts[index].shareDetails.isNotEmpty) {
+                      return PostViewer(
+                        postModel: state.posts[index].shareDetails[0],
+                        sharedBy: state.posts[index].creator,
+                      );
+                    } else {
+                      return PostViewer(postModel: state.posts[index]);
+                    }
                   },
                 ),
                 if (accessTokenNotifier.value != null) PostTopNavigation(),

@@ -6,16 +6,16 @@ import 'package:tafaling/app_configs/routes/route_name.dart';
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
 import 'package:tafaling/features/home/presentation/widgets/bottom_sheet.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
-import 'package:tafaling/features/post/presentation/views/posts_screen/bloc/posts_screen_bloc.dart';
+import 'package:tafaling/features/post/presentation/views/post_preview_screen/bloc/post_preview_bloc.dart';
 
 class PostSidebar extends StatelessWidget {
-  final PostEntity? postModel;
+  final PostEntity postModel;
 
   const PostSidebar({super.key, required this.postModel});
 
   @override
   Widget build(BuildContext context) {
-    final String profileImage = postModel?.creator.profilePicture ?? '';
+    final String profileImage = postModel.creator.profilePicture ?? '';
     return Positioned(
       right: 0,
       child: Container(
@@ -33,7 +33,7 @@ class PostSidebar extends StatelessWidget {
                   Navigator.pushNamed(
                     context,
                     RoutesName.userProfilePage,
-                    arguments: postModel?.creator,
+                    arguments: postModel.creator,
                   );
                 } else {
                   showCustomBottomSheet(context);
@@ -70,31 +70,38 @@ class PostSidebar extends StatelessWidget {
                 ),
               ),
             ),
-            _buildSidebarActionButton(
-              FontAwesomeIcons.solidHeart,
-              postModel?.likeCount ?? 0,
-              postModel?.isLiked == true ? Colors.red : Colors.white,
-              () {
-                if (accessTokenNotifier.value != null) {
-                  final event =
-                      postModel?.isLiked == true
-                          ? DisLikePostEvent(postModel?.id ?? 0)
-                          : LikePostEvent(postModel?.id ?? 0);
-                  context.read<PostsScreenBloc>().add(event);
-                } else {
-                  showCustomBottomSheet(context);
-                }
-              },
-              () {
-                if (accessTokenNotifier.value != null) {
-                  Navigator.pushNamed(
-                    context,
-                    RoutesName.postLikedUsersPage,
-                    arguments: postModel?.id,
+            BlocBuilder<PostPreviewBloc, PostPreviewState>(
+              builder: (context, state) {
+                if (state is PostPreviewLoaded) {
+                  return _buildSidebarActionButton(
+                    FontAwesomeIcons.solidHeart,
+                    state.post.likeCount,
+                    state.post.isLiked ? Colors.red : Colors.white,
+                    () {
+                      if (accessTokenNotifier.value != null) {
+                        final event =
+                            state.post.isLiked
+                                ? RemovePostLikeEvent(state.post.id)
+                                : PostLikeEvent(state.post.id);
+                        context.read<PostPreviewBloc>().add(event);
+                      } else {
+                        showCustomBottomSheet(context);
+                      }
+                    },
+                    () {
+                      if (accessTokenNotifier.value != null) {
+                        Navigator.pushNamed(
+                          context,
+                          RoutesName.postLikedUsersPage,
+                          arguments: state.post.id,
+                        );
+                      } else {
+                        showCustomBottomSheet(context);
+                      }
+                    },
                   );
-                } else {
-                  showCustomBottomSheet(context);
                 }
+                return CircularProgressIndicator();
               },
             ),
             _buildSidebarActionButton(

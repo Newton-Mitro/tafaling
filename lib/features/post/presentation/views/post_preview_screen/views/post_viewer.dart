@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tafaling/core/injection.dart';
 import 'package:tafaling/core/utils/url_helper.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
+import 'package:tafaling/features/post/presentation/views/post_preview_screen/bloc/post_preview_bloc.dart';
 import 'package:tafaling/features/post/presentation/views/post_preview_screen/widgets/image_post_viewer.dart';
 import 'package:tafaling/features/post/presentation/views/post_preview_screen/widgets/link_post_viewer.dart';
 import 'package:tafaling/features/post/presentation/views/post_preview_screen/widgets/post_body_text.dart';
 import 'package:tafaling/features/post/presentation/views/post_preview_screen/widgets/post_sidebar.dart';
 import 'package:tafaling/features/post/presentation/views/post_preview_screen/widgets/video_post_viewer.dart';
+import 'package:tafaling/features/user/domain/index.dart';
 
 class PostViewer extends StatefulWidget {
   final PostEntity postModel;
-  const PostViewer({super.key, required this.postModel});
+  final UserEntity? sharedBy;
+  const PostViewer({super.key, required this.postModel, this.sharedBy});
 
   @override
   State<PostViewer> createState() => _PostViewerState();
@@ -56,61 +61,74 @@ class _PostViewerState extends State<PostViewer> {
       widget.postModel.body ?? '',
     );
 
-    return Stack(
-      children: [
-        if (attachmentCount > 0)
-          PageView.builder(
-            scrollDirection: Axis.horizontal,
-            controller: _attachmentController,
-            itemCount: attachmentCount,
-            itemBuilder: (context, index) {
-              final attachment = widget.postModel.attachments[index];
-              final mimeType = attachment.mimeType.toLowerCase();
+    return BlocProvider(
+      create:
+          (context) =>
+              sl<PostPreviewBloc>()
+                ..add(LoadPostPreviewEvent(widget.postModel)),
+      child: Stack(
+        children: [
+          if (attachmentCount > 0)
+            PageView.builder(
+              scrollDirection: Axis.horizontal,
+              controller: _attachmentController,
+              itemCount: attachmentCount,
+              itemBuilder: (context, index) {
+                final attachment = widget.postModel.attachments[index];
+                final mimeType = attachment.mimeType.toLowerCase();
 
-              if (mimeType.contains("image")) {
-                return ImagePostViewer(
-                  attachmentUrl: '${attachment.fileURL}/${attachment.fileName}',
-                );
-              } else if (mimeType.contains("video")) {
-                return VideoPostViewer(
-                  attachmentUrl: '${attachment.fileURL}/${attachment.fileName}',
-                  autoPlay: true,
-                );
-              } else {
-                return const SizedBox.shrink(); // Return empty if unknown type
-              }
-            },
-          )
-        else if (extractedUrls.isNotEmpty)
-          LinkPreviewer(url: extractedUrls.first)
-        else if (widget.postModel.shareDetails.isNotEmpty)
-          Center(child: Text("Shared Post ?"))
-        // SharePostViewer(postModel: widget.postModel.shareDetails[0])
-        else
-          const SizedBox.shrink(),
-        // Navigation Arrows (Only if multiple attachments exist)
-        if (attachmentCount > 1) ...[
-          Positioned(
-            left: 5,
-            top: MediaQuery.of(context).size.height / 2 - 20,
-            child: IconButton(
-              icon: const Icon(Icons.arrow_left, size: 45, color: Colors.grey),
-              onPressed: _previousPage,
+                if (mimeType.contains("image")) {
+                  return ImagePostViewer(
+                    attachmentUrl:
+                        '${attachment.fileURL}/${attachment.fileName}',
+                  );
+                } else if (mimeType.contains("video")) {
+                  return VideoPostViewer(
+                    attachmentUrl:
+                        '${attachment.fileURL}/${attachment.fileName}',
+                    autoPlay: true,
+                  );
+                } else {
+                  return const SizedBox.shrink(); // Return empty if unknown type
+                }
+              },
+            )
+          else if (extractedUrls.isNotEmpty)
+            LinkPreviewer(url: extractedUrls.first)
+          else
+            const SizedBox.shrink(),
+          // Navigation Arrows (Only if multiple attachments exist)
+          if (attachmentCount > 1) ...[
+            Positioned(
+              left: 5,
+              top: MediaQuery.of(context).size.height / 2 - 20,
+              child: IconButton(
+                icon: const Icon(
+                  Icons.arrow_left,
+                  size: 45,
+                  color: Colors.grey,
+                ),
+                onPressed: _previousPage,
+              ),
             ),
-          ),
-          Positioned(
-            right: 5,
-            top: MediaQuery.of(context).size.height / 2 - 20,
-            child: IconButton(
-              icon: const Icon(Icons.arrow_right, size: 45, color: Colors.grey),
-              onPressed: _nextPage,
+            Positioned(
+              right: 5,
+              top: MediaQuery.of(context).size.height / 2 - 20,
+              child: IconButton(
+                icon: const Icon(
+                  Icons.arrow_right,
+                  size: 45,
+                  color: Colors.grey,
+                ),
+                onPressed: _nextPage,
+              ),
             ),
-          ),
+          ],
+
+          PostBodyText(postModel: widget.postModel, sharedBy: widget.sharedBy),
+          PostSidebar(postModel: widget.postModel),
         ],
-
-        PostBodyText(postModel: widget.postModel),
-        PostSidebar(postModel: widget.postModel),
-      ],
+      ),
     );
   }
 }

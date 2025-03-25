@@ -8,7 +8,6 @@ import 'package:tafaling/core/utils/local_storage.dart';
 import 'package:tafaling/core/utils/local_storage_impl.dart';
 import 'package:tafaling/core/widgets/language_selector/bloc/language_bloc.dart';
 import 'package:tafaling/core/widgets/theme_switcher/bloc/theme_bloc.dart';
-import 'package:tafaling/features/auth/auth_module.dart';
 import 'network/api_service.dart';
 
 final sl = GetIt.instance;

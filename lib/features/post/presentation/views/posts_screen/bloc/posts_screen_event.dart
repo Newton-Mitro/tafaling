@@ -21,24 +21,6 @@ final class FetchPostsEvent extends PostsScreenEvent {
   List<Object> get props => [];
 }
 
-final class LikePostEvent extends PostsScreenEvent {
-  final int id;
-
-  const LikePostEvent(this.id);
-
-  @override
-  List<Object> get props => [id];
-}
-
-final class DisLikePostEvent extends PostsScreenEvent {
-  final int id;
-
-  const DisLikePostEvent(this.id);
-
-  @override
-  List<Object> get props => [id];
-}
-
 final class PageChangeEvent extends PostsScreenEvent {
   final int currentPage;
 

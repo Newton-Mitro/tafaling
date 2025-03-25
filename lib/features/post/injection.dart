@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:tafaling/core/index.dart';
 import 'package:tafaling/features/post/presentation/views/post_liked_users_screen/bloc/post_liked_users_bloc.dart';
+import 'package:tafaling/features/post/presentation/views/post_preview_screen/bloc/post_preview_bloc.dart';
 import 'data/index.dart';
 import 'domain/index.dart';
 import 'presentation/index.dart';
@@ -46,9 +47,14 @@ void registerPostModule() {
     () => PostsScreenBloc(
       fetchPostsUseCase: sl<FetchPostsUseCase>(),
       fetchUserPostsUseCase: sl<FetchUserPostsUseCase>(),
+      localStorage: sl<LocalStorage>(),
+    ),
+  );
+
+  sl.registerFactory(
+    () => PostPreviewBloc(
       likePostUseCase: sl<LikePostUseCase>(),
       disLikePostUseCase: sl<DisLikePostUseCase>(),
-      localStorage: sl<LocalStorage>(),
     ),
   );
 
