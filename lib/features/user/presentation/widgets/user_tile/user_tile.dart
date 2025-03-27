@@ -15,8 +15,15 @@ class UserTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<UserTileBloc>()..add(LoadUserEvent(user)),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => sl<UserTileBloc>()..add(LoadUserEvent(user)),
+        ),
+        BlocProvider(
+          create: (context) => sl<AuthBloc>()..add(IsAuthenticatedEvent()),
+        ),
+      ],
       child: BlocBuilder<UserTileBloc, UserTileState>(
         builder: (context, state) {
           if (state is UserTileLoaded) {

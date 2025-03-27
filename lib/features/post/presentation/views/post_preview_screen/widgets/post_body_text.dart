@@ -55,8 +55,8 @@ class _PostBodyTextState extends State<PostBodyText> {
             children: [
               if (widget.sharedBy != null)
                 Text(
-                  'shared by ${widget.sharedBy!.name}',
-                  style: TextStyle(color: Colors.deepOrange, fontSize: 12),
+                  'Shared by ${widget.sharedBy!.name}',
+                  style: TextStyle(color: Colors.blueGrey, fontSize: 12),
                 ),
               Text(
                 widget.postModel.creator.name,

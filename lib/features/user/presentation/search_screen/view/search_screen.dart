@@ -103,26 +103,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       itemCount: users.length,
                       itemBuilder: (context, index) {
                         final user = users[index];
-                        return UserTile(
-                          user: user, // Todo:
-                          // onFollowToggle: () {
-                          //   context.read<SearchScreenBloc>().add(
-                          //     FollowUserEvent(user.id),
-                          //   );
-                          // },
-                          // onFriendRequestToggle: () {
-                          //   context.read<SearchScreenBloc>().add(
-                          //     UnFollowUserEvent(user.id),
-                          //   );
-                          // },
-                          // onViewProfile: () {
-                          //   Navigator.pushNamed(
-                          //     context,
-                          //     RoutesName.userProfilePage,
-                          //     arguments: user.id,
-                          //   );
-                          // },
-                        );
+                        return UserTile(user: user);
                       },
                     );
                   } else if (state is SearchError) {
