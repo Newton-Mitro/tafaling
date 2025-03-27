@@ -35,7 +35,9 @@ class UserProfileScreen extends StatelessWidget {
           create:
               (context) => sl<ProfileBloc>()..add(LoadUserProfileEvent(user)),
         ),
-        BlocProvider(create: (context) => sl<AuthBloc>()),
+        BlocProvider(
+          create: (context) => sl<AuthBloc>()..add(IsAuthenticatedEvent()),
+        ),
         BlocProvider(create: (context) => sl<UserFollowersBloc>()),
         BlocProvider(create: (context) => sl<FollowingUsersBloc>()),
       ],
@@ -61,8 +63,14 @@ class UserProfileScreen extends StatelessWidget {
               return Scaffold(
                 appBar: AppBar(
                   title: const Text('Profile'),
+                  automaticallyImplyLeading:
+                      authState is Authenticated &&
+                              authState.authUser.user.id == user.id
+                          ? false
+                          : true,
                   actions: [
-                    if (authUserNotifier.value?.id == user.id)
+                    if (authState is Authenticated &&
+                        authState.authUser.user.id == user.id)
                       authState is AuthLoading
                           ? SizedBox(
                             width: 20,
