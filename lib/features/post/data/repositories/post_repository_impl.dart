@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:tafaling/core/network/network_info.dart';
 import 'package:tafaling/core/types/typedef.dart';
 import 'package:tafaling/core/utils/failure_mapper.dart';
-import 'package:tafaling/features/post/data/data_sources/post_data_source.dart';
+import 'package:tafaling/features/post/data/data_sources/post_remote_data_source.dart';
 import 'package:tafaling/features/post/data/models/like_model.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
 import 'package:tafaling/features/post/domain/repositories/post_repository.dart';

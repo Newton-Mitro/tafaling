@@ -2,9 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tafaling/routes/route_name.dart';
-import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
-import 'package:tafaling/features/home/presentation/widgets/bottom_sheet.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/post/presentation/views/post_preview_screen/bloc/post_preview_bloc.dart';
 
@@ -29,15 +26,15 @@ class PostSidebar extends StatelessWidget {
             GestureDetector(
               // Wrap the SizedBox with GestureDetector
               onTap: () {
-                if (accessTokenNotifier.value != null) {
-                  Navigator.pushNamed(
-                    context,
-                    RoutesName.userProfilePage,
-                    arguments: postModel.creator,
-                  );
-                } else {
-                  showCustomBottomSheet(context);
-                }
+                // if (accessTokenNotifier.value != null) {
+                //   Navigator.pushNamed(
+                //     context,
+                //     RoutesName.userProfilePage,
+                //     arguments: postModel.creator,
+                //   );
+                // } else {
+                //   showCustomBottomSheet(context);
+                // }
               }, // Handle the tap
               child: SizedBox(
                 width: 50,
@@ -78,26 +75,26 @@ class PostSidebar extends StatelessWidget {
                     state.post.likeCount,
                     state.post.isLiked ? Colors.red : Colors.white,
                     () {
-                      if (accessTokenNotifier.value != null) {
-                        final event =
-                            state.post.isLiked
-                                ? RemovePostLikeEvent(state.post.id)
-                                : PostLikeEvent(state.post.id);
-                        context.read<PostPreviewBloc>().add(event);
-                      } else {
-                        showCustomBottomSheet(context);
-                      }
+                      // if (accessTokenNotifier.value != null) {
+                      //   final event =
+                      //       state.post.isLiked
+                      //           ? RemovePostLikeEvent(state.post.id)
+                      //           : PostLikeEvent(state.post.id);
+                      //   context.read<PostPreviewBloc>().add(event);
+                      // } else {
+                      //   showCustomBottomSheet(context);
+                      // }
                     },
                     () {
-                      if (accessTokenNotifier.value != null) {
-                        Navigator.pushNamed(
-                          context,
-                          RoutesName.postLikedUsersPage,
-                          arguments: state.post.id,
-                        );
-                      } else {
-                        showCustomBottomSheet(context);
-                      }
+                      // if (accessTokenNotifier.value != null) {
+                      //   Navigator.pushNamed(
+                      //     context,
+                      //     RoutesName.postLikedUsersPage,
+                      //     arguments: state.post.id,
+                      //   );
+                      // } else {
+                      //   showCustomBottomSheet(context);
+                      // }
                     },
                   );
                 }
@@ -109,10 +106,10 @@ class PostSidebar extends StatelessWidget {
               1,
               Colors.white,
               () {
-                if (accessTokenNotifier.value != null) {
-                } else {
-                  showCustomBottomSheet(context);
-                }
+                // if (accessTokenNotifier.value != null) {
+                // } else {
+                //   showCustomBottomSheet(context);
+                // }
               },
               () {
                 // Action when clicking the like count text
@@ -124,10 +121,10 @@ class PostSidebar extends StatelessWidget {
               5,
               Colors.white,
               () {
-                if (accessTokenNotifier.value != null) {
-                } else {
-                  showCustomBottomSheet(context);
-                }
+                // if (accessTokenNotifier.value != null) {
+                // } else {
+                //   showCustomBottomSheet(context);
+                // }
               },
               () {
                 // Action when clicking the like count text

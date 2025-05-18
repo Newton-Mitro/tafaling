@@ -1,9 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tafaling/core/constants/constants.dart';
 import 'package:tafaling/core/services/local_storage/local_storage.dart';
-import 'package:tafaling/features/user/data/models/user_model.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/domain/usecases/search_users_usecase.dart';
 
@@ -38,26 +34,26 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchState> {
 
     emit(SearchLoading());
 
-    final authUser = await localStorage.getString(Constants.authUserKey);
-    final user = UserModel.fromJson(jsonDecode(authUser ?? ''));
+    // final authUser = await localStorage.getString(Constants.authUserKey);
+    // final user = UserModel.fromJson(jsonDecode(authUser ?? ''));
 
-    final searchUsersParams = SearchUsersParams(
-      searchText: event.searchText,
-      userId: user.id,
-      startRecord: 0,
-      pageSize: 50,
-    );
+    // final searchUsersParams = SearchUsersParams(
+    //   searchText: event.searchText,
+    //   userId: user.id,
+    //   startRecord: 0,
+    //   pageSize: 50,
+    // );
 
-    final dataState = await searchUsersUseCase(searchUsersParams);
+    // final dataState = await searchUsersUseCase(searchUsersParams);
 
-    dataState.fold((failure) => emit(SearchError(failure.message)), (data) {
-      if (data.isEmpty) {
-        emit(SearchLoaded(currentUsers));
-      } else {
-        currentUsers.addAll(data);
-        emit(SearchLoaded(currentUsers));
-      }
-    });
+    // dataState.fold((failure) => emit(SearchError(failure.message)), (data) {
+    //   if (data.isEmpty) {
+    //     emit(SearchLoaded(currentUsers));
+    //   } else {
+    //     currentUsers.addAll(data);
+    //     emit(SearchLoaded(currentUsers));
+    //   }
+    // });
   }
 
   void _onResetSearchEvent(ResetSearchEvent event, Emitter<SearchState> emit) {

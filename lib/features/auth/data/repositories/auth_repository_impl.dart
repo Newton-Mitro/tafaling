@@ -8,8 +8,6 @@ import 'package:tafaling/features/auth/data/data_sources/auth_remote_data_source
 import 'package:tafaling/features/auth/data/models/auth_user_model.dart';
 import 'package:tafaling/features/auth/domain/entities/auth_user_entity.dart';
 import 'package:tafaling/features/auth/domain/repositories/auth_repository.dart';
-import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
-import 'package:tafaling/features/user/data/models/user_model.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource authRemoteDataSource;
@@ -80,10 +78,6 @@ class AuthRepositoryImpl implements AuthRepository {
   ResultFuture<AuthUserEntity> getAuthUser() async {
     try {
       final authUser = await authLocalDataSource.getAuthUser();
-
-      accessTokenNotifier.value = authUser.accessToken;
-      authUserNotifier.value = authUser.user as UserModel?;
-
       return Right(authUser);
     } catch (e) {
       return Left(FailureMapper.fromException(e));

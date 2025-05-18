@@ -28,10 +28,7 @@ class _NetworkErrorDialogState extends State<NetworkErrorDialog>
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
-    _animation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    );
+    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
     _controller.forward(); // Start the animation
   }
 
@@ -48,15 +45,14 @@ class _NetworkErrorDialogState extends State<NetworkErrorDialog>
       child: AlertDialog(
         title: const Text("Network Error"),
         content: const Text(
-            "No internet connection. Please check your network settings."),
+          "No internet connection. Please check your network settings.",
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
               "Cancel",
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             ),
           ),
           TextButton(
@@ -66,9 +62,7 @@ class _NetworkErrorDialogState extends State<NetworkErrorDialog>
             },
             child: Text(
               "Open Settings",
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             ),
           ),
         ],

@@ -427,6 +427,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.6.2"
+  flutter_dotenv:
+    dependency: "direct main"
+    description:
+      name: flutter_dotenv
+      sha256: b7c7be5cd9f6ef7a78429cabd2774d3c4af50e79cb2b7593e3d5d763ef95c61b
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.2.1"
   flutter_inappwebview:
     dependency: transitive
     description:
@@ -507,6 +515,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.0"
+  flutter_locales:
+    dependency: "direct main"
+    description:
+      name: flutter_locales
+      sha256: d9a7558b780175224ff6711b7c2d15ecf37ddcca67da8306041538a5be336744
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.4"
   flutter_localizations:
     dependency: transitive
     description: flutter
@@ -1111,6 +1127,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.0"
+  super_tooltip:
+    dependency: "direct main"
+    description:
+      name: super_tooltip
+      sha256: "55c0764554c961846d489503b76a1fc33ec2120bd7407266b77a34abbf3ed471"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.9"
   synchronized:
     dependency: transitive
     description:
@@ -1224,7 +1248,7 @@ packages:
     source: hosted
     version: "3.1.4"
   uuid:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: uuid
       sha256: a5be9ef6618a7ac1e964353ef476418026db906c4facdedaa299b7a2e71690ff

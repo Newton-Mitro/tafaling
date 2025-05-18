@@ -5,7 +5,6 @@ import 'package:tafaling/routes/route_name.dart';
 import 'package:tafaling/core/injection.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 import 'package:tafaling/features/home/presentation/home_screen/bloc/auth_bloc.dart';
-import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/presentation/following_users_screen/bloc/following_users_bloc.dart';
@@ -55,7 +54,6 @@ class UserProfileScreen extends StatelessWidget {
           listener: (context, authState) {
             if (authState is Unauthenticated) {
               Navigator.pushReplacementNamed(context, RoutesName.root);
-              selectedPageNotifier.value = 0;
             }
           },
           child: BlocBuilder<AuthBloc, AuthState>(
@@ -175,8 +173,7 @@ class UserProfileScreen extends StatelessWidget {
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             // Show "Edit Profile" and "Share Profile" if it's the authenticated user's profile
-                                            if (state.user.id ==
-                                                authUserNotifier.value?.id) ...[
+                                            if (true) ...[
                                               FilledButton(
                                                 child: Text(
                                                   "Edit Profile",

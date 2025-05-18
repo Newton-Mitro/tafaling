@@ -1,0 +1,72 @@
+{
+  "app_name": "পাশবই",
+
+  "onboarding_title_1": "পাশবই-এ স্বাগতম",
+  "onboarding_description_1": "হিসাব পরিচালনা, পেমেন্ট, ঋণ আবেদন এবং আরও অনেক কিছু করার জন্য আপনার নির্ভরযোগ্য প্ল্যাটফর্ম। সহজ ও নিরাপদ উপায়ে আপনার আর্থিক দুনিয়ার সাথে সংযুক্ত থাকুন। আজই যোগ দিন!",
+  "onboarding_title_2": "যেকোনো সময়, যেকোনো স্থান থেকে আপনার হিসাব পরিচালনা করুন",
+  "onboarding_description_2": "আপনার সঞ্চয়, চেকিং ও ঋণ হিসাবগুলো এক জায়গায় দেখুন। ব্যালেন্স চেক করুন, লেনদেন পর্যালোচনা করুন, এবং যেখানেই থাকুন না কেন আপনার অর্থনীতি নিয়ন্ত্রণে রাখুন।",
+  "onboarding_title_3": "ঋণ আবেদন ও আর্থিক ব্যবস্থাপনা করুন",
+  "onboarding_description_3": "সহজেই ঋণের জন্য আবেদন করুন, ঋণের অবস্থা ট্র্যাক করুন এবং পেমেন্ট পরিচালনা করুন। আমরা আপনার আর্থিক ভবিষ্যৎ নিয়ন্ত্রণে নিতে সহায়তা করি।",
+  "onboarding_title_4": "আজই পাশবই ব্যবহার শুরু করুন!",
+  "onboarding_description_4": "নিবন্ধনের জন্য আপনাকে ঢাকা ক্রেডিট-এর সদস্য হতে হবে। অনুগ্রহ করে আপনার নিবন্ধিত মোবাইল নম্বর প্রস্তুত রাখুন। আপনি যদি এখনো সদস্য না হয়ে থাকেন, তাহলে অনুগ্রহ করে নিকটস্থ ঢাকা ক্রেডিট সার্ভিস সেন্টারে গিয়ে সদস্যতা গ্রহণ করুন ও অনলাইন সেবা চালু করুন।",
+  "onboarding_next_button": "পরবর্তী",
+  "onboarding_previous_button": "পূর্ববর্তী",
+  "onboarding_get_started_button": "শুরু করুন",
+
+  "under_maintenance_page_title": "আমরা রক্ষণাবেক্ষণে আছি",
+  "under_maintenance_page_message": "আমরা আমাদের সিস্টেম উন্নত করছি যাতে আপনাকে আরও ভালো সেবা দিতে পারি।\n\nঅনুগ্রহ করে কিছুক্ষণ পর আবার চেষ্টা করুন!",
+  "under_maintenance_page_button": "প্রস্থান",
+
+  "landing_page_welcome_text": "পাশবই-এ স্বাগতম",
+  "landing_page_already_have_account_text": "ইতিমধ্যে অ্যাকাউন্ট আছে? ",
+  "landing_page_login_instruction": "আপনি যদি ঢাকা ক্রেডিট-এর সদস্য হয়ে থাকেন এবং একটি ব্যবহারকারী অ্যাকাউন্ট থাকে, তাহলে লগইন করুন।",
+  "landing_page_login_button": "লগইন",
+  "landing_page_dont_have_account_text": "অ্যাকাউন্ট নেই? ",
+  "landing_page_create_account_instruction": "আপনি যদি সদস্য হন এবং অনলাইন সেবার জন্য নিবন্ধিত থাকেন কিন্তু ব্যবহারকারী অ্যাকাউন্ট না থাকে, তাহলে এখনই অ্যাকাউন্ট তৈরি করুন।",
+  "landing_page_create_account_button": "অ্যাকাউন্ট তৈরি করুন",
+  "landing_page_product_and_service_instruction": "আপনি যদি আমাদের পণ্য ও সেবা সম্পর্কে জানতে চান, তাহলে পণ্য ও সেবা-তে যান।",
+  "landing_page_product_and_service_button": "পণ্য ও সেবা",
+
+  "login_page_title": "লগইন",
+  "login_page_user_name_label": "ব্যবহারকারীর নাম",
+  "login_page_password_label": "পাসওয়ার্ড",
+  "login_page_forgot_password_button": "পাসওয়ার্ড ভুলে গেছেন?",
+  "login_page_login_button": "লগইন",
+  "login_page_dont_have_account_text": "অ্যাকাউন্ট নেই?",
+  "login_page_create_account_button": "অ্যাকাউন্ট তৈরি করুন",
+
+  "terms_and_conditions_page_title": "শর্তাবলী",
+  "terms_and_conditions_page_accept_button": "গ্রহণ করুন",
+  "terms_and_conditions_page_decline_button": "বাতিল করুন",
+
+  "mobile_verification_page_title": "মোবাইল ভারিফিকেশন",
+  "mobile_verification_page_mobile_number_label": "মোবাইল নম্বর",
+  "mobile_verification_page_send_otp_button": "OTP পাঠান",
+
+  "otp_verification_page_title": "OTP ভারিফিকেশন",
+  "otp_verification_page_instruction": "আপনার মোবাইল নম্বরে প্রদত্ত \nOTP কোড দিন",
+  "otp_verification_page_reseend_otp_button": "OTP পুনরায় পাঠান",
+  "otp_verification_page_verify_otp_button": "OTP যাচাই করুন",
+  "otp_verification_page_otp_expired_in_text": "OTP সময় শেষ হবে",
+
+  "register_page_title": "অ্যাকাউন্ট তৈরি করুন",
+  "register_page_name_label": "নাম",
+  "register_page_email_label": "ইমেইল",
+  "register_page_password_label": "পাসওয়ার্ড",
+  "register_page_confirm_password_label": "পাসওয়ার্ড নিশ্চিত করুন",
+  "register_page_create_account_button": "অ্যাকাউন্ট তৈরি করুন",
+  "register_page_already_have_account_text": "আগেই অ্যাকাউন্ট আছে?",
+  "register_page_login_button": "লগইন",
+
+  "reset_password_page_title": "পাসওয়ার্ড পুনরায় সেট করুন",
+  "reset_password_page_email_label": "ইমেইল",
+  "reset_password_page_password_label": "পাসওয়ার্ড",
+  "reset_password_page_confirm_password_label": "পাসওয়ার্ড নিশ্চিত করুন",
+  "reset_password_page_reset_password_button": "পাসওয়ার্ড পুনরায় সেট করুন",
+
+  "public_bottom_nav_menu_savings": "সঞ্চয় নীতি",
+  "public_bottom_nav_menu_loans": "ঋণ নীতি",
+  "public_bottom_nav_menu_services_and_projects": "সেবা ও প্রকল্প",
+  "public_bottom_nav_menu_notices": "নোটিশ",
+  "public_bottom_nav_menu_service_centers": "সেবা কেন্দ্র"
+}

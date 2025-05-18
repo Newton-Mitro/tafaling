@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/routes/route_name.dart';
 import 'package:tafaling/core/injection.dart';
 import 'package:tafaling/features/home/presentation/home_screen/bloc/auth_bloc.dart';
-import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/presentation/widgets/user_tile/bloc/user_tile_bloc.dart';
 
@@ -72,8 +71,7 @@ class UserTile extends StatelessWidget {
                       ),
                     ),
                     trailing:
-                        authUserNotifier.value != null &&
-                                (authUserNotifier.value?.id != state.user.id)
+                        true
                             ? ElevatedButton(
                               onPressed: () {
                                 state.user.isFollowing
