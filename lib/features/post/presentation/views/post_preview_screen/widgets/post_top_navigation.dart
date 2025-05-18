@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tafaling/app_configs/routes/route_name.dart';
+import 'package:tafaling/routes/route_name.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 
 class PostTopNavigation extends StatelessWidget {

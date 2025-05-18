@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/core/constants/constants.dart';
-import 'package:tafaling/core/utils/local_storage.dart';
+import 'package:tafaling/core/services/local_storage/local_storage.dart';
 import 'package:tafaling/features/user/data/models/user_model.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/domain/usecases/search_users_usecase.dart';

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:tafaling/core/constants/constants.dart';
 import 'package:tafaling/core/network/api_service.dart';
 import 'package:tafaling/features/auth/data/models/auth_user_model.dart';
 

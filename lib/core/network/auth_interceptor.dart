@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:tafaling/core/constants/api_config.dart';
 import 'package:tafaling/core/constants/constants.dart';
-import 'package:tafaling/core/utils/local_storage.dart';
+import 'package:tafaling/core/services/local_storage/local_storage.dart';
 import 'package:tafaling/features/auth/data/models/auth_user_model.dart';
 import 'package:tafaling/features/home/presentation/home_screen/bloc/auth_bloc.dart';
 import 'package:tafaling/my_app.dart';

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:tafaling/app_configs/values/dimensions/app_dimensions.dart';
-import 'package:tafaling/app_configs/values/dimensions/large_app_dimensions.dart';
-import 'package:tafaling/app_configs/values/dimensions/medium_app_dimensions.dart';
-import 'package:tafaling/app_configs/values/dimensions/small_app_dimensions.dart';
-import 'package:tafaling/app_configs/styles/app_text_style.dart';
-import 'package:tafaling/app_configs/styles/large_text_style.dart';
-import 'package:tafaling/app_configs/styles/medium_text_style.dart';
-import 'package:tafaling/app_configs/styles/small_text_style.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:tafaling/core/theme/styles/app_text_style.dart';
+import 'package:tafaling/core/theme/styles/large_text_style.dart';
+import 'package:tafaling/core/theme/styles/medium_text_style.dart';
+import 'package:tafaling/core/theme/styles/small_text_style.dart';
+import 'package:tafaling/core/theme/values/dimensions/app_dimensions.dart';
+import 'package:tafaling/core/theme/values/dimensions/large_app_dimensions.dart';
+import 'package:tafaling/core/theme/values/dimensions/medium_app_dimensions.dart';
+import 'package:tafaling/core/theme/values/dimensions/small_app_dimensions.dart';
 
 enum DeviceType { Mobile, Tablet, Desktop }
 
@@ -52,7 +51,4 @@ extension AppContext on BuildContext {
   ThemeData get theme {
     return Theme.of(this);
   }
-
-  AppLocalizations get appLocalizations =>
-      AppLocalizations.of(this) ?? lookupAppLocalizations(Locale('en'));
 }

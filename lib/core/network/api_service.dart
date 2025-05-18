@@ -2,10 +2,10 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:tafaling/core/constants/api_config.dart';
 import 'package:tafaling/core/errors/exceptions.dart';
-import 'package:tafaling/core/logging/logger_service.dart';
+import 'package:tafaling/core/services/local_storage/local_storage.dart';
+import 'package:tafaling/core/services/logging/logger_service.dart';
 import 'package:tafaling/core/network/auth_interceptor.dart';
 import 'package:tafaling/core/network/logger_interceptor.dart';
-import 'package:tafaling/core/utils/local_storage.dart';
 
 class ApiService {
   final Dio _dio;

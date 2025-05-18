@@ -5,9 +5,7 @@ import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
 import 'package:tafaling/features/home/presentation/widgets/bottom_sheet.dart';
 
 class AppBottomNavigationBar extends StatelessWidget {
-  const AppBottomNavigationBar({
-    super.key,
-  });
+  const AppBottomNavigationBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -50,34 +48,32 @@ class AppBottomNavigationBar extends StatelessWidget {
             },
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                icon: FaIcon(
-                  FontAwesomeIcons.house,
-                ), // Icon color for Home
-                label: context.appLocalizations.home,
+                icon: FaIcon(FontAwesomeIcons.house), // Icon color for Home
+                label: "Home",
               ),
               BottomNavigationBarItem(
                 icon: FaIcon(
                   FontAwesomeIcons.peopleGroup,
                 ), // Icon color for Search
-                label: context.appLocalizations.friends,
+                label: "Friends",
               ),
               BottomNavigationBarItem(
                 icon: FaIcon(
                   FontAwesomeIcons.solidNoteSticky,
                 ), // Icon color for Profile
-                label: context.appLocalizations.post,
+                label: "Posts",
               ),
               BottomNavigationBarItem(
                 icon: FaIcon(
                   FontAwesomeIcons.inbox,
                 ), // Icon color for Notifications
-                label: context.appLocalizations.inbox,
+                label: "Inbox",
               ),
               BottomNavigationBarItem(
                 icon: FaIcon(
                   FontAwesomeIcons.circleUser,
                 ), // Icon color for Settings
-                label: context.appLocalizations.profile,
+                label: "Profile",
               ),
             ],
           ),

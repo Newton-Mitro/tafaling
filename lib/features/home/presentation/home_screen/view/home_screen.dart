@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tafaling/app_configs/routes/route_name.dart';
+import 'package:tafaling/routes/route_name.dart';
 import 'package:tafaling/core/constants/constants.dart';
 import 'package:tafaling/core/injection.dart';
-import 'package:tafaling/core/utils/local_storage.dart';
+import 'package:tafaling/core/services/local_storage/local_storage.dart';
 import 'package:tafaling/features/home/presentation/home_screen/bloc/auth_bloc.dart';
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
 import 'package:tafaling/features/home/presentation/widgets/home_screen_body.dart';
@@ -29,9 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _initializeUser() async {
     final localStorage = sl<LocalStorage>();
     final authUser = await localStorage.getString(Constants.authUserKey);
-    if (authUser != null) {
-      authUserNotifier.value = UserModel.fromJson(jsonDecode(authUser));
-    }
+    authUserNotifier.value = UserModel.fromJson(jsonDecode(authUser));
 
     final accessToken = await localStorage.getString(Constants.accessTokenKey);
     accessTokenNotifier.value = accessToken;

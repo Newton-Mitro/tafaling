@@ -1,7 +1,7 @@
 import 'package:tafaling/core/injection.dart';
 import 'package:tafaling/core/network/api_service.dart';
 import 'package:tafaling/core/network/network_info.dart';
-import 'package:tafaling/core/utils/local_storage.dart';
+import 'package:tafaling/core/services/local_storage/local_storage.dart';
 import 'package:tafaling/features/post/data/data_sources/post_data_source.dart';
 import 'package:tafaling/features/post/data/data_sources/post_remote_data_source.dart';
 import 'package:tafaling/features/post/data/repositories/post_repository_impl.dart';

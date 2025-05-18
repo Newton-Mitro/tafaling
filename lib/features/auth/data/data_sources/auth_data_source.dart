@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:tafaling/core/utils/local_storage.dart';
+import 'package:tafaling/core/services/local_storage/local_storage.dart';
 import 'package:tafaling/features/auth/data/models/auth_user_model.dart';
 
 abstract class AuthLocalDataSource {

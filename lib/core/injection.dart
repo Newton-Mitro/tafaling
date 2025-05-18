@@ -1,12 +1,14 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
-import 'package:tafaling/core/logging/logger_service.dart';
-import 'package:tafaling/core/logging/logger_service_impl.dart';
+import 'package:tafaling/core/services/local_storage/local_storage.dart';
+import 'package:tafaling/core/services/local_storage/local_storage_impl.dart';
+import 'package:tafaling/core/services/logging/logger_service.dart';
+import 'package:tafaling/core/services/logging/logger_service_impl.dart';
 import 'package:tafaling/core/network/network_info.dart';
 import 'package:tafaling/core/network/network_info_impl.dart';
-import 'package:tafaling/core/utils/local_storage.dart';
-import 'package:tafaling/core/utils/local_storage_impl.dart';
-import 'package:tafaling/core/widgets/theme_switcher/bloc/theme_bloc.dart';
+import 'package:tafaling/core/theme/services/theme_service.dart';
+import 'package:tafaling/core/theme/services/theme_service_impl.dart';
+import 'package:tafaling/shared/widgets/theme_selector/bloc/theme_selector_bloc.dart';
 import 'network/api_service.dart';
 
 final sl = GetIt.instance;
@@ -28,10 +30,13 @@ Future<void> registerCoreServices() async {
       loggerService: sl<LoggerService>(),
     ),
   );
+  sl.registerLazySingleton<ThemeService>(
+    () => ThemeServiceImpl(sl<LocalStorage>()),
+  );
 
   // Register Bloc
 
-  sl.registerFactory<ThemeBloc>(
-    () => ThemeBloc(localStorage: sl<LocalStorage>()),
+  sl.registerFactory<ThemeSelectorBloc>(
+    () => ThemeSelectorBloc(themeService: sl<ThemeService>()),
   );
 }

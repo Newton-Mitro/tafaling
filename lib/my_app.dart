@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tafaling/features/home/presentation/home_screen/view/home_screen.dart';
 import 'package:tafaling/features/onboarding/presentation/views/onboarding_screen.dart';
-import 'package:tafaling/app_configs/themes/app_theme.dart';
-import 'package:tafaling/core/widgets/theme_switcher/bloc/theme_bloc.dart';
+import 'package:tafaling/core/theme/app_theme.dart';
 import 'package:tafaling/core/utils/app_context.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/routes.dart';
+import 'package:tafaling/shared/widgets/theme_selector/bloc/theme_selector_bloc.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -15,17 +15,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ThemeBloc, ThemeState>(
+    return BlocConsumer<ThemeSelectorBloc, ThemeSelectorState>(
       listener: (context, state) {},
       builder: (context, themeState) {
         return MaterialApp(
-          title: context.appLocalizations.appName,
+          title: "App Name",
           debugShowCheckedModeBanner: false,
-          darkTheme: AppTheme().dark,
-          theme: AppTheme().light,
+          theme: themeState.themeData,
           navigatorKey: navigatorKey,
-          themeMode:
-              themeState is LightThemeState ? ThemeMode.dark : ThemeMode.dark,
           home: onBoarding ? OnboardingScreen() : HomeScreen(),
           onGenerateRoute: AppRoutes().onGenerateRoutes,
         );
