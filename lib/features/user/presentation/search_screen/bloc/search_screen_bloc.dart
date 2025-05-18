@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/core/constants/constants.dart';
-import 'package:tafaling/core/index.dart';
+import 'package:tafaling/core/utils/local_storage.dart';
 import 'package:tafaling/features/user/data/models/user_model.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/domain/usecases/search_users_usecase.dart';
@@ -48,15 +48,16 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchState> {
       pageSize: 50,
     );
 
-    final dataState = await searchUsersUseCase(params: searchUsersParams);
+    final dataState = await searchUsersUseCase(searchUsersParams);
 
-    if (dataState is SuccessData && dataState.data != null) {
-      emit(SearchLoaded(dataState.data!));
-    }
-
-    if (dataState is FailedData && dataState.error != null) {
-      emit(SearchError(dataState.error!.message));
-    }
+    dataState.fold((failure) => emit(SearchError(failure.message)), (data) {
+      if (data.isEmpty) {
+        emit(SearchLoaded(currentUsers));
+      } else {
+        currentUsers.addAll(data);
+        emit(SearchLoaded(currentUsers));
+      }
+    });
   }
 
   void _onResetSearchEvent(ResetSearchEvent event, Emitter<SearchState> emit) {

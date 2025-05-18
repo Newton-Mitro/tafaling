@@ -1,3 +1,7 @@
+import 'package:tafaling/core/types/typedef.dart';
+
 abstract class UseCase<Type, Params> {
-  Future<Type> call({Params params});
+  ResultFuture<Type> call(Params params);
 }
+
+class NoParams {}

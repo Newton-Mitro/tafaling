@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:tafaling/core/resources/response_state.dart';
+import 'package:tafaling/core/usecases/usecase.dart';
 import 'package:tafaling/features/auth/domain/entities/auth_user_entity.dart';
 import 'package:tafaling/features/auth/domain/usecases/get_auth_user_usecase.dart';
 import 'package:tafaling/features/auth/domain/usecases/logout_usecase.dart';
@@ -16,21 +16,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     : super(AuthInitial()) {
     on<IsAuthenticatedEvent>((event, emit) async {
       emit(AuthLoading());
-      final authUserState = await getAuthUserUseCase.call();
-
-      if (authUserState is SuccessData) {
-        emit(Authenticated(authUserState.data!));
-      }
-
-      if (authUserState is FailedData) {
-        emit(Unauthenticated());
-      }
+      final authUserState = await getAuthUserUseCase.call(GetAuthUserParams());
+      authUserState.fold(
+        (failure) => emit(AuthError(failure.message)),
+        (authUser) => emit(Authenticated(authUser)),
+      );
     });
 
     on<LogoutEvent>((event, emit) async {
       emit(AuthLoading());
-      await logoutUseCase.call();
-      emit(Unauthenticated());
+      final result = await logoutUseCase.call(NoParams());
+      result.fold(
+        (failure) => emit(AuthError(failure.message)),
+        (response) => emit(Unauthenticated()),
+      );
     });
   }
 }

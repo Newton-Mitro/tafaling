@@ -1,38 +1,38 @@
-import 'package:tafaling/core/resources/response_state.dart';
+import 'package:tafaling/core/types/typedef.dart';
 import 'package:tafaling/features/user/domain/entities/follow_unfollow_entity.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 
 abstract class UserRepository {
-  Future<DataState<FollowUnFollowEntity>> followUser(int followingUserId);
+  ResultFuture<FollowUnFollowEntity> followUser(int followingUserId);
 
-  Future<DataState<FollowUnFollowEntity>> unFollowUser(int followingUserId);
+  ResultFuture<FollowUnFollowEntity> unFollowUser(int followingUserId);
 
-  Future<DataState<List<UserEntity>>> fetchProfile(
+  ResultFuture<List<UserEntity>> fetchProfile(
     int userId,
     int startRecord,
     int pageSize,
   );
 
-  Future<DataState<List<UserEntity>>> searchUsers(
+  ResultFuture<List<UserEntity>> searchUsers(
     int userId,
     String searchText,
     int startRecord,
     int pageSize,
   );
 
-  Future<DataState<List<UserEntity>>> getFollowingUsers(
+  ResultFuture<List<UserEntity>> getFollowingUsers(
     int targetUserId,
     int startRecord,
     int pageSize,
   );
 
-  Future<DataState<List<UserEntity>>> getFollowers(
+  ResultFuture<List<UserEntity>> getFollowers(
     int targetUserId,
     int startRecord,
     int pageSize,
   );
 
-  Future<DataState<List<UserEntity>>> getSuggestedUsers(
+  ResultFuture<List<UserEntity>> getSuggestedUsers(
     int userId,
     int startRecord,
     int pageSize,

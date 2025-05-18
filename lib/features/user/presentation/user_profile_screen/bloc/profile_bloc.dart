@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:tafaling/core/resources/response_state.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/domain/usecases/follow_user_usecase.dart';
 import 'package:tafaling/features/user/domain/usecases/un_follow_user_usecase.dart';
@@ -37,17 +36,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       emit(ProfileLoading());
       final followUserPrams = FollowUserParams(followingUserId: event.userId);
-      final dataState = await followUserUseCase(params: followUserPrams);
-      if (dataState is SuccessData && dataState.data != null) {
-        emit(
-          ProfileLoaded(
-            currentUser.copyWith(
-              isFollowing: true,
-              followers: dataState.data?.followingCount,
-            ),
-          ),
-        );
-      }
+      final dataState = await followUserUseCase(followUserPrams);
+      dataState.fold(
+        (failure) =>
+            emit(ProfileLoaded(currentUser.copyWith(isFollowing: true))),
+        (data) => emit(ProfileLoaded(currentUser.copyWith(isFollowing: false))),
+      );
     }
   }
 
@@ -62,17 +56,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       final unfollowUserPrams = UnFollowUserParams(
         followingUserId: event.userId,
       );
-      final dataState = await unFollowUserUseCase(params: unfollowUserPrams);
-      if (dataState is SuccessData && dataState.data != null) {
-        emit(
-          ProfileLoaded(
-            currentUser.copyWith(
-              isFollowing: false,
-              followers: dataState.data?.followingCount,
-            ),
-          ),
-        );
-      }
+      final dataState = await unFollowUserUseCase(unfollowUserPrams);
+      dataState.fold(
+        (failure) =>
+            emit(ProfileLoaded(currentUser.copyWith(isFollowing: true))),
+        (data) => emit(ProfileLoaded(currentUser.copyWith(isFollowing: false))),
+      );
     }
   }
 }

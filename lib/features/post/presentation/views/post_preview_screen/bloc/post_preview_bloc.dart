@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:tafaling/core/resources/response_state.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/post/domain/usecases/dis_like_post_usecase.dart';
 import 'package:tafaling/features/post/domain/usecases/like_post_usecase.dart';
@@ -37,20 +36,14 @@ class PostPreviewBloc extends Bloc<PostPreviewEvent, PostPreviewState> {
       emit(PostPreviewLoading());
 
       final likeParam = LikePostPrams(postId: event.postId);
-      final dataState = await likePostUseCase(params: likeParam);
-
-      if (dataState is SuccessData && dataState.data != null) {
-        emit(
-          PostPreviewLoaded(
-            currentPost.copyWith(
-              likeCount: dataState.data!.likeCount,
-              isLiked: true,
-            ),
-          ),
-        );
-      } else {
-        emit(PostPreviewLoaded(currentPost));
-      }
+      final dataState = await likePostUseCase(likeParam);
+      // dataState.fold((l) => emit(PostPreviewError(message: l.message)), (r) {
+      //   emit(
+      //     PostPreviewLoaded(
+      //       currentPost.copyWith(likeCount: r.likeCount, isLiked: true),
+      //     ),
+      //   );
+      // });
     }
   }
 
@@ -63,20 +56,15 @@ class PostPreviewBloc extends Bloc<PostPreviewEvent, PostPreviewState> {
       emit(PostPreviewLoading());
 
       final dislikeParam = DisLikePostPrams(postId: event.postId);
-      final dataState = await disLikePostUseCase(params: dislikeParam);
+      final dataState = await disLikePostUseCase(dislikeParam);
 
-      if (dataState is SuccessData && dataState.data != null) {
-        emit(
-          PostPreviewLoaded(
-            currentPost.copyWith(
-              likeCount: dataState.data!.likeCount,
-              isLiked: false,
-            ),
-          ),
-        );
-      } else {
-        emit(PostPreviewLoaded(currentPost));
-      }
+      // dataState.fold((l) => emit(PostPreviewError(message: l.message)), (r) {
+      //   emit(
+      //     PostPreviewLoaded(
+      //       currentPost.copyWith(likeCount: r.likeCount, isLiked: false),
+      //     ),
+      //   );
+      // });
     }
   }
 }

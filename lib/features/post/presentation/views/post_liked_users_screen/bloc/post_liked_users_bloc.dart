@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:tafaling/core/resources/response_state.dart';
 import 'package:tafaling/features/post/domain/usecases/get_post_liked_users_usecase.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 
@@ -39,30 +38,18 @@ class PostLikedUsersBloc
         pageSize: pageSize,
       );
       final dataState = await getPostLikedUsersUsecase.call(
-        params: getPostLikedUsersPrams,
+        getPostLikedUsersPrams,
       );
 
-      if (dataState is SuccessData) {
-        hasMoreFollowers = dataState.data!.length >= pageSize;
-        currentPage = event.page;
-
-        if (event.page == 1) {
-          emit(PostLikedUsersLoaded(followers: dataState.data!));
+      dataState.fold((l) => emit(PostLikedUsersError(message: l.message)), (r) {
+        if (r.isEmpty) {
+          hasMoreFollowers = false;
+          emit(PostLikedUsersLoaded(followers: r));
         } else {
-          final List<UserEntity> currentFollowers =
-              (state is PostLikedUsersLoaded)
-                  ? (state as PostLikedUsersLoaded).followers
-                  : [];
-          emit(
-            PostLikedUsersLoadedWithMore(
-              followers: currentFollowers + dataState.data!,
-              hasMore: hasMoreFollowers,
-            ),
-          );
+          hasMoreFollowers = true;
+          emit(PostLikedUsersLoaded(followers: r));
         }
-      } else if (dataState is FailedData) {
-        throw Exception(dataState.error!.message);
-      }
+      });
     } catch (e) {
       if (state is PostLikedUsersLoaded) {
         emit(

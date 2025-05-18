@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:tafaling/core/resources/response_state.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/domain/usecases/follow_user_usecase.dart';
 import 'package:tafaling/features/user/domain/usecases/un_follow_user_usecase.dart';
@@ -38,14 +37,13 @@ class UserTileBloc extends Bloc<UserTileEvent, UserTileState> {
 
       emit(UserTileLoading());
       final followUserPrams = FollowUserParams(followingUserId: event.userId);
-      final dataState = await followUserUseCase(params: followUserPrams);
-      if (dataState is SuccessData && dataState.data != null) {
-        emit(UserTileLoaded(currentUser.copyWith(isFollowing: true)));
-      }
-
-      if (dataState is FailedData) {
-        emit(UserTileLoaded(currentUser.copyWith(isFollowing: false)));
-      }
+      final dataState = await followUserUseCase(followUserPrams);
+      dataState.fold(
+        (failure) =>
+            emit(UserTileLoaded(currentUser.copyWith(isFollowing: true))),
+        (data) =>
+            emit(UserTileLoaded(currentUser.copyWith(isFollowing: false))),
+      );
     }
   }
 
@@ -60,14 +58,12 @@ class UserTileBloc extends Bloc<UserTileEvent, UserTileState> {
       final unfollowUserPrams = UnFollowUserParams(
         followingUserId: event.userId,
       );
-      final dataState = await unFollowUserUseCase(params: unfollowUserPrams);
-      if (dataState is SuccessData && dataState.data != null) {
-        emit(UserTileLoaded(currentUser.copyWith(isFollowing: false)));
-      }
-
-      if (dataState is FailedData) {
-        emit(UserTileLoaded(currentUser.copyWith(isFollowing: true)));
-      }
+      final dataState = await unFollowUserUseCase(unfollowUserPrams);
+      dataState.fold(
+        (failure) =>
+            emit(UserTileLoaded(currentUser.copyWith(isFollowing: false))),
+        (data) => emit(UserTileLoaded(currentUser.copyWith(isFollowing: true))),
+      );
     }
   }
 }

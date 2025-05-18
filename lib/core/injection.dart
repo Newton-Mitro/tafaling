@@ -6,7 +6,6 @@ import 'package:tafaling/core/network/network_info.dart';
 import 'package:tafaling/core/network/network_info_impl.dart';
 import 'package:tafaling/core/utils/local_storage.dart';
 import 'package:tafaling/core/utils/local_storage_impl.dart';
-import 'package:tafaling/core/widgets/language_selector/bloc/language_bloc.dart';
 import 'package:tafaling/core/widgets/theme_switcher/bloc/theme_bloc.dart';
 import 'network/api_service.dart';
 
@@ -31,9 +30,6 @@ Future<void> registerCoreServices() async {
   );
 
   // Register Bloc
-  sl.registerFactory<LanguageBloc>(
-    () => LanguageBloc(localStorage: sl<LocalStorage>()),
-  );
 
   sl.registerFactory<ThemeBloc>(
     () => ThemeBloc(localStorage: sl<LocalStorage>()),

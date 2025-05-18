@@ -1,29 +1,38 @@
-import 'package:get_it/get_it.dart';
-import 'package:tafaling/core/index.dart';
+import 'package:tafaling/core/injection.dart';
+import 'package:tafaling/core/network/api_service.dart';
+import 'package:tafaling/core/network/network_info.dart';
+import 'package:tafaling/core/utils/local_storage.dart' show LocalStorage;
+import 'package:tafaling/features/auth/data/data_sources/auth_data_source.dart';
+import 'package:tafaling/features/auth/data/data_sources/auth_remote_data_source.dart';
+import 'package:tafaling/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:tafaling/features/auth/domain/repositories/auth_repository.dart';
 import 'package:tafaling/features/auth/domain/usecases/get_auth_user_usecase.dart';
+import 'package:tafaling/features/auth/domain/usecases/login_usecase.dart';
+import 'package:tafaling/features/auth/domain/usecases/logout_usecase.dart';
+import 'package:tafaling/features/auth/domain/usecases/registration_usecase.dart';
 import 'package:tafaling/features/auth/presentation/views/login_screen/bloc/login_screen_bloc.dart';
 import 'package:tafaling/features/auth/presentation/views/registration_screen/bloc/registration_screen_bloc.dart';
-import 'data/index.dart';
-import 'domain/index.dart';
 import 'presentation/index.dart';
-
-final sl = GetIt.instance;
 
 void registerAuthModule() {
   // Register Data Sources
-  sl.registerLazySingleton<AuthDataSource>(
+  sl.registerLazySingleton<AuthRemoteDataSource>(
     () => AuthRemoteDataSourceImpl(
       apiService: sl<ApiService>(),
       localStorage: sl<LocalStorage>(),
     ),
   );
 
+  sl.registerLazySingleton<AuthLocalDataSource>(
+    () => AuthLocalDataSourceImpl(localStorage: sl<LocalStorage>()),
+  );
+
   // Register Repository
   sl.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(
-      authDataSource: sl<AuthDataSource>(),
+      authRemoteDataSource: sl<AuthRemoteDataSource>(),
       networkInfo: sl<NetworkInfo>(),
-      localStorage: sl<LocalStorage>(),
+      authLocalDataSource: sl<AuthLocalDataSource>(),
     ),
   );
 

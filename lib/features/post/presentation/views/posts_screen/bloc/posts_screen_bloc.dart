@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/core/constants/constants.dart';
-import 'package:tafaling/core/index.dart';
+import 'package:tafaling/core/utils/local_storage.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/post/domain/usecases/fetch_posts_usecase.dart';
 import 'package:tafaling/features/post/domain/usecases/fetch_user_posts_usecase.dart';
@@ -82,38 +82,5 @@ class PostsScreenBloc extends Bloc<PostsScreenEvent, PostsScreenState> {
     final accessToken = credentials['accessToken'];
 
     int startRecord = postsPerPage * (_fetchPage - 1);
-
-    // Fetch posts based on authentication status
-    DataState dataState = FailedData(ServerFailure());
-    if (accessToken == null) {
-      final fetchUserParams = FetchPostsPrams(
-        userId: -1,
-        startRecord: startRecord,
-        pageSize: postsPerPage,
-      );
-
-      dataState = await fetchPostsUseCase(params: fetchUserParams);
-    } else if (userId != null) {
-      final fetchUserDataParams = FetchUserPostsPrams(
-        userId: userId,
-        startRecord: startRecord,
-        pageSize: postsPerPage,
-      );
-
-      dataState = await fetchUserPostsUseCase(params: fetchUserDataParams);
-    }
-
-    if (dataState is SuccessData && dataState.data != null) {
-      emit(
-        state.copyWith(
-          posts: [...state.posts + dataState.data!],
-          isFetching: false,
-        ),
-      );
-      _fetchPage++;
-    }
-    if (dataState is FailedData && dataState.error != null) {
-      emit(state.copyWith(isFetching: false, error: dataState.error!.message));
-    }
   }
 }

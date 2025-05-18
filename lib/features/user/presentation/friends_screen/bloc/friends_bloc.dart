@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:tafaling/core/resources/response_state.dart';
-import 'package:tafaling/features/user/user_module.dart';
+import 'package:tafaling/features/user/domain/entities/user_entity.dart';
+import 'package:tafaling/features/user/domain/usecases/get_suggested_users_usecase.dart';
 
 part 'friends_event.dart';
 part 'friends_state.dart';
@@ -37,30 +37,18 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
         pageSize: pageSize,
       );
       final dataState = await getSuggestedUsersUseCase.call(
-        params: getSuggestedUsersParams,
+        getSuggestedUsersParams,
       );
 
-      if (dataState is SuccessData) {
-        hasMoreFollowers = dataState.data!.length >= pageSize;
-        currentPage = event.page;
-
-        if (event.page == 1) {
-          emit(FriendsLoaded(followers: dataState.data!));
+      dataState.fold((l) => emit(FriendsError(message: l.message)), (r) {
+        if (r.isEmpty) {
+          hasMoreFollowers = false;
+          emit(FriendsLoaded(followers: r));
         } else {
-          final List<UserEntity> currentFollowers =
-              (state is FriendsLoaded)
-                  ? (state as FriendsLoaded).followers
-                  : [];
-          emit(
-            FriendsLoadedWithMore(
-              followers: currentFollowers + dataState.data!,
-              hasMore: hasMoreFollowers,
-            ),
-          );
+          hasMoreFollowers = true;
+          emit(FriendsLoaded(followers: r));
         }
-      } else if (dataState is FailedData) {
-        throw Exception(dataState.error!.message);
-      }
+      });
     } catch (e) {
       if (state is FriendsLoaded) {
         emit(

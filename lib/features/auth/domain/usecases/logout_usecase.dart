@@ -1,15 +1,16 @@
+import 'package:dartz/dartz.dart';
+import 'package:tafaling/core/types/typedef.dart';
 import 'package:tafaling/core/usecases/usecase.dart';
 import 'package:tafaling/features/auth/domain/repositories/auth_repository.dart';
 
-final class LogoutParams {}
-
-class LogoutUsecase extends UseCase<void, LogoutParams> {
+class LogoutUsecase extends UseCase<void, NoParams> {
   final AuthRepository authRepository;
 
   LogoutUsecase({required this.authRepository});
 
   @override
-  Future<void> call({LogoutParams? params}) async {
+  ResultFuture<void> call(NoParams params) async {
     await authRepository.logout();
+    return const Right(null);
   }
 }

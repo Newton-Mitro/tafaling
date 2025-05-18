@@ -1,4 +1,4 @@
-import 'package:tafaling/core/resources/response_state.dart';
+import 'package:tafaling/core/types/typedef.dart';
 import 'package:tafaling/core/usecases/usecase.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/domain/repositories/user_profile_repository.dart';
@@ -16,13 +16,13 @@ final class FetchProfileParams {
 }
 
 class FetchProfileUseCase
-    extends UseCase<DataState<List<UserEntity>>, FetchProfileParams> {
+    extends UseCase<List<UserEntity>, FetchProfileParams> {
   final UserRepository userRepository;
 
   FetchProfileUseCase({required this.userRepository});
 
   @override
-  Future<DataState<List<UserEntity>>> call({FetchProfileParams? params}) async {
+  ResultFuture<List<UserEntity>> call(FetchProfileParams? params) async {
     final userProfile = await userRepository.fetchProfile(
       params?.userId ?? 0,
       params?.startRecord ?? 0,

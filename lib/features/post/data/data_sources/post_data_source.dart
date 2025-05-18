@@ -1,6 +1,6 @@
 import 'package:tafaling/features/post/data/models/like_model.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
-import 'package:tafaling/features/user/user_module.dart';
+import 'package:tafaling/features/user/data/models/user_model.dart';
 
 abstract class PostDataSource {
   Future<List<PostModel>> fetchPosts(int userId, int startRecord, int pageSize);

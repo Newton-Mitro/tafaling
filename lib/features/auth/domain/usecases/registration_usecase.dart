@@ -1,4 +1,4 @@
-import 'package:tafaling/core/resources/response_state.dart';
+import 'package:tafaling/core/types/typedef.dart';
 import 'package:tafaling/core/usecases/usecase.dart';
 import 'package:tafaling/features/auth/domain/entities/auth_user_entity.dart';
 import 'package:tafaling/features/auth/domain/repositories/auth_repository.dart';
@@ -17,14 +17,13 @@ final class RegistrationParams {
   });
 }
 
-class RegistrationUseCase
-    extends UseCase<DataState<AuthUserEntity>, RegistrationParams> {
+class RegistrationUseCase extends UseCase<AuthUserEntity, RegistrationParams> {
   final AuthRepository authRepository;
 
   RegistrationUseCase({required this.authRepository});
 
   @override
-  Future<DataState<AuthUserEntity>> call({RegistrationParams? params}) async {
+  ResultFuture<AuthUserEntity> call(RegistrationParams? params) async {
     final authUser = await authRepository.register(
       params?.name ?? '',
       params?.email ?? '',

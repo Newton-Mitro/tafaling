@@ -1,12 +1,24 @@
-import 'package:get_it/get_it.dart';
-import 'package:tafaling/core/index.dart';
+import 'package:tafaling/core/injection.dart';
+import 'package:tafaling/core/network/api_service.dart';
+import 'package:tafaling/core/network/network_info.dart';
+import 'package:tafaling/core/utils/local_storage.dart';
+import 'package:tafaling/features/user/data/data_sources/user_data_source.dart';
+import 'package:tafaling/features/user/data/data_sources/users_remote_data_source.dart';
+import 'package:tafaling/features/user/data/repositories/user_repository_impl.dart';
+import 'package:tafaling/features/user/domain/repositories/user_profile_repository.dart';
+import 'package:tafaling/features/user/domain/usecases/fetch_profile_usecase.dart';
+import 'package:tafaling/features/user/domain/usecases/follow_user_usecase.dart';
+import 'package:tafaling/features/user/domain/usecases/get_followers_usecase.dart';
+import 'package:tafaling/features/user/domain/usecases/get_following_users_usecase.dart';
+import 'package:tafaling/features/user/domain/usecases/get_suggested_users_usecase.dart';
+import 'package:tafaling/features/user/domain/usecases/search_users_usecase.dart';
+import 'package:tafaling/features/user/domain/usecases/un_follow_user_usecase.dart';
+import 'package:tafaling/features/user/presentation/following_users_screen/bloc/following_users_bloc.dart';
 import 'package:tafaling/features/user/presentation/friends_screen/bloc/friends_bloc.dart';
+import 'package:tafaling/features/user/presentation/search_screen/bloc/search_screen_bloc.dart';
+import 'package:tafaling/features/user/presentation/user_profile_screen/bloc/profile_bloc.dart';
+import 'package:tafaling/features/user/presentation/users_followers_screen/bloc/users_followers_bloc.dart';
 import 'package:tafaling/features/user/presentation/widgets/user_tile/bloc/user_tile_bloc.dart';
-import 'data/index.dart';
-import 'domain/index.dart';
-import 'presentation/index.dart';
-
-final sl = GetIt.instance;
 
 void registerUserModule() {
   // Data Sources

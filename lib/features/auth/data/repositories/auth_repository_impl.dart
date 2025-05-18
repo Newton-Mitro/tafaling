@@ -1,51 +1,45 @@
-import 'dart:convert';
+import 'dart:ffi';
 
-import 'package:tafaling/core/constants/constants.dart';
-import 'package:tafaling/core/index.dart';
-import 'package:tafaling/features/auth/data/index.dart';
+import 'package:dartz/dartz.dart';
+import 'package:tafaling/core/errors/failures.dart';
+import 'package:tafaling/core/network/network_info.dart';
+import 'package:tafaling/core/types/typedef.dart';
+import 'package:tafaling/core/utils/failure_mapper.dart';
+import 'package:tafaling/features/auth/data/data_sources/auth_data_source.dart';
+import 'package:tafaling/features/auth/data/data_sources/auth_remote_data_source.dart';
+import 'package:tafaling/features/auth/data/models/auth_user_model.dart';
 import 'package:tafaling/features/auth/domain/entities/auth_user_entity.dart';
 import 'package:tafaling/features/auth/domain/repositories/auth_repository.dart';
 import 'package:tafaling/features/home/presentation/notifier/notifiers.dart';
 import 'package:tafaling/features/user/data/models/user_model.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  final AuthDataSource authDataSource;
+  final AuthRemoteDataSource authRemoteDataSource;
+  final AuthLocalDataSource authLocalDataSource;
   final NetworkInfo networkInfo;
-  final LocalStorage localStorage;
 
   AuthRepositoryImpl({
-    required this.authDataSource,
+    required this.authRemoteDataSource,
+    required this.authLocalDataSource,
     required this.networkInfo,
-    required this.localStorage,
   });
 
   @override
-  Future<DataState<AuthUserModel>> login(
-    String? email,
-    String? password,
-  ) async {
+  ResultFuture<AuthUserModel> login(String? email, String? password) async {
     if (await networkInfo.isConnected == true) {
       try {
-        final result = await authDataSource.login(email, password);
-        return SuccessData(result);
+        final result = await authRemoteDataSource.login(email, password);
+        return Right(result);
       } catch (e) {
-        if (e is ValidationException) {
-          return ValidationFailedData(ValidationFailure(e.errors));
-        }
-
-        if (e is UnauthorizedException) {
-          return FailedData(UnauthorizedFailure());
-        }
-
-        return FailedData(ServerFailure());
+        return Left(FailureMapper.fromException(e));
       }
     } else {
-      return FailedData(NetworkFailure());
+      return Left(NetworkFailure());
     }
   }
 
   @override
-  Future<DataState<AuthUserModel>> register(
+  ResultFuture<AuthUserModel> register(
     String name,
     String email,
     String password,
@@ -53,83 +47,48 @@ class AuthRepositoryImpl implements AuthRepository {
   ) async {
     if (await networkInfo.isConnected == true) {
       try {
-        final result = await authDataSource.register(
+        final result = await authRemoteDataSource.register(
           name,
           email,
           password,
           confirmPassword,
         );
-        return SuccessData(result);
+        return Right(result);
       } catch (e) {
-        if (e is ValidationException) {
-          return ValidationFailedData(ValidationFailure(e.errors));
-        }
-
-        if (e is UnauthorizedException) {
-          return FailedData(UnauthorizedFailure());
-        }
-
-        return FailedData(ServerFailure());
+        return Left(FailureMapper.fromException(e));
       }
     } else {
-      return FailedData(NetworkFailure());
+      return Left(NetworkFailure());
     }
   }
 
   @override
-  Future<DataState<void>> logout() async {
+  ResultFuture<void> logout() async {
     if (await networkInfo.isConnected == true) {
       try {
-        final result = await authDataSource.logout();
-        await _clearToken();
-        return SuccessData(result);
+        await authRemoteDataSource.logout();
+        await authLocalDataSource.clearAuthUser();
+
+        return const Right(null);
       } catch (e) {
-        return FailedData(ServerFailure());
+        return Left(FailureMapper.fromException(e));
       }
     } else {
-      return FailedData(NetworkFailure());
-    }
-  }
-
-  Future<DataState<void>> _clearToken() async {
-    try {
-      await localStorage.remove(Constants.accessTokenKey);
-      await localStorage.remove(Constants.refreshTokenKey);
-      await localStorage.remove(Constants.authUserKey);
-      authUserNotifier.value = null;
-      accessTokenNotifier.value = null;
-      selectedPageNotifier.value = 0;
-      return SuccessData(null);
-    } catch (e) {
-      return FailedData(ServerFailure());
+      return Left(NetworkFailure());
     }
   }
 
   @override
-  Future<DataState<AuthUserEntity>> getAuthUser() async {
+  ResultFuture<AuthUserEntity> getAuthUser() async {
     try {
-      final authToken = await localStorage.getString(Constants.accessTokenKey);
-      final refreshToken = await localStorage.getString(
-        Constants.refreshTokenKey,
-      );
-      final stringUser = await localStorage.getString(Constants.authUserKey);
+      final authUser = await authLocalDataSource.getAuthUser();
 
-      if (stringUser != null && authToken != null && refreshToken != null) {
-        final user = UserModel.fromJson(jsonDecode(stringUser));
-        accessTokenNotifier.value = authToken;
-        authUserNotifier.value = user;
+      accessTokenNotifier.value = authUser.accessToken;
+      authUserNotifier.value = authUser.user as UserModel?;
 
-        final AuthUserEntity authUserEntity = AuthUserEntity(
-          accessToken: authToken,
-          refreshToken: refreshToken,
-          user: user,
-        );
-
-        return SuccessData(authUserEntity);
-      }
-      return FailedData(UnauthorizedFailure());
+      return Right(authUser);
     } catch (e) {
-      return FailedData(ServerFailure());
+      return Left(FailureMapper.fromException(e));
     }
   }
 }

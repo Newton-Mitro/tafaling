@@ -1,4 +1,4 @@
-import 'package:tafaling/core/resources/response_state.dart';
+import 'package:tafaling/core/types/typedef.dart';
 import 'package:tafaling/core/usecases/usecase.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/domain/repositories/user_profile_repository.dart';
@@ -16,13 +16,13 @@ final class GetFollowersParams {
 }
 
 class GetFollowersUseCase
-    extends UseCase<DataState<List<UserEntity>>, GetFollowersParams> {
+    extends UseCase<List<UserEntity>, GetFollowersParams> {
   final UserRepository userRepository;
 
   GetFollowersUseCase({required this.userRepository});
 
   @override
-  Future<DataState<List<UserEntity>>> call({GetFollowersParams? params}) {
+  ResultFuture<List<UserEntity>> call(GetFollowersParams? params) {
     return userRepository.getFollowers(
       params?.targetUserId ?? 0,
       params?.startRecord ?? 0,

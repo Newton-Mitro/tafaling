@@ -9,7 +9,7 @@ import 'package:tafaling/features/post/presentation/views/post_preview_screen/wi
 import 'package:tafaling/features/post/presentation/views/post_preview_screen/widgets/post_body_text.dart';
 import 'package:tafaling/features/post/presentation/views/post_preview_screen/widgets/post_sidebar.dart';
 import 'package:tafaling/features/post/presentation/views/post_preview_screen/widgets/video_post_viewer.dart';
-import 'package:tafaling/features/user/domain/index.dart';
+import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 
 class PostViewer extends StatefulWidget {
   final PostEntity postModel;

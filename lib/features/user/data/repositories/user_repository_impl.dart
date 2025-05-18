@@ -1,7 +1,8 @@
-import 'package:tafaling/core/errors/exceptions.dart';
+import 'package:dartz/dartz.dart';
 import 'package:tafaling/core/errors/failures.dart';
 import 'package:tafaling/core/network/network_info.dart';
-import 'package:tafaling/core/resources/response_state.dart';
+import 'package:tafaling/core/types/typedef.dart';
+import 'package:tafaling/core/utils/failure_mapper.dart';
 import 'package:tafaling/features/user/data/data_sources/user_data_source.dart';
 import 'package:tafaling/features/user/data/models/follow_un_follow_model.dart';
 import 'package:tafaling/features/user/data/models/user_model.dart';
@@ -18,43 +19,35 @@ class UserRepositoryImpl implements UserRepository {
   });
 
   @override
-  Future<DataState<FollowUnFollowModel>> followUser(int followingUserId) async {
+  ResultFuture<FollowUnFollowModel> followUser(int followingUserId) async {
     if (await networkInfo.isConnected == true) {
       try {
         final result = await remoteDataSource.followUser(followingUserId);
-        return SuccessData(result);
+        return Right(result);
       } catch (e) {
-        if (e is UnauthorizedException) {
-          return FailedData(UnauthorizedFailure());
-        }
-        return FailedData(ServerFailure());
+        return Left(FailureMapper.fromException(e));
       }
     } else {
-      return FailedData(NetworkFailure());
+      return Left(NetworkFailure());
     }
   }
 
   @override
-  Future<DataState<FollowUnFollowModel>> unFollowUser(
-    int followingUserId,
-  ) async {
+  ResultFuture<FollowUnFollowModel> unFollowUser(int followingUserId) async {
     if (await networkInfo.isConnected == true) {
       try {
         final result = await remoteDataSource.unFollowUser(followingUserId);
-        return SuccessData(result);
+        return Right(result);
       } catch (e) {
-        if (e is UnauthorizedException) {
-          return FailedData(UnauthorizedFailure());
-        }
-        return FailedData(ServerFailure());
+        return Left(FailureMapper.fromException(e));
       }
     } else {
-      return FailedData(NetworkFailure());
+      return Left(NetworkFailure());
     }
   }
 
   @override
-  Future<DataState<List<UserModel>>> fetchProfile(
+  ResultFuture<List<UserModel>> fetchProfile(
     int userId,
     int startRecord,
     int pageSize,
@@ -66,20 +59,17 @@ class UserRepositoryImpl implements UserRepository {
           startRecord,
           pageSize,
         );
-        return SuccessData(posts);
+        return Right(posts);
       } catch (e) {
-        if (e is UnauthorizedException) {
-          return FailedData(UnauthorizedFailure());
-        }
-        return FailedData(ServerFailure());
+        return Left(FailureMapper.fromException(e));
       }
     } else {
-      return FailedData(NetworkFailure());
+      return Left(NetworkFailure());
     }
   }
 
   @override
-  Future<DataState<List<UserEntity>>> searchUsers(
+  ResultFuture<List<UserEntity>> searchUsers(
     int userId,
     String searchText,
     int startRecord,
@@ -93,20 +83,17 @@ class UserRepositoryImpl implements UserRepository {
           startRecord,
           pageSize,
         );
-        return SuccessData(users);
+        return Right(users);
       } catch (e) {
-        if (e is UnauthorizedException) {
-          return FailedData(UnauthorizedFailure());
-        }
-        return FailedData(ServerFailure());
+        return Left(FailureMapper.fromException(e));
       }
     } else {
-      return FailedData(NetworkFailure());
+      return Left(NetworkFailure());
     }
   }
 
   @override
-  Future<DataState<List<UserEntity>>> getFollowers(
+  ResultFuture<List<UserEntity>> getFollowers(
     int targetUserId,
     int startRecord,
     int pageSize,
@@ -118,20 +105,17 @@ class UserRepositoryImpl implements UserRepository {
           startRecord,
           pageSize,
         );
-        return SuccessData(users);
+        return Right(users);
       } catch (e) {
-        if (e is UnauthorizedException) {
-          return FailedData(UnauthorizedFailure());
-        }
-        return FailedData(ServerFailure());
+        return Left(FailureMapper.fromException(e));
       }
     } else {
-      return FailedData(NetworkFailure());
+      return Left(NetworkFailure());
     }
   }
 
   @override
-  Future<DataState<List<UserEntity>>> getFollowingUsers(
+  ResultFuture<List<UserEntity>> getFollowingUsers(
     int targetUserId,
     int startRecord,
     int pageSize,
@@ -143,20 +127,17 @@ class UserRepositoryImpl implements UserRepository {
           startRecord,
           pageSize,
         );
-        return SuccessData(users);
+        return Right(users);
       } catch (e) {
-        if (e is UnauthorizedException) {
-          return FailedData(UnauthorizedFailure());
-        }
-        return FailedData(ServerFailure());
+        return Left(FailureMapper.fromException(e));
       }
     } else {
-      return FailedData(NetworkFailure());
+      return Left(NetworkFailure());
     }
   }
 
   @override
-  Future<DataState<List<UserEntity>>> getSuggestedUsers(
+  ResultFuture<List<UserEntity>> getSuggestedUsers(
     int userId,
     int startRecord,
     int pageSize,
@@ -168,15 +149,12 @@ class UserRepositoryImpl implements UserRepository {
           startRecord,
           pageSize,
         );
-        return SuccessData(users);
+        return Right(users);
       } catch (e) {
-        if (e is UnauthorizedException) {
-          return FailedData(UnauthorizedFailure());
-        }
-        return FailedData(ServerFailure());
+        return Left(FailureMapper.fromException(e));
       }
     } else {
-      return FailedData(NetworkFailure());
+      return Left(NetworkFailure());
     }
   }
 }

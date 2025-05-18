@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:tafaling/core/errors/failures.dart';
-import 'package:tafaling/core/resources/response_state.dart';
 import 'package:tafaling/features/auth/domain/entities/auth_user_entity.dart';
 import 'package:tafaling/features/auth/domain/usecases/registration_usecase.dart';
 
@@ -22,37 +21,20 @@ class RegistrationScreenBloc
         password: event.password,
         confirmPassword: event.confirmPassword,
       );
-      final dataState = await registrationUseCase.call(
-        params: registrationParams,
+      final dataState = await registrationUseCase.call(registrationParams);
+
+      dataState.fold(
+        (failure) {
+          if (failure is ValidationFailure) {
+            emit(RegistrationValidationErrorState(failure.errors));
+          } else {
+            emit(RegistrationErrorState(failure.message));
+          }
+        },
+        (authUser) {
+          emit(RegistrationSuccessState(authUser));
+        },
       );
-
-      if (dataState is SuccessData && dataState.data != null) {
-        emit(RegistrationSuccessState(dataState.data!));
-      }
-
-      if (dataState is FailedData && dataState.error != null) {
-        switch (dataState.error) {
-          case NetworkFailure():
-            emit(RegistrationErrorState(dataState.error!.message));
-            break;
-          case UnauthorizedFailure():
-            emit(RegistrationErrorState(dataState.error!.message));
-            break;
-          case ServerFailure():
-            emit(RegistrationErrorState(dataState.error!.message));
-            break;
-          case CacheFailure():
-            emit(RegistrationErrorState(dataState.error!.message));
-            break;
-          default:
-            emit(RegistrationErrorState(dataState.error!.message));
-        }
-      }
-
-      if (dataState is ValidationFailedData &&
-          dataState.errors!.errors.isNotEmpty) {
-        emit(RegistrationValidationErrorState(dataState.errors!.errors));
-      }
     });
   }
 }
