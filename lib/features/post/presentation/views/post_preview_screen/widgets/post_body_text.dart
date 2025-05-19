@@ -22,7 +22,7 @@ class _PostBodyTextState extends State<PostBodyText> {
     return _isExpanded
         ? Container(
           width: double.infinity,
-          color: context.theme.colorScheme.primary,
+          color: context.theme.colorScheme.surface,
           padding: const EdgeInsets.only(bottom: 10, left: 15, right: 80),
           child: Column(
             spacing: 5,

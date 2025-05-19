@@ -12,17 +12,18 @@ class ImagePostViewer extends StatelessWidget {
       alignment: Alignment.center,
       child: PhotoView(
         enablePanAlways: true,
-        loadingBuilder: (context, event) => Center(
-          child: SizedBox(
-            width: 20.0,
-            height: 20.0,
-            child: CircularProgressIndicator(),
-          ),
-        ),
+        loadingBuilder:
+            (context, event) => Center(
+              child: SizedBox(
+                width: 20.0,
+                height: 20.0,
+                child: CircularProgressIndicator(),
+              ),
+            ),
         imageProvider: CachedNetworkImageProvider(attachmentUrl),
-        errorBuilder: (context, error, stackTrace) => Image.asset(
-          'assets/images/misc/no_preview.png',
-        ),
+        errorBuilder:
+            (context, error, stackTrace) =>
+                Image.asset('assets/images/misc/no_preview.png'),
       ),
     );
   }

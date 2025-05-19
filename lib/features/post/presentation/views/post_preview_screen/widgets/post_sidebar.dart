@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tafaling/core/extensions/app_context.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/post/presentation/views/post_preview_screen/bloc/post_preview_bloc.dart';
 
@@ -71,9 +72,12 @@ class PostSidebar extends StatelessWidget {
               builder: (context, state) {
                 if (state is PostPreviewLoaded) {
                   return _buildSidebarActionButton(
+                    context,
                     FontAwesomeIcons.solidHeart,
                     state.post.likeCount,
-                    state.post.isLiked ? Colors.red : Colors.white,
+                    state.post.isLiked
+                        ? Colors.red
+                        : context.theme.colorScheme.surface,
                     () {
                       // if (accessTokenNotifier.value != null) {
                       //   final event =
@@ -102,9 +106,10 @@ class PostSidebar extends StatelessWidget {
               },
             ),
             _buildSidebarActionButton(
+              context,
               FontAwesomeIcons.solidShareFromSquare,
               1,
-              Colors.white,
+              context.theme.colorScheme.surface,
               () {
                 // if (accessTokenNotifier.value != null) {
                 // } else {
@@ -117,9 +122,10 @@ class PostSidebar extends StatelessWidget {
               },
             ),
             _buildSidebarActionButton(
+              context,
               FontAwesomeIcons.solidComment,
               5,
-              Colors.white,
+              context.theme.colorScheme.surface,
               () {
                 // if (accessTokenNotifier.value != null) {
                 // } else {
@@ -138,6 +144,7 @@ class PostSidebar extends StatelessWidget {
   }
 
   Widget _buildSidebarActionButton(
+    BuildContext context,
     IconData icon,
     int count,
     Color color,
@@ -165,7 +172,10 @@ class PostSidebar extends StatelessWidget {
                 onPressed: onTextTap, // Separate action for text
                 child: Text(
                   count.toString(),
-                  style: const TextStyle(fontSize: 14, color: Colors.white),
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: context.theme.colorScheme.surface,
+                  ),
                 ),
               ),
             ),
