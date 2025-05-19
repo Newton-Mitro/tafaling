@@ -1,18 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tafaling/routes/route_name.dart';
 import 'package:tafaling/core/injection.dart';
-import 'package:tafaling/core/extensions/app_context.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/presentation/following_users_screen/bloc/following_users_bloc.dart';
 import 'package:tafaling/features/user/presentation/users_followers_screen/bloc/users_followers_bloc.dart';
-import 'package:tafaling/features/user/presentation/users_followers_screen/view/users_followers_screen.dart';
-import 'package:tafaling/features/user/presentation/widgets/profile_posts_grid.dart';
 import 'package:tafaling/features/user/presentation/user_profile_screen/bloc/profile_bloc.dart';
-import 'package:tafaling/features/user/presentation/widgets/follow_status.dart';
-import 'package:tafaling/features/user/presentation/following_users_screen/view/following_users_screen.dart';
 
 final profileTabs = [
   Tab(text: 'Posts'),

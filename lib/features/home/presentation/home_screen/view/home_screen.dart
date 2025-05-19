@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/core/extensions/app_context.dart';
+import 'package:tafaling/core/injection.dart';
 import 'package:tafaling/features/home/presentation/home_screen/bloc/home_screen_bloc.dart';
-import 'package:tafaling/features/post/presentation/views/create_post_screen/view/create_post_screen.dart';
 import 'package:tafaling/features/post/presentation/views/posts_screen/view/posts_screen.dart';
+import 'package:tafaling/features/user/presentation/friends_screen/bloc/friends_bloc.dart';
+import 'package:tafaling/features/user/presentation/friends_screen/view/friends_screen.dart';
+import 'package:tafaling/features/user/presentation/user_profile_screen/view/user_profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -96,8 +99,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       child: BlocBuilder<HomeScreenBloc, HomeScreenState>(
         builder: (context, state) {
           return Scaffold(
-            backgroundColor: Colors.transparent,
-            body: _getScreen(state.selectedIndex),
+            body: MultiBlocProvider(
+              providers: [BlocProvider(create: (context) => sl<FriendsBloc>())],
+              child: _getScreen(state.selectedIndex),
+            ),
             floatingActionButton: ScaleTransition(
               scale: fabAnimation,
               child: FloatingActionButton(
@@ -155,9 +160,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget _getScreen(int index) {
     final screens = [
       const PostsScreen(),
-      const Center(child: Text('Friends')),
+      FriendsScreen(userId: 1),
       const Center(child: Text('Inbox')),
-      const Center(child: Text('Profile')),
+      // UserProfileScreen(user: state.user),
     ];
     return screens[index];
   }

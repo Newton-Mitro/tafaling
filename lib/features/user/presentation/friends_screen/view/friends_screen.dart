@@ -45,50 +45,39 @@ class _FriendsScreenState extends State<FriendsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create:
-          (context) =>
-              sl<FriendsBloc>()
-                ..add(FetchFriends(userId: widget.userId, page: 1)),
-      child: Scaffold(
-        appBar: AppBar(title: Text("Friends")),
-        body: BlocBuilder<FriendsBloc, FriendsState>(
-          builder: (context, state) {
-            if (state is FriendsLoading && state is! FriendsLoaded) {
-              return Center(child: CircularProgressIndicator());
-            }
+    return Scaffold(
+      appBar: AppBar(title: Text("Friends")),
+      body: BlocBuilder<FriendsBloc, FriendsState>(
+        builder: (context, state) {
+          if (state is FriendsLoading && state is! FriendsLoaded) {
+            return Center(child: CircularProgressIndicator());
+          }
 
-            if (state is FriendsError) {
-              return Center(child: Text("Error: ${state.message}"));
-            }
+          if (state is FriendsError) {
+            return Center(child: Text("Error: ${state.message}"));
+          }
 
-            if (state is FriendsLoaded || state is FriendsLoadedWithMore) {
-              final followers =
-                  state is FriendsLoadedWithMore
-                      ? state.followers
-                      : (state as FriendsLoaded).followers;
+          if (state is FriendsLoaded || state is FriendsLoadedWithMore) {
+            final followers =
+                state is FriendsLoadedWithMore
+                    ? state.followers
+                    : (state as FriendsLoaded).followers;
 
+            if (followers.isEmpty) {
+              return Center(child: Text("No followers found."));
+            } else {
               return ListView.builder(
                 controller: _scrollController,
-                itemCount:
-                    followers.length + (state is FriendsLoadingMore ? 1 : 0),
+                itemCount: followers.length,
                 itemBuilder: (context, index) {
-                  if (index < followers.length) {
-                    final user = followers[index];
-                    return UserTile(user: user);
-                  } else {
-                    return Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Center(child: CircularProgressIndicator()),
-                    );
-                  }
+                  final user = followers[index];
+                  return UserTile(user: user);
                 },
               );
             }
-
-            return Center(child: Text("No friends available"));
-          },
-        ),
+          }
+          return Center(child: Text("No followers found."));
+        },
       ),
     );
   }

@@ -1,13 +1,13 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tafaling/features/auth/presentation/views/bloc/auth_bloc/auth_bloc.dart';
 import 'package:tafaling/routes/route_name.dart';
 import 'package:tafaling/core/injection.dart';
 import 'package:tafaling/core/extensions/app_context.dart';
 import 'package:tafaling/shared/widgets/app_logo.dart';
 import 'package:tafaling/shared/widgets/app_text_input.dart';
 import 'package:tafaling/shared/widgets/network_error_dialog.dart';
-import 'package:tafaling/features/auth/presentation/views/bloc/register_page_bloc/registration_screen_bloc.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -29,7 +29,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<RegistrationScreenBloc>(),
+      create: (context) => sl<AuthBloc>(),
       child: Scaffold(
         appBar: AppBar(title: Text("Register")),
         body: Container(
@@ -43,9 +43,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               begin: Alignment.topCenter,
             ),
           ),
-          child: BlocListener<RegistrationScreenBloc, RegistrationState>(
+          child: BlocListener<AuthBloc, AuthState>(
             listener: (context, state) {
-              if (state is RegistrationErrorState) {
+              if (state is AuthError) {
                 if (state.message == "No internet connection") {
                   NetworkErrorDialog.show(context);
                 } else {
@@ -69,7 +69,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 }
               }
 
-              if (state is RegistrationSuccessState) {
+              if (state is Authenticated) {
                 Navigator.pushReplacementNamed(context, RoutesName.homePage);
               }
             },
@@ -77,7 +77,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: SingleChildScrollView(
-                  child: BlocBuilder<RegistrationScreenBloc, RegistrationState>(
+                  child: BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       return Column(
                         spacing: 10,
@@ -89,7 +89,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             controller: nameController,
                             label: 'Name',
                             errorText:
-                                state is RegistrationValidationErrorState
+                                state is AuthValidationErrorState
                                     ? state.errors['name']?.isNotEmpty == true
                                         ? state.errors['name']![0]
                                         : null
@@ -100,7 +100,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             controller: emailController,
                             label: 'Email',
                             errorText:
-                                state is RegistrationValidationErrorState
+                                state is AuthValidationErrorState
                                     ? state.errors['email']?.isNotEmpty == true
                                         ? state.errors['email']![0]
                                         : null
@@ -112,7 +112,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             controller: passwordController,
                             label: 'Password',
                             errorText:
-                                state is RegistrationValidationErrorState
+                                state is AuthValidationErrorState
                                     ? state.errors['password']?.isNotEmpty ==
                                             true
                                         ? state.errors['password']![0]
@@ -128,7 +128,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             controller: confirmPasswordController,
                             label: 'Confirm Password',
                             errorText:
-                                state is RegistrationValidationErrorState
+                                state is AuthValidationErrorState
                                     ? state
                                                 .errors['confirm_password']
                                                 ?.isNotEmpty ==
@@ -143,18 +143,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          BlocBuilder<
-                            RegistrationScreenBloc,
-                            RegistrationState
-                          >(
+                          BlocBuilder<AuthBloc, AuthState>(
                             builder: (context, state) {
-                              if (state is RegistrationLoadingState) {
+                              if (state is AuthLoading) {
                                 return CircularProgressIndicator();
                               }
                               return ElevatedButton(
                                 onPressed: () {
-                                  context.read<RegistrationScreenBloc>().add(
-                                    RegisterEvent(
+                                  context.read<AuthBloc>().add(
+                                    RegisterRequested(
                                       name: nameController.text,
                                       email: emailController.text,
                                       password: passwordController.text,

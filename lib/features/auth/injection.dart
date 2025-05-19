@@ -10,8 +10,7 @@ import 'package:tafaling/features/auth/domain/usecases/get_auth_user_usecase.dar
 import 'package:tafaling/features/auth/domain/usecases/login_usecase.dart';
 import 'package:tafaling/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:tafaling/features/auth/domain/usecases/registration_usecase.dart';
-import 'package:tafaling/features/auth/presentation/views/bloc/login_page_bloc/login_screen_bloc.dart';
-import 'package:tafaling/features/auth/presentation/views/bloc/register_page_bloc/registration_screen_bloc.dart';
+import 'package:tafaling/features/auth/presentation/views/bloc/auth_bloc/auth_bloc.dart';
 
 void registerAuthModule() {
   // Register Data Sources
@@ -42,20 +41,20 @@ void registerAuthModule() {
   sl.registerLazySingleton<RegistrationUseCase>(
     () => RegistrationUseCase(authRepository: sl<AuthRepository>()),
   );
-  sl.registerLazySingleton<LogoutUsecase>(
-    () => LogoutUsecase(authRepository: sl<AuthRepository>()),
+  sl.registerLazySingleton<LogoutUseCase>(
+    () => LogoutUseCase(authRepository: sl<AuthRepository>()),
   );
   sl.registerLazySingleton<GetAuthUserUseCase>(
     () => GetAuthUserUseCase(authRepository: sl<AuthRepository>()),
   );
 
   // Register Bloc
-  sl.registerFactory<LoginScreenBloc>(
-    () => LoginScreenBloc(loginUseCase: sl<LoginUseCase>()),
-  );
-
-  sl.registerFactory<RegistrationScreenBloc>(
-    () =>
-        RegistrationScreenBloc(registrationUseCase: sl<RegistrationUseCase>()),
+  sl.registerFactory<AuthBloc>(
+    () => AuthBloc(
+      loginUseCase: sl<LoginUseCase>(),
+      registrationUseCase: sl<RegistrationUseCase>(),
+      logoutUseCase: sl<LogoutUseCase>(),
+      getAuthUserUseCase: sl<GetAuthUserUseCase>(),
+    ),
   );
 }
