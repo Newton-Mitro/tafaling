@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tafaling/routes/route_name.dart';
-import 'package:tafaling/features/auth/presentation/views/login_screen/views/login_screen.dart';
-import 'package:tafaling/features/auth/presentation/views/registration_screen/views/register_screen.dart';
+import 'package:tafaling/features/auth/presentation/views/pages/login_screen.dart';
+import 'package:tafaling/features/auth/presentation/views/pages/register_screen.dart';
 import 'package:tafaling/features/home/presentation/home_screen/view/home_screen.dart';
 import 'package:tafaling/features/post/presentation/views/post_liked_users_screen/view/post_liked_users_screen.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';

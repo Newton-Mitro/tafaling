@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:tafaling/core/utils/app_context.dart';
+import 'package:tafaling/core/extensions/app_context.dart';
 import 'package:tafaling/features/onboarding/data/models/onboarding_info.dart';
 import 'package:tafaling/features/onboarding/presentation/bloc/onboarding_page_bloc.dart';
 import 'package:tafaling/routes/route_name.dart';

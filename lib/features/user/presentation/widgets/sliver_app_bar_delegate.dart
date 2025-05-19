@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tafaling/core/utils/app_context.dart';
+import 'package:tafaling/core/extensions/app_context.dart';
 
 class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   final TabBar _tabBar;
@@ -14,11 +14,11 @@ class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Material(
-      color: context.theme.colorScheme.secondary,
-      child: _tabBar,
-    );
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    return Material(color: context.theme.colorScheme.secondary, child: _tabBar);
   }
 
   @override

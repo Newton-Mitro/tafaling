@@ -72,7 +72,7 @@ class _MyAppState extends State<MyApp> {
       return onboardingSeen ? const HomeScreen() : const OnboardingPage();
     }
 
-    return Center(child: Text("Error"));
+    return SizedBox.shrink();
   }
 }
 

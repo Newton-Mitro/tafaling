@@ -6,7 +6,7 @@ import 'package:tafaling/features/post/data/models/like_model.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
 import 'package:tafaling/features/user/data/models/user_model.dart';
 
-abstract class PostDataSource {
+abstract class PostRemoteDataSource {
   Future<List<PostModel>> fetchPosts(int userId, int startRecord, int pageSize);
   Future<List<PostModel>> fetchUserPosts(
     int userId,
@@ -23,7 +23,7 @@ abstract class PostDataSource {
   );
 }
 
-class PostRemoteDataSourceImpl implements PostDataSource {
+class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   final ApiService apiService;
   final ApiService authApiService;
 

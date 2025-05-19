@@ -60,5 +60,31 @@ class PostsScreenBloc extends Bloc<PostsScreenEvent, PostsScreenState> {
     Emitter<PostsScreenState> emit,
   ) async {
     emit(state.copyWith(isFetching: true, posts: state.posts));
+    final posts = await fetchPostsUseCase(
+      FetchPostsPrams(
+        userId: 0,
+        startRecord: state.currentPage,
+        pageSize: postsPerPage,
+      ),
+    );
+
+    posts.fold(
+      (l) => emit(
+        state.copyWith(
+          isFetching: false,
+          posts: state.posts,
+          currentPage: state.currentPage,
+          error: l.message,
+        ),
+      ),
+      (r) => emit(
+        state.copyWith(
+          isFetching: false,
+          posts: [...state.posts, ...r],
+          currentPage: state.currentPage + 1,
+          error: null,
+        ),
+      ),
+    );
   }
 }

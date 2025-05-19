@@ -16,7 +16,7 @@ import 'package:tafaling/features/post/presentation/views/posts_screen/bloc/post
 
 void registerPostModule() {
   // Data Sources
-  sl.registerLazySingleton<PostDataSource>(
+  sl.registerLazySingleton<PostRemoteDataSource>(
     () => PostRemoteDataSourceImpl(
       apiService: sl<ApiService>(),
       authApiService: sl<ApiService>(),
@@ -27,7 +27,7 @@ void registerPostModule() {
   sl.registerLazySingleton<PostRepository>(
     () => PostRepositoryImpl(
       networkInfo: sl<NetworkInfo>(),
-      postDataSource: sl<PostDataSource>(),
+      postDataSource: sl<PostRemoteDataSource>(),
     ),
   );
 

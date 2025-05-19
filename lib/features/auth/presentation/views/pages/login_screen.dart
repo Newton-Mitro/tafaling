@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/routes/route_name.dart';
 import 'package:tafaling/core/injection.dart';
-import 'package:tafaling/core/utils/app_context.dart';
+import 'package:tafaling/core/extensions/app_context.dart';
 import 'package:tafaling/shared/widgets/app_logo.dart';
 import 'package:tafaling/shared/widgets/app_text_input.dart';
 import 'package:tafaling/shared/widgets/network_error_dialog.dart';
-import 'package:tafaling/features/auth/presentation/views/login_screen/bloc/login_screen_bloc.dart';
+import 'package:tafaling/features/auth/presentation/views/bloc/login_page_bloc/login_screen_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

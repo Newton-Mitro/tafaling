@@ -2,17 +2,17 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:tafaling/core/constants/api_config.dart';
 import 'package:tafaling/core/errors/exceptions.dart';
-import 'package:tafaling/core/services/local_storage/local_storage.dart';
 import 'package:tafaling/core/services/logging/logger_service.dart';
 import 'package:tafaling/core/network/auth_interceptor.dart';
 import 'package:tafaling/core/network/logger_interceptor.dart';
+import 'package:tafaling/features/auth/data/data_sources/auth_data_source.dart';
 
 class ApiService {
   final Dio _dio;
-  final LocalStorage localStorage;
+  final AuthLocalDataSource authLocalDataSource;
   final LoggerService loggerService;
 
-  ApiService({required this.localStorage, required this.loggerService})
+  ApiService({required this.authLocalDataSource, required this.loggerService})
     : _dio = Dio() {
     _dio.options = BaseOptions(
       baseUrl: ApiConfig.baseUrl,
@@ -20,7 +20,7 @@ class ApiService {
       receiveTimeout: const Duration(seconds: 50),
     );
     _dio.interceptors.addAll([
-      AuthInterceptor(dio: _dio, localStorage: localStorage),
+      AuthInterceptor(dio: _dio, authLocalDataSource: authLocalDataSource),
       LoggerInterceptor(loggerService: loggerService),
     ]);
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:super_tooltip/super_tooltip.dart';
-import 'package:tafaling/core/utils/app_context.dart';
+import 'package:tafaling/core/extensions/app_context.dart';
 
 class TooltipComponent extends StatefulWidget {
   final String tooltipMessage;

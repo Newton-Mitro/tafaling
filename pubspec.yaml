@@ -41,6 +41,7 @@ dependencies:
   super_tooltip: ^2.0.9
   flutter_dotenv: ^5.2.1
   flutter_locales:
+  animated_bottom_navigation_bar: ^1.4.0
 
 dev_dependencies:
   flutter_test:

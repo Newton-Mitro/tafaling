@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tafaling/core/utils/app_context.dart';
+import 'package:tafaling/core/extensions/app_context.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/post/presentation/views/post_preview_screen/widgets/read_more_text.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';

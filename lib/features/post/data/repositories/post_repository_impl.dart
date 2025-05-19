@@ -9,7 +9,7 @@ import 'package:tafaling/features/post/domain/repositories/post_repository.dart'
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 
 class PostRepositoryImpl implements PostRepository {
-  final PostDataSource postDataSource;
+  final PostRemoteDataSource postDataSource;
   final NetworkInfo networkInfo;
 
   PostRepositoryImpl({required this.postDataSource, required this.networkInfo});

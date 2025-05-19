@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tafaling/core/utils/app_context.dart';
+import 'package:tafaling/core/extensions/app_context.dart';
 
 class CustomButton extends StatelessWidget {
   final BuildContext context;
@@ -27,7 +27,9 @@ class CustomButton extends StatelessWidget {
         child: Text(
           text,
           style: TextStyle(
-              fontSize: 18, color: context.theme.colorScheme.onSurface),
+            fontSize: 18,
+            color: context.theme.colorScheme.onSurface,
+          ),
         ),
       ),
     );

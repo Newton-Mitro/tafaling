@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tafaling/core/utils/app_context.dart';
+import 'package:tafaling/core/extensions/app_context.dart';
 import 'package:tafaling/shared/widgets/theme_selector/bloc/theme_selector_bloc.dart';
 
 class ThemeSelector extends StatelessWidget {

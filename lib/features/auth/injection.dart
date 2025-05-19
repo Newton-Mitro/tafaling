@@ -10,9 +10,8 @@ import 'package:tafaling/features/auth/domain/usecases/get_auth_user_usecase.dar
 import 'package:tafaling/features/auth/domain/usecases/login_usecase.dart';
 import 'package:tafaling/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:tafaling/features/auth/domain/usecases/registration_usecase.dart';
-import 'package:tafaling/features/auth/presentation/views/login_screen/bloc/login_screen_bloc.dart';
-import 'package:tafaling/features/auth/presentation/views/registration_screen/bloc/registration_screen_bloc.dart';
-import 'presentation/index.dart';
+import 'package:tafaling/features/auth/presentation/views/bloc/login_page_bloc/login_screen_bloc.dart';
+import 'package:tafaling/features/auth/presentation/views/bloc/register_page_bloc/registration_screen_bloc.dart';
 
 void registerAuthModule() {
   // Register Data Sources
@@ -58,12 +57,5 @@ void registerAuthModule() {
   sl.registerFactory<RegistrationScreenBloc>(
     () =>
         RegistrationScreenBloc(registrationUseCase: sl<RegistrationUseCase>()),
-  );
-
-  sl.registerFactory<AuthBloc>(
-    () => AuthBloc(
-      logoutUseCase: sl<LogoutUsecase>(),
-      getAuthUserUseCase: sl<GetAuthUserUseCase>(),
-    ),
   );
 }

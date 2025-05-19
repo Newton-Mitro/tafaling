@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tafaling/core/utils/app_context.dart';
+import 'package:tafaling/core/extensions/app_context.dart';
 
 class FollowStatus extends StatelessWidget {
   final String label;
@@ -19,14 +19,8 @@ class FollowStatus extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
       child: Column(
         children: [
-          Text(
-            value,
-            style: context.theme.textTheme.labelLarge,
-          ),
-          Text(
-            label,
-            style: context.theme.textTheme.labelMedium,
-          ),
+          Text(value, style: context.theme.textTheme.labelLarge),
+          Text(label, style: context.theme.textTheme.labelMedium),
         ],
       ),
     );
