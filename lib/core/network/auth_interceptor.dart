@@ -30,7 +30,7 @@ class AuthInterceptor extends Interceptor {
 
     options.headers['Accept'] = 'application/json';
 
-    if (accessToken != null) {
+    if (accessToken != null && accessToken!.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $accessToken';
       if (JwtDecoder.isExpired(accessToken!)) {
         final newRefreshToken = await _handleTokenRefresh();

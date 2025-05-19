@@ -7,6 +7,7 @@ import 'package:tafaling/features/onboarding/data/models/onboarding_info.dart';
 import 'package:tafaling/features/onboarding/presentation/bloc/onboarding_page_bloc.dart';
 import 'package:tafaling/routes/route_name.dart';
 import 'package:tafaling/shared/widgets/buttons/app_primary_button.dart';
+import 'package:tafaling/shared/widgets/language_switch/language_switch.dart';
 import 'package:tafaling/shared/widgets/theme_selector/theme_selector.dart';
 
 getOnboardingListItems(BuildContext context) {
@@ -169,11 +170,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 },
               ),
 
-              // Positioned(
-              //   top: 16,
-              //   left: 16,
-              //   child: const SafeArea(child: LanguageSwitch()),
-              // ),
+              Positioned(
+                top: 16,
+                left: 16,
+                child: const SafeArea(child: LanguageSwitch()),
+              ),
               Positioned(
                 top: 16,
                 right: 16,
