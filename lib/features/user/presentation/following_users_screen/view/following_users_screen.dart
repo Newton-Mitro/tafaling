@@ -22,19 +22,23 @@ class _FollowingUsersScreenState extends State<FollowingUsersScreen> {
     userFollowersBloc = BlocProvider.of<FollowingUsersBloc>(context);
     userFollowersBloc.add(FetchFollowingUsers(userId: widget.userId, page: 1));
 
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        if (userFollowersBloc.hasMoreFollowers) {
-          userFollowersBloc.add(
-            FetchFollowingUsers(
-              userId: widget.userId,
-              page: userFollowersBloc.currentPage + 1,
-            ),
-          );
-        }
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 100) {
+      if (userFollowersBloc.hasMoreFollowers &&
+          userFollowersBloc.state is! FollowingUsersLoadingMore &&
+          userFollowersBloc.state is! FollowingUsersLoading) {
+        userFollowersBloc.add(
+          FetchFollowingUsers(
+            userId: widget.userId,
+            page: userFollowersBloc.currentPage,
+          ),
+        );
       }
-    });
+    }
   }
 
   @override
@@ -42,9 +46,8 @@ class _FollowingUsersScreenState extends State<FollowingUsersScreen> {
     return Scaffold(
       body: BlocBuilder<FollowingUsersBloc, FollowingUsersState>(
         builder: (context, state) {
-          if (state is FollowingUsersLoading &&
-              state is! FollowingUsersLoaded) {
-            return Center(child: CircularProgressIndicator());
+          if (state is FollowingUsersLoading) {
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (state is FollowingUsersError) {
@@ -52,29 +55,33 @@ class _FollowingUsersScreenState extends State<FollowingUsersScreen> {
           }
 
           if (state is FollowingUsersLoaded ||
-              state is FollowingUsersLoadedWithMore) {
+              state is FollowingUsersErrorWithMore) {
             final followers =
-                state is FollowingUsersLoadedWithMore
-                    ? (state).followers
-                    : (state as FollowingUsersLoaded).followers;
+                state is FollowingUsersLoaded
+                    ? state.followers
+                    : (state as FollowingUsersErrorWithMore).followers;
+
+            final isLoadingMore =
+                userFollowersBloc.state is FollowingUsersLoadingMore;
 
             return ListView.builder(
               controller: _scrollController,
-              itemCount:
-                  followers.length +
-                  (state is FollowingUsersLoadingMore ? 1 : 0),
+              itemCount: followers.length + (isLoadingMore ? 1 : 0),
               itemBuilder: (context, index) {
                 if (index < followers.length) {
                   final user = followers[index];
                   return UserTile(user: user);
                 } else {
-                  return Center(child: CircularProgressIndicator());
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
                 }
               },
             );
           }
 
-          return Center(child: Text("No followers available"));
+          return const Center(child: Text("No followers available"));
         },
       ),
     );

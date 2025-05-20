@@ -1,5 +1,6 @@
 import 'package:tafaling/core/services/local_storage/local_storage.dart';
 import 'package:tafaling/core/theme/services/theme_service.dart';
+import 'package:tafaling/shared/widgets/theme_selector/bloc/theme_selector_bloc.dart';
 
 class ThemeServiceImpl implements ThemeService {
   final LocalStorage localStorage;
@@ -10,6 +11,9 @@ class ThemeServiceImpl implements ThemeService {
   @override
   Future<String> getTheme() async {
     final theme = await localStorage.getString(keyTheme);
+    if (theme == null) {
+      return ThemeName.primaryDark.themeKey;
+    }
     return theme;
   }
 

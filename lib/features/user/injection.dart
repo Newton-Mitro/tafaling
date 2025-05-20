@@ -1,7 +1,6 @@
 import 'package:tafaling/core/injection.dart';
 import 'package:tafaling/core/network/api_service.dart';
 import 'package:tafaling/core/network/network_info.dart';
-import 'package:tafaling/core/services/local_storage/local_storage.dart';
 import 'package:tafaling/features/user/data/data_sources/user_data_source.dart';
 import 'package:tafaling/features/user/data/data_sources/users_remote_data_source.dart';
 import 'package:tafaling/features/user/data/repositories/user_repository_impl.dart';
@@ -74,10 +73,7 @@ void registerUserModule() {
   );
 
   sl.registerFactory(
-    () => SearchScreenBloc(
-      searchUsersUseCase: sl<SearchUsersUseCase>(),
-      localStorage: sl<LocalStorage>(),
-    ),
+    () => SearchScreenBloc(searchUsersUseCase: sl<SearchUsersUseCase>()),
   );
 
   sl.registerFactory(

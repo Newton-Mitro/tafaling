@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tafaling/core/settings/settings_privacy_page.dart';
 import 'package:tafaling/routes/route_name.dart';
 import 'package:tafaling/features/auth/presentation/views/pages/login_screen.dart';
 import 'package:tafaling/features/auth/presentation/views/pages/register_screen.dart';
@@ -27,6 +28,9 @@ class AppRoutes {
 
       case RoutesName.searchUser:
         return _materialRoute(SearchScreen());
+
+      case RoutesName.settingsPage:
+        return _materialRoute(SettingsPrivacyPage());
 
       case RoutesName.postLikedUsersPage:
         return _materialRoute(PostLikedUsersScreen(userId: args));

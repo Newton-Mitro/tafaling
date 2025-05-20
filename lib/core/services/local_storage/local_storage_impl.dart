@@ -35,35 +35,35 @@ class LocalStorageImpl implements LocalStorage {
     await prefs.setStringList(key, value);
   }
 
-  // ✅ Get Methods
+  // ✅ Get Methods (nullable)
   @override
-  Future<String> getString(String key) async {
+  Future<String?> getString(String key) async {
     final prefs = await _prefs;
-    return prefs.getString(key) ?? '';
+    return prefs.getString(key);
   }
 
   @override
-  Future<int> getInt(String key) async {
+  Future<int?> getInt(String key) async {
     final prefs = await _prefs;
-    return prefs.getInt(key) ?? 0;
+    return prefs.getInt(key);
   }
 
   @override
-  Future<bool> getBool(String key) async {
+  Future<bool?> getBool(String key) async {
     final prefs = await _prefs;
-    return prefs.getBool(key) ?? false;
+    return prefs.getBool(key);
   }
 
   @override
-  Future<double> getDouble(String key) async {
+  Future<double?> getDouble(String key) async {
     final prefs = await _prefs;
-    return prefs.getDouble(key) ?? 0.0;
+    return prefs.getDouble(key);
   }
 
   @override
-  Future<List<String>> getStringList(String key) async {
+  Future<List<String>?> getStringList(String key) async {
     final prefs = await _prefs;
-    return prefs.getStringList(key) ?? [];
+    return prefs.getStringList(key);
   }
 
   // ✅ Remove Key
@@ -78,5 +78,12 @@ class LocalStorageImpl implements LocalStorage {
   Future<bool> containsKey(String key) async {
     final prefs = await _prefs;
     return prefs.containsKey(key);
+  }
+
+  // ✅ (Optional) Clear all data
+  @override
+  Future<void> clear() async {
+    final prefs = await _prefs;
+    await prefs.clear();
   }
 }

@@ -35,7 +35,8 @@ class _PostsScreenState extends State<PostsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Posts'),
+        automaticallyImplyLeading: false,
+        title: const Text('Home'),
         elevation: 5,
         actions: [
           IconButton(
@@ -46,61 +47,7 @@ class _PostsScreenState extends State<PostsScreen> {
           ),
           ThemeSelector(),
           LanguageSwitch(),
-          PopupMenuButton<int>(
-            offset: const Offset(0, 52),
-            icon: Icon(Icons.more_vert), // ← use this instead of child
-            onSelected: (value) async {
-              if (value == 0) {
-                debugPrint('Profile tapped');
-              } else if (value == 1) {
-                debugPrint('Settings tapped');
-              } else if (value == 2) {
-                debugPrint('Logout tapped');
-              }
-            },
-            itemBuilder:
-                (context) => [
-                  const PopupMenuItem(
-                    value: 0,
-                    child: Row(
-                      children: [
-                        Icon(Icons.person, size: 20),
-                        SizedBox(width: 8),
-                        Text('Profile'),
-                      ],
-                    ),
-                  ),
-                  const PopupMenuItem(
-                    value: 1,
-                    child: Row(
-                      children: [
-                        Icon(Icons.settings, size: 20),
-                        SizedBox(width: 8),
-                        Text('Settings'),
-                      ],
-                    ),
-                  ),
-                  const PopupMenuItem(
-                    enabled: false,
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: Divider(
-                      color: Colors.grey,
-                      thickness: 1.2,
-                      height: 8,
-                    ),
-                  ),
-                  const PopupMenuItem(
-                    value: 2,
-                    child: Row(
-                      children: [
-                        Icon(Icons.logout, size: 20),
-                        SizedBox(width: 8),
-                        Text('Logout'),
-                      ],
-                    ),
-                  ),
-                ],
-          ),
+          SizedBox(width: 10),
         ],
       ),
       body: BlocBuilder<PostsScreenBloc, PostsScreenState>(

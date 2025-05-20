@@ -6,4 +6,5 @@ final class RoutesName {
   static const String userProfilePage = 'userProfilePage';
   static const String searchUser = 'searchUser';
   static const String postLikedUsersPage = 'postLikedUsersPage';
+  static const String settingsPage = 'settingsPage';
 }

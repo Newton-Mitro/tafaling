@@ -1,24 +1,22 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tafaling/core/services/local_storage/local_storage.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/domain/usecases/search_users_usecase.dart';
 
 part 'search_screen_event.dart';
 part 'search_screen_state.dart';
 
-const int postsPerPage = 5;
-
 class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchState> {
   final SearchUsersUseCase searchUsersUseCase;
-  final LocalStorage localStorage;
 
-  int _fetchPage = 1;
+  int _currentPage = 1;
+  final int _pageSize = 10;
   bool _hasMore = true;
+  bool _isLoading = false;
+  String _lastSearchText = '';
 
-  SearchScreenBloc({
-    required this.searchUsersUseCase,
-    required this.localStorage,
-  }) : super(SearchInitial()) {
+  SearchScreenBloc({required this.searchUsersUseCase})
+    : super(SearchInitial()) {
     on<SearchUsersEvent>(_onSearchUsersEvent);
     on<ResetSearchEvent>(_onResetSearchEvent);
   }
@@ -27,38 +25,58 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchState> {
     SearchUsersEvent event,
     Emitter<SearchState> emit,
   ) async {
+    // Prevent multiple loads
+    if (_isLoading || !_hasMore) return;
+
+    // Reset page if new search
+    if (event.isInitialLoad || _lastSearchText != event.searchText) {
+      _currentPage = 1;
+      _hasMore = true;
+    }
+
+    _isLoading = true;
+    _lastSearchText = event.searchText;
+
     final List<UserEntity> currentUsers =
-        state is SearchLoaded
-            ? List<UserEntity>.from((state as SearchLoaded).users)
-            : [];
+        state is SearchLoaded ? List.from((state as SearchLoaded).users) : [];
 
-    emit(SearchLoading());
+    if (_currentPage == 1) {
+      emit(SearchLoading());
+    }
 
-    // final authUser = await localStorage.getString(Constants.authUserKey);
-    // final user = UserModel.fromJson(jsonDecode(authUser ?? ''));
+    final searchUsersParams = SearchUsersParams(
+      searchText: event.searchText,
+      userId: event.userId,
+      startRecord: (_currentPage - 1) * _pageSize,
+      pageSize: _pageSize,
+    );
 
-    // final searchUsersParams = SearchUsersParams(
-    //   searchText: event.searchText,
-    //   userId: user.id,
-    //   startRecord: 0,
-    //   pageSize: 50,
-    // );
+    final dataState = await searchUsersUseCase(searchUsersParams);
 
-    // final dataState = await searchUsersUseCase(searchUsersParams);
+    dataState.fold(
+      (failure) {
+        _isLoading = false;
+        emit(SearchError(failure.message));
+      },
+      (data) {
+        _isLoading = false;
+        if (data.length < _pageSize) {
+          _hasMore = false;
+        } else {
+          _currentPage++;
+        }
 
-    // dataState.fold((failure) => emit(SearchError(failure.message)), (data) {
-    //   if (data.isEmpty) {
-    //     emit(SearchLoaded(currentUsers));
-    //   } else {
-    //     currentUsers.addAll(data);
-    //     emit(SearchLoaded(currentUsers));
-    //   }
-    // });
+        final updatedUsers = currentUsers..addAll(data);
+        emit(SearchLoaded(updatedUsers));
+      },
+    );
   }
 
   void _onResetSearchEvent(ResetSearchEvent event, Emitter<SearchState> emit) {
-    _fetchPage = 1;
+    _currentPage = 1;
     _hasMore = true;
+    _isLoading = false;
+    _lastSearchText = '';
     emit(SearchInitial());
   }
 }

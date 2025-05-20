@@ -12,55 +12,69 @@ class FollowingUsersBloc
 
   bool hasMoreFollowers = true;
   int currentPage = 1;
-  int pageSize = 10;
+  final int pageSize = 10;
+  bool _isLoading = false;
+
+  List<UserEntity> _followers = [];
 
   FollowingUsersBloc({required this.getFollowingUsersUseCase})
     : super(FollowingUsersInitial()) {
     on<FetchFollowingUsers>(_onFetchFollowingUsers);
   }
 
-  // Event handler for fetching followers
   Future<void> _onFetchFollowingUsers(
     FetchFollowingUsers event,
     Emitter<FollowingUsersState> emit,
   ) async {
-    if (event.page == 1) {
+    if (_isLoading || !hasMoreFollowers) return;
+
+    _isLoading = true;
+
+    final isInitialLoad = event.page == 1;
+
+    if (isInitialLoad) {
+      _followers.clear();
       emit(FollowingUsersLoading());
     } else {
-      emit(FollowingUsersLoadingMore());
+      emit(FollowingUsersLoadingMore(followers: List.of(_followers)));
     }
 
-    try {
-      final startRecord = (event.page - 1) * pageSize;
-      final getFollowingUsersParams = GetFollowingUsersParams(
+    final startRecord = (event.page - 1) * pageSize;
+
+    final result = await getFollowingUsersUseCase(
+      GetFollowingUsersParams(
         targetUserId: event.userId,
         startRecord: startRecord,
         pageSize: pageSize,
-      );
-      final dataState = await getFollowingUsersUseCase.call(
-        getFollowingUsersParams,
-      );
+      ),
+    );
 
-      dataState.fold((l) => emit(FollowingUsersError(message: l.message)), (r) {
-        if (r.isEmpty) {
-          hasMoreFollowers = false;
-          emit(FollowingUsersLoaded(followers: r));
+    result.fold(
+      (failure) {
+        _isLoading = false;
+        if (!isInitialLoad) {
+          emit(
+            FollowingUsersErrorWithMore(
+              message: failure.message,
+              followers: List.of(_followers),
+            ),
+          );
         } else {
-          hasMoreFollowers = true;
-          emit(FollowingUsersLoaded(followers: r));
+          emit(FollowingUsersError(message: failure.message));
         }
-      });
-    } catch (e) {
-      if (state is FollowingUsersLoaded) {
-        emit(
-          FollowingUsersErrorWithMore(
-            message: e.toString(),
-            followers: (state as FollowingUsersLoaded).followers,
-          ),
-        );
-      } else {
-        emit(FollowingUsersError(message: e.toString()));
-      }
-    }
+      },
+      (fetchedFollowers) {
+        _isLoading = false;
+
+        if (fetchedFollowers.length < pageSize) {
+          hasMoreFollowers = false;
+        }
+
+        _followers.addAll(fetchedFollowers);
+        currentPage = event.page + 1;
+
+        emit(FollowingUsersLoaded(followers: List.of(_followers)));
+      },
+    );
   }
 }

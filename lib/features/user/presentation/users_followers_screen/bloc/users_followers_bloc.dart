@@ -12,65 +12,70 @@ class UserFollowersBloc extends Bloc<UserFollowersEvent, UserFollowersState> {
   bool hasMoreFollowers = true;
   int currentPage = 1;
   int pageSize = 100;
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
 
   UserFollowersBloc({required this.getFollowersUseCase})
     : super(UserFollowersInitial()) {
     on<FetchUserFollowers>(_onFetchUserFollowers);
   }
 
-  // Event handler for fetching followers
   Future<void> _onFetchUserFollowers(
     FetchUserFollowers event,
     Emitter<UserFollowersState> emit,
   ) async {
+    if (_isLoading || !hasMoreFollowers) return;
+
+    _isLoading = true;
+
     if (event.page == 1) {
       emit(UserFollowersLoading());
     } else {
       emit(UserFollowersLoadingMore());
     }
 
-    try {
-      final startRecord = (event.page - 1) * pageSize;
-      final getFollowersParams = GetFollowersParams(
-        targetUserId: event.userId,
-        startRecord: startRecord,
-        pageSize: pageSize,
-      );
-      final dataState = await getFollowersUseCase.call(getFollowersParams);
+    final startRecord = (event.page - 1) * pageSize;
 
-      dataState.fold(
-        (failure) {
-          if (state is UserFollowersLoaded) {
-            emit(
-              UserFollowersErrorWithMore(
-                message: failure.message,
-                followers: (state as UserFollowersLoaded).followers,
-              ),
-            );
-          } else {
-            emit(UserFollowersError(message: failure.message));
-          }
-        },
-        (followers) {
-          if (followers.isEmpty) {
-            hasMoreFollowers = false;
-          }
-          if (event.page == 1) {
-            emit(UserFollowersLoaded(followers: followers));
-          }
-        },
-      );
-    } catch (e) {
-      if (state is UserFollowersLoaded) {
-        emit(
-          UserFollowersErrorWithMore(
-            message: e.toString(),
-            followers: (state as UserFollowersLoaded).followers,
-          ),
-        );
-      } else {
-        emit(UserFollowersError(message: e.toString()));
-      }
-    }
+    final params = GetFollowersParams(
+      targetUserId: event.userId,
+      startRecord: startRecord,
+      pageSize: pageSize,
+    );
+
+    final result = await getFollowersUseCase(params);
+
+    result.fold(
+      (failure) {
+        _isLoading = false;
+        if (state is UserFollowersLoaded) {
+          emit(
+            UserFollowersErrorWithMore(
+              message: failure.message,
+              followers: (state as UserFollowersLoaded).followers,
+            ),
+          );
+        } else {
+          emit(UserFollowersError(message: failure.message));
+        }
+      },
+      (followers) {
+        _isLoading = false;
+
+        final previous =
+            state is UserFollowersLoaded
+                ? (state as UserFollowersLoaded).followers
+                : <UserEntity>[];
+
+        if (followers.length < pageSize) {
+          hasMoreFollowers = false;
+        } else {
+          currentPage = event.page + 1;
+        }
+
+        final allFollowers = [...previous, ...followers];
+        emit(UserFollowersLoaded(followers: allFollowers));
+      },
+    );
   }
 }

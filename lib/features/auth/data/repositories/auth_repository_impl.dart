@@ -25,6 +25,8 @@ class AuthRepositoryImpl implements AuthRepository {
     if (await networkInfo.isConnected == true) {
       try {
         final result = await authRemoteDataSource.login(email, password);
+
+        await authLocalDataSource.setAuthUser(result);
         return Right(result);
       } catch (e) {
         return Left(FailureMapper.fromException(e));
@@ -62,8 +64,8 @@ class AuthRepositoryImpl implements AuthRepository {
   ResultFuture<void> logout() async {
     if (await networkInfo.isConnected == true) {
       try {
-        await authRemoteDataSource.logout();
         await authLocalDataSource.clearAuthUser();
+        await authRemoteDataSource.logout();
 
         return const Right(null);
       } catch (e) {

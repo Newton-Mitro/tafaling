@@ -25,7 +25,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   @override
   Future<AuthUserModel> getAuthUser() async {
     final userJsonString = await localStorage.getString(_userKey);
-    if (userJsonString.isEmpty) {
+    if (userJsonString == null) {
       throw Exception('User not found in local storage');
     }
 

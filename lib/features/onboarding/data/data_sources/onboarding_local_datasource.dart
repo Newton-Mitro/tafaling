@@ -22,7 +22,8 @@ class OnboardingLocalDataSourceImpl implements OnboardingLocalDataSource {
 
   @override
   Future<bool> hasSeenOnboarding() async {
-    return localStorage.getBool(_onboardingKey);
+    final result = await localStorage.getBool(_onboardingKey);
+    return result ?? false;
   }
 
   @override

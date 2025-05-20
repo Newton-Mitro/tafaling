@@ -23,16 +23,16 @@ class _UsersFollowersScreenState extends State<UsersFollowersScreen> {
     userFollowersBloc.add(FetchUserFollowers(userId: widget.userId, page: 1));
 
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        if (userFollowersBloc.hasMoreFollowers) {
-          userFollowersBloc.add(
-            FetchUserFollowers(
-              userId: widget.userId,
-              page: userFollowersBloc.currentPage + 1,
-            ),
-          );
-        }
+      if (_scrollController.position.pixels >=
+              _scrollController.position.maxScrollExtent - 300 &&
+          userFollowersBloc.hasMoreFollowers &&
+          !userFollowersBloc.isLoading) {
+        userFollowersBloc.add(
+          FetchUserFollowers(
+            userId: widget.userId,
+            page: userFollowersBloc.currentPage,
+          ),
+        );
       }
     });
   }
@@ -43,7 +43,7 @@ class _UsersFollowersScreenState extends State<UsersFollowersScreen> {
       body: BlocBuilder<UserFollowersBloc, UserFollowersState>(
         builder: (context, state) {
           if (state is UserFollowersLoading && state is! UserFollowersLoaded) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (state is UserFollowersError) {
@@ -51,11 +51,12 @@ class _UsersFollowersScreenState extends State<UsersFollowersScreen> {
           }
 
           if (state is UserFollowersLoaded ||
-              state is UserFollowersLoadedWithMore) {
+              state is UserFollowersErrorWithMore ||
+              state is UserFollowersLoadingMore) {
             final followers =
-                state is UserFollowersLoadedWithMore
-                    ? (state).followers
-                    : (state as UserFollowersLoaded).followers;
+                (state is UserFollowersLoaded)
+                    ? state.followers
+                    : (state as dynamic).followers;
 
             return ListView.builder(
               controller: _scrollController,
@@ -67,13 +68,16 @@ class _UsersFollowersScreenState extends State<UsersFollowersScreen> {
                   final user = followers[index];
                   return UserTile(user: user);
                 } else {
-                  return Center(child: CircularProgressIndicator());
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
                 }
               },
             );
           }
 
-          return Center(child: Text("No followers available"));
+          return const Center(child: Text("No followers available"));
         },
       ),
     );

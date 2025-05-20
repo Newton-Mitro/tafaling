@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/core/injection.dart';
+import 'package:tafaling/features/auth/presentation/views/bloc/auth_bloc/auth_bloc.dart';
 import 'package:tafaling/features/user/presentation/search_screen/bloc/search_screen_bloc.dart';
 import 'package:tafaling/features/user/presentation/widgets/user_tile/user_tile.dart';
 
@@ -15,13 +16,21 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _searchController = TextEditingController();
-  late SearchScreenBloc _searchBloc;
+  late final SearchScreenBloc _searchBloc;
   Timer? _debounce;
+  String _lastQuery = '';
+
+  int _currentUserId = 0;
 
   @override
   void initState() {
     super.initState();
     _searchBloc = sl<SearchScreenBloc>();
+
+    final authState = context.read<AuthBloc>().state;
+    if (authState is Authenticated) {
+      _currentUserId = authState.authUser.user.id;
+    }
   }
 
   void _onSearch(String query) {
@@ -29,11 +38,36 @@ class _SearchScreenState extends State<SearchScreen> {
 
     _debounce = Timer(const Duration(milliseconds: 500), () {
       if (query.isNotEmpty) {
-        _searchBloc.add(SearchUsersEvent(query));
+        _lastQuery = query;
+        _searchBloc.add(
+          SearchUsersEvent(
+            searchText: query,
+            userId: _currentUserId,
+            isInitialLoad: true,
+          ),
+        );
       } else {
         _searchBloc.add(ResetSearchEvent());
       }
     });
+  }
+
+  void _loadMore() {
+    _searchBloc.add(
+      SearchUsersEvent(
+        searchText: _lastQuery,
+        userId: _currentUserId,
+        isInitialLoad: false,
+      ),
+    );
+  }
+
+  bool _onScrollNotification(ScrollNotification notification) {
+    if (notification.metrics.pixels >=
+        notification.metrics.maxScrollExtent - 100) {
+      _loadMore();
+    }
+    return false;
   }
 
   @override
@@ -53,17 +87,17 @@ class _SearchScreenState extends State<SearchScreen> {
           title: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: SizedBox(
-              height: 36, // Reduce the height of the TextField
+              height: 36,
               child: TextField(
                 controller: _searchController,
                 onChanged: _onSearch,
                 style: const TextStyle(color: Colors.white, fontSize: 14),
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: Colors.white10, // Light background
+                  fillColor: Colors.white10,
                   contentPadding: const EdgeInsets.symmetric(
-                    vertical: 8, // Reduce vertical padding
-                    horizontal: 12, // Adjust horizontal padding
+                    vertical: 8,
+                    horizontal: 12,
                   ),
                   prefixIcon: const Icon(
                     Icons.search,
@@ -76,7 +110,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     color: Colors.white70,
                   ),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0), // Smaller radius
+                    borderRadius: BorderRadius.circular(20.0),
                     borderSide: BorderSide.none,
                   ),
                 ),
@@ -84,41 +118,42 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           ),
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: BlocBuilder<SearchScreenBloc, SearchState>(
-                builder: (context, state) {
-                  if (state is SearchInitial) {
-                    return const Center(
-                      child: Text('Start typing to search...'),
-                    );
-                  } else if (state is SearchLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (state is SearchLoaded) {
-                    final users = state.users;
+        body: BlocBuilder<SearchScreenBloc, SearchState>(
+          builder: (context, state) {
+            if (state is SearchInitial) {
+              return const Center(child: Text('Start typing to search...'));
+            } else if (state is SearchLoading &&
+                _searchBloc.state is! SearchLoaded) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is SearchLoaded) {
+              final users = state.users;
 
-                    return ListView.builder(
-                      padding: const EdgeInsets.all(8.0),
-                      itemCount: users.length,
-                      itemBuilder: (context, index) {
-                        final user = users[index];
-                        return UserTile(user: user);
-                      },
-                    );
-                  } else if (state is SearchError) {
-                    return Center(
-                      child: Text(
-                        state.message,
-                        style: const TextStyle(color: Colors.red),
-                      ),
-                    );
-                  }
-                  return const SizedBox.shrink();
-                },
-              ),
-            ),
-          ],
+              if (users.isEmpty) {
+                return const Center(child: Text('No users found.'));
+              }
+
+              return NotificationListener<ScrollNotification>(
+                onNotification: _onScrollNotification,
+                child: ListView.builder(
+                  padding: const EdgeInsets.all(8.0),
+                  itemCount: users.length,
+                  itemBuilder: (context, index) {
+                    final user = users[index];
+                    return UserTile(user: user);
+                  },
+                ),
+              );
+            } else if (state is SearchError) {
+              return Center(
+                child: Text(
+                  state.message,
+                  style: const TextStyle(color: Colors.red),
+                ),
+              );
+            }
+
+            return const SizedBox.shrink();
+          },
         ),
       ),
     );

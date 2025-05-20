@@ -4,7 +4,7 @@ abstract class FriendsEvent extends Equatable {
   const FriendsEvent();
 
   @override
-  List<Object?> get props => [];
+  List<Object> get props => [];
 }
 
 class FetchFriends extends FriendsEvent {
@@ -14,5 +14,5 @@ class FetchFriends extends FriendsEvent {
   const FetchFriends({required this.userId, required this.page});
 
   @override
-  List<Object?> get props => [userId, page];
+  List<Object> get props => [userId, page];
 }

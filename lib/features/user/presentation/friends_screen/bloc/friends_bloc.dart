@@ -9,48 +9,74 @@ part 'friends_state.dart';
 class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
   final GetSuggestedUsersUseCase getSuggestedUsersUseCase;
 
-  bool hasMoreFollowers = true;
   int currentPage = 1;
-  int pageSize = 10;
+  final int pageSize = 10;
+  bool hasMoreFollowers = true;
+  bool isLoading = false;
 
   FriendsBloc({required this.getSuggestedUsersUseCase})
     : super(FriendsInitial()) {
     on<FetchFriends>(_onFetchUserFollowers);
   }
 
-  // Event handler for fetching followers
   Future<void> _onFetchUserFollowers(
     FetchFriends event,
     Emitter<FriendsState> emit,
   ) async {
-    if (event.page == 1) {
+    if (isLoading || !hasMoreFollowers) return;
+
+    isLoading = true;
+
+    final isFirstPage = event.page == 1;
+
+    if (isFirstPage) {
       emit(FriendsLoading());
     } else {
-      emit(FriendsLoadingMore());
+      emit(FriendsLoadingMore(followers: (state as FriendsLoaded).followers));
     }
 
     try {
       final startRecord = (event.page - 1) * pageSize;
-      final getSuggestedUsersParams = GetSuggestedUsersParams(
-        userId: event.userId,
-        startRecord: startRecord,
-        pageSize: pageSize,
-      );
-      final dataState = await getSuggestedUsersUseCase.call(
-        getSuggestedUsersParams,
+      final result = await getSuggestedUsersUseCase.call(
+        GetSuggestedUsersParams(
+          userId: event.userId,
+          startRecord: startRecord,
+          pageSize: pageSize,
+        ),
       );
 
-      dataState.fold((l) => emit(FriendsError(message: l.message)), (r) {
-        if (r.isEmpty) {
-          hasMoreFollowers = false;
-          emit(FriendsLoaded(followers: r));
-        } else {
-          hasMoreFollowers = true;
-          emit(FriendsLoaded(followers: r));
-        }
-      });
+      result.fold(
+        (failure) {
+          if (state is FriendsLoaded && !isFirstPage) {
+            emit(
+              FriendsErrorWithMore(
+                message: failure.message,
+                followers: (state as FriendsLoaded).followers,
+              ),
+            );
+          } else {
+            emit(FriendsError(message: failure.message));
+          }
+        },
+        (newFollowers) {
+          final existingFollowers =
+              (state is FriendsLoaded)
+                  ? (state as FriendsLoaded).followers
+                  : <UserEntity>[];
+
+          final updatedFollowers =
+              isFirstPage
+                  ? newFollowers
+                  : [...existingFollowers, ...newFollowers];
+
+          hasMoreFollowers = newFollowers.length == pageSize;
+          currentPage = event.page;
+
+          emit(FriendsLoaded(followers: updatedFollowers));
+        },
+      );
     } catch (e) {
-      if (state is FriendsLoaded) {
+      if (state is FriendsLoaded && !isFirstPage) {
         emit(
           FriendsErrorWithMore(
             message: e.toString(),
@@ -60,6 +86,8 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
       } else {
         emit(FriendsError(message: e.toString()));
       }
+    } finally {
+      isLoading = false;
     }
   }
 }

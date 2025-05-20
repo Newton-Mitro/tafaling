@@ -4,7 +4,7 @@ abstract class UserFollowersState extends Equatable {
   const UserFollowersState();
 
   @override
-  List<Object?> get props => [];
+  List<Object> get props => [];
 }
 
 class UserFollowersInitial extends UserFollowersState {}
@@ -19,20 +19,7 @@ class UserFollowersLoaded extends UserFollowersState {
   const UserFollowersLoaded({required this.followers});
 
   @override
-  List<Object?> get props => [followers];
-}
-
-class UserFollowersLoadedWithMore extends UserFollowersState {
-  final List<UserEntity> followers;
-  final bool hasMore;
-
-  const UserFollowersLoadedWithMore({
-    required this.followers,
-    required this.hasMore,
-  });
-
-  @override
-  List<Object?> get props => [followers, hasMore];
+  List<Object> get props => [followers];
 }
 
 class UserFollowersError extends UserFollowersState {
@@ -41,7 +28,7 @@ class UserFollowersError extends UserFollowersState {
   const UserFollowersError({required this.message});
 
   @override
-  List<Object?> get props => [message];
+  List<Object> get props => [message];
 }
 
 class UserFollowersErrorWithMore extends UserFollowersState {
@@ -54,5 +41,5 @@ class UserFollowersErrorWithMore extends UserFollowersState {
   });
 
   @override
-  List<Object?> get props => [message, followers];
+  List<Object> get props => [message, followers];
 }

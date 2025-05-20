@@ -26,7 +26,7 @@ void main() async {
         BlocProvider(create: (_) => sl<ThemeSelectorBloc>()..add(LoadTheme())),
         BlocProvider(create: (_) => sl<OnboardingPageBloc>()),
         BlocProvider(create: (context) => sl<PostsScreenBloc>()),
-        BlocProvider(create: (context) => sl<AuthBloc>()),
+        BlocProvider(create: (context) => sl<AuthBloc>()..add(AuthUserCheck())),
       ],
       child: MyApp(),
     ),
