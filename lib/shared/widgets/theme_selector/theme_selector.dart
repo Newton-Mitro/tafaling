@@ -9,7 +9,8 @@ class ThemeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<ThemeSelectorEvent>(
-      icon: Icon(Icons.color_lens, color: context.theme.colorScheme.onSurface),
+      offset: const Offset(0, 52),
+      icon: Icon(Icons.color_lens, color: context.theme.colorScheme.onPrimary),
       tooltip: 'Select Theme',
       onSelected: (event) {
         context.read<ThemeSelectorBloc>().add(event);
@@ -23,10 +24,16 @@ class ThemeSelector extends StatelessWidget {
                   Icon(
                     Icons.wb_sunny,
                     size: 18,
-                    color: context.theme.colorScheme.onSurface,
+                    color: context.theme.colorScheme.onPrimary,
                   ),
                   SizedBox(width: 8),
-                  Text('Primary Light'),
+                  Text(
+                    'Primary Light',
+                    style: TextStyle(
+                      color: context.theme.colorScheme.onPrimary,
+                      fontSize: 14,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -37,10 +44,16 @@ class ThemeSelector extends StatelessWidget {
                   Icon(
                     Icons.wb_sunny,
                     size: 18,
-                    color: context.theme.colorScheme.onSurface,
+                    color: context.theme.colorScheme.onPrimary,
                   ),
                   SizedBox(width: 8),
-                  Text('Primary Dark'),
+                  Text(
+                    'Primary Dark',
+                    style: TextStyle(
+                      color: context.theme.colorScheme.onPrimary,
+                      fontSize: 14,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -51,10 +64,16 @@ class ThemeSelector extends StatelessWidget {
                   Icon(
                     Icons.wb_sunny,
                     size: 18,
-                    color: context.theme.colorScheme.onSurface,
+                    color: context.theme.colorScheme.onPrimary,
                   ),
                   SizedBox(width: 8),
-                  Text('Forever Green'),
+                  Text(
+                    'Forever Green',
+                    style: TextStyle(
+                      color: context.theme.colorScheme.onPrimary,
+                      fontSize: 14,
+                    ),
+                  ),
                 ],
               ),
             ),

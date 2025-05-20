@@ -19,8 +19,20 @@ class FollowStatus extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
       child: Column(
         children: [
-          Text(value, style: context.theme.textTheme.labelLarge),
-          Text(label, style: context.theme.textTheme.labelMedium),
+          Text(
+            value,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: context.theme.colorScheme.onPrimary,
+            ),
+          ),
+          Text(
+            label,
+            style: TextStyle(
+              color: context.theme.colorScheme.onPrimary,
+              fontSize: 12,
+            ),
+          ),
         ],
       ),
     );

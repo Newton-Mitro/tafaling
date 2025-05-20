@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tafaling/core/extensions/app_context.dart';
 
 class SettingsPrivacyPage extends StatelessWidget {
   const SettingsPrivacyPage({super.key});
@@ -6,12 +7,7 @@ class SettingsPrivacyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings and Privacy'),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        elevation: 1,
-      ),
+      appBar: AppBar(title: const Text('Settings and Privacy'), elevation: 1),
       body: ListView(
         children: [
           const SizedBox(height: 12),
@@ -118,7 +114,7 @@ class _SectionTitle extends StatelessWidget {
         title,
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
           fontWeight: FontWeight.bold,
-          color: Colors.grey[700],
+          color: context.theme.colorScheme.onSurface,
           letterSpacing: 1,
         ),
       ),
@@ -140,9 +136,16 @@ class _SettingsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(icon, color: Colors.black),
-      title: Text(title),
-      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+      leading: Icon(icon, color: context.theme.colorScheme.onSurface),
+      title: Text(
+        title,
+        style: TextStyle(color: context.theme.colorScheme.onSurface),
+      ),
+      trailing: Icon(
+        Icons.arrow_forward_ios,
+        size: 16,
+        color: context.theme.colorScheme.onSurface,
+      ),
       onTap: onTap,
     );
   }

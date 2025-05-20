@@ -71,6 +71,20 @@ ThemeData get primaryLightTheme => ThemeData(
   ),
   pageTransitionsTheme: _pageTransitionsTheme,
   visualDensity: VisualDensity.adaptivePlatformDensity,
+  filledButtonTheme: FilledButtonThemeData(
+    style: FilledButton.styleFrom(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30), // slightly tighter curve
+        side: BorderSide(color: _primaryLightColors.secondary),
+      ),
+      backgroundColor: _primaryLightColors.primary,
+      foregroundColor: _primaryLightColors.onPrimary,
+      textStyle: const TextStyle(
+        fontSize: 12, // slightly smaller text
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+    ),
+  ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       shape: RoundedRectangleBorder(

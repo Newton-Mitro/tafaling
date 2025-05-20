@@ -89,28 +89,32 @@ class UserProfileScreen extends StatelessWidget {
                               value: 0,
                               child: Row(
                                 children: [
-                                  Icon(Icons.settings, size: 20),
+                                  Icon(Icons.settings, size: 16),
                                   SizedBox(width: 8),
-                                  Text('Settings'),
+                                  Text(
+                                    'Settings',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
                                 ],
                               ),
                             ),
                             const PopupMenuItem(
                               enabled: false,
-                              padding: EdgeInsets.symmetric(horizontal: 16),
                               child: Divider(
                                 color: Colors.grey,
                                 thickness: 1.2,
-                                height: 8,
                               ),
                             ),
                             const PopupMenuItem(
                               value: 1,
                               child: Row(
                                 children: [
-                                  Icon(Icons.logout, size: 20),
+                                  Icon(Icons.logout, size: 16),
                                   SizedBox(width: 8),
-                                  Text('Logout'),
+                                  Text(
+                                    'Logout',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
                                 ],
                               ),
                             ),
@@ -178,10 +182,14 @@ class UserProfileScreen extends StatelessWidget {
                                         const SizedBox(height: 10),
                                         Text(
                                           prifileState.user.name,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.white,
+                                            color:
+                                                context
+                                                    .theme
+                                                    .colorScheme
+                                                    .onPrimary,
                                           ),
                                         ),
                                         const SizedBox(height: 10),
@@ -213,28 +221,14 @@ class UserProfileScreen extends StatelessWidget {
                                             // Show "Edit Profile" and "Share Profile" if it's the authenticated user's profile
                                             if (authState is Authenticated) ...[
                                               FilledButton(
-                                                child: Text(
-                                                  "Edit Profile",
-                                                  style:
-                                                      context
-                                                          .theme
-                                                          .textTheme
-                                                          .labelMedium,
-                                                ),
+                                                child: Text("Edit Profile"),
                                                 onPressed: () {
                                                   // Edit Profile Action
                                                 },
                                               ),
                                               const SizedBox(width: 10),
                                               FilledButton(
-                                                child: Text(
-                                                  "Share Profile",
-                                                  style:
-                                                      context
-                                                          .theme
-                                                          .textTheme
-                                                          .labelMedium,
-                                                ),
+                                                child: Text("Share Profile"),
                                                 onPressed: () {
                                                   // Share Profile Action
                                                 },
@@ -350,7 +344,7 @@ class UserProfileScreen extends StatelessWidget {
                                           ),
                                         ),
                                         const SizedBox(height: 10),
-                                        const Padding(
+                                        Padding(
                                           padding: EdgeInsets.symmetric(
                                             horizontal: 20,
                                           ),
@@ -361,8 +355,12 @@ class UserProfileScreen extends StatelessWidget {
                                               Text(
                                                 'This is a short bio about the user. It can include interests, hobbies, or anything the user wants to share.',
                                                 style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16,
+                                                  color:
+                                                      context
+                                                          .theme
+                                                          .colorScheme
+                                                          .onPrimary,
+                                                  fontSize: 14,
                                                 ),
                                               ),
                                             ],

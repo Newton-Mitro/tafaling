@@ -71,6 +71,20 @@ ThemeData get foreverGreenLightTheme => ThemeData(
   ),
   pageTransitionsTheme: _pageTransitionsTheme,
   visualDensity: VisualDensity.adaptivePlatformDensity,
+  filledButtonTheme: FilledButtonThemeData(
+    style: FilledButton.styleFrom(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30), // slightly tighter curve
+        side: BorderSide(color: _foreverGreenLightColors.secondary),
+      ),
+      backgroundColor: _foreverGreenLightColors.primary,
+      foregroundColor: _foreverGreenLightColors.onPrimary,
+      textStyle: const TextStyle(
+        fontSize: 12, // slightly smaller text
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+    ),
+  ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       shape: RoundedRectangleBorder(
