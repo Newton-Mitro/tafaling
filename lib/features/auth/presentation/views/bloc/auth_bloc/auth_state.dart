@@ -18,6 +18,8 @@ class Authenticated extends AuthState {
   List<Object?> get props => [authUser];
 }
 
+class UnAuthenticated extends AuthState {}
+
 final class AuthValidationErrorState extends AuthState {
   final Map<String, dynamic> errors;
   AuthValidationErrorState(this.errors);

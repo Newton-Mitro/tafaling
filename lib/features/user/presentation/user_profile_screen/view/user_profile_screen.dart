@@ -14,7 +14,7 @@ final profileTabs = [
 ];
 
 class UserProfileScreen extends StatelessWidget {
-  final UserEntity user;
+  final UserEntity? user;
 
   const UserProfileScreen({super.key, required this.user});
 
@@ -24,7 +24,7 @@ class UserProfileScreen extends StatelessWidget {
       providers: [
         BlocProvider(
           create:
-              (context) => sl<ProfileBloc>()..add(LoadUserProfileEvent(user)),
+              (context) => sl<ProfileBloc>()..add(LoadUserProfileEvent(user!)),
         ),
         BlocProvider(create: (context) => sl<UserFollowersBloc>()),
         BlocProvider(create: (context) => sl<FollowingUsersBloc>()),

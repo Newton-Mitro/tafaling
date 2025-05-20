@@ -1,8 +1,13 @@
 class AppImages {
   static const String rootPath = 'assets/images/';
-  static const String logo = '${rootPath}brand/logo.png';
-  static const String splash = '${rootPath}brand/splash.png';
-  static const String appIcon = '${rootPath}brand/app_icon.png';
+
+  //brand
+  static const String pathLogo = '${rootPath}brand/logo.png';
+  static const String pathLogoDark = '${rootPath}brand/logo_dark.png';
+  static const String pathSplash = '${rootPath}brand/splash.png';
+  static const String pathSplashDark = '${rootPath}brand/splash_dark.png';
+  static const String pathAppIcon = '${rootPath}brand/app_icon.png';
+  static const String pathAppIconDark = '${rootPath}brand/app_icon_dark.png';
 
   //onboarding
   static const String pathOnboarding1 =

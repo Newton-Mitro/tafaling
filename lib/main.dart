@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:tafaling/core/injection.dart';
+import 'package:tafaling/features/auth/presentation/views/bloc/auth_bloc/auth_bloc.dart';
 import 'package:tafaling/features/onboarding/presentation/bloc/onboarding_page_bloc.dart';
 import 'package:tafaling/features/post/presentation/views/posts_screen/bloc/posts_screen_bloc.dart';
 import 'package:tafaling/injection.dart';
@@ -25,6 +26,7 @@ void main() async {
         BlocProvider(create: (_) => sl<ThemeSelectorBloc>()..add(LoadTheme())),
         BlocProvider(create: (_) => sl<OnboardingPageBloc>()),
         BlocProvider(create: (context) => sl<PostsScreenBloc>()),
+        BlocProvider(create: (context) => sl<AuthBloc>()),
       ],
       child: MyApp(),
     ),
