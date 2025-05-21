@@ -5,6 +5,7 @@ final class RoutesName {
   static const String registerPage = 'registerPage';
   static const String userProfilePage = 'userProfilePage';
   static const String myProfilePage = 'myProfilePage';
+  static const String cameraPage = 'cameraPage';
   static const String searchUser = 'searchUser';
   static const String postLikedUsersPage = 'postLikedUsersPage';
   static const String settingsPage = 'settingsPage';

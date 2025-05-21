@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tafaling/core/extensions/app_context.dart';
+import 'package:tafaling/features/auth/presentation/views/bloc/auth_bloc/auth_bloc.dart';
+import 'package:tafaling/features/home/presentation/widgets/bottom_sheet.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/post/presentation/views/post_preview_screen/bloc/post_preview_bloc.dart';
+import 'package:tafaling/routes/route_name.dart';
 
 class PostSidebar extends StatelessWidget {
   final PostEntity postModel;
@@ -22,122 +25,124 @@ class PostSidebar extends StatelessWidget {
           top: MediaQuery.of(context).size.height / 3,
           right: 10,
         ),
-        child: Column(
-          children: [
-            GestureDetector(
-              // Wrap the SizedBox with GestureDetector
-              onTap: () {
-                // if (accessTokenNotifier.value != null) {
-                //   Navigator.pushNamed(
-                //     context,
-                //     RoutesName.userProfilePage,
-                //     arguments: postModel.creator,
-                //   );
-                // } else {
-                //   showCustomBottomSheet(context);
-                // }
-              }, // Handle the tap
-              child: SizedBox(
-                width: 50,
-                height: 50,
-                child: Stack(
-                  children: [
-                    Positioned(
-                      left: 5,
-                      child: Container(
-                        width: 45,
-                        height: 45,
-                        padding: const EdgeInsets.all(1),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(35),
+        child: BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, authState) {
+            return Column(
+              children: [
+                GestureDetector(
+                  // Wrap the SizedBox with GestureDetector
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      RoutesName.userProfilePage,
+                      arguments: postModel.creator,
+                    );
+                  }, // Handle the tap
+                  child: SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          left: 5,
+                          child: Container(
+                            width: 45,
+                            height: 45,
+                            padding: const EdgeInsets.all(1),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(35),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(35),
+                              child:
+                                  profileImage.isNotEmpty
+                                      ? CachedNetworkImage(
+                                        imageUrl: profileImage,
+                                      )
+                                      : Image.asset(
+                                        'assets/images/misc/avatar.png',
+                                        fit: BoxFit.cover,
+                                      ),
+                            ),
+                          ),
                         ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(35),
-                          child:
-                              profileImage.isNotEmpty
-                                  ? CachedNetworkImage(imageUrl: profileImage)
-                                  : Image.asset(
-                                    'assets/images/misc/avatar.png',
-                                    fit: BoxFit.cover,
-                                  ),
-                        ),
-                      ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            BlocBuilder<PostPreviewBloc, PostPreviewState>(
-              builder: (context, state) {
-                if (state is PostPreviewLoaded) {
-                  return _buildSidebarActionButton(
-                    context,
-                    FontAwesomeIcons.solidHeart,
-                    state.post.likeCount,
-                    state.post.isLiked
-                        ? Colors.red
-                        : context.theme.colorScheme.surface,
-                    () {
-                      // if (accessTokenNotifier.value != null) {
-                      //   final event =
-                      //       state.post.isLiked
-                      //           ? RemovePostLikeEvent(state.post.id)
-                      //           : PostLikeEvent(state.post.id);
-                      //   context.read<PostPreviewBloc>().add(event);
-                      // } else {
-                      //   showCustomBottomSheet(context);
-                      // }
-                    },
-                    () {
-                      // if (accessTokenNotifier.value != null) {
-                      //   Navigator.pushNamed(
-                      //     context,
-                      //     RoutesName.postLikedUsersPage,
-                      //     arguments: state.post.id,
-                      //   );
-                      // } else {
-                      //   showCustomBottomSheet(context);
-                      // }
-                    },
-                  );
-                }
-                return CircularProgressIndicator();
-              },
-            ),
-            _buildSidebarActionButton(
-              context,
-              FontAwesomeIcons.solidShareFromSquare,
-              1,
-              context.theme.colorScheme.surface,
-              () {
-                // if (accessTokenNotifier.value != null) {
-                // } else {
-                //   showCustomBottomSheet(context);
-                // }
-              },
-              () {
-                // Action when clicking the like count text
-                print("share count tapped!");
-              },
-            ),
-            _buildSidebarActionButton(
-              context,
-              FontAwesomeIcons.solidComment,
-              5,
-              context.theme.colorScheme.surface,
-              () {
-                // if (accessTokenNotifier.value != null) {
-                // } else {
-                //   showCustomBottomSheet(context);
-                // }
-              },
-              () {
-                // Action when clicking the like count text
-                print("comment count tapped!");
-              },
-            ),
-          ],
+                BlocBuilder<PostPreviewBloc, PostPreviewState>(
+                  builder: (context, state) {
+                    if (state is PostPreviewLoaded) {
+                      return _buildSidebarActionButton(
+                        context,
+                        FontAwesomeIcons.solidHeart,
+                        state.post.likeCount,
+                        state.post.isLiked
+                            ? Colors.red
+                            : context.theme.colorScheme.surface,
+                        () {
+                          if (authState is Authenticated) {
+                            final event =
+                                state.post.isLiked
+                                    ? RemovePostLikeEvent(state.post.id)
+                                    : PostLikeEvent(state.post.id);
+                            context.read<PostPreviewBloc>().add(event);
+                          } else {
+                            showCustomBottomSheet(context);
+                          }
+                        },
+                        () {
+                          if (authState is Authenticated) {
+                            Navigator.pushNamed(
+                              context,
+                              RoutesName.postLikedUsersPage,
+                              arguments: state.post.id,
+                            );
+                          } else {
+                            showCustomBottomSheet(context);
+                          }
+                        },
+                      );
+                    }
+                    return CircularProgressIndicator();
+                  },
+                ),
+                _buildSidebarActionButton(
+                  context,
+                  FontAwesomeIcons.solidShareFromSquare,
+                  1,
+                  context.theme.colorScheme.surface,
+                  () {
+                    if (authState is Authenticated) {
+                    } else {
+                      showCustomBottomSheet(context);
+                    }
+                  },
+                  () {
+                    // Action when clicking the like count text
+                    print("share count tapped!");
+                  },
+                ),
+                _buildSidebarActionButton(
+                  context,
+                  FontAwesomeIcons.solidComment,
+                  5,
+                  context.theme.colorScheme.surface,
+                  () {
+                    if (authState is Authenticated) {
+                    } else {
+                      showCustomBottomSheet(context);
+                    }
+                  },
+                  () {
+                    // Action when clicking the like count text
+                    print("comment count tapped!");
+                  },
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

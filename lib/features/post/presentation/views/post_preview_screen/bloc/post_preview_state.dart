@@ -1,17 +1,30 @@
 part of 'post_preview_bloc.dart';
 
-sealed class PostPreviewState extends Equatable {
+abstract class PostPreviewState extends Equatable {
   const PostPreviewState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
-final class PostPreviewInitial extends PostPreviewState {}
+class PostPreviewInitial extends PostPreviewState {}
 
-final class PostPreviewLoading extends PostPreviewState {}
+class PostPreviewLoading extends PostPreviewState {}
 
-final class PostPreviewLoaded extends PostPreviewState {
+class PostPreviewLoaded extends PostPreviewState {
   final PostEntity post;
+
   const PostPreviewLoaded(this.post);
+
+  @override
+  List<Object?> get props => [post];
+}
+
+class PostPreviewError extends PostPreviewState {
+  final String message;
+
+  const PostPreviewError({required this.message});
+
+  @override
+  List<Object?> get props => [message];
 }

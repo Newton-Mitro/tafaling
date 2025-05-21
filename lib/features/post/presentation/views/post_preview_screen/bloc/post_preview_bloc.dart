@@ -31,19 +31,24 @@ class PostPreviewBloc extends Bloc<PostPreviewEvent, PostPreviewState> {
     PostLikeEvent event,
     Emitter<PostPreviewState> emit,
   ) async {
-    if (state is PostPreviewLoaded) {
-      final currentPost = (state as PostPreviewLoaded).post;
+    final currentState = state;
+    if (currentState is PostPreviewLoaded) {
       emit(PostPreviewLoading());
 
-      final likeParam = LikePostPrams(postId: event.postId);
-      final dataState = await likePostUseCase(likeParam);
-      // dataState.fold((l) => emit(PostPreviewError(message: l.message)), (r) {
-      //   emit(
-      //     PostPreviewLoaded(
-      //       currentPost.copyWith(likeCount: r.likeCount, isLiked: true),
-      //     ),
-      //   );
-      // });
+      final result = await likePostUseCase(LikePostPrams(postId: event.postId));
+      result.fold(
+        (failure) => emit(PostPreviewError(message: failure.message)),
+        (response) {
+          emit(
+            PostPreviewLoaded(
+              currentState.post.copyWith(
+                likeCount: response.likeCount,
+                isLiked: true,
+              ),
+            ),
+          );
+        },
+      );
     }
   }
 
@@ -51,20 +56,26 @@ class PostPreviewBloc extends Bloc<PostPreviewEvent, PostPreviewState> {
     RemovePostLikeEvent event,
     Emitter<PostPreviewState> emit,
   ) async {
-    if (state is PostPreviewLoaded) {
-      final currentPost = (state as PostPreviewLoaded).post;
+    final currentState = state;
+    if (currentState is PostPreviewLoaded) {
       emit(PostPreviewLoading());
 
-      final dislikeParam = DisLikePostPrams(postId: event.postId);
-      final dataState = await disLikePostUseCase(dislikeParam);
-
-      // dataState.fold((l) => emit(PostPreviewError(message: l.message)), (r) {
-      //   emit(
-      //     PostPreviewLoaded(
-      //       currentPost.copyWith(likeCount: r.likeCount, isLiked: false),
-      //     ),
-      //   );
-      // });
+      final result = await disLikePostUseCase(
+        DisLikePostPrams(postId: event.postId),
+      );
+      result.fold(
+        (failure) => emit(PostPreviewError(message: failure.message)),
+        (response) {
+          emit(
+            PostPreviewLoaded(
+              currentState.post.copyWith(
+                likeCount: response.likeCount,
+                isLiked: false,
+              ),
+            ),
+          );
+        },
+      );
     }
   }
 }

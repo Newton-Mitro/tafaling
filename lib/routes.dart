@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tafaling/core/settings/settings_privacy_page.dart';
+import 'package:tafaling/features/post/presentation/views/create_post_screen/view/create_post_screen.dart';
 import 'package:tafaling/features/user/presentation/my_profile_screen/view/my_profile_screen.dart';
 import 'package:tafaling/routes/route_name.dart';
 import 'package:tafaling/features/auth/presentation/views/pages/login_screen.dart';
@@ -20,6 +21,9 @@ class AppRoutes {
 
       case RoutesName.loginPage:
         return _materialRoute(const LoginScreen());
+
+      case RoutesName.cameraPage:
+        return _materialRoute(const CameraPage());
 
       case RoutesName.registerPage:
         return _materialRoute(const RegistrationScreen());

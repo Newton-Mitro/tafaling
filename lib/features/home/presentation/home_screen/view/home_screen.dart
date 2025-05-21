@@ -1,4 +1,5 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/core/extensions/app_context.dart';
@@ -11,6 +12,7 @@ import 'package:tafaling/features/post/presentation/views/posts_screen/view/post
 import 'package:tafaling/features/user/presentation/friends_screen/bloc/friends_bloc.dart';
 import 'package:tafaling/features/user/presentation/friends_screen/view/friends_screen.dart';
 import 'package:tafaling/features/user/presentation/my_profile_screen/view/my_profile_screen.dart';
+import 'package:tafaling/routes/route_name.dart';
 import 'package:tafaling/shared/widgets/app_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -164,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   elevation: 6,
                   backgroundColor: context.theme.colorScheme.primary,
                   onPressed: () {
-                    // TODO: Add FAB action here (e.g. create post)
+                    Navigator.of(context).pushNamed(RoutesName.cameraPage);
                   },
                   child: Icon(
                     Icons.add,
