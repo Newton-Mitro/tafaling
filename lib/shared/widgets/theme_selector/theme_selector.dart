@@ -9,6 +9,7 @@ class ThemeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<ThemeSelectorEvent>(
+      color: context.theme.colorScheme.primary,
       offset: const Offset(0, 52),
       icon: Icon(Icons.color_lens, color: context.theme.colorScheme.onPrimary),
       tooltip: 'Select Theme',

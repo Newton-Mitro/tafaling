@@ -15,7 +15,7 @@ class CustomButton extends StatelessWidget {
       width: screenSize.width * 0.8,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: context.theme.colorScheme.surface,
+          backgroundColor: context.theme.colorScheme.primary,
           padding: const EdgeInsets.symmetric(vertical: 14),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -28,7 +28,7 @@ class CustomButton extends StatelessWidget {
           text,
           style: TextStyle(
             fontSize: 18,
-            color: context.theme.colorScheme.onSurface,
+            color: context.theme.colorScheme.onPrimary,
           ),
         ),
       ),

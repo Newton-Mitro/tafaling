@@ -13,15 +13,9 @@ class CustomBottomSheet extends StatelessWidget {
 
     return Container(
       width: screenSize.width,
+
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            context.theme.colorScheme.primary,
-            context.theme.colorScheme.secondary,
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        color: context.theme.colorScheme.surface,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
@@ -33,7 +27,10 @@ class CustomBottomSheet extends StatelessWidget {
           Align(
             alignment: Alignment.topRight,
             child: IconButton(
-              icon: const Icon(Icons.close, color: Colors.white),
+              icon: Icon(
+                Icons.close,
+                color: context.theme.colorScheme.onSurface,
+              ),
               onPressed: () => Navigator.pop(context),
             ),
           ),

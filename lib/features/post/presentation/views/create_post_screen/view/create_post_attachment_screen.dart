@@ -5,16 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:saver_gallery/saver_gallery.dart';
-import 'package:tafaling/features/post/presentation/views/create_post_screen/view/priview_page.dart';
+import 'package:tafaling/features/post/presentation/views/create_post_screen/view/create_post_body_screen.dart';
 
-class CameraPage extends StatefulWidget {
-  const CameraPage({super.key});
+class CreatePostAttachmentScreen extends StatefulWidget {
+  const CreatePostAttachmentScreen({super.key});
 
   @override
-  State<CameraPage> createState() => _CameraPageState();
+  State<CreatePostAttachmentScreen> createState() =>
+      _CreatePostAttachmentScreenState();
 }
 
-class _CameraPageState extends State<CameraPage> {
+class _CreatePostAttachmentScreenState
+    extends State<CreatePostAttachmentScreen> {
   late List<CameraDescription> _cameras;
   CameraController? _controller;
   bool _isRecording = false;
@@ -116,7 +118,11 @@ class _CameraPageState extends State<CameraPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => PreviewPage(filePath: file.path, fileType: "image"),
+            builder:
+                (_) => CreatePostBodyScreen(
+                  filePath: file.path,
+                  fileType: "image",
+                ),
           ),
         );
       }
@@ -169,7 +175,11 @@ class _CameraPageState extends State<CameraPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => PreviewPage(filePath: file.path, fileType: "video"),
+            builder:
+                (_) => CreatePostBodyScreen(
+                  filePath: file.path,
+                  fileType: "video",
+                ),
           ),
         );
       }
@@ -188,8 +198,10 @@ class _CameraPageState extends State<CameraPage> {
           context,
           MaterialPageRoute(
             builder:
-                (_) =>
-                    PreviewPage(filePath: pickedFile.path, fileType: "image"),
+                (_) => CreatePostBodyScreen(
+                  filePath: pickedFile.path,
+                  fileType: "image",
+                ),
           ),
         );
       }
@@ -211,42 +223,41 @@ class _CameraPageState extends State<CameraPage> {
     }
 
     return Scaffold(
-      body: Stack(
-        children: [
-          CameraPreview(_controller!),
-          Positioned(
-            bottom: 40,
-            left: 20,
-            right: 20,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                FloatingActionButton(
-                  heroTag: 'switch',
-                  onPressed: _switchCamera,
-                  child: const Icon(Icons.switch_camera),
-                ),
-                FloatingActionButton(
-                  heroTag: 'photo',
-                  onPressed: _takePhoto,
-                  child: const Icon(Icons.camera_alt),
-                ),
-                FloatingActionButton(
-                  heroTag: 'video',
-                  backgroundColor: _isRecording ? Colors.red : Colors.blue,
-                  onPressed:
-                      _isRecording ? _stopVideoRecording : _startVideoRecording,
-                  child: Icon(_isRecording ? Icons.stop : Icons.videocam),
-                ),
-                FloatingActionButton(
-                  heroTag: 'gallery',
-                  onPressed: _pickImageFromGallery,
-                  child: const Icon(Icons.photo_library),
-                ),
-              ],
-            ),
+      appBar: AppBar(title: const Text('Create Post')),
+      body: CameraPreview(
+        _controller!,
+        child: Positioned(
+          bottom: 40,
+          left: 20,
+          right: 20,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              FloatingActionButton(
+                heroTag: 'switch',
+                onPressed: _switchCamera,
+                child: const Icon(Icons.switch_camera),
+              ),
+              FloatingActionButton(
+                heroTag: 'photo',
+                onPressed: _takePhoto,
+                child: const Icon(Icons.camera_alt),
+              ),
+              FloatingActionButton(
+                heroTag: 'video',
+                backgroundColor: _isRecording ? Colors.red : Colors.blue,
+                onPressed:
+                    _isRecording ? _stopVideoRecording : _startVideoRecording,
+                child: Icon(_isRecording ? Icons.stop : Icons.videocam),
+              ),
+              FloatingActionButton(
+                heroTag: 'gallery',
+                onPressed: _pickImageFromGallery,
+                child: const Icon(Icons.photo_library),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

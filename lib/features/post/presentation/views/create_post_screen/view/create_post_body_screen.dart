@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-class PreviewPage extends StatelessWidget {
+class CreatePostBodyScreen extends StatelessWidget {
   final String filePath;
   final String fileType; // "image" or "video"
 
-  const PreviewPage({
+  const CreatePostBodyScreen({
     super.key,
     required this.filePath,
     required this.fileType,

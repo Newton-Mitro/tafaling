@@ -71,8 +71,8 @@ class AppLogoState extends State<AppLogo> with SingleTickerProviderStateMixin {
           },
           child: Image.asset(
             state is PrimaryDarkThemeState
-                ? AppImages.pathLogoDark
-                : AppImages.pathLogo,
+                ? AppImages.pathLogo
+                : AppImages.pathLogoDark,
             width: widget.width,
           ),
         );
