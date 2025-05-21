@@ -25,7 +25,10 @@ class FailureMapper {
                 statusCode: statusCode,
               );
             case 401:
-              return UnauthorizedFailure(statusCode: statusCode);
+              return UnauthorizedFailure(
+                statusCode: statusCode,
+                message: data['message'],
+              );
             case 403:
               return ForbiddenFailure(statusCode: statusCode);
             case 500:

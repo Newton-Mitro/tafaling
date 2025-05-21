@@ -40,9 +40,8 @@ class UserTileBloc extends Bloc<UserTileEvent, UserTileState> {
       final dataState = await followUserUseCase(followUserPrams);
       dataState.fold(
         (failure) =>
-            emit(UserTileLoaded(currentUser.copyWith(isFollowing: true))),
-        (data) =>
             emit(UserTileLoaded(currentUser.copyWith(isFollowing: false))),
+        (data) => emit(UserTileLoaded(currentUser.copyWith(isFollowing: true))),
       );
     }
   }
@@ -61,8 +60,9 @@ class UserTileBloc extends Bloc<UserTileEvent, UserTileState> {
       final dataState = await unFollowUserUseCase(unfollowUserPrams);
       dataState.fold(
         (failure) =>
+            emit(UserTileLoaded(currentUser.copyWith(isFollowing: true))),
+        (data) =>
             emit(UserTileLoaded(currentUser.copyWith(isFollowing: false))),
-        (data) => emit(UserTileLoaded(currentUser.copyWith(isFollowing: true))),
       );
     }
   }

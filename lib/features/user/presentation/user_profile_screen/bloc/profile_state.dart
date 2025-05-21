@@ -14,4 +14,7 @@ final class ProfileLoading extends ProfileState {}
 final class ProfileLoaded extends ProfileState {
   final UserEntity user;
   const ProfileLoaded(this.user);
+
+  @override
+  List<Object> get props => [user];
 }

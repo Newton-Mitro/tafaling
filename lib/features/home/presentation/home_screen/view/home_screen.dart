@@ -10,7 +10,7 @@ import 'package:tafaling/features/home/presentation/widgets/bottom_sheet.dart';
 import 'package:tafaling/features/post/presentation/views/posts_screen/view/posts_screen.dart';
 import 'package:tafaling/features/user/presentation/friends_screen/bloc/friends_bloc.dart';
 import 'package:tafaling/features/user/presentation/friends_screen/view/friends_screen.dart';
-import 'package:tafaling/features/user/presentation/user_profile_screen/view/user_profile_screen.dart';
+import 'package:tafaling/features/user/presentation/my_profile_screen/view/my_profile_screen.dart';
 import 'package:tafaling/shared/widgets/app_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -237,7 +237,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       FriendsScreen(userId: authUser?.user.id ?? 0),
       const Center(child: Text('Inbox')),
       authUser != null
-          ? UserProfileScreen(user: authUser.user)
+          ? MyProfileScreen()
           : const Center(child: Text('Please log in to view Profile')),
     ];
     return screens[index];

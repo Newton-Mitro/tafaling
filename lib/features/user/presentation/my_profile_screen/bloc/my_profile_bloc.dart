@@ -1,19 +1,23 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:tafaling/core/usecases/usecase.dart';
+import 'package:tafaling/features/auth/domain/usecases/get_auth_user_usecase.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/domain/usecases/follow_user_usecase.dart';
 import 'package:tafaling/features/user/domain/usecases/un_follow_user_usecase.dart';
 
-part 'profile_event.dart';
-part 'profile_state.dart';
+part 'my_profile_event.dart';
+part 'my_profile_state.dart';
 
-class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
+class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileState> {
   final FollowUserUseCase followUserUseCase;
   final UnFollowUserUseCase unFollowUserUseCase;
+  final GetAuthUserUseCase getAuthUserUseCase;
 
-  ProfileBloc({
+  MyProfileBloc({
     required this.followUserUseCase,
     required this.unFollowUserUseCase,
+    required this.getAuthUserUseCase,
   }) : super(ProfileInitial()) {
     on<LoadUserProfileEvent>(_onProfileLoadEvent);
     on<FollowUserEvent>(_onFollowUserEvent);
@@ -22,14 +26,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   void _onProfileLoadEvent(
     LoadUserProfileEvent event,
-    Emitter<ProfileState> emit,
+    Emitter<MyProfileState> emit,
   ) async {
-    emit(ProfileLoaded(event.user));
+    final authUser = await getAuthUserUseCase(NoParams());
+
+    authUser.fold((failure) => {}, (user) => emit(ProfileLoaded(user.user)));
   }
 
   void _onFollowUserEvent(
     FollowUserEvent event,
-    Emitter<ProfileState> emit,
+    Emitter<MyProfileState> emit,
   ) async {
     if (state is ProfileLoaded) {
       final currentUser = (state as ProfileLoaded).user;
@@ -54,7 +60,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   void _onUnfollowUserEvent(
     UnfollowUserEvent event,
-    Emitter<ProfileState> emit,
+    Emitter<MyProfileState> emit,
   ) async {
     if (state is ProfileLoaded) {
       final currentUser = (state as ProfileLoaded).user;

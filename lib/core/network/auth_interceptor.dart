@@ -4,6 +4,8 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:tafaling/core/constants/api_config.dart';
 import 'package:tafaling/features/auth/data/data_sources/auth_data_source.dart';
 import 'package:tafaling/features/auth/data/models/auth_user_model.dart';
+import 'package:tafaling/my_app.dart';
+import 'package:tafaling/routes/route_name.dart';
 
 class AuthInterceptor extends Interceptor {
   final Dio dio;
@@ -43,28 +45,14 @@ class AuthInterceptor extends Interceptor {
     handler.next(options);
   }
 
-  @override
-  void onError(DioException err, ErrorInterceptorHandler handler) async {
-    if (err.response?.statusCode == 401) {
-      final newToken = await _handleTokenRefresh();
-      if (newToken != null) {
-        err.requestOptions.headers["Authorization"] = "Bearer $newToken";
-
-        try {
-          final retryResponse = await dio.fetch(err.requestOptions);
-          return handler.resolve(retryResponse);
-        } catch (e) {
-          return handler.next(err);
-        }
-      }
-    }
-    return handler.next(err);
-  }
-
   Future<String?> _handleTokenRefresh() async {
     try {
       if (refreshToken == null || JwtDecoder.isExpired(refreshToken!)) {
-        return null;
+        await authLocalDataSource.clearAuthUser(); // clear user from storage
+        navigatorKey.currentState?.pushNamedAndRemoveUntil(
+          RoutesName.root,
+          (route) => false,
+        );
       }
 
       final response = await dio.get(

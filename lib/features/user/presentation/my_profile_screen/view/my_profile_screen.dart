@@ -4,9 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/core/extensions/app_context.dart';
 import 'package:tafaling/features/auth/presentation/views/bloc/auth_bloc/auth_bloc.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
-import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/presentation/following_users_screen/view/following_users_screen.dart';
-import 'package:tafaling/features/user/presentation/user_profile_screen/bloc/profile_bloc.dart';
+import 'package:tafaling/features/user/presentation/my_profile_screen/bloc/my_profile_bloc.dart';
 import 'package:tafaling/features/user/presentation/users_followers_screen/view/users_followers_screen.dart';
 import 'package:tafaling/features/user/presentation/widgets/follow_status.dart';
 import 'package:tafaling/features/user/presentation/widgets/profile_posts_grid.dart';
@@ -20,19 +19,17 @@ final profileTabs = [
   Tab(text: 'Followers'),
 ];
 
-class UserProfileScreen extends StatefulWidget {
-  final UserEntity? user;
-
-  const UserProfileScreen({super.key, required this.user});
+class MyProfileScreen extends StatefulWidget {
+  const MyProfileScreen({super.key});
 
   @override
-  State<UserProfileScreen> createState() => _UserProfileScreenState();
+  State<MyProfileScreen> createState() => _MyProfileScreenState();
 }
 
-class _UserProfileScreenState extends State<UserProfileScreen> {
+class _MyProfileScreenState extends State<MyProfileScreen> {
   @override
   void initState() {
-    context.read<ProfileBloc>().add(LoadUserProfileEvent(widget.user!));
+    context.read<MyProfileBloc>().add(LoadUserProfileEvent());
     super.initState();
   }
 
@@ -57,7 +54,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             builder: (context, authState) {
               return Scaffold(
                 appBar: AppBar(
-                  title: const Text('Profile'),
+                  title: const Text('My Profile'),
+                  automaticallyImplyLeading: false,
                   elevation: 5,
                   actions: [
                     IconButton(
@@ -134,7 +132,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           expandedHeight: 350.0,
                           flexibleSpace: FlexibleSpaceBar(
                             background: SingleChildScrollView(
-                              child: BlocBuilder<ProfileBloc, ProfileState>(
+                              child: BlocBuilder<MyProfileBloc, MyProfileState>(
                                 builder: (context, prifileState) {
                                   if (prifileState is ProfileLoaded) {
                                     return Column(
@@ -215,91 +213,21 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                         Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            prifileState.user.isFollowing
-                                                ? prifileState is ProfileLoading
-                                                    ? CircularProgressIndicator(
-                                                      color: Colors.red,
-                                                    )
-                                                    : FilledButton(
-                                                      style:
-                                                          ElevatedButton.styleFrom(
-                                                            backgroundColor:
-                                                                Color.fromARGB(
-                                                                  255,
-                                                                  13,
-                                                                  82,
-                                                                  14,
-                                                                ),
-                                                          ),
-                                                      child: Text(
-                                                        "Unfollow",
-                                                        style:
-                                                            context
-                                                                .theme
-                                                                .textTheme
-                                                                .labelMedium,
-                                                      ),
-                                                      onPressed: () {
-                                                        context
-                                                            .read<ProfileBloc>()
-                                                            .add(
-                                                              UnfollowUserEvent(
-                                                                prifileState
-                                                                    .user
-                                                                    .id,
-                                                              ),
-                                                            );
-                                                      },
-                                                    )
-                                                : prifileState is ProfileLoading
-                                                ? CircularProgressIndicator(
-                                                  color: Colors.red,
-                                                )
-                                                : FilledButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                        backgroundColor:
-                                                            Color.fromARGB(
-                                                              255,
-                                                              6,
-                                                              47,
-                                                              82,
-                                                            ),
-                                                      ),
-                                                  child: Text(
-                                                    "Follow",
-                                                    style:
-                                                        context
-                                                            .theme
-                                                            .textTheme
-                                                            .labelMedium,
-                                                  ),
-                                                  onPressed: () {
-                                                    context
-                                                        .read<ProfileBloc>()
-                                                        .add(
-                                                          FollowUserEvent(
-                                                            prifileState
-                                                                .user
-                                                                .id,
-                                                          ),
-                                                        );
-                                                  },
-                                                ),
+                                            // Show "Edit Profile" and "Share Profile" if it's the authenticated user's profile
+                                            FilledButton(
+                                              child: Text("Edit Profile"),
+                                              onPressed: () {
+                                                // Edit Profile Action
+                                              },
+                                            ),
                                             const SizedBox(width: 10),
                                             FilledButton(
-                                              child: Text(
-                                                "Message",
-                                                style:
-                                                    context
-                                                        .theme
-                                                        .textTheme
-                                                        .labelMedium,
-                                              ),
+                                              child: Text("Share Profile"),
                                               onPressed: () {
                                                 // Share Profile Action
                                               },
                                             ),
+                                            // Always show "Message" and "My Icon Button"
                                           ],
                                         ),
                                         const SizedBox(height: 10),

@@ -15,7 +15,7 @@ class FollowingUsersBloc
   final int pageSize = 10;
   bool _isLoading = false;
 
-  List<UserEntity> _followers = [];
+  final List<UserEntity> _followers = [];
 
   FollowingUsersBloc({required this.getFollowingUsersUseCase})
     : super(FollowingUsersInitial()) {

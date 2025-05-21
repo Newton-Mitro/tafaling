@@ -6,6 +6,10 @@ import 'package:tafaling/core/injection.dart';
 import 'package:tafaling/features/auth/presentation/views/bloc/auth_bloc/auth_bloc.dart';
 import 'package:tafaling/features/onboarding/presentation/bloc/onboarding_page_bloc.dart';
 import 'package:tafaling/features/post/presentation/views/posts_screen/bloc/posts_screen_bloc.dart';
+import 'package:tafaling/features/user/presentation/following_users_screen/bloc/following_users_bloc.dart';
+import 'package:tafaling/features/user/presentation/my_profile_screen/bloc/my_profile_bloc.dart';
+import 'package:tafaling/features/user/presentation/user_profile_screen/bloc/profile_bloc.dart';
+import 'package:tafaling/features/user/presentation/users_followers_screen/bloc/users_followers_bloc.dart';
 import 'package:tafaling/injection.dart';
 import 'package:tafaling/my_app.dart';
 import 'package:tafaling/shared/widgets/language_switch/bloc/language_switch_bloc.dart';
@@ -27,6 +31,10 @@ void main() async {
         BlocProvider(create: (_) => sl<OnboardingPageBloc>()),
         BlocProvider(create: (context) => sl<PostsScreenBloc>()),
         BlocProvider(create: (context) => sl<AuthBloc>()..add(AuthUserCheck())),
+        BlocProvider(create: (context) => sl<ProfileBloc>()),
+        BlocProvider(create: (context) => sl<MyProfileBloc>()),
+        BlocProvider(create: (context) => sl<UserFollowersBloc>()),
+        BlocProvider(create: (context) => sl<FollowingUsersBloc>()),
       ],
       child: MyApp(),
     ),
