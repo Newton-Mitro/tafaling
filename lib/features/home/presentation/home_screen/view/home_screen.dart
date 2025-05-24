@@ -12,7 +12,6 @@ import 'package:tafaling/features/user/presentation/friends_screen/bloc/friends_
 import 'package:tafaling/features/user/presentation/friends_screen/view/friends_screen.dart';
 import 'package:tafaling/features/user/presentation/my_profile_screen/view/my_profile_screen.dart';
 import 'package:tafaling/routes/route_name.dart';
-import 'package:tafaling/shared/widgets/app_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -80,154 +79,122 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     });
   }
 
-  void _showLogoutDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder:
-          (context) => AppDialog(
-            icon: const Icon(Icons.logout, color: Colors.red, size: 40),
-            title: 'Logout',
-            content: 'Are you sure you want to logout?',
-            onSubmit: () {
-              Navigator.of(context).pop();
-              context.read<AuthBloc>().add(LogoutRequested());
-            },
-          ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        final authState = context.read<AuthBloc>().state;
-        if (authState is Authenticated) {
-          _showLogoutDialog(context);
-        } else {
-          Navigator.of(context).maybePop();
-        }
-        return false;
-      },
-      child: BlocProvider(
-        create: (_) => HomeScreenBloc(),
-        child: BlocBuilder<HomeScreenBloc, HomeScreenState>(
-          builder: (context, homeScreenState) {
-            return Scaffold(
-              body: MultiBlocProvider(
-                providers: [BlocProvider(create: (_) => sl<FriendsBloc>())],
-                child: BlocListener<AuthBloc, AuthState>(
-                  listener: (context, state) {
-                    if (state is UnAuthenticated) {
-                      context.read<HomeScreenBloc>().add(
-                        TabChanged(
-                          homeScreenState.selectedIndex > 1
-                              ? 0
-                              : homeScreenState.selectedIndex,
-                        ),
-                      );
-                    }
-                  },
-                  child: BlocBuilder<AuthBloc, AuthState>(
-                    builder: (context, authState) {
-                      if (authState is UnAuthenticated &&
-                          homeScreenState.selectedIndex > 1) {
-                        if (!_bottomSheetShown) {
-                          _bottomSheetShown = true;
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              builder: (_) => const CustomBottomSheet(),
-                            ).whenComplete(() => _bottomSheetShown = false);
-                          });
-                        }
-                        return const SizedBox.shrink();
-                      }
-
-                      final authUser =
-                          authState is Authenticated
-                              ? authState.authUser
-                              : null;
-
-                      return _getScreen(
-                        homeScreenState.selectedIndex,
-                        authUser,
-                      );
-                    },
-                  ),
-                ),
-              ),
-              floatingActionButton: ScaleTransition(
-                scale: fabAnimation,
-                child: FloatingActionButton(
-                  shape: const CircleBorder(),
-                  elevation: 6,
-                  backgroundColor: context.theme.colorScheme.primary,
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(RoutesName.cameraPage);
-                  },
-                  child: Icon(
-                    Icons.add,
-                    size: 28,
-                    color: context.theme.colorScheme.onPrimary,
-                  ),
-                ),
-              ),
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerDocked,
-              bottomNavigationBar: AnimatedBottomNavigationBar.builder(
-                itemCount: tabItems.length,
-                tabBuilder: (index, isActive) {
-                  final color = isActive ? Colors.blueAccent : Colors.grey;
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        tabItems[index]['icon'] as IconData,
-                        size: 24,
-                        color: color,
+    return BlocProvider(
+      create: (_) => HomeScreenBloc(),
+      child: BlocBuilder<HomeScreenBloc, HomeScreenState>(
+        builder: (context, homeScreenState) {
+          return Scaffold(
+            body: MultiBlocProvider(
+              providers: [BlocProvider(create: (_) => sl<FriendsBloc>())],
+              child: BlocListener<AuthBloc, AuthState>(
+                listener: (context, state) {
+                  if (state is UnAuthenticated) {
+                    context.read<HomeScreenBloc>().add(
+                      TabChanged(
+                        homeScreenState.selectedIndex > 1
+                            ? 0
+                            : homeScreenState.selectedIndex,
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        tabItems[index]['label'] as String,
-                        style: TextStyle(color: color, fontSize: 12),
-                      ),
-                    ],
-                  );
-                },
-                backgroundColor: context.theme.colorScheme.primary,
-                activeIndex: homeScreenState.selectedIndex,
-                gapLocation: GapLocation.center,
-                notchSmoothness: NotchSmoothness.softEdge,
-                leftCornerRadius: 32,
-                rightCornerRadius: 32,
-                onTap: (index) {
-                  final authState = context.read<AuthBloc>().state;
-
-                  final isAlwaysAllowed = index == 0 || index == 1;
-                  final isAuthenticated = authState is Authenticated;
-
-                  if (isAlwaysAllowed || isAuthenticated) {
-                    context.read<HomeScreenBloc>().add(TabChanged(index));
-                  } else {
-                    if (!_bottomSheetShown) {
-                      _bottomSheetShown = true;
-                      showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        builder: (_) => const CustomBottomSheet(),
-                      ).whenComplete(() => _bottomSheetShown = false);
-                    }
-                    context.read<AuthBloc>().add(AuthUserCheck());
+                    );
                   }
                 },
-                hideAnimationController: _hideBottomBarAnimationController,
+                child: BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, authState) {
+                    if (authState is UnAuthenticated &&
+                        homeScreenState.selectedIndex > 1) {
+                      if (!_bottomSheetShown) {
+                        _bottomSheetShown = true;
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (_) => const CustomBottomSheet(),
+                          ).whenComplete(() => _bottomSheetShown = false);
+                        });
+                      }
+                      return const SizedBox.shrink();
+                    }
+
+                    final authUser =
+                        authState is Authenticated ? authState.authUser : null;
+
+                    return _getScreen(homeScreenState.selectedIndex, authUser);
+                  },
+                ),
               ),
-            );
-          },
-        ),
+            ),
+            floatingActionButton: ScaleTransition(
+              scale: fabAnimation,
+              child: FloatingActionButton(
+                shape: const CircleBorder(),
+                elevation: 6,
+                backgroundColor: context.theme.colorScheme.primary,
+                onPressed: () {
+                  Navigator.of(context).pushNamed(RoutesName.cameraPage);
+                },
+                child: Icon(
+                  Icons.add,
+                  size: 28,
+                  color: context.theme.colorScheme.onPrimary,
+                ),
+              ),
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            bottomNavigationBar: AnimatedBottomNavigationBar.builder(
+              itemCount: tabItems.length,
+              tabBuilder: (index, isActive) {
+                final color = isActive ? Colors.blueAccent : Colors.grey;
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      tabItems[index]['icon'] as IconData,
+                      size: 24,
+                      color: color,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      tabItems[index]['label'] as String,
+                      style: TextStyle(color: color, fontSize: 12),
+                    ),
+                  ],
+                );
+              },
+              backgroundColor: context.theme.colorScheme.primary,
+              activeIndex: homeScreenState.selectedIndex,
+              gapLocation: GapLocation.center,
+              notchSmoothness: NotchSmoothness.softEdge,
+              leftCornerRadius: 32,
+              rightCornerRadius: 32,
+              onTap: (index) {
+                final authState = context.read<AuthBloc>().state;
+
+                final isAlwaysAllowed = index == 0 || index == 1;
+                final isAuthenticated = authState is Authenticated;
+
+                if (isAlwaysAllowed || isAuthenticated) {
+                  context.read<HomeScreenBloc>().add(TabChanged(index));
+                } else {
+                  if (!_bottomSheetShown) {
+                    _bottomSheetShown = true;
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (_) => const CustomBottomSheet(),
+                    ).whenComplete(() => _bottomSheetShown = false);
+                  }
+                  context.read<AuthBloc>().add(AuthUserCheck());
+                }
+              },
+              hideAnimationController: _hideBottomBarAnimationController,
+            ),
+          );
+        },
       ),
     );
   }

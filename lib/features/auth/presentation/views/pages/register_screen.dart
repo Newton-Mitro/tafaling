@@ -31,10 +31,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     return BlocProvider(
       create: (context) => sl<AuthBloc>(),
       child: Scaffold(
-        appBar: AppBar(
-          title: Text("Register"),
-          backgroundColor: Colors.transparent,
-        ),
+        appBar: AppBar(title: Text("Register")),
         body: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthError) {
