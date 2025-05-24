@@ -11,7 +11,7 @@ import 'package:tafaling/features/post/domain/usecases/fetch_user_posts_usecase.
 import 'package:tafaling/features/post/domain/usecases/get_post_liked_users_usecase.dart';
 import 'package:tafaling/features/post/domain/usecases/like_post_usecase.dart';
 import 'package:tafaling/features/post/presentation/views/post_liked_users_screen/bloc/post_liked_users_bloc.dart';
-import 'package:tafaling/features/post/presentation/views/post_preview_screen/bloc/post_preview_bloc.dart';
+import 'package:tafaling/features/post/presentation/widgets/post_viewer/bloc/post_preview_bloc.dart';
 import 'package:tafaling/features/post/presentation/views/posts_screen/bloc/posts_screen_bloc.dart';
 
 void registerPostModule() {

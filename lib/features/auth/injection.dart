@@ -15,10 +15,7 @@ import 'package:tafaling/features/auth/presentation/views/bloc/auth_bloc/auth_bl
 void registerAuthModule() {
   // Register Data Sources
   sl.registerLazySingleton<AuthRemoteDataSource>(
-    () => AuthRemoteDataSourceImpl(
-      apiService: sl<ApiService>(),
-      localStorage: sl<LocalStorage>(),
-    ),
+    () => AuthRemoteDataSourceImpl(apiService: sl<ApiService>()),
   );
 
   sl.registerLazySingleton<AuthLocalDataSource>(

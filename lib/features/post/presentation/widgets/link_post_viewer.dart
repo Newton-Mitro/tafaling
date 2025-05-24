@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:tafaling/core/utils/url_helper.dart';
-import 'package:tafaling/features/post/presentation/views/post_preview_screen/widgets/youtube_video_player.dart';
+import 'package:tafaling/features/post/presentation/widgets/youtube_video_player.dart';
 
 class LinkPreviewer extends StatefulWidget {
   final String url;

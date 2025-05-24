@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tafaling/features/post/presentation/views/post_preview_screen/views/post_viewer.dart';
+import 'package:tafaling/features/post/presentation/widgets/post_viewer/views/post_viewer.dart';
 import 'package:tafaling/features/post/presentation/views/posts_screen/bloc/posts_screen_bloc.dart';
 import 'package:tafaling/routes/route_name.dart';
 import 'package:tafaling/shared/widgets/language_switch/language_switch.dart';

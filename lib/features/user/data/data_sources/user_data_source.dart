@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:tafaling/features/user/data/models/follow_un_follow_model.dart';
 import 'package:tafaling/features/user/data/models/user_model.dart';
 
@@ -35,5 +37,18 @@ abstract class UsersDataSource {
     int userId,
     int startRecord,
     int pageSize,
+  );
+
+  // updateCoverPhoto (/user/cover/picture/update)
+  Future<UserModel> updateCoverPhoto(File coverPhoto);
+
+  // updateProfilePicture (/user/profile/picture/update)
+  Future<UserModel> updateProfilePicture(File profilePhoto);
+
+  // changePassword (/auth/password-change)
+  Future<String> changePassword(
+    String email,
+    String password,
+    String oldPassword,
   );
 }

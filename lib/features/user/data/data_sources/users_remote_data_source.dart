@@ -1,6 +1,8 @@
-import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:mime/mime.dart';
 import 'package:tafaling/core/network/api_service.dart';
 import 'package:tafaling/features/user/data/data_sources/user_data_source.dart';
 import 'package:tafaling/features/user/data/models/follow_un_follow_model.dart';
@@ -19,7 +21,7 @@ class UserProfileRemoteDataSourceImpl implements UsersDataSource {
     );
 
     return _handleResponse<FollowUnFollowModel>(response, (data) {
-      var likeData = jsonDecode(data['data']);
+      final likeData = data['data'];
       return FollowUnFollowModel(followingCount: likeData['FollowingCount']);
     });
   }
@@ -32,7 +34,7 @@ class UserProfileRemoteDataSourceImpl implements UsersDataSource {
     );
 
     return _handleResponse<FollowUnFollowModel>(response, (data) {
-      var likeData = jsonDecode(data['data']);
+      final likeData = data['data'];
       return FollowUnFollowModel(followingCount: likeData['FollowingCount']);
     });
   }
@@ -49,11 +51,9 @@ class UserProfileRemoteDataSourceImpl implements UsersDataSource {
     );
 
     return _handleResponse<List<UserModel>>(response, (data) {
-      var users =
-          (data['data'] as List)
-              .map((post) => UserModel.fromJsonCammel(post))
-              .toList();
-      return users;
+      return (data['data'] as List)
+          .map((user) => UserModel.fromJsonCammel(user))
+          .toList();
     });
   }
 
@@ -74,31 +74,10 @@ class UserProfileRemoteDataSourceImpl implements UsersDataSource {
     );
 
     return _handleResponse<List<UserModel>>(response, (data) {
-      var posts =
-          (data['data'] as List)
-              .map((post) => UserModel.fromJsonCammel(post))
-              .toList();
-      return posts;
+      return (data['data'] as List)
+          .map((user) => UserModel.fromJsonCammel(user))
+          .toList();
     });
-  }
-
-  Future<T> _handleResponse<T>(
-    dynamic response,
-    T Function(Map<String, dynamic>) parser,
-  ) async {
-    if (response.statusCode == HttpStatus.ok ||
-        response.statusCode == HttpStatus.created) {
-      try {
-        final data = response.data as Map<String, dynamic>;
-        return parser(data);
-      } catch (e) {
-        throw Exception('Failed to parse response data: ${e.toString()}');
-      }
-    } else {
-      throw Exception(
-        'Unexpected response: ${response.statusCode}, ${response.data}',
-      );
-    }
   }
 
   @override
@@ -117,11 +96,9 @@ class UserProfileRemoteDataSourceImpl implements UsersDataSource {
     );
 
     return _handleResponse<List<UserModel>>(response, (data) {
-      var followers =
-          (data['data'] as List)
-              .map((user) => UserModel.fromJsonForFollower(user))
-              .toList();
-      return followers;
+      return (data['data'] as List)
+          .map((user) => UserModel.fromJsonForFollower(user))
+          .toList();
     });
   }
 
@@ -141,11 +118,9 @@ class UserProfileRemoteDataSourceImpl implements UsersDataSource {
     );
 
     return _handleResponse<List<UserModel>>(response, (data) {
-      var followers =
-          (data['data'] as List)
-              .map((user) => UserModel.fromJsonForFollowing(user))
-              .toList();
-      return followers;
+      return (data['data'] as List)
+          .map((user) => UserModel.fromJsonForFollowing(user))
+          .toList();
     });
   }
 
@@ -165,11 +140,103 @@ class UserProfileRemoteDataSourceImpl implements UsersDataSource {
     );
 
     return _handleResponse<List<UserModel>>(response, (data) {
-      var followers =
-          (data['data'] as List)
-              .map((user) => UserModel.fromJsonForSuggestedUser(user))
-              .toList();
-      return followers;
+      return (data['data'] as List)
+          .map((user) => UserModel.fromJsonForSuggestedUser(user))
+          .toList();
     });
+  }
+
+  @override
+  Future<UserModel> updateCoverPhoto(File coverPhoto) async {
+    final mimeType = lookupMimeType(coverPhoto.path)?.split('/');
+    final formData = FormData.fromMap({
+      'coverPhoto': await MultipartFile.fromFile(
+        coverPhoto.path,
+        filename: coverPhoto.uri.pathSegments.last,
+        contentType:
+            mimeType != null
+                ? MediaType(mimeType[0], mimeType[1])
+                : MediaType('image', 'png'),
+      ),
+    });
+
+    final response = await authApiService.post(
+      '/user/cover/picture/update',
+      data: formData,
+      options: Options(
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Accept': 'application/json',
+        },
+      ),
+    );
+
+    return _handleResponse<UserModel>(response, (data) {
+      return UserModel.fromJsonCammel(data['data']);
+    });
+  }
+
+  @override
+  Future<UserModel> updateProfilePicture(File profilePhoto) async {
+    final mimeTypeData =
+        lookupMimeType(profilePhoto.path)?.split('/') ?? ['image', 'png'];
+
+    final formData = FormData.fromMap({
+      'profilePhoto': await MultipartFile.fromFile(
+        profilePhoto.path,
+        filename: profilePhoto.uri.pathSegments.last,
+        contentType: MediaType(mimeTypeData[0], mimeTypeData[1]),
+      ),
+    });
+
+    final response = await authApiService.post(
+      '/user/profile/picture/update',
+      data: formData,
+      options: Options(
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Accept': 'application/json',
+        },
+      ),
+    );
+
+    return _handleResponse<UserModel>(response, (data) {
+      return UserModel.fromJsonCammel(data['data']);
+    });
+  }
+
+  @override
+  Future<String> changePassword(
+    String email,
+    String password,
+    String oldPassword,
+  ) async {
+    final response = await authApiService.post(
+      '/auth/password-change',
+      data: {'email': email, 'password': password, 'old_password': oldPassword},
+    );
+
+    return _handleResponse<String>(response, (data) {
+      return data['message'] ?? 'Password changed successfully';
+    });
+  }
+
+  Future<T> _handleResponse<T>(
+    dynamic response,
+    T Function(Map<String, dynamic>) parser,
+  ) async {
+    if (response.statusCode == HttpStatus.ok ||
+        response.statusCode == HttpStatus.created) {
+      try {
+        final data = Map<String, dynamic>.from(response.data);
+        return parser(data);
+      } catch (e) {
+        throw Exception('Failed to parse response data: ${e.toString()}');
+      }
+    } else {
+      throw Exception(
+        'Unexpected response: ${response.statusCode ?? 'No status'}, Body: ${response.data}',
+      );
+    }
   }
 }

@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/core/injection.dart';
 import 'package:tafaling/core/utils/url_helper.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
-import 'package:tafaling/features/post/presentation/views/post_preview_screen/bloc/post_preview_bloc.dart';
-import 'package:tafaling/features/post/presentation/views/post_preview_screen/widgets/image_post_viewer.dart';
-import 'package:tafaling/features/post/presentation/views/post_preview_screen/widgets/link_post_viewer.dart';
-import 'package:tafaling/features/post/presentation/views/post_preview_screen/widgets/post_body_text.dart';
-import 'package:tafaling/features/post/presentation/views/post_preview_screen/widgets/post_sidebar.dart';
-import 'package:tafaling/features/post/presentation/views/post_preview_screen/widgets/video_post_viewer.dart';
+import 'package:tafaling/features/post/presentation/widgets/post_viewer/bloc/post_preview_bloc.dart';
+import 'package:tafaling/features/post/presentation/widgets/image_post_viewer.dart';
+import 'package:tafaling/features/post/presentation/widgets/link_post_viewer.dart';
+import 'package:tafaling/features/post/presentation/widgets/post_body_text.dart';
+import 'package:tafaling/features/post/presentation/widgets/post_sidebar.dart';
+import 'package:tafaling/features/post/presentation/widgets/video_post_viewer.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 
 class PostViewer extends StatefulWidget {

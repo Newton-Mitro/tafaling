@@ -25,7 +25,7 @@ class ApiService {
 
   Future<Response> get(
     String endpoint, {
-    Map<String, dynamic>? queryParameters,
+    dynamic queryParameters,
     Options? options,
   }) async {
     return _performRequest(
@@ -39,7 +39,7 @@ class ApiService {
 
   Future<Response> post(
     String endpoint, {
-    required Map<String, dynamic> data,
+    required dynamic data,
     Options? options,
   }) async {
     return _performRequest(
