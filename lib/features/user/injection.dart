@@ -23,14 +23,14 @@ import 'package:tafaling/features/user/presentation/widgets/user_tile/bloc/user_
 
 void registerUserModule() {
   // Data Sources
-  sl.registerLazySingleton<UsersDataSource>(
+  sl.registerLazySingleton<UsersRemoteDataSource>(
     () => UserProfileRemoteDataSourceImpl(authApiService: sl<ApiService>()),
   );
 
   // Repository
   sl.registerLazySingleton<UserRepository>(
     () => UserRepositoryImpl(
-      remoteDataSource: sl<UsersDataSource>(),
+      usersRemoteDataSource: sl<UsersRemoteDataSource>(),
       networkInfo: sl<NetworkInfo>(),
     ),
   );

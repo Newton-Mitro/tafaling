@@ -3,18 +3,18 @@ import 'package:tafaling/core/errors/failures.dart';
 import 'package:tafaling/core/network/network_info.dart';
 import 'package:tafaling/core/types/typedef.dart';
 import 'package:tafaling/core/utils/failure_mapper.dart';
-import 'package:tafaling/features/user/data/data_sources/user_data_source.dart';
+import 'package:tafaling/features/user/data/data_sources/users_remote_data_source.dart';
 import 'package:tafaling/features/user/data/models/follow_un_follow_model.dart';
 import 'package:tafaling/features/user/data/models/user_model.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/domain/repositories/user_profile_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
-  final UsersDataSource remoteDataSource;
+  final UsersRemoteDataSource usersRemoteDataSource;
   final NetworkInfo networkInfo;
 
   UserRepositoryImpl({
-    required this.remoteDataSource,
+    required this.usersRemoteDataSource,
     required this.networkInfo,
   });
 
@@ -22,7 +22,7 @@ class UserRepositoryImpl implements UserRepository {
   ResultFuture<FollowUnFollowModel> followUser(int followingUserId) async {
     if (await networkInfo.isConnected == true) {
       try {
-        final result = await remoteDataSource.followUser(followingUserId);
+        final result = await usersRemoteDataSource.followUser(followingUserId);
         return Right(result);
       } catch (e) {
         return Left(FailureMapper.fromException(e));
@@ -36,7 +36,9 @@ class UserRepositoryImpl implements UserRepository {
   ResultFuture<FollowUnFollowModel> unFollowUser(int followingUserId) async {
     if (await networkInfo.isConnected == true) {
       try {
-        final result = await remoteDataSource.unFollowUser(followingUserId);
+        final result = await usersRemoteDataSource.unFollowUser(
+          followingUserId,
+        );
         return Right(result);
       } catch (e) {
         return Left(FailureMapper.fromException(e));
@@ -54,7 +56,7 @@ class UserRepositoryImpl implements UserRepository {
   ) async {
     if (await networkInfo.isConnected == true) {
       try {
-        var posts = await remoteDataSource.fetchProfile(
+        var posts = await usersRemoteDataSource.fetchProfile(
           userId,
           startRecord,
           pageSize,
@@ -77,7 +79,7 @@ class UserRepositoryImpl implements UserRepository {
   ) async {
     if (await networkInfo.isConnected == true) {
       try {
-        var users = await remoteDataSource.searchUsers(
+        var users = await usersRemoteDataSource.searchUsers(
           userId,
           searchText,
           startRecord,
@@ -100,7 +102,7 @@ class UserRepositoryImpl implements UserRepository {
   ) async {
     if (await networkInfo.isConnected == true) {
       try {
-        var users = await remoteDataSource.getFollowers(
+        var users = await usersRemoteDataSource.getFollowers(
           targetUserId,
           startRecord,
           pageSize,
@@ -122,7 +124,7 @@ class UserRepositoryImpl implements UserRepository {
   ) async {
     if (await networkInfo.isConnected == true) {
       try {
-        var users = await remoteDataSource.getFollowingUsers(
+        var users = await usersRemoteDataSource.getFollowingUsers(
           targetUserId,
           startRecord,
           pageSize,
@@ -144,7 +146,7 @@ class UserRepositoryImpl implements UserRepository {
   ) async {
     if (await networkInfo.isConnected == true) {
       try {
-        var users = await remoteDataSource.getSuggestedUsers(
+        var users = await usersRemoteDataSource.getSuggestedUsers(
           userId,
           startRecord,
           pageSize,

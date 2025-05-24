@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:tafaling/core/network/api_service.dart';
 import 'package:tafaling/features/post/data/models/like_model.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
+import 'package:tafaling/features/post/data/models/privacy_model.dart';
 import 'package:tafaling/features/user/data/models/user_model.dart';
 
 abstract class PostRemoteDataSource {
@@ -53,7 +54,7 @@ abstract class PostRemoteDataSource {
     int postId,
   );
 
-  // Future<List<PrivacyModel>> getPrivacies();
+  Future<List<PrivacyModel>> getPrivacies();
 }
 
 class PostRemoteDataSourceImpl implements PostRemoteDataSource {
@@ -441,19 +442,21 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
     }
   }
 
-  // @override
-  // Future<List<PrivacyModel>> getPrivacies() async {
-  //   try {
-  //     final response = await authApiService.get('/auth/get-privacy');
+  @override
+  Future<List<PrivacyModel>> getPrivacies() async {
+    try {
+      final response = await authApiService.get('/auth/get-privacy');
 
-  //     if (response.statusCode == HttpStatus.ok) {
-  //       final data = response.data['data'];
-  //       return (data as List).map((privacy) => PrivacyModel.fromJson(privacy)).toList();
-  //     } else {
-  //       throw Exception('Get privacies failed');
-  //     }
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
+      if (response.statusCode == HttpStatus.ok) {
+        final data = response.data['data'];
+        return (data as List)
+            .map((privacy) => PrivacyModel.fromJson(privacy))
+            .toList();
+      } else {
+        throw Exception('Get privacies failed');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

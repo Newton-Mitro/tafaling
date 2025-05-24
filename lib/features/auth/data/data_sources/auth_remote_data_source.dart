@@ -22,18 +22,18 @@ abstract class AuthRemoteDataSource {
     String otp,
   );
 
-  // Future<UserOtpModel> forgotPassword(String email);
+  Future<int> forgotPassword(String email);
 
-  // Future<UserOtpModel> resendForgotPasswordOtp(String email);
+  Future<int> resendForgotPasswordOtp(String email);
 
-  // Future<UserOtpModel> verifyForgotPasswordOtp(String email, String otp);
+  Future<int> verifyForgotPasswordOtp(String email, String otp);
 
-  // Future<UserOtpModel> resetPassword(
-  //   String email,
-  //   String password,
-  //   String passwordConfirmation,
-  //   String token,
-  // );
+  Future<int> resetPassword(
+    String email,
+    String password,
+    String passwordConfirmation,
+    String token,
+  );
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -145,89 +145,89 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     }
   }
 
-  // @override
-  // Future<UserOtpModel> forgotPassword(String email) async {
-  //   try {
-  //     final response = await apiService.post(
-  //       '/auth/forgot-password',
-  //       data: {'email': email},
-  //     );
+  @override
+  Future<int> forgotPassword(String email) async {
+    try {
+      final response = await apiService.post(
+        '/auth/forgot-password',
+        data: {'email': email},
+      );
 
-  //     if (response.statusCode == HttpStatus.ok) {
-  //       final data = response.data!['data'];
-  //       return UserOtpModel.fromJson(data);
-  //     } else {
-  //       throw Exception('Failed to send forgot password OTP');
-  //     }
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
+      if (response.statusCode == HttpStatus.ok) {
+        final data = response.data!['data'];
+        return data;
+      } else {
+        throw Exception('Failed to send forgot password OTP');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 
-  // @override
-  // Future<UserOtpModel> resendForgotPasswordOtp(String email) async {
-  //   try {
-  //     final response = await apiService.post(
-  //       '/auth/verify-forgot-password-otp',
-  //       data: {'email': email},
-  //     );
+  @override
+  Future<int> resendForgotPasswordOtp(String email) async {
+    try {
+      final response = await apiService.post(
+        '/auth/verify-forgot-password-otp',
+        data: {'email': email},
+      );
 
-  //     if (response.statusCode == HttpStatus.ok) {
-  //       final data = response.data!['data'];
-  //       return UserOtpModel.fromJson(data);
-  //     } else {
-  //       throw Exception('Failed to resend forgot password OTP');
-  //     }
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
+      if (response.statusCode == HttpStatus.ok) {
+        final data = response.data!['data'];
+        return data;
+      } else {
+        throw Exception('Failed to resend forgot password OTP');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 
-  // @override
-  // Future<UserOtpModel> verifyForgotPasswordOtp(String email, String otp) async {
-  //   try {
-  //     final response = await apiService.post(
-  //       '/auth/verify-forgot-password-otp/verify',
-  //       data: {'email': email, 'otp': otp},
-  //     );
+  @override
+  Future<int> verifyForgotPasswordOtp(String email, String otp) async {
+    try {
+      final response = await apiService.post(
+        '/auth/verify-forgot-password-otp/verify',
+        data: {'email': email, 'otp': otp},
+      );
 
-  //     if (response.statusCode == HttpStatus.ok) {
-  //       final data = response.data!['data'];
-  //       return UserOtpModel.fromJson(data);
-  //     } else {
-  //       throw Exception('OTP verification failed');
-  //     }
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
+      if (response.statusCode == HttpStatus.ok) {
+        final data = response.data!['data'];
+        return data;
+      } else {
+        throw Exception('OTP verification failed');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 
-  // @override
-  // Future<UserOtpModel> resetPassword(
-  //   String email,
-  //   String password,
-  //   String passwordConfirmation,
-  //   String token,
-  // ) async {
-  //   try {
-  //     final response = await apiService.post(
-  //       '/auth/reset-password',
-  //       data: {
-  //         'email': email,
-  //         'password': password,
-  //         'password_confirmation': passwordConfirmation,
-  //         'token': token,
-  //       },
-  //     );
+  @override
+  Future<int> resetPassword(
+    String email,
+    String password,
+    String passwordConfirmation,
+    String token,
+  ) async {
+    try {
+      final response = await apiService.post(
+        '/auth/reset-password',
+        data: {
+          'email': email,
+          'password': password,
+          'password_confirmation': passwordConfirmation,
+          'token': token,
+        },
+      );
 
-  //     if (response.statusCode == HttpStatus.ok) {
-  //       final data = response.data!['data'];
-  //       return UserOtpModel.fromJson(data);
-  //     } else {
-  //       throw Exception('Password reset failed');
-  //     }
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
+      if (response.statusCode == HttpStatus.ok) {
+        final data = response.data!['data'];
+        return data;
+      } else {
+        throw Exception('Password reset failed');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
