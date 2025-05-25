@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/core/extensions/app_context.dart';
 import 'package:tafaling/core/injection.dart';
-import 'package:tafaling/features/auth/domain/entities/auth_user_entity.dart';
 import 'package:tafaling/features/auth/presentation/views/bloc/auth_bloc/auth_bloc.dart';
 import 'package:tafaling/features/home/presentation/home_screen/bloc/home_screen_bloc.dart';
 import 'package:tafaling/features/home/presentation/widgets/bottom_sheet.dart';
@@ -37,8 +36,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     {'icon': Icons.mail, 'label': 'Inbox'},
     {'icon': Icons.person, 'label': 'Profile'},
   ];
-
-  bool _bottomSheetShown = false;
 
   @override
   void initState() {
@@ -85,121 +82,112 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       create: (_) => HomeScreenBloc(),
       child: BlocBuilder<HomeScreenBloc, HomeScreenState>(
         builder: (context, homeScreenState) {
-          return Scaffold(
-            body: MultiBlocProvider(
-              providers: [BlocProvider(create: (_) => sl<FriendsBloc>())],
-              child: BlocListener<AuthBloc, AuthState>(
-                listener: (context, state) {
-                  if (state is UnAuthenticated) {
-                    context.read<HomeScreenBloc>().add(
-                      TabChanged(
-                        homeScreenState.selectedIndex > 1
-                            ? 0
-                            : homeScreenState.selectedIndex,
-                      ),
-                    );
-                  }
-                },
-                child: BlocBuilder<AuthBloc, AuthState>(
-                  builder: (context, authState) {
-                    if (authState is UnAuthenticated &&
-                        homeScreenState.selectedIndex > 1) {
-                      if (!_bottomSheetShown) {
-                        _bottomSheetShown = true;
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            backgroundColor: Colors.transparent,
-                            builder: (_) => const CustomBottomSheet(),
-                          ).whenComplete(() => _bottomSheetShown = false);
-                        });
+          return BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, authState) {
+              return Scaffold(
+                body: MultiBlocProvider(
+                  providers: [BlocProvider(create: (_) => sl<FriendsBloc>())],
+                  child: BlocListener<AuthBloc, AuthState>(
+                    listener: (context, state) {
+                      if (state is UnAuthenticated) {
+                        context.read<HomeScreenBloc>().add(
+                          TabChanged(
+                            homeScreenState.selectedIndex > 1
+                                ? 0
+                                : homeScreenState.selectedIndex,
+                          ),
+                        );
                       }
-                      return const SizedBox.shrink();
-                    }
-
-                    final authUser =
-                        authState is Authenticated ? authState.authUser : null;
-
-                    return _getScreen(homeScreenState.selectedIndex, authUser);
+                    },
+                    child: _getScreen(
+                      homeScreenState.selectedIndex,
+                      authState,
+                      homeScreenState,
+                    ),
+                  ),
+                ),
+                floatingActionButton: ScaleTransition(
+                  scale: fabAnimation,
+                  child: FloatingActionButton(
+                    shape: const CircleBorder(),
+                    elevation: 6,
+                    backgroundColor: context.theme.colorScheme.primary,
+                    onPressed: () {
+                      if (authState is Authenticated) {
+                        Navigator.of(context).pushNamed(RoutesName.cameraPage);
+                      } else {
+                        showCustomBottomSheet(context);
+                      }
+                    },
+                    child: Icon(
+                      Icons.add,
+                      size: 28,
+                      color: context.theme.colorScheme.onPrimary,
+                    ),
+                  ),
+                ),
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.centerDocked,
+                bottomNavigationBar: AnimatedBottomNavigationBar.builder(
+                  itemCount: tabItems.length,
+                  tabBuilder: (index, isActive) {
+                    final color = isActive ? Colors.blueAccent : Colors.grey;
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          tabItems[index]['icon'] as IconData,
+                          size: 24,
+                          color: color,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          tabItems[index]['label'] as String,
+                          style: TextStyle(color: color, fontSize: 12),
+                        ),
+                      ],
+                    );
                   },
-                ),
-              ),
-            ),
-            floatingActionButton: ScaleTransition(
-              scale: fabAnimation,
-              child: FloatingActionButton(
-                shape: const CircleBorder(),
-                elevation: 6,
-                backgroundColor: context.theme.colorScheme.primary,
-                onPressed: () {
-                  Navigator.of(context).pushNamed(RoutesName.cameraPage);
-                },
-                child: Icon(
-                  Icons.add,
-                  size: 28,
-                  color: context.theme.colorScheme.onPrimary,
-                ),
-              ),
-            ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            bottomNavigationBar: AnimatedBottomNavigationBar.builder(
-              itemCount: tabItems.length,
-              tabBuilder: (index, isActive) {
-                final color = isActive ? Colors.blueAccent : Colors.grey;
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      tabItems[index]['icon'] as IconData,
-                      size: 24,
-                      color: color,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      tabItems[index]['label'] as String,
-                      style: TextStyle(color: color, fontSize: 12),
-                    ),
-                  ],
-                );
-              },
-              backgroundColor: context.theme.colorScheme.primary,
-              activeIndex: homeScreenState.selectedIndex,
-              gapLocation: GapLocation.center,
-              notchSmoothness: NotchSmoothness.softEdge,
-              leftCornerRadius: 32,
-              rightCornerRadius: 32,
-              onTap: (index) {
-                final authState = context.read<AuthBloc>().state;
+                  backgroundColor: context.theme.colorScheme.primary,
+                  activeIndex: homeScreenState.selectedIndex,
+                  gapLocation: GapLocation.center,
+                  notchSmoothness: NotchSmoothness.softEdge,
+                  leftCornerRadius: 32,
+                  rightCornerRadius: 32,
+                  onTap: (index) {
+                    final authState = context.read<AuthBloc>().state;
 
-                final isAlwaysAllowed = index == 0 || index == 1;
-                final isAuthenticated = authState is Authenticated;
+                    final isAlwaysAllowed = index == 0 || index == 1;
+                    final isAuthenticated = authState is Authenticated;
 
-                if (isAlwaysAllowed || isAuthenticated) {
-                  context.read<HomeScreenBloc>().add(TabChanged(index));
-                } else {
-                  if (!_bottomSheetShown) {
-                    _bottomSheetShown = true;
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      builder: (_) => const CustomBottomSheet(),
-                    ).whenComplete(() => _bottomSheetShown = false);
-                  }
-                  context.read<AuthBloc>().add(AuthUserCheck());
-                }
-              },
-              hideAnimationController: _hideBottomBarAnimationController,
-            ),
+                    if (isAlwaysAllowed || isAuthenticated) {
+                      context.read<HomeScreenBloc>().add(TabChanged(index));
+                    } else {
+                      showCustomBottomSheet(context);
+                      context.read<AuthBloc>().add(AuthUserCheck());
+                    }
+                  },
+                  hideAnimationController: _hideBottomBarAnimationController,
+                ),
+              );
+            },
           );
         },
       ),
     );
   }
 
-  Widget _getScreen(int index, AuthUserEntity? authUser) {
+  Widget _getScreen(
+    int index,
+    AuthState authState,
+    HomeScreenState homeScreenState,
+  ) {
+    if (authState is UnAuthenticated && homeScreenState.selectedIndex > 1) {
+      showCustomBottomSheet(context);
+    }
+
+    final authUser = authState is Authenticated ? authState.authUser : null;
+
     final screens = [
       const PostsScreen(),
       FriendsScreen(userId: authUser?.user.id ?? 0),

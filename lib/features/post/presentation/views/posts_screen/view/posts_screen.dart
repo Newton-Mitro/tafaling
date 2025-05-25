@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/features/post/presentation/widgets/post_viewer/views/post_viewer.dart';
 import 'package:tafaling/features/post/presentation/views/posts_screen/bloc/posts_screen_bloc.dart';
 import 'package:tafaling/routes/route_name.dart';
+import 'package:tafaling/shared/widgets/app_custom_app_bar.dart';
 import 'package:tafaling/shared/widgets/language_switch/language_switch.dart';
 import 'package:tafaling/shared/widgets/theme_selector/theme_selector.dart';
 
@@ -48,22 +49,7 @@ class _PostsScreenState extends State<PostsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text('Home'),
-        elevation: 5,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              Navigator.pushNamed(context, RoutesName.searchUser);
-            },
-          ),
-          ThemeSelector(),
-          LanguageSwitch(),
-          const SizedBox(width: 10),
-        ],
-      ),
+      appBar: AppCustomAppBar(title: "Home"),
       body: BlocBuilder<PostsScreenBloc, PostsScreenState>(
         builder: (context, state) {
           if (state.posts.isNotEmpty) {

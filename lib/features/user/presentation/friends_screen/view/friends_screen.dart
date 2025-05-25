@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/features/user/presentation/friends_screen/bloc/friends_bloc.dart';
 import 'package:tafaling/features/user/presentation/widgets/user_tile/user_tile.dart';
 import 'package:tafaling/routes/route_name.dart';
+import 'package:tafaling/shared/widgets/app_custom_app_bar.dart';
 import 'package:tafaling/shared/widgets/language_switch/language_switch.dart';
 import 'package:tafaling/shared/widgets/theme_selector/theme_selector.dart';
 
@@ -54,22 +55,7 @@ class _FriendsScreenState extends State<FriendsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text('Friends'),
-        elevation: 5,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              Navigator.pushNamed(context, RoutesName.searchUser);
-            },
-          ),
-          const ThemeSelector(),
-          const LanguageSwitch(),
-          const SizedBox(width: 10),
-        ],
-      ),
+      appBar: AppCustomAppBar(title: "Friends"),
       body: BlocBuilder<FriendsBloc, FriendsState>(
         builder: (context, state) {
           if (state is FriendsError) {
