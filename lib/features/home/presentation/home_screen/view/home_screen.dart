@@ -206,7 +206,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       const Center(child: Text('Inbox')),
       authUser != null
           ? MyProfileScreen()
-          : const Center(child: Text('Please log in to view Profile')),
+          : Center(child: CircularProgressIndicator()),
     ];
     return screens[index];
   }

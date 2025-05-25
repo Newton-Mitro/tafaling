@@ -72,10 +72,6 @@ class _FriendsScreenState extends State<FriendsScreen> {
       ),
       body: BlocBuilder<FriendsBloc, FriendsState>(
         builder: (context, state) {
-          if (state is FriendsLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
           if (state is FriendsError) {
             return Center(child: Text("Error: ${state.message}"));
           }
@@ -108,7 +104,7 @@ class _FriendsScreenState extends State<FriendsScreen> {
             );
           }
 
-          return const Center(child: Text("No followers found."));
+          return const Center(child: CircularProgressIndicator());
         },
       ),
     );

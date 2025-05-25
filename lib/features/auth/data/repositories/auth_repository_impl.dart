@@ -22,10 +22,9 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   ResultFuture<AuthUserModel> login(String? email, String? password) async {
-    if (await networkInfo.isConnected == true) {
+    if (await networkInfo.isConnected) {
       try {
         final result = await authRemoteDataSource.login(email, password);
-
         await authLocalDataSource.setAuthUser(result);
         return Right(result);
       } catch (e) {
@@ -43,7 +42,7 @@ class AuthRepositoryImpl implements AuthRepository {
     String password,
     String confirmPassword,
   ) async {
-    if (await networkInfo.isConnected == true) {
+    if (await networkInfo.isConnected) {
       try {
         final result = await authRemoteDataSource.register(
           name,
@@ -62,11 +61,10 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   ResultFuture<void> logout() async {
-    if (await networkInfo.isConnected == true) {
+    if (await networkInfo.isConnected) {
       try {
         await authLocalDataSource.clearAuthUser();
         await authRemoteDataSource.logout();
-
         return const Right(null);
       } catch (e) {
         return Left(FailureMapper.fromException(e));
@@ -83,6 +81,118 @@ class AuthRepositoryImpl implements AuthRepository {
       return Right(authUser);
     } catch (e) {
       return Left(FailureMapper.fromException(e));
+    }
+  }
+
+  @override
+  ResultFuture<String> resendAccountVerificationOtp(String email) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final result = await authRemoteDataSource.resendAccountVerificationOtp(
+          email,
+        );
+        return Right(result);
+      } catch (e) {
+        return Left(FailureMapper.fromException(e));
+      }
+    } else {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  ResultFuture<AuthUserEntity> verifiyAccountEmail(
+    String userAgent,
+    String ip,
+    String email,
+    String otp,
+  ) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final result = await authRemoteDataSource.verifiyAccountEmail(
+          userAgent,
+          ip,
+          email,
+          otp,
+        );
+        await authLocalDataSource.setAuthUser(result);
+        return Right(result);
+      } catch (e) {
+        return Left(FailureMapper.fromException(e));
+      }
+    } else {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  ResultFuture<int> forgotPassword(String email) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final result = await authRemoteDataSource.forgotPassword(email);
+        return Right(result);
+      } catch (e) {
+        return Left(FailureMapper.fromException(e));
+      }
+    } else {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  ResultFuture<int> resendForgotPasswordOtp(String email) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final result = await authRemoteDataSource.resendForgotPasswordOtp(
+          email,
+        );
+        return Right(result);
+      } catch (e) {
+        return Left(FailureMapper.fromException(e));
+      }
+    } else {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  ResultFuture<int> verifyForgotPasswordOtp(String email, String otp) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final result = await authRemoteDataSource.verifyForgotPasswordOtp(
+          email,
+          otp,
+        );
+        return Right(result);
+      } catch (e) {
+        return Left(FailureMapper.fromException(e));
+      }
+    } else {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  ResultFuture<int> resetPassword(
+    String email,
+    String password,
+    String passwordConfirmation,
+    String token,
+  ) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final result = await authRemoteDataSource.resetPassword(
+          email,
+          password,
+          passwordConfirmation,
+          token,
+        );
+        return Right(result);
+      } catch (e) {
+        return Left(FailureMapper.fromException(e));
+      }
+    } else {
+      return Left(NetworkFailure());
     }
   }
 }

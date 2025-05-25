@@ -18,4 +18,11 @@ class UrlHelper {
     );
     return youtubeRegExp.hasMatch(url);
   }
+
+  static bool isValidUrl(String url) {
+    final uri = Uri.tryParse(url);
+    return uri != null &&
+        (uri.isScheme('http') || uri.isScheme('https')) &&
+        uri.hasAuthority;
+  }
 }

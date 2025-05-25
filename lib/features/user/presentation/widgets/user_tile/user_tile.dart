@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/core/injection.dart';
 import 'package:tafaling/features/auth/presentation/views/bloc/auth_bloc/auth_bloc.dart';
+import 'package:tafaling/features/home/presentation/widgets/bottom_sheet.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/presentation/widgets/user_tile/bloc/user_tile_bloc.dart';
 import 'package:tafaling/routes/route_name.dart';
@@ -112,11 +113,7 @@ class UserTile extends StatelessWidget {
                           arguments: userTileState.user,
                         );
                       } else {
-                        Navigator.pushNamed(
-                          context,
-                          RoutesName.userProfilePage,
-                          arguments: userTileState.user,
-                        );
+                        showCustomBottomSheet(context);
                       }
                     },
                   ),

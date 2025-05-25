@@ -2,7 +2,6 @@ import 'package:tafaling/core/injection.dart';
 import 'package:tafaling/core/network/api_service.dart';
 import 'package:tafaling/core/network/network_info.dart';
 import 'package:tafaling/features/auth/domain/usecases/get_auth_user_usecase.dart';
-import 'package:tafaling/features/user/data/data_sources/user_data_source.dart';
 import 'package:tafaling/features/user/data/data_sources/users_remote_data_source.dart';
 import 'package:tafaling/features/user/data/repositories/user_repository_impl.dart';
 import 'package:tafaling/features/user/domain/repositories/user_profile_repository.dart';

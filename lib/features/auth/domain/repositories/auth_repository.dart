@@ -11,4 +11,25 @@ abstract class AuthRepository {
   ResultFuture<AuthUserEntity> login(String? email, String? password);
   ResultFuture<void> logout();
   ResultFuture<AuthUserEntity> getAuthUser();
+  ResultFuture<String> resendAccountVerificationOtp(String email);
+
+  ResultFuture<AuthUserEntity> verifiyAccountEmail(
+    String userAgent,
+    String ip,
+    String email,
+    String otp,
+  );
+
+  ResultFuture<int> forgotPassword(String email);
+
+  ResultFuture<int> resendForgotPasswordOtp(String email);
+
+  ResultFuture<int> verifyForgotPasswordOtp(String email, String otp);
+
+  ResultFuture<int> resetPassword(
+    String email,
+    String password,
+    String passwordConfirmation,
+    String token,
+  );
 }

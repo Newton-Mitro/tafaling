@@ -64,7 +64,7 @@ class PostPreviewBloc extends Bloc<PostPreviewEvent, PostPreviewState> {
         DisLikePostPrams(postId: event.postId),
       );
       result.fold(
-        (failure) => emit(PostPreviewError(message: failure.message)),
+        (failure) => {emit(PostPreviewError(message: failure.message))},
         (response) {
           emit(
             PostPreviewLoaded(

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:tafaling/core/network/api_service.dart';
+import 'package:tafaling/core/utils/json_util.dart';
 import 'package:tafaling/features/post/data/models/like_model.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
 import 'package:tafaling/features/post/data/models/privacy_model.dart';
@@ -164,7 +165,8 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
 
       if (response.statusCode == HttpStatus.created) {
         final data = response.data['data'];
-        return LikeModel.fromJson(data);
+        final jsonResponse = JsonUtil.decodeModel(data);
+        return LikeModel.fromJson(jsonResponse);
       } else {
         throw Exception('Like post failed');
       }
@@ -183,7 +185,8 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
 
       if (response.statusCode == HttpStatus.created) {
         final data = response.data['data'];
-        return LikeModel.fromJson(data);
+        final jsonResponse = JsonUtil.decodeModel(data);
+        return LikeModel.fromJson(jsonResponse);
       } else {
         throw Exception('Dislike post failed');
       }

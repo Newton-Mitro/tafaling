@@ -76,16 +76,16 @@ class _PostViewerState extends State<PostViewer> {
               itemBuilder: (context, index) {
                 final attachment = widget.postModel.attachments[index];
                 final mimeType = attachment.mimeType.toLowerCase();
+                final attachmentUrl =
+                    '${attachment.fileURL}/${attachment.fileName}';
 
-                if (mimeType.contains("image")) {
-                  return ImagePostViewer(
-                    attachmentUrl:
-                        '${attachment.fileURL}/${attachment.fileName}',
-                  );
-                } else if (mimeType.contains("video")) {
+                if (mimeType.contains("image") &&
+                    UrlHelper.isValidUrl(attachmentUrl)) {
+                  return ImagePostViewer(attachmentUrl: attachmentUrl);
+                } else if (mimeType.contains("video") &&
+                    UrlHelper.isValidUrl(attachmentUrl)) {
                   return VideoPostViewer(
-                    attachmentUrl:
-                        '${attachment.fileURL}/${attachment.fileName}',
+                    attachmentUrl: attachmentUrl,
                     autoPlay: true,
                   );
                 } else {

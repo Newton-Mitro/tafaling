@@ -68,55 +68,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     ),
                     ThemeSelector(),
                     LanguageSwitch(),
-                    PopupMenuButton<int>(
-                      offset: const Offset(0, 52),
-                      icon: Icon(
-                        Icons.more_vert,
-                      ), // ← use this instead of child
-                      onSelected: (value) async {
-                        if (value == 0) {
-                          Navigator.pushNamed(context, RoutesName.settingsPage);
-                        } else if (value == 1) {
-                          context.read<AuthBloc>().add(LogoutRequested());
-                        }
-                      },
-                      itemBuilder:
-                          (context) => [
-                            const PopupMenuItem(
-                              value: 0,
-                              child: Row(
-                                children: [
-                                  Icon(Icons.settings, size: 16),
-                                  SizedBox(width: 8),
-                                  Text(
-                                    'Settings',
-                                    style: TextStyle(fontSize: 14),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const PopupMenuItem(
-                              enabled: false,
-                              child: Divider(
-                                color: Colors.grey,
-                                thickness: 1.2,
-                              ),
-                            ),
-                            const PopupMenuItem(
-                              value: 1,
-                              child: Row(
-                                children: [
-                                  Icon(Icons.logout, size: 16),
-                                  SizedBox(width: 8),
-                                  Text(
-                                    'Logout',
-                                    style: TextStyle(fontSize: 14),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                    ),
+                    SizedBox(width: 10),
                   ],
                 ),
                 body: SafeArea(

@@ -32,11 +32,15 @@ class PostSidebar extends StatelessWidget {
                 GestureDetector(
                   // Wrap the SizedBox with GestureDetector
                   onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      RoutesName.userProfilePage,
-                      arguments: postModel.creator,
-                    );
+                    if (authState is Authenticated) {
+                      Navigator.pushNamed(
+                        context,
+                        RoutesName.userProfilePage,
+                        arguments: postModel.creator,
+                      );
+                    } else {
+                      showCustomBottomSheet(context);
+                    }
                   }, // Handle the tap
                   child: SizedBox(
                     width: 50,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:tafaling/core/errors/failures.dart';
 import 'package:tafaling/core/network/network_info.dart';
@@ -152,6 +154,60 @@ class UserRepositoryImpl implements UserRepository {
           pageSize,
         );
         return Right(users);
+      } catch (e) {
+        return Left(FailureMapper.fromException(e));
+      }
+    } else {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  ResultFuture<UserEntity> updateCoverPhoto(File coverPhoto) async {
+    if (await networkInfo.isConnected == true) {
+      try {
+        final updatedUser = await usersRemoteDataSource.updateCoverPhoto(
+          coverPhoto,
+        );
+        return Right(updatedUser);
+      } catch (e) {
+        return Left(FailureMapper.fromException(e));
+      }
+    } else {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  ResultFuture<UserEntity> updateProfilePicture(File profilePhoto) async {
+    if (await networkInfo.isConnected == true) {
+      try {
+        final updatedUser = await usersRemoteDataSource.updateProfilePicture(
+          profilePhoto,
+        );
+        return Right(updatedUser);
+      } catch (e) {
+        return Left(FailureMapper.fromException(e));
+      }
+    } else {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  ResultFuture<String> changePassword(
+    String email,
+    String password,
+    String oldPassword,
+  ) async {
+    if (await networkInfo.isConnected == true) {
+      try {
+        final response = await usersRemoteDataSource.changePassword(
+          email,
+          password,
+          oldPassword,
+        );
+        return Right(response);
       } catch (e) {
         return Left(FailureMapper.fromException(e));
       }
