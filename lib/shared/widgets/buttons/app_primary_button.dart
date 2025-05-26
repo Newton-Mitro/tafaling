@@ -21,7 +21,6 @@ class AppPrimaryButton extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
           height: 36,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tafaling/core/extensions/app_context.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/post/presentation/widgets/post_preview/post_preview.dart';
+import 'package:tafaling/shared/widgets/buttons/app_primary_button.dart';
 
 class SharePostScreen extends StatefulWidget {
   final PostEntity postEntity;
@@ -61,24 +63,47 @@ class _SharePostScreenState extends State<SharePostScreen> {
             const SizedBox(height: 24),
 
             /// Post Input Field
-            TextField(
-              controller: _postController,
-              maxLines: 5,
-              decoration: const InputDecoration(
-                hintText: "What's on your mind?",
-                border: OutlineInputBorder(),
+            Container(
+              decoration: BoxDecoration(
+                color: context.theme.colorScheme.surface,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
-              onChanged: (_) => setState(() {}),
+              child: TextField(
+                controller: _postController,
+                maxLines: 4,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 14,
+                    horizontal: 16,
+                  ),
+                  hintText: "What's on your mind?",
+                  border: InputBorder.none,
+                ),
+                onChanged: (_) => setState(() {}),
+              ),
             ),
             const SizedBox(height: 16),
 
             /// Share Button
-            Align(
-              alignment: Alignment.centerRight,
-              child: ElevatedButton(
-                onPressed: _sharePost,
-                child: const Text('Share'),
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                AppPrimaryButton(
+                  onPressed: _sharePost,
+                  label: 'Share',
+                  iconBefore: Icon(
+                    Icons.share,
+                    color: context.theme.colorScheme.onPrimary,
+                  ),
+                ),
+              ],
             ),
           ],
         ),

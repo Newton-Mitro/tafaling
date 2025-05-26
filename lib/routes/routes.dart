@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tafaling/core/settings/settings_privacy_page.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/post/presentation/views/create_post_screen/view/create_post_attachment_screen.dart';
+import 'package:tafaling/features/post/presentation/views/post_comment_screen/post_comment_screen.dart';
 import 'package:tafaling/features/post/presentation/views/share_post_screen/view/share_post_screen.dart';
 import 'package:tafaling/features/user/presentation/my_profile_screen/view/my_profile_screen.dart';
 import 'package:tafaling/routes/app_route_name.dart';
@@ -41,6 +42,11 @@ class AppRoutes {
 
       case AppRouteName.postSharePage:
         return _materialRoute(SharePostScreen(postEntity: args as PostEntity));
+
+      case AppRouteName.postCommentPage:
+        return _materialRoute(
+          CommentPostScreen(postEntity: args as PostEntity),
+        );
 
       case AppRouteName.settingsPage:
         return _materialRoute(SettingsPrivacyPage());

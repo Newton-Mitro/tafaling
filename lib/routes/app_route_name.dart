@@ -9,5 +9,6 @@ final class AppRouteName {
   static const String searchUser = 'searchUser';
   static const String postLikedUsersPage = 'postLikedUsersPage';
   static const String postSharePage = 'postSharePage';
+  static const String postCommentPage = 'postCommentPage';
   static const String settingsPage = 'settingsPage';
 }

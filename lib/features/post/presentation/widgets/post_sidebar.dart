@@ -142,8 +142,8 @@ class PostSidebar extends StatelessWidget {
                     if (authState is Authenticated) {
                       Navigator.pushNamed(
                         context,
-                        AppRouteName.postSharePage,
-                        arguments: postModel.creator,
+                        AppRouteName.postCommentPage,
+                        arguments: postModel,
                       );
                     } else {
                       showCustomBottomSheet(context);
