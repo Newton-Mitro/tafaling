@@ -103,14 +103,13 @@ class PostSidebar extends StatelessWidget {
                           }
                         },
                         () {
-                          if (authState is Authenticated) {
+                          if (authState is Authenticated &&
+                              state.post.likeCount > 0) {
                             Navigator.pushNamed(
                               context,
                               AppRouteName.postLikedUsersPage,
                               arguments: state.post.id,
                             );
-                          } else {
-                            showCustomBottomSheet(context);
                           }
                         },
                       );

@@ -137,19 +137,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               return CircularProgressIndicator();
                             }
 
-                            return AppPrimaryButton(
-                              label: "Register",
-                              onPressed: () {
-                                context.read<AuthBloc>().add(
-                                  RegisterRequested(
-                                    name: nameController.text,
-                                    email: emailController.text,
-                                    password: passwordController.text,
-                                    confirmPassword:
-                                        confirmPasswordController.text,
-                                  ),
-                                );
-                              },
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                AppPrimaryButton(
+                                  label: "Register",
+                                  onPressed: () {
+                                    context.read<AuthBloc>().add(
+                                      RegisterRequested(
+                                        name: nameController.text,
+                                        email: emailController.text,
+                                        password: passwordController.text,
+                                        confirmPassword:
+                                            confirmPasswordController.text,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
                             );
                           },
                         ),

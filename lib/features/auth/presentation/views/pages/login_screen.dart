@@ -105,16 +105,21 @@ class _LoginScreenState extends State<LoginScreen> {
                             if (state is AuthLoading)
                               CircularProgressIndicator(),
                             if (state is! AuthLoading)
-                              AppPrimaryButton(
-                                label: "Login",
-                                onPressed: () {
-                                  context.read<AuthBloc>().add(
-                                    LoginRequested(
-                                      username: usernameController.text,
-                                      password: passwordController.text,
-                                    ),
-                                  );
-                                },
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  AppPrimaryButton(
+                                    label: "Login",
+                                    onPressed: () {
+                                      context.read<AuthBloc>().add(
+                                        LoginRequested(
+                                          username: usernameController.text,
+                                          password: passwordController.text,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
                               ),
                           ],
                         );

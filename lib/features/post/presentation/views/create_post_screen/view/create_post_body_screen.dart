@@ -1,7 +1,8 @@
 import 'dart:io';
-
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:tafaling/core/extensions/app_context.dart';
+import 'package:video_player/video_player.dart';
 
 class CreatePostBodyScreen extends StatefulWidget {
   final String filePath;
@@ -19,6 +20,25 @@ class CreatePostBodyScreen extends StatefulWidget {
 
 class _CreatePostBodyScreenState extends State<CreatePostBodyScreen> {
   final TextEditingController _postBodyController = TextEditingController();
+  VideoPlayerController? _videoController;
+  ChewieController? _chewieController;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.fileType == "video") {
+      _videoController = VideoPlayerController.file(File(widget.filePath))
+        ..initialize().then((_) {
+          _chewieController = ChewieController(
+            videoPlayerController: _videoController!,
+            autoPlay: false,
+            looping: false,
+            aspectRatio: _videoController!.value.aspectRatio,
+          );
+          setState(() {});
+        });
+    }
+  }
 
   void _submitPost() {
     final bodyText = _postBodyController.text.trim();
@@ -32,15 +52,11 @@ class _CreatePostBodyScreenState extends State<CreatePostBodyScreen> {
       return;
     }
 
-    // TODO: Handle post submission (upload file + text) to backend or state management
+    // TODO: Send data to backend
+    print('Post Body: $bodyText');
+    print('File: ${widget.filePath} (${widget.fileType})');
 
-    print('Post submitted with body: $bodyText');
-    print('Attached file path: ${widget.filePath}');
-    print('Attached file type: ${widget.fileType}');
-
-    // Clear text after submit
     _postBodyController.clear();
-
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Post submitted successfully!')),
     );
@@ -49,18 +65,48 @@ class _CreatePostBodyScreenState extends State<CreatePostBodyScreen> {
   @override
   void dispose() {
     _postBodyController.dispose();
+    _videoController?.dispose();
+    _chewieController?.dispose();
     super.dispose();
+  }
+
+  Widget _buildPreview() {
+    if (widget.fileType == "image") {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(5),
+        child: Image.file(
+          File(widget.filePath),
+          height: 280,
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+
+    if (_chewieController != null &&
+        _chewieController!.videoPlayerController.value.isInitialized) {
+      return AspectRatio(
+        aspectRatio: _videoController!.value.aspectRatio,
+        child: Chewie(controller: _chewieController!),
+      );
+    }
+
+    return Container(
+      height: 280,
+      alignment: Alignment.center,
+      child: const CircularProgressIndicator(),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.theme;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Create Post"),
-        centerTitle: true,
         elevation: 2,
+        backgroundColor: theme.colorScheme.primary,
+        foregroundColor: theme.colorScheme.onPrimary,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -76,46 +122,9 @@ class _CreatePostBodyScreenState extends State<CreatePostBodyScreen> {
               ),
               const SizedBox(height: 12),
 
-              // Preview container with shadow and rounded corners
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.surface,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                padding: const EdgeInsets.all(12),
-                child:
-                    widget.fileType == "image"
-                        ? ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Image.file(
-                            File(widget.filePath),
-                            height: 280,
-                            fit: BoxFit.contain,
-                          ),
-                        )
-                        : const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 60),
-                          child: Center(
-                            child: Text(
-                              "Video preview is not implemented.",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontStyle: FontStyle.italic,
-                              ),
-                            ),
-                          ),
-                        ),
-              ),
-              const SizedBox(height: 30),
+              Container(width: double.infinity, child: _buildPreview()),
 
+              const SizedBox(height: 30),
               Text(
                 "Post Content",
                 style: theme.textTheme.titleMedium?.copyWith(
@@ -126,28 +135,27 @@ class _CreatePostBodyScreenState extends State<CreatePostBodyScreen> {
 
               Container(
                 decoration: BoxDecoration(
-                  color: context.theme.colorScheme.surface,
+                  color: theme.colorScheme.surface,
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black12,
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
+                      blurRadius: 6,
+                      offset: const Offset(0, 3),
                     ),
                   ],
                 ),
                 child: TextField(
                   controller: _postBodyController,
                   maxLines: 3,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 14,
+                  decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(
                       horizontal: 16,
+                      vertical: 16,
                     ),
                     hintText: "Write your post here...",
                     border: InputBorder.none,
                   ),
-                  onChanged: (_) => setState(() {}),
                 ),
               ),
 
@@ -157,10 +165,7 @@ class _CreatePostBodyScreenState extends State<CreatePostBodyScreen> {
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: _submitPost,
-                  icon: Icon(
-                    Icons.send,
-                    color: context.theme.colorScheme.onPrimary,
-                  ),
+                  icon: const Icon(Icons.send),
                   label: const Padding(
                     padding: EdgeInsets.symmetric(vertical: 14),
                     child: Text(
@@ -172,11 +177,12 @@ class _CreatePostBodyScreenState extends State<CreatePostBodyScreen> {
                     ),
                   ),
                   style: ElevatedButton.styleFrom(
+                    elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    elevation: 4,
                     backgroundColor: theme.colorScheme.primary,
+                    foregroundColor: theme.colorScheme.onPrimary,
                   ),
                 ),
               ),
