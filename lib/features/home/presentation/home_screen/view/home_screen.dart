@@ -10,7 +10,7 @@ import 'package:tafaling/features/post/presentation/views/posts_screen/view/post
 import 'package:tafaling/features/user/presentation/friends_screen/bloc/friends_bloc.dart';
 import 'package:tafaling/features/user/presentation/friends_screen/view/friends_screen.dart';
 import 'package:tafaling/features/user/presentation/my_profile_screen/view/my_profile_screen.dart';
-import 'package:tafaling/routes/route_name.dart';
+import 'package:tafaling/routes/app_route_name.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -114,7 +114,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     backgroundColor: context.theme.colorScheme.primary,
                     onPressed: () {
                       if (authState is Authenticated) {
-                        Navigator.of(context).pushNamed(RoutesName.cameraPage);
+                        Navigator.of(
+                          context,
+                        ).pushNamed(AppRouteName.cameraPage);
                       } else {
                         showCustomBottomSheet(context);
                       }

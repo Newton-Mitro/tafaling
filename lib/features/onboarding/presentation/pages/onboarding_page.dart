@@ -5,7 +5,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tafaling/core/extensions/app_context.dart';
 import 'package:tafaling/features/onboarding/data/models/onboarding_info.dart';
 import 'package:tafaling/features/onboarding/presentation/bloc/onboarding_page_bloc.dart';
-import 'package:tafaling/routes/route_name.dart';
+import 'package:tafaling/routes/app_route_name.dart';
 import 'package:tafaling/shared/widgets/buttons/app_primary_button.dart';
 import 'package:tafaling/shared/widgets/language_switch/language_switch.dart';
 import 'package:tafaling/shared/widgets/theme_selector/theme_selector.dart';
@@ -102,7 +102,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
     return BlocConsumer<OnboardingPageBloc, OnboardingPageState>(
       listener: (context, state) {
         if (state is OnboardingSeenSetSuccess) {
-          Navigator.popAndPushNamed(context, RoutesName.homePage);
+          Navigator.popAndPushNamed(context, AppRouteName.homePage);
         } else if (state is OnboardingError) {
           ScaffoldMessenger.of(
             context,
@@ -236,7 +236,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                               );
                               Navigator.popAndPushNamed(
                                 context,
-                                RoutesName.homePage,
+                                AppRouteName.homePage,
                               );
                             },
                             iconAfter: Icon(

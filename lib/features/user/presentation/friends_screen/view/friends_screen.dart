@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/features/user/presentation/friends_screen/bloc/friends_bloc.dart';
 import 'package:tafaling/features/user/presentation/widgets/user_tile/user_tile.dart';
-import 'package:tafaling/routes/route_name.dart';
 import 'package:tafaling/shared/widgets/app_custom_app_bar.dart';
-import 'package:tafaling/shared/widgets/language_switch/language_switch.dart';
-import 'package:tafaling/shared/widgets/theme_selector/theme_selector.dart';
 
 class FriendsScreen extends StatefulWidget {
   final int userId;

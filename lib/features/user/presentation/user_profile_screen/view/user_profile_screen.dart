@@ -10,7 +10,7 @@ import 'package:tafaling/features/user/presentation/user_profile_screen/bloc/pro
 import 'package:tafaling/features/user/presentation/users_followers_screen/view/users_followers_screen.dart';
 import 'package:tafaling/features/user/presentation/widgets/follow_status.dart';
 import 'package:tafaling/features/user/presentation/widgets/profile_posts_grid.dart';
-import 'package:tafaling/routes/route_name.dart';
+import 'package:tafaling/routes/app_route_name.dart';
 import 'package:tafaling/shared/widgets/language_switch/language_switch.dart';
 import 'package:tafaling/shared/widgets/theme_selector/theme_selector.dart';
 
@@ -50,7 +50,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         child: BlocListener<AuthBloc, AuthState>(
           listener: (context, authState) {
             if (authState is UnAuthenticated) {
-              Navigator.pushReplacementNamed(context, RoutesName.root);
+              Navigator.pushReplacementNamed(context, AppRouteName.root);
             }
           },
           child: BlocBuilder<AuthBloc, AuthState>(
@@ -63,7 +63,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     IconButton(
                       icon: const Icon(Icons.search),
                       onPressed: () {
-                        Navigator.pushNamed(context, RoutesName.searchUser);
+                        Navigator.pushNamed(context, AppRouteName.searchUser);
                       },
                     ),
                     ThemeSelector(),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tafaling/routes/route_name.dart';
+import 'package:tafaling/routes/app_route_name.dart';
 import 'package:tafaling/core/extensions/app_context.dart';
 import 'package:tafaling/shared/widgets/app_logo.dart';
 import 'package:tafaling/features/home/presentation/widgets/button_widget.dart';
@@ -36,14 +36,14 @@ class CustomBottomSheet extends StatelessWidget {
           ),
           const AppLogo(width: 100),
           const SizedBox(height: 50),
-          CustomButton(context, 'Login', RoutesName.loginPage),
+          CustomButton(context, 'Login', AppRouteName.loginPage),
           const SizedBox(height: 10),
           const Text(
             'or',
             style: TextStyle(fontSize: 16, color: Colors.white70),
           ),
           const SizedBox(height: 10),
-          CustomButton(context, 'Register', RoutesName.registerPage),
+          CustomButton(context, 'Register', AppRouteName.registerPage),
           const SizedBox(height: 50),
         ],
       ),

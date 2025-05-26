@@ -7,7 +7,7 @@ import 'package:tafaling/features/auth/presentation/views/bloc/auth_bloc/auth_bl
 import 'package:tafaling/features/home/presentation/widgets/bottom_sheet.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/post/presentation/widgets/post_viewer/bloc/post_preview_bloc.dart';
-import 'package:tafaling/routes/route_name.dart';
+import 'package:tafaling/routes/app_route_name.dart';
 
 class PostSidebar extends StatelessWidget {
   final PostEntity postModel;
@@ -35,7 +35,7 @@ class PostSidebar extends StatelessWidget {
                     if (authState is Authenticated) {
                       Navigator.pushNamed(
                         context,
-                        RoutesName.userProfilePage,
+                        AppRouteName.userProfilePage,
                         arguments: postModel.creator,
                       );
                     } else {
@@ -100,7 +100,7 @@ class PostSidebar extends StatelessWidget {
                           if (authState is Authenticated) {
                             Navigator.pushNamed(
                               context,
-                              RoutesName.postLikedUsersPage,
+                              AppRouteName.postLikedUsersPage,
                               arguments: state.post.id,
                             );
                           } else {
@@ -119,6 +119,11 @@ class PostSidebar extends StatelessWidget {
                   context.theme.colorScheme.surface,
                   () {
                     if (authState is Authenticated) {
+                      Navigator.pushNamed(
+                        context,
+                        AppRouteName.postSharePage,
+                        arguments: postModel,
+                      );
                     } else {
                       showCustomBottomSheet(context);
                     }
@@ -135,6 +140,11 @@ class PostSidebar extends StatelessWidget {
                   context.theme.colorScheme.surface,
                   () {
                     if (authState is Authenticated) {
+                      Navigator.pushNamed(
+                        context,
+                        AppRouteName.postSharePage,
+                        arguments: postModel.creator,
+                      );
                     } else {
                       showCustomBottomSheet(context);
                     }

@@ -1,4 +1,4 @@
-final class RoutesName {
+final class AppRouteName {
   static const String root = '/';
   static const String homePage = 'homePage';
   static const String loginPage = 'loginPage';
@@ -8,5 +8,6 @@ final class RoutesName {
   static const String cameraPage = 'cameraPage';
   static const String searchUser = 'searchUser';
   static const String postLikedUsersPage = 'postLikedUsersPage';
+  static const String postSharePage = 'postSharePage';
   static const String settingsPage = 'settingsPage';
 }

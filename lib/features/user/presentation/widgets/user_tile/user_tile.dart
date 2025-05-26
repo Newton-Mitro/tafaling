@@ -6,7 +6,7 @@ import 'package:tafaling/features/auth/presentation/views/bloc/auth_bloc/auth_bl
 import 'package:tafaling/features/home/presentation/widgets/bottom_sheet.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 import 'package:tafaling/features/user/presentation/widgets/user_tile/bloc/user_tile_bloc.dart';
-import 'package:tafaling/routes/route_name.dart';
+import 'package:tafaling/routes/app_route_name.dart';
 
 class UserTile extends StatelessWidget {
   final UserEntity user;
@@ -109,7 +109,7 @@ class UserTile extends StatelessWidget {
                       if (authState is Authenticated) {
                         Navigator.pushNamed(
                           context,
-                          RoutesName.userProfilePage,
+                          AppRouteName.userProfilePage,
                           arguments: userTileState.user,
                         );
                       } else {

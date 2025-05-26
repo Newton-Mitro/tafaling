@@ -9,7 +9,7 @@ import 'package:tafaling/features/user/presentation/my_profile_screen/bloc/my_pr
 import 'package:tafaling/features/user/presentation/users_followers_screen/view/users_followers_screen.dart';
 import 'package:tafaling/features/user/presentation/widgets/follow_status.dart';
 import 'package:tafaling/features/user/presentation/widgets/profile_posts_grid.dart';
-import 'package:tafaling/routes/route_name.dart';
+import 'package:tafaling/routes/app_route_name.dart';
 import 'package:tafaling/shared/widgets/language_switch/language_switch.dart';
 import 'package:tafaling/shared/widgets/theme_selector/theme_selector.dart';
 
@@ -47,7 +47,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
         child: BlocListener<AuthBloc, AuthState>(
           listener: (context, authState) {
             if (authState is UnAuthenticated) {
-              Navigator.pushReplacementNamed(context, RoutesName.root);
+              Navigator.pushReplacementNamed(context, AppRouteName.root);
             }
           },
           child: BlocBuilder<AuthBloc, AuthState>(
@@ -61,7 +61,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     IconButton(
                       icon: const Icon(Icons.search),
                       onPressed: () {
-                        Navigator.pushNamed(context, RoutesName.searchUser);
+                        Navigator.pushNamed(context, AppRouteName.searchUser);
                       },
                     ),
                     ThemeSelector(),
@@ -73,7 +73,10 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                       ), // ← use this instead of child
                       onSelected: (value) async {
                         if (value == 0) {
-                          Navigator.pushNamed(context, RoutesName.settingsPage);
+                          Navigator.pushNamed(
+                            context,
+                            AppRouteName.settingsPage,
+                          );
                         } else if (value == 1) {
                           context.read<AuthBloc>().add(LogoutRequested());
                         }

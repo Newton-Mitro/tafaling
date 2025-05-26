@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tafaling/core/settings/settings_privacy_page.dart';
+import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/post/presentation/views/create_post_screen/view/create_post_attachment_screen.dart';
+import 'package:tafaling/features/post/presentation/views/share_post_screen/view/share_post_screen.dart';
 import 'package:tafaling/features/user/presentation/my_profile_screen/view/my_profile_screen.dart';
-import 'package:tafaling/routes/route_name.dart';
+import 'package:tafaling/routes/app_route_name.dart';
 import 'package:tafaling/features/auth/presentation/views/pages/login_screen.dart';
 import 'package:tafaling/features/auth/presentation/views/pages/register_screen.dart';
 import 'package:tafaling/features/home/presentation/home_screen/view/home_screen.dart';
@@ -16,31 +18,34 @@ class AppRoutes {
     final Object? args = settings.arguments;
 
     switch (settings.name) {
-      case RoutesName.homePage:
+      case AppRouteName.homePage:
         return _materialRoute(const HomeScreen());
 
-      case RoutesName.loginPage:
+      case AppRouteName.loginPage:
         return _materialRoute(const LoginScreen());
 
-      case RoutesName.cameraPage:
+      case AppRouteName.cameraPage:
         return _materialRoute(const CreatePostAttachmentScreen());
 
-      case RoutesName.registerPage:
+      case AppRouteName.registerPage:
         return _materialRoute(const RegistrationScreen());
 
-      case RoutesName.myProfilePage:
+      case AppRouteName.myProfilePage:
         return _materialRoute(const MyProfileScreen());
 
-      case RoutesName.userProfilePage:
+      case AppRouteName.userProfilePage:
         return _materialRoute(UserProfileScreen(user: args as UserEntity));
 
-      case RoutesName.searchUser:
+      case AppRouteName.searchUser:
         return _materialRoute(SearchScreen());
 
-      case RoutesName.settingsPage:
+      case AppRouteName.postSharePage:
+        return _materialRoute(SharePostScreen(postEntity: args as PostEntity));
+
+      case AppRouteName.settingsPage:
         return _materialRoute(SettingsPrivacyPage());
 
-      case RoutesName.postLikedUsersPage:
+      case AppRouteName.postLikedUsersPage:
         return _materialRoute(PostLikedUsersScreen(userId: args));
 
       default:

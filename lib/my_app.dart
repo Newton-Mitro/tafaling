@@ -4,7 +4,7 @@ import 'package:flutter_locales/flutter_locales.dart';
 import 'package:tafaling/features/home/presentation/home_screen/view/home_screen.dart';
 import 'package:tafaling/features/onboarding/presentation/bloc/onboarding_page_bloc.dart';
 import 'package:tafaling/features/onboarding/presentation/pages/onboarding_page.dart';
-import 'package:tafaling/routes.dart';
+import 'package:tafaling/routes/routes.dart';
 import 'package:tafaling/shared/widgets/language_switch/bloc/language_switch_bloc.dart';
 import 'package:tafaling/shared/widgets/theme_selector/bloc/theme_selector_bloc.dart';
 

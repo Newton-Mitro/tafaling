@@ -2,7 +2,7 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/features/auth/presentation/views/bloc/auth_bloc/auth_bloc.dart';
-import 'package:tafaling/routes/route_name.dart';
+import 'package:tafaling/routes/app_route_name.dart';
 import 'package:tafaling/core/injection.dart';
 import 'package:tafaling/shared/widgets/app_logo.dart';
 import 'package:tafaling/shared/widgets/app_text_input.dart';
@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
         body: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is Authenticated) {
-              Navigator.pushReplacementNamed(context, RoutesName.homePage);
+              Navigator.pushReplacementNamed(context, AppRouteName.homePage);
             }
 
             if (state is AuthError) {
