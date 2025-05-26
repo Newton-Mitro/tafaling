@@ -18,7 +18,7 @@ import 'package:tafaling/shared/widgets/theme_selector/bloc/theme_selector_bloc.
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
-  await Locales.init(['en', 'bn']);
+  Locales.init(['en', 'bn']);
   await setupDependencies();
 
   runApp(
@@ -36,7 +36,7 @@ void main() async {
         BlocProvider(create: (context) => sl<UserFollowersBloc>()),
         BlocProvider(create: (context) => sl<FollowingUsersBloc>()),
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }

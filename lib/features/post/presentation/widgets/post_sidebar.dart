@@ -20,9 +20,15 @@ class PostSidebar extends StatelessWidget {
     return Positioned(
       right: 0,
       child: Container(
-        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(43, 0, 0, 0), // Optional background color
+          borderRadius: BorderRadius.circular(
+            30,
+          ), // Adjust the radius as needed
+        ),
+        padding: EdgeInsets.symmetric(vertical: 10),
         margin: EdgeInsets.only(
-          top: MediaQuery.of(context).size.height / 3,
+          top: MediaQuery.of(context).size.height / 5,
           right: 10,
         ),
         child: BlocBuilder<AuthBloc, AuthState>(
@@ -84,7 +90,7 @@ class PostSidebar extends StatelessWidget {
                         state.post.likeCount,
                         state.post.isLiked
                             ? Colors.red
-                            : context.theme.colorScheme.surface,
+                            : context.theme.colorScheme.onPrimary,
                         () {
                           if (authState is Authenticated) {
                             final event =
@@ -116,7 +122,7 @@ class PostSidebar extends StatelessWidget {
                   context,
                   FontAwesomeIcons.solidShareFromSquare,
                   1,
-                  context.theme.colorScheme.surface,
+                  context.theme.colorScheme.onPrimary,
                   () {
                     if (authState is Authenticated) {
                       Navigator.pushNamed(
@@ -137,7 +143,7 @@ class PostSidebar extends StatelessWidget {
                   context,
                   FontAwesomeIcons.solidComment,
                   5,
-                  context.theme.colorScheme.surface,
+                  context.theme.colorScheme.onPrimary,
                   () {
                     if (authState is Authenticated) {
                       Navigator.pushNamed(
@@ -193,7 +199,7 @@ class PostSidebar extends StatelessWidget {
                   count.toString(),
                   style: TextStyle(
                     fontSize: 14,
-                    color: context.theme.colorScheme.surface,
+                    color: context.theme.colorScheme.onPrimary,
                   ),
                 ),
               ),

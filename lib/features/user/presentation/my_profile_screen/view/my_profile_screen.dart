@@ -303,10 +303,12 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     },
                     body: TabBarView(
                       children: [
-                        ProfilePostsGrid(
-                          itemCount: myPosts.length,
-                          myPosts: myPosts,
-                        ),
+                        myPosts.isNotEmpty
+                            ? ProfilePostsGrid(
+                              itemCount: myPosts.length,
+                              myPosts: myPosts,
+                            )
+                            : Center(child: Text("Create post.")),
                         FollowingUsersScreen(
                           userId:
                               authState is Authenticated

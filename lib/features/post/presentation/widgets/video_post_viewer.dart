@@ -19,7 +19,7 @@ class VideoPostViewer extends StatefulWidget {
 
 class _VideoPostViewerState extends State<VideoPostViewer> {
   late CachedVideoPlayerPlusController _videoPlayerController;
-  bool _isInitialized = false;
+  // bool _isInitialized = false;
   bool _showSeekBar = false;
   Timer? _hideSeekBarTimer;
   Duration _videoPosition = Duration.zero;
@@ -34,9 +34,9 @@ class _VideoPostViewerState extends State<VideoPostViewer> {
         httpHeaders: {'Connection': 'keep-alive'},
       )
       ..initialize().then((_) {
-        setState(() {
-          _isInitialized = true;
-        });
+        // setState(() {
+        //   _isInitialized = true;
+        // });
 
         _videoPlayerController.setLooping(true);
 
@@ -93,7 +93,7 @@ class _VideoPostViewerState extends State<VideoPostViewer> {
 
   void _onVisibilityChanged(VisibilityInfo visibilityInfo) {
     bool isVisible = visibilityInfo.visibleFraction > 0;
-    if (isVisible != _isVisible) {
+    if (isVisible != _isVisible && mounted) {
       setState(() {
         _isVisible = isVisible;
       });
@@ -121,14 +121,14 @@ class _VideoPostViewerState extends State<VideoPostViewer> {
             children: [
               Center(
                 child:
-                    _isInitialized
+                    _videoPlayerController.value.isInitialized
                         ? AspectRatio(
                           aspectRatio: _videoPlayerController.value.aspectRatio,
                           child: CachedVideoPlayerPlus(_videoPlayerController),
                         )
                         : const CircularProgressIndicator(),
               ),
-              if (_isInitialized)
+              if (_videoPlayerController.value.isInitialized)
                 IconButton(
                   icon: Icon(
                     _videoPlayerController.value.isPlaying
@@ -138,7 +138,7 @@ class _VideoPostViewerState extends State<VideoPostViewer> {
                   ),
                   onPressed: _togglePlayPause,
                 ),
-              if (_showSeekBar && _isInitialized)
+              if (_showSeekBar && _videoPlayerController.value.isInitialized)
                 Positioned(
                   bottom: 120,
                   left: 20,
