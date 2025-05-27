@@ -1,10 +1,11 @@
 import 'package:equatable/equatable.dart';
+import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 
 class CommentEntity extends Equatable {
   final int commentId;
   final int postId;
   final String content;
-  final int createdBy;
+  final UserEntity createdBy;
   final DateTime createdAt;
   final List<CommentEntity> replies;
 
@@ -21,7 +22,7 @@ class CommentEntity extends Equatable {
     int? commentId,
     int? postId,
     String? content,
-    int? createdBy,
+    UserEntity? createdBy, // ✅ fixed type
     DateTime? createdAt,
     List<CommentEntity>? replies,
   }) {

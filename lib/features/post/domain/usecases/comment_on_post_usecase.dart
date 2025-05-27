@@ -17,7 +17,7 @@ class CommentOnPostParams {
 class CommentOnPostUseCase implements UseCase<String, CommentOnPostParams> {
   final PostRepository repository;
 
-  CommentOnPostUseCase(this.repository);
+  CommentOnPostUseCase({required this.repository});
 
   @override
   ResultFuture<String> call(CommentOnPostParams params) {

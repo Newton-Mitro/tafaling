@@ -12,6 +12,8 @@ class PostModel extends PostEntity {
     required UserModel super.creator,
     required List<AttachmentModel> super.attachments,
     required super.likeCount,
+    required super.shareCount,
+    required super.commentCount,
     super.createdAt,
     super.expireDate,
     super.isLiked,
@@ -25,7 +27,10 @@ class PostModel extends PostEntity {
       body: json["body"] as String?,
       privacyId: json["privacyId"] as int,
       createdBy: json["createdBy"] as int,
-      creator: UserModel.fromJson(json["creator"] ?? {}),
+      creator:
+          json["creator"] != null
+              ? UserModel.fromJson(json["creator"] as Map<String, dynamic>)
+              : throw Exception("Post creator is missing"),
       attachments:
           (json["attachments"] as List<dynamic>?)
               ?.map(
@@ -34,10 +39,12 @@ class PostModel extends PostEntity {
               )
               .toList() ??
           [],
-      likeCount: json["likeCount"] ?? 0,
+      likeCount: (json["likeCount"] ?? 0) as int,
+      shareCount: (json["shareCount"] ?? 0) as int,
+      commentCount: (json["commentCount"] ?? 0) as int,
       createdAt: json["createdAt"] as String?,
       expireDate: json["expireDate"] as String?,
-      isLiked: (json["isLiked"] ?? 0) == 1, // Convert int to bool
+      isLiked: (json["isLiked"] ?? 0) == 1,
       shareDetails:
           (json["shareDetails"] as List<dynamic>?)
               ?.map((item) => PostModel.fromJson(item as Map<String, dynamic>))
@@ -57,9 +64,13 @@ class PostModel extends PostEntity {
       "attachments":
           attachments.map((e) => (e as AttachmentModel).toJson()).toList(),
       "likeCount": likeCount,
+      "shareCount": shareCount,
+      "commentCount": commentCount,
       "createdAt": createdAt,
       "expireDate": expireDate,
-      "isLiked": isLiked ? 1 : 0, // Convert bool to int
+      "isLiked": isLiked ? 1 : 0,
+      "shareDetails":
+          shareDetails.map((e) => (e as PostModel).toJson()).toList(),
     };
   }
 }

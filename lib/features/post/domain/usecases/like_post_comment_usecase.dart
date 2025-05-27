@@ -12,7 +12,7 @@ class LikePostCommentParams {
 class LikePostCommentUseCase implements UseCase<String, LikePostCommentParams> {
   final PostRepository repository;
 
-  LikePostCommentUseCase(this.repository);
+  LikePostCommentUseCase({required this.repository});
 
   @override
   ResultFuture<String> call(LikePostCommentParams params) {

@@ -1,4 +1,5 @@
 import 'package:tafaling/core/types/typedef.dart';
+import 'package:tafaling/features/post/domain/entities/comment_entity.dart';
 import 'package:tafaling/features/post/domain/entities/like_entity.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/post/domain/entities/privacy_entity.dart';
@@ -37,7 +38,7 @@ abstract class PostRepository {
     int startRecord,
     int pageSize,
   );
-  ResultFuture<List<PostEntity>> getUserPostComments(
+  ResultFuture<List<CommentEntity>> getUserPostComments(
     int postId,
     int userId,
     int parentCommentId,

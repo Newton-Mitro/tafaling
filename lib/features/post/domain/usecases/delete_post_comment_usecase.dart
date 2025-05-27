@@ -13,7 +13,7 @@ class DeletePostCommentUseCase
     implements UseCase<String, DeletePostCommentParams> {
   final PostRepository repository;
 
-  DeletePostCommentUseCase(this.repository);
+  DeletePostCommentUseCase({required this.repository});
 
   @override
   ResultFuture<String> call(DeletePostCommentParams params) {

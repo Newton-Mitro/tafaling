@@ -1,6 +1,6 @@
 import 'package:tafaling/core/types/typedef.dart';
 import 'package:tafaling/core/usecases/usecase.dart';
-import 'package:tafaling/features/post/domain/entities/post_entity.dart';
+import 'package:tafaling/features/post/domain/entities/comment_entity.dart';
 import 'package:tafaling/features/post/domain/repositories/post_repository.dart';
 
 class GetUserPostCommentsParams {
@@ -20,13 +20,13 @@ class GetUserPostCommentsParams {
 }
 
 class GetUserPostCommentsUseCase
-    implements UseCase<List<PostEntity>, GetUserPostCommentsParams> {
+    implements UseCase<List<CommentEntity>, GetUserPostCommentsParams> {
   final PostRepository repository;
 
-  GetUserPostCommentsUseCase(this.repository);
+  GetUserPostCommentsUseCase({required this.repository});
 
   @override
-  ResultFuture<List<PostEntity>> call(GetUserPostCommentsParams params) {
+  ResultFuture<List<CommentEntity>> call(GetUserPostCommentsParams params) {
     return repository.getUserPostComments(
       params.postId,
       params.userId,

@@ -1,37 +1,49 @@
 import 'package:tafaling/features/post/domain/entities/comment_entity.dart';
+import 'package:tafaling/features/user/data/models/user_model.dart';
 
 class CommentModel extends CommentEntity {
   const CommentModel({
     required super.commentId,
     required super.postId,
     required super.content,
-    required super.createdBy,
+    required UserModel super.createdBy,
     required super.createdAt,
     super.replies = const [],
   });
 
   factory CommentModel.fromJson(Map<String, dynamic> json) {
     return CommentModel(
-      commentId: json['commentId'] as int,
+      commentId: json['UserPostCommentId'] as int,
       postId: json['postId'] as int,
-      content: json['content'] as String,
-      createdBy: json['createdBy'] as int,
-      createdAt: DateTime.parse(json['createdAt']),
-      replies:
-          (json['replies'] as List<dynamic>?)
-              ?.map((reply) => CommentModel.fromJson(reply))
-              .toList() ??
-          [],
+      content: json['postComment'] as String,
+      createdBy: UserModel(
+        id: json['commentByUserId'],
+        name: json['commentByUserName'],
+        userName: json['commentByUserName'],
+        email: 'unknown', // or provide fallback
+        profilePicture: json['commentByProfilePicture'],
+        coverPhoto: json['commentByCoverPhoto'],
+        followers: json['commentByFollowers'],
+        following: json['commentByFollowing'],
+        isFollowing: json['isFollowing'], // optional
+      ),
+      createdAt: DateTime.parse(json['commentDate']),
+      replies: const [], // Top-level comment won't include replies directly
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'commentId': commentId,
+      'UserPostCommentId': commentId,
       'postId': postId,
-      'content': content,
-      'createdBy': createdBy,
-      'createdAt': createdAt.toIso8601String(),
+      'postComment': content,
+      'commentByUserId': createdBy.id,
+      'commentByUserName': createdBy.name,
+      'commentByProfilePicture': createdBy.profilePicture,
+      'commentByCoverPhoto': createdBy.coverPhoto,
+      'commentByFollowers': createdBy.followers,
+      'commentByFollowing': createdBy.following,
+      'commentDate': createdAt.toIso8601String(),
       'replies':
           replies.map((reply) => (reply as CommentModel).toJson()).toList(),
     };

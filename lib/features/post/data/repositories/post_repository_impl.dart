@@ -5,6 +5,7 @@ import 'package:tafaling/core/types/typedef.dart';
 import 'package:tafaling/core/utils/failure_mapper.dart';
 import 'package:tafaling/features/post/data/data_sources/post_remote_data_source.dart';
 import 'package:tafaling/features/post/data/models/like_model.dart';
+import 'package:tafaling/features/post/domain/entities/comment_entity.dart';
 import 'package:tafaling/features/post/domain/entities/post_entity.dart';
 import 'package:tafaling/features/post/domain/entities/privacy_entity.dart';
 import 'package:tafaling/features/post/domain/repositories/post_repository.dart';
@@ -235,7 +236,7 @@ class PostRepositoryImpl implements PostRepository {
   }
 
   @override
-  ResultFuture<List<PostEntity>> getUserPostComments(
+  ResultFuture<List<CommentEntity>> getUserPostComments(
     int postId,
     int userId,
     int parentCommentId,

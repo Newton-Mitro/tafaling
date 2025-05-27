@@ -5,6 +5,8 @@ import 'package:flutter_locales/flutter_locales.dart';
 import 'package:tafaling/core/injection.dart';
 import 'package:tafaling/features/auth/presentation/views/bloc/auth_bloc/auth_bloc.dart';
 import 'package:tafaling/features/onboarding/presentation/bloc/onboarding_page_bloc.dart';
+import 'package:tafaling/features/post/presentation/views/post_comment_screen/bloc/post_comment_bloc/post_comment_bloc.dart';
+import 'package:tafaling/features/post/presentation/views/post_comment_screen/bloc/post_comment_list_bloc/post_comment_list_bloc.dart';
 import 'package:tafaling/features/post/presentation/views/posts_screen/bloc/posts_screen_bloc.dart';
 import 'package:tafaling/features/user/presentation/following_users_screen/bloc/following_users_bloc.dart';
 import 'package:tafaling/features/user/presentation/my_profile_screen/bloc/my_profile_bloc.dart';
@@ -35,6 +37,8 @@ void main() async {
         BlocProvider(create: (context) => sl<MyProfileBloc>()),
         BlocProvider(create: (context) => sl<UserFollowersBloc>()),
         BlocProvider(create: (context) => sl<FollowingUsersBloc>()),
+        BlocProvider(create: (_) => sl<PostCommentListBloc>()),
+        BlocProvider(create: (_) => sl<PostCommentBloc>()),
       ],
       child: const MyApp(),
     ),

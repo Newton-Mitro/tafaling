@@ -6,6 +6,7 @@ import 'package:tafaling/core/injection.dart';
 import 'package:tafaling/features/auth/presentation/views/bloc/auth_bloc/auth_bloc.dart';
 import 'package:tafaling/features/home/presentation/home_screen/bloc/home_screen_bloc.dart';
 import 'package:tafaling/features/home/presentation/widgets/bottom_sheet.dart';
+import 'package:tafaling/features/post/presentation/views/post_comment_screen/bloc/post_comment_list_bloc/post_comment_list_bloc.dart';
 import 'package:tafaling/features/post/presentation/views/posts_screen/view/posts_screen.dart';
 import 'package:tafaling/features/user/presentation/friends_screen/bloc/friends_bloc.dart';
 import 'package:tafaling/features/user/presentation/friends_screen/view/friends_screen.dart';
@@ -78,32 +79,34 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => HomeScreenBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => sl<FriendsBloc>()),
+        BlocProvider(create: (_) => sl<PostCommentListBloc>()),
+        BlocProvider(create: (_) => HomeScreenBloc()),
+      ],
+
       child: BlocBuilder<HomeScreenBloc, HomeScreenState>(
         builder: (context, homeScreenState) {
           return BlocBuilder<AuthBloc, AuthState>(
             builder: (context, authState) {
               return Scaffold(
-                body: MultiBlocProvider(
-                  providers: [BlocProvider(create: (_) => sl<FriendsBloc>())],
-                  child: BlocListener<AuthBloc, AuthState>(
-                    listener: (context, state) {
-                      if (state is UnAuthenticated) {
-                        context.read<HomeScreenBloc>().add(
-                          TabChanged(
-                            homeScreenState.selectedIndex > 1
-                                ? 0
-                                : homeScreenState.selectedIndex,
-                          ),
-                        );
-                      }
-                    },
-                    child: _getScreen(
-                      homeScreenState.selectedIndex,
-                      authState,
-                      homeScreenState,
-                    ),
+                body: BlocListener<AuthBloc, AuthState>(
+                  listener: (context, state) {
+                    if (state is UnAuthenticated) {
+                      context.read<HomeScreenBloc>().add(
+                        TabChanged(
+                          homeScreenState.selectedIndex > 1
+                              ? 0
+                              : homeScreenState.selectedIndex,
+                        ),
+                      );
+                    }
+                  },
+                  child: _getScreen(
+                    homeScreenState.selectedIndex,
+                    authState,
+                    homeScreenState,
                   ),
                 ),
                 floatingActionButton: ScaleTransition(

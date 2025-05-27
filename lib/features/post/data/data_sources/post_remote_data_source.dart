@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:tafaling/core/network/api_service.dart';
 import 'package:tafaling/core/utils/json_util.dart';
+import 'package:tafaling/features/post/data/models/comment_model.dart';
 import 'package:tafaling/features/post/data/models/like_model.dart';
 import 'package:tafaling/features/post/data/models/post_model.dart';
 import 'package:tafaling/features/post/data/models/privacy_model.dart';
+import 'package:tafaling/features/post/domain/entities/comment_entity.dart';
 import 'package:tafaling/features/user/data/models/user_model.dart';
 
 abstract class PostRemoteDataSource {
@@ -40,7 +42,7 @@ abstract class PostRemoteDataSource {
     int startRecord,
     int pageSize,
   );
-  Future<List<PostModel>> getUserPostComments(
+  Future<List<CommentEntity>> getUserPostComments(
     int postId,
     int userId,
     int parentCommentId,
@@ -117,7 +119,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   ) async {
     try {
       final response = await apiService.get(
-        '/posts/v2/all/$userId',
+        '/posts/v4/all/$userId',
         queryParameters: {'start_record': startRecord, 'page_size': pageSize},
       );
 
@@ -355,7 +357,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   }
 
   @override
-  Future<List<PostModel>> getUserPostComments(
+  Future<List<CommentEntity>> getUserPostComments(
     int postId,
     int userId,
     int parentCommentId,
@@ -374,7 +376,9 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
 
       if (response.statusCode == HttpStatus.ok) {
         final data = response.data['data'];
-        return (data as List).map((post) => PostModel.fromJson(post)).toList();
+        return (data as List)
+            .map((post) => CommentModel.fromJson(post))
+            .toList();
       } else {
         throw Exception('Get user post comments failed');
       }
@@ -430,7 +434,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
         '/posts/comment',
         data: {
           "parent_comment_id": parentCommentId,
-          "comment_body": commentBody,
+          "body": commentBody,
           "post_id": postId,
         },
       );

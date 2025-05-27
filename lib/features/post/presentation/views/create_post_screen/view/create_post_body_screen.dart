@@ -122,7 +122,7 @@ class _CreatePostBodyScreenState extends State<CreatePostBodyScreen> {
               ),
               const SizedBox(height: 12),
 
-              Container(width: double.infinity, child: _buildPreview()),
+              SizedBox(width: double.infinity, child: _buildPreview()),
 
               const SizedBox(height: 30),
               Text(

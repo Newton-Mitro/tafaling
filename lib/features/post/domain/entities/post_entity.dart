@@ -11,6 +11,8 @@ class PostEntity extends Equatable {
   final UserEntity creator;
   final List<AttachmentEntity> attachments;
   final int likeCount;
+  final int shareCount;
+  final int commentCount;
   final String? createdAt;
   final String? expireDate;
   final bool isLiked;
@@ -25,6 +27,8 @@ class PostEntity extends Equatable {
     required this.creator,
     required this.attachments,
     required this.likeCount,
+    required this.shareCount,
+    required this.commentCount,
     this.createdAt,
     this.expireDate,
     this.isLiked = false,
@@ -40,6 +44,8 @@ class PostEntity extends Equatable {
     UserEntity? creator,
     List<AttachmentEntity>? attachments,
     int? likeCount,
+    int? shareCount,
+    int? commentCount,
     String? createdAt,
     String? expireDate,
     bool? isLiked,
@@ -54,6 +60,8 @@ class PostEntity extends Equatable {
       creator: creator ?? this.creator,
       attachments: attachments ?? this.attachments,
       likeCount: likeCount ?? this.likeCount,
+      shareCount: shareCount ?? this.shareCount,
+      commentCount: commentCount ?? this.commentCount,
       createdAt: createdAt ?? this.createdAt,
       expireDate: expireDate ?? this.expireDate,
       isLiked: isLiked ?? this.isLiked,
@@ -71,9 +79,11 @@ class PostEntity extends Equatable {
     creator,
     attachments,
     likeCount,
+    shareCount,
+    commentCount,
     createdAt,
     expireDate,
     isLiked,
-    shareDetails, // Ensure this is part of the comparison
+    shareDetails,
   ];
 }

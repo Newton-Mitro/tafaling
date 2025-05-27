@@ -21,10 +21,8 @@ class PostSidebar extends StatelessWidget {
       right: 0,
       child: Container(
         decoration: BoxDecoration(
-          color: const Color.fromARGB(43, 0, 0, 0), // Optional background color
-          borderRadius: BorderRadius.circular(
-            30,
-          ), // Adjust the radius as needed
+          color: const Color.fromARGB(43, 0, 0, 0),
+          borderRadius: BorderRadius.circular(30),
         ),
         padding: EdgeInsets.symmetric(vertical: 10),
         margin: EdgeInsets.only(
@@ -36,7 +34,6 @@ class PostSidebar extends StatelessWidget {
             return Column(
               children: [
                 GestureDetector(
-                  // Wrap the SizedBox with GestureDetector
                   onTap: () {
                     if (authState is Authenticated) {
                       Navigator.pushNamed(
@@ -47,7 +44,7 @@ class PostSidebar extends StatelessWidget {
                     } else {
                       showCustomBottomSheet(context);
                     }
-                  }, // Handle the tap
+                  },
                   child: SizedBox(
                     width: 50,
                     height: 50,
@@ -81,82 +78,91 @@ class PostSidebar extends StatelessWidget {
                     ),
                   ),
                 ),
+
+                // BlocBuilder for post preview to get latest post data for buttons
                 BlocBuilder<PostPreviewBloc, PostPreviewState>(
-                  builder: (context, state) {
-                    if (state is PostPreviewLoaded) {
-                      return _buildSidebarActionButton(
-                        context,
-                        FontAwesomeIcons.solidHeart,
-                        state.post.likeCount,
-                        state.post.isLiked
-                            ? Colors.red
-                            : context.theme.colorScheme.onPrimary,
-                        () {
-                          if (authState is Authenticated) {
-                            final event =
-                                state.post.isLiked
-                                    ? RemovePostLikeEvent(state.post.id)
-                                    : PostLikeEvent(state.post.id);
-                            context.read<PostPreviewBloc>().add(event);
-                          } else {
-                            showCustomBottomSheet(context);
-                          }
-                        },
-                        () {
-                          if (authState is Authenticated &&
-                              state.post.likeCount > 0) {
-                            Navigator.pushNamed(
-                              context,
-                              AppRouteName.postLikedUsersPage,
-                              arguments: state.post.id,
-                            );
-                          }
-                        },
-                      );
-                    }
-                    return CircularProgressIndicator();
-                  },
-                ),
-                _buildSidebarActionButton(
-                  context,
-                  FontAwesomeIcons.solidShareFromSquare,
-                  1,
-                  context.theme.colorScheme.onPrimary,
-                  () {
-                    if (authState is Authenticated) {
-                      Navigator.pushNamed(
-                        context,
-                        AppRouteName.postSharePage,
-                        arguments: postModel,
+                  builder: (context, postPreviewState) {
+                    if (postPreviewState is PostPreviewLoaded) {
+                      final post = postPreviewState.post;
+                      return Column(
+                        children: [
+                          _buildSidebarActionButton(
+                            context,
+                            FontAwesomeIcons.solidHeart,
+                            post.likeCount,
+                            post.isLiked
+                                ? Colors.red
+                                : context.theme.colorScheme.onPrimary,
+                            () {
+                              if (authState is Authenticated) {
+                                final event =
+                                    post.isLiked
+                                        ? RemovePostLikeEvent(post.id)
+                                        : PostLikeEvent(post.id);
+                                context.read<PostPreviewBloc>().add(event);
+                              } else {
+                                showCustomBottomSheet(context);
+                              }
+                            },
+                            () {
+                              if (authState is Authenticated &&
+                                  post.likeCount > 0) {
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRouteName.postLikedUsersPage,
+                                  arguments: post.id,
+                                );
+                              }
+                            },
+                          ),
+
+                          _buildSidebarActionButton(
+                            context,
+                            FontAwesomeIcons.solidShareFromSquare,
+                            post.shareCount,
+                            context.theme.colorScheme.onPrimary,
+                            () {
+                              if (authState is Authenticated) {
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRouteName.postSharePage,
+                                  arguments: postModel,
+                                );
+                              } else {
+                                showCustomBottomSheet(context);
+                              }
+                            },
+                            () {
+                              print("share count tapped!");
+                            },
+                          ),
+
+                          _buildSidebarActionButton(
+                            context,
+                            FontAwesomeIcons.solidComment,
+                            post.commentCount,
+                            context.theme.colorScheme.onPrimary,
+                            () {
+                              if (authState is Authenticated) {
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRouteName.postCommentPage,
+                                  arguments: postModel,
+                                );
+                              } else {
+                                showCustomBottomSheet(context);
+                              }
+                            },
+                            () {
+                              print("comment count tapped!");
+                            },
+                          ),
+                        ],
                       );
                     } else {
-                      showCustomBottomSheet(context);
+                      // You can show a loading or fallback widget here if needed
+                      return const CircularProgressIndicator();
                     }
-                  },
-                  () {
-                    // Action when clicking the like count text
-                    print("share count tapped!");
-                  },
-                ),
-                _buildSidebarActionButton(
-                  context,
-                  FontAwesomeIcons.solidComment,
-                  5,
-                  context.theme.colorScheme.onPrimary,
-                  () {
-                    if (authState is Authenticated) {
-                      Navigator.pushNamed(
-                        context,
-                        AppRouteName.postCommentPage,
-                        arguments: postModel,
-                      );
-                    } else {
-                      showCustomBottomSheet(context);
-                    }
-                  },
-                  () {
-                    // Action when clicking the like count text
-                    print("comment count tapped!");
                   },
                 ),
               ],
@@ -172,34 +178,27 @@ class PostSidebar extends StatelessWidget {
     IconData icon,
     int count,
     Color color,
-    VoidCallback onIconTap, // Action for the icon
-    VoidCallback onTextTap, // Action for the text
+    VoidCallback onIconTap,
+    VoidCallback onTextTap,
   ) {
     return Column(
       children: [
-        IconButton(
-          icon: FaIcon(icon, color: color),
-          onPressed: onIconTap, // Action for icon
-        ),
+        IconButton(icon: FaIcon(icon, color: color), onPressed: onIconTap),
         Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: onTextTap, // Action for text
+            onTap: onTextTap,
             borderRadius: BorderRadius.circular(20),
             splashColor: Colors.white.withOpacity(0.3),
             child: Container(
               width: 30,
               height: 30,
               alignment: Alignment.center,
-              decoration: const BoxDecoration(shape: BoxShape.circle),
-              child: TextButton(
-                onPressed: onTextTap, // Separate action for text
-                child: Text(
-                  count.toString(),
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: context.theme.colorScheme.onPrimary,
-                  ),
+              child: Text(
+                count.toString(),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: context.theme.colorScheme.onPrimary,
                 ),
               ),
             ),
