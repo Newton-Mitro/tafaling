@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:tafaling/core/types/typedef.dart';
 import 'package:tafaling/features/post/domain/entities/comment_entity.dart';
 import 'package:tafaling/features/post/domain/entities/like_entity.dart';
@@ -6,6 +8,12 @@ import 'package:tafaling/features/post/domain/entities/privacy_entity.dart';
 import 'package:tafaling/features/user/domain/entities/user_entity.dart';
 
 abstract class PostRepository {
+  ResultFuture<String> createPost(
+    int privacyId,
+    String body,
+    List<File> attachments,
+  );
+
   ResultFuture<List<PostEntity>> fetchPosts(
     int userId,
     int startRecord,

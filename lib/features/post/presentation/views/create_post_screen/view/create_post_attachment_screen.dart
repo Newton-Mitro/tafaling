@@ -223,7 +223,7 @@ class _CreatePostAttachmentScreenState
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Create Post')),
+      appBar: AppBar(title: const Text('Post Attachment')),
       body: CameraPreview(
         _controller!,
         child: Positioned(

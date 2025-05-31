@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:tafaling/core/errors/failures.dart';
 import 'package:tafaling/core/network/network_info.dart';
@@ -318,6 +320,25 @@ class PostRepositoryImpl implements PostRepository {
     if (await networkInfo.isConnected) {
       try {
         return Right(await postDataSource.getPrivacies());
+      } catch (e) {
+        return Left(FailureMapper.fromException(e));
+      }
+    } else {
+      return Left(NoInternetFailure());
+    }
+  }
+
+  @override
+  ResultFuture<String> createPost(
+    int privacyId,
+    String body,
+    List<File> attachments,
+  ) async {
+    if (await networkInfo.isConnected) {
+      try {
+        return Right(
+          await postDataSource.createPost(privacyId, body, attachments),
+        );
       } catch (e) {
         return Left(FailureMapper.fromException(e));
       }

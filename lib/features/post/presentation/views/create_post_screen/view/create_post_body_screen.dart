@@ -1,8 +1,13 @@
 import 'dart:io';
+
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/core/extensions/app_context.dart';
+import 'package:tafaling/routes/app_route_name.dart';
 import 'package:video_player/video_player.dart';
+
+import '../bloc/create_post_bloc.dart';
 
 class CreatePostBodyScreen extends StatefulWidget {
   final String filePath;
@@ -23,6 +28,13 @@ class _CreatePostBodyScreenState extends State<CreatePostBodyScreen> {
   VideoPlayerController? _videoController;
   ChewieController? _chewieController;
 
+  final List<Map<String, dynamic>> _privacyOptions = [
+    {'id': 1, 'label': 'Public'},
+    {'id': 2, 'label': 'Friends'},
+    {'id': 3, 'label': 'Only Me'},
+  ];
+  int _selectedPrivacyId = 1;
+
   @override
   void initState() {
     super.initState();
@@ -42,6 +54,7 @@ class _CreatePostBodyScreenState extends State<CreatePostBodyScreen> {
 
   void _submitPost() {
     final bodyText = _postBodyController.text.trim();
+    final file = File(widget.filePath);
 
     if (bodyText.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -52,13 +65,12 @@ class _CreatePostBodyScreenState extends State<CreatePostBodyScreen> {
       return;
     }
 
-    // TODO: Send data to backend
-    print('Post Body: $bodyText');
-    print('File: ${widget.filePath} (${widget.fileType})');
-
-    _postBodyController.clear();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Post submitted successfully!')),
+    context.read<CreatePostBloc>().add(
+      SubmitPostEvent(
+        privacyId: _selectedPrivacyId,
+        body: bodyText,
+        attachments: [file],
+      ),
     );
   }
 
@@ -108,87 +120,150 @@ class _CreatePostBodyScreenState extends State<CreatePostBodyScreen> {
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: theme.colorScheme.onPrimary,
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Attachment Preview",
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 12),
-
-              SizedBox(width: double.infinity, child: _buildPreview()),
-
-              const SizedBox(height: 30),
-              Text(
-                "Post Content",
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 12),
-
-              Container(
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.surface,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 6,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: TextField(
-                  controller: _postBodyController,
-                  maxLines: 3,
-                  decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 16,
-                    ),
-                    hintText: "Write your post here...",
-                    border: InputBorder.none,
+      body: BlocConsumer<CreatePostBloc, CreatePostState>(
+        listener: (context, state) {
+          if (state is CreatePostSuccess) {
+            _postBodyController.clear();
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
+            Navigator.pushReplacementNamed(context, AppRouteName.homePage);
+          } else if (state is CreatePostFailure) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.error)));
+          }
+        },
+        builder: (context, state) {
+          return SafeArea(
+            child: Stack(
+              children: [
+                SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 24,
                   ),
-                ),
-              ),
-
-              const SizedBox(height: 36),
-
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: _submitPost,
-                  icon: const Icon(Icons.send),
-                  label: const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 14),
-                    child: Text(
-                      "Submit Post",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Attachment Preview",
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    backgroundColor: theme.colorScheme.primary,
-                    foregroundColor: theme.colorScheme.onPrimary,
+                      const SizedBox(height: 12),
+                      SizedBox(width: double.infinity, child: _buildPreview()),
+                      const SizedBox(height: 30),
+
+                      // 🔒 Privacy Selection
+                      Text(
+                        "Privacy",
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      DropdownButtonFormField<int>(
+                        value: _selectedPrivacyId,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: theme.colorScheme.surface,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                        items:
+                            _privacyOptions
+                                .map(
+                                  (option) => DropdownMenuItem<int>(
+                                    value: option['id'],
+                                    child: Text(option['label']),
+                                  ),
+                                )
+                                .toList(),
+                        onChanged: (value) {
+                          if (value != null) {
+                            setState(() {
+                              _selectedPrivacyId = value;
+                            });
+                          }
+                        },
+                      ),
+                      const SizedBox(height: 24),
+
+                      // 📝 Post Body Input
+                      Text(
+                        "Post Content",
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.surface,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 6,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: TextField(
+                          controller: _postBodyController,
+                          maxLines: 3,
+                          decoration: const InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 16,
+                            ),
+                            hintText: "Write your post here...",
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 36),
+
+                      // 🚀 Submit Button
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed:
+                              state is CreatePostLoading ? null : _submitPost,
+                          icon: const Icon(Icons.send),
+                          label: const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 14),
+                            child: Text(
+                              "Submit Post",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            elevation: 4,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            backgroundColor: theme.colorScheme.primary,
+                            foregroundColor: theme.colorScheme.onPrimary,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
+                if (state is CreatePostLoading)
+                  const Center(child: CircularProgressIndicator()),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

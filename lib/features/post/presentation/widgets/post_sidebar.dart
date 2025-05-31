@@ -91,7 +91,7 @@ class PostSidebar extends StatelessWidget {
                             FontAwesomeIcons.solidHeart,
                             post.likeCount,
                             post.isLiked
-                                ? Colors.red
+                                ? context.theme.colorScheme.error
                                 : context.theme.colorScheme.onPrimary,
                             () {
                               if (authState is Authenticated) {

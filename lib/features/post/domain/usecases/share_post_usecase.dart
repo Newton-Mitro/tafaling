@@ -17,7 +17,7 @@ class SharePostParams {
 class SharePostUseCase implements UseCase<String, SharePostParams> {
   final PostRepository repository;
 
-  SharePostUseCase(this.repository);
+  SharePostUseCase({required this.repository});
 
   @override
   ResultFuture<String> call(SharePostParams params) {
