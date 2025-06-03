@@ -52,7 +52,7 @@ class AppRoutes {
         return _materialRoute(SettingsPrivacyPage());
 
       case AppRouteName.postLikedUsersPage:
-        return _materialRoute(PostLikedUsersScreen(userId: args));
+        return _materialRoute(PostLikedUsersScreen(userId: args as int));
 
       default:
         return _materialRoute(const HomeScreen());

@@ -5,7 +5,7 @@ import 'package:tafaling/features/post/presentation/views/post_liked_users_scree
 import 'package:tafaling/features/user/presentation/widgets/user_tile/user_tile.dart';
 
 class PostLikedUsersScreen extends StatefulWidget {
-  final Object? userId; // Change Object? to int directly
+  final int userId;
 
   const PostLikedUsersScreen({super.key, required this.userId});
 
@@ -24,16 +24,16 @@ class _PostLikedUsersScreenState extends State<PostLikedUsersScreen> {
   }
 
   void _onScroll() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-      if (postLikedUsersBloc.hasMoreFollowers) {
-        postLikedUsersBloc.add(
-          FetchPostLikedUsers(
-            postId: widget.userId as int,
-            page: postLikedUsersBloc.currentPage + 1,
-          ),
-        );
-      }
+    if (_scrollController.position.pixels >=
+            _scrollController.position.maxScrollExtent - 200 &&
+        postLikedUsersBloc.hasMoreFollowers &&
+        postLikedUsersBloc.state is! PostLikedUsersLoadingMore) {
+      postLikedUsersBloc.add(
+        FetchPostLikedUsers(
+          postId: widget.userId,
+          page: postLikedUsersBloc.currentPage + 1,
+        ),
+      );
     }
   }
 
@@ -42,16 +42,11 @@ class _PostLikedUsersScreenState extends State<PostLikedUsersScreen> {
     return BlocProvider(
       create:
           (context) =>
-              sl<PostLikedUsersBloc>()..add(
-                FetchPostLikedUsers(postId: widget.userId as int, page: 1),
-              ),
+              sl<PostLikedUsersBloc>()
+                ..add(FetchPostLikedUsers(postId: widget.userId, page: 1)),
       child: BlocBuilder<PostLikedUsersBloc, PostLikedUsersState>(
         builder: (context, state) {
-          postLikedUsersBloc =
-              context
-                  .read<
-                    PostLikedUsersBloc
-                  >(); // Get bloc instance after provider is created
+          postLikedUsersBloc = context.read<PostLikedUsersBloc>();
 
           if (state is PostLikedUsersLoading &&
               state is! PostLikedUsersLoaded) {
@@ -70,25 +65,37 @@ class _PostLikedUsersScreenState extends State<PostLikedUsersScreen> {
                     : (state as PostLikedUsersLoaded).followers;
 
             return Scaffold(
-              appBar: AppBar(title: Text("Post Likes")),
-              body: ListView.builder(
+              appBar: AppBar(title: const Text("Post Likes")),
+              body: ListView.separated(
                 controller: _scrollController,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 20,
+                ), // Outer padding for list
                 itemCount:
                     followers.length +
                     (state is PostLikedUsersLoadingMore ? 1 : 0),
+                separatorBuilder:
+                    (context, index) =>
+                        const SizedBox(height: 8), // Space between items
                 itemBuilder: (context, index) {
                   if (index < followers.length) {
                     final user = followers[index];
                     return UserTile(user: user);
                   } else {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 16,
+                      ), // Padding around loader
+                      child: Center(child: CircularProgressIndicator()),
+                    );
                   }
                 },
               ),
             );
           }
 
-          return const Center(child: Text("No followers available"));
+          return const Center(child: Text("No followers available."));
         },
       ),
     );

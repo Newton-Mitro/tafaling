@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tafaling/core/theme/animations/fade_slide_transition.dart';
-import 'package:tafaling/core/theme/values/colors/primary_dark_colors.dart';
+import 'package:tafaling/core/theme/values/colors/dark_blue_abyss_colors.dart';
 
-final _primaryDarkColors = PrimaryDarkColors();
-ThemeData get primaryDarkTheme => ThemeData(
+final _primaryDarkColors = DarkBlueAbyssColors();
+ThemeData get darkBlueAbyssThemeData => ThemeData(
   useMaterial3: true,
   scaffoldBackgroundColor: _primaryDarkColors.background,
   colorScheme: ColorScheme.dark(
@@ -64,7 +64,7 @@ ThemeData get primaryDarkTheme => ThemeData(
     elevation: 0,
     iconTheme: IconThemeData(color: _primaryDarkColors.onPrimary),
   ),
-  tabBarTheme: TabBarTheme(
+  tabBarTheme: TabBarThemeData(
     indicatorColor: _primaryDarkColors.error,
     labelColor: _primaryDarkColors.selected,
     unselectedLabelColor: _primaryDarkColors.unSelected,
@@ -76,20 +76,6 @@ ThemeData get primaryDarkTheme => ThemeData(
   ),
   pageTransitionsTheme: _pageTransitionsTheme,
   visualDensity: VisualDensity.adaptivePlatformDensity,
-  filledButtonTheme: FilledButtonThemeData(
-    style: FilledButton.styleFrom(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30), // slightly tighter curve
-        side: BorderSide(color: _primaryDarkColors.secondary),
-      ),
-      backgroundColor: _primaryDarkColors.primary,
-      foregroundColor: _primaryDarkColors.onPrimary,
-      textStyle: const TextStyle(
-        fontSize: 12, // slightly smaller text
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-    ),
-  ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       shape: RoundedRectangleBorder(

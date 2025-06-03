@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tafaling/features/user/presentation/friends_screen/bloc/friends_bloc.dart';
 import 'package:tafaling/features/user/presentation/widgets/user_tile/user_tile.dart';
 import 'package:tafaling/shared/widgets/app_custom_app_bar.dart';
+import 'package:tafaling/shared/widgets/list_shimmer_skeleton.dart';
 
 class FriendsScreen extends StatefulWidget {
   final int userId;
@@ -22,11 +23,12 @@ class _FriendsScreenState extends State<FriendsScreen> {
 
     // Initial fetch
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final friendsBloc = context.read<FriendsBloc>();
-      friendsBloc.add(FetchFriends(userId: widget.userId, page: 1));
+      context.read<FriendsBloc>().add(
+        FetchFriends(userId: widget.userId, page: 1),
+      );
     });
 
-    // Infinite scroll logic
+    // Infinite scroll
     _scrollController.addListener(() {
       final friendsBloc = context.read<FriendsBloc>();
       if (_scrollController.position.pixels >=
@@ -71,9 +73,11 @@ class _FriendsScreenState extends State<FriendsScreen> {
 
             final isLoadingMore = state is FriendsLoadingMore;
 
-            return ListView.builder(
+            return ListView.separated(
               controller: _scrollController,
+              padding: const EdgeInsets.all(16),
               itemCount: followers.length + (isLoadingMore ? 1 : 0),
+              separatorBuilder: (_, __) => const SizedBox(height: 8),
               itemBuilder: (context, index) {
                 if (index < followers.length) {
                   return UserTile(user: followers[index]);
@@ -87,7 +91,13 @@ class _FriendsScreenState extends State<FriendsScreen> {
             );
           }
 
-          return const Center(child: CircularProgressIndicator());
+          // Initial loading skeleton
+          return ListView.separated(
+            padding: const EdgeInsets.all(16),
+            itemCount: 6,
+            separatorBuilder: (_, __) => const SizedBox(height: 8),
+            itemBuilder: (_, __) => const ListShimmerSkeleton(),
+          );
         },
       ),
     );

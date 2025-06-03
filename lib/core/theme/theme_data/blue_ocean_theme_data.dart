@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tafaling/core/theme/animations/fade_slide_transition.dart';
-import 'package:tafaling/core/theme/values/colors/primary_light_colors.dart';
+import 'package:tafaling/core/theme/values/colors/blue_ocean_colors.dart';
 
-final _primaryLightColors = PrimaryLightColors();
+final _primaryLightColors = BlueOceanColors();
 
-ThemeData get primaryLightTheme => ThemeData(
+ThemeData get blueOceanThemeData => ThemeData(
   useMaterial3: true,
   scaffoldBackgroundColor: _primaryLightColors.background,
   colorScheme: ColorScheme.light(
@@ -64,6 +64,11 @@ ThemeData get primaryLightTheme => ThemeData(
     elevation: 0,
     iconTheme: IconThemeData(color: _primaryLightColors.onPrimary),
   ),
+  tabBarTheme: TabBarThemeData(
+    indicatorColor: _primaryLightColors.error,
+    labelColor: _primaryLightColors.selected,
+    unselectedLabelColor: _primaryLightColors.unSelected,
+  ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: _primaryLightColors.primary,
     selectedItemColor: _primaryLightColors.selected,
@@ -71,20 +76,6 @@ ThemeData get primaryLightTheme => ThemeData(
   ),
   pageTransitionsTheme: _pageTransitionsTheme,
   visualDensity: VisualDensity.adaptivePlatformDensity,
-  filledButtonTheme: FilledButtonThemeData(
-    style: FilledButton.styleFrom(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30), // slightly tighter curve
-        side: BorderSide(color: _primaryLightColors.secondary),
-      ),
-      backgroundColor: _primaryLightColors.primary,
-      foregroundColor: _primaryLightColors.onPrimary,
-      textStyle: const TextStyle(
-        fontSize: 12, // slightly smaller text
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-    ),
-  ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       shape: RoundedRectangleBorder(

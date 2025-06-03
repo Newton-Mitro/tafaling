@@ -218,14 +218,49 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                           children: [
                                             // Show "Edit Profile" and "Share Profile" if it's the authenticated user's profile
                                             FilledButton(
-                                              child: Text("Edit Profile"),
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    context
+                                                        .theme
+                                                        .colorScheme
+                                                        .primaryContainer,
+                                              ),
+                                              child: Text(
+                                                "Edit Profile",
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color:
+                                                      context
+                                                          .theme
+                                                          .colorScheme
+                                                          .onPrimary,
+                                                ),
+                                              ),
                                               onPressed: () {
                                                 // Edit Profile Action
                                               },
                                             ),
                                             const SizedBox(width: 10),
                                             FilledButton(
-                                              child: Text("Share Profile"),
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    context
+                                                        .theme
+                                                        .colorScheme
+                                                        .primaryContainer,
+                                              ),
+                                              child: Text(
+                                                "Share Profile",
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color:
+                                                      context
+                                                          .theme
+                                                          .colorScheme
+                                                          .onPrimary,
+                                                ),
+                                              ),
+
                                               onPressed: () {
                                                 // Share Profile Action
                                               },

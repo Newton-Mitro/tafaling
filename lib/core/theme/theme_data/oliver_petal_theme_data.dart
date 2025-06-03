@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:tafaling/core/theme/animations/fade_slide_transition.dart';
-import 'package:tafaling/core/theme/values/colors/forever_green_light_colors.dart';
+import 'package:tafaling/core/theme/values/colors/oliver_petal_colors.dart';
 
-final _foreverGreenLightColors = ForeverGreenLightColor();
+final _foreverGreenLightColors = OliverPetalColors();
 
-ThemeData get foreverGreenLightTheme => ThemeData(
+ThemeData get oliverPetalThemeData => ThemeData(
   useMaterial3: true,
   scaffoldBackgroundColor: _foreverGreenLightColors.background,
+
   colorScheme: ColorScheme.light(
     primary: _foreverGreenLightColors.primary,
     onPrimary: _foreverGreenLightColors.onPrimary,
@@ -64,6 +65,11 @@ ThemeData get foreverGreenLightTheme => ThemeData(
     elevation: 0,
     iconTheme: IconThemeData(color: _foreverGreenLightColors.onPrimary),
   ),
+  tabBarTheme: TabBarThemeData(
+    indicatorColor: _foreverGreenLightColors.error,
+    labelColor: _foreverGreenLightColors.selected,
+    unselectedLabelColor: _foreverGreenLightColors.unSelected,
+  ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: _foreverGreenLightColors.primary,
     selectedItemColor: _foreverGreenLightColors.selected,
@@ -71,20 +77,6 @@ ThemeData get foreverGreenLightTheme => ThemeData(
   ),
   pageTransitionsTheme: _pageTransitionsTheme,
   visualDensity: VisualDensity.adaptivePlatformDensity,
-  filledButtonTheme: FilledButtonThemeData(
-    style: FilledButton.styleFrom(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30), // slightly tighter curve
-        side: BorderSide(color: _foreverGreenLightColors.secondary),
-      ),
-      backgroundColor: _foreverGreenLightColors.primary,
-      foregroundColor: _foreverGreenLightColors.onPrimary,
-      textStyle: const TextStyle(
-        fontSize: 12, // slightly smaller text
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-    ),
-  ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       shape: RoundedRectangleBorder(

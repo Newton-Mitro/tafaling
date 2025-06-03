@@ -6,12 +6,12 @@ abstract class LocalStorage {
   Future<void> saveDouble(String key, double value);
   Future<void> saveStringList(String key, List<String> value);
 
-  // ✅ Get Data (nullable in case key doesn't exist)
-  Future<String?> getString(String key);
-  Future<int?> getInt(String key);
-  Future<bool?> getBool(String key);
-  Future<double?> getDouble(String key);
-  Future<List<String>?> getStringList(String key);
+  // ✅ Get Data
+  Future<String> getString(String key);
+  Future<int> getInt(String key);
+  Future<bool> getBool(String key);
+  Future<double> getDouble(String key);
+  Future<List<String>> getStringList(String key);
 
   // ✅ Remove & Check Key
   Future<void> remove(String key);

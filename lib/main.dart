@@ -22,7 +22,7 @@ import 'package:tafaling/shared/widgets/theme_selector/bloc/theme_selector_bloc.
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
-  Locales.init(['en', 'bn']);
+  await Locales.init(['en', 'bn']);
   await setupDependencies();
 
   runApp(

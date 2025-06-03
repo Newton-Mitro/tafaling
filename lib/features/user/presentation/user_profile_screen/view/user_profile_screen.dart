@@ -176,20 +176,21 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                                       style:
                                                           ElevatedButton.styleFrom(
                                                             backgroundColor:
-                                                                Color.fromARGB(
-                                                                  255,
-                                                                  13,
-                                                                  82,
-                                                                  14,
-                                                                ),
+                                                                context
+                                                                    .theme
+                                                                    .colorScheme
+                                                                    .secondary,
                                                           ),
                                                       child: Text(
                                                         "Unfollow",
-                                                        style:
-                                                            context
-                                                                .theme
-                                                                .textTheme
-                                                                .labelMedium,
+                                                        style: TextStyle(
+                                                          color:
+                                                              context
+                                                                  .theme
+                                                                  .colorScheme
+                                                                  .onSecondary,
+                                                          fontSize: 14,
+                                                        ),
                                                       ),
                                                       onPressed: () {
                                                         context
@@ -211,20 +212,21 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                                   style:
                                                       ElevatedButton.styleFrom(
                                                         backgroundColor:
-                                                            Color.fromARGB(
-                                                              255,
-                                                              6,
-                                                              47,
-                                                              82,
-                                                            ),
+                                                            context
+                                                                .theme
+                                                                .colorScheme
+                                                                .tertiary,
                                                       ),
                                                   child: Text(
                                                     "Follow",
-                                                    style:
-                                                        context
-                                                            .theme
-                                                            .textTheme
-                                                            .labelMedium,
+                                                    style: TextStyle(
+                                                      color:
+                                                          context
+                                                              .theme
+                                                              .colorScheme
+                                                              .onSecondary,
+                                                      fontSize: 14,
+                                                    ),
                                                   ),
                                                   onPressed: () {
                                                     context
@@ -240,13 +242,23 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                                 ),
                                             const SizedBox(width: 10),
                                             FilledButton(
-                                              child: Text(
-                                                "Message",
-                                                style:
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
                                                     context
                                                         .theme
-                                                        .textTheme
-                                                        .labelMedium,
+                                                        .colorScheme
+                                                        .primaryContainer,
+                                              ),
+                                              child: Text(
+                                                "Message",
+                                                style: TextStyle(
+                                                  color:
+                                                      context
+                                                          .theme
+                                                          .colorScheme
+                                                          .onSecondary,
+                                                  fontSize: 14,
+                                                ),
                                               ),
                                               onPressed: () {
                                                 // Share Profile Action

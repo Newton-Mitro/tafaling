@@ -5,14 +5,22 @@ abstract class ThemeSelectorState {
   const ThemeSelectorState(this.themeData);
 }
 
-class PrimaryLightThemeState extends ThemeSelectorState {
-  PrimaryLightThemeState() : super(AppTheme.primaryLight);
+class BlueOceanTheme extends ThemeSelectorState {
+  BlueOceanTheme() : super(AppTheme.blueOcean);
 }
 
-class PrimaryDarkThemeState extends ThemeSelectorState {
-  PrimaryDarkThemeState() : super(AppTheme.primaryDark);
+class DarkBlueOceanTheme extends ThemeSelectorState {
+  DarkBlueOceanTheme() : super(AppTheme.darkBlueOcean);
 }
 
-class ForeverGreenLightThemeState extends ThemeSelectorState {
-  ForeverGreenLightThemeState() : super(AppTheme.foreverGreenLight);
+class EleganceTheme extends ThemeSelectorState {
+  EleganceTheme() : super(AppTheme.elegance);
+}
+
+class DarkBlueAbyssTheme extends ThemeSelectorState {
+  DarkBlueAbyssTheme() : super(AppTheme.darkBlueAbyss);
+}
+
+class OliverPetalTheme extends ThemeSelectorState {
+  OliverPetalTheme() : super(AppTheme.oliverPetal);
 }

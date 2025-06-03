@@ -9,12 +9,16 @@ class AppBackground extends StatelessWidget {
   const AppBackground({super.key, required this.child});
 
   String _getBackgroundImage(ThemeSelectorState state) {
-    if (state is PrimaryDarkThemeState) {
-      return AppImages.pathPrimaryDarkBgImage;
-    } else if (state is ForeverGreenLightThemeState) {
-      return AppImages.pathForeverGreenLightBgImage;
+    if (state is DarkBlueAbyssTheme) {
+      return AppImages.darkBlueAbyssthemeBackground;
+    } else if (state is OliverPetalTheme) {
+      return AppImages.oliverPetalThemeBackground;
+    } else if (state is EleganceTheme) {
+      return AppImages.eleganceThemeBackground;
+    } else if (state is DarkBlueOceanTheme) {
+      return AppImages.darkBlueOceanThemeBackground;
     } else {
-      return AppImages.pathPrimaryLightBgImage;
+      return AppImages.blueOceanThemeBackground;
     }
   }
 

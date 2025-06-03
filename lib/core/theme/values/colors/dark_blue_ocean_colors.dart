@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tafaling/core/theme/values/colors/app_colors.dart';
 
-class PrimaryDarkColors extends AppColors {
+class DarkBlueOceanColors extends AppColors {
   // Primary Colors
   @override
   Color get primary => const Color.fromARGB(255, 3, 38, 90); // updated dark navy
@@ -44,7 +44,7 @@ class PrimaryDarkColors extends AppColors {
 
   // Tertiary Colors
   @override
-  Color get tertiary => const Color(0xFF512DA8);
+  Color get tertiary => const Color.fromARGB(255, 141, 131, 161);
   @override
   Color get onTertiary => Colors.white;
   @override
@@ -72,7 +72,7 @@ class PrimaryDarkColors extends AppColors {
 
   // Background & Surface
   @override
-  Color get background => const Color.fromARGB(255, 0, 19, 49); // darker navy background
+  Color get background => const Color.fromARGB(255, 0, 11, 29); // darker navy background
   @override
   Color get onBackground => Colors.white;
   @override

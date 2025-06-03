@@ -13,28 +13,34 @@ class UsersFollowersScreen extends StatefulWidget {
 }
 
 class _UsersFollowersScreenState extends State<UsersFollowersScreen> {
-  late UserFollowersBloc userFollowersBloc;
+  late UserFollowersBloc _userFollowersBloc;
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    userFollowersBloc = BlocProvider.of<UserFollowersBloc>(context);
-    userFollowersBloc.add(FetchUserFollowers(userId: widget.userId, page: 1));
 
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels >=
-              _scrollController.position.maxScrollExtent - 300 &&
-          userFollowersBloc.hasMoreFollowers &&
-          !userFollowersBloc.isLoading) {
-        userFollowersBloc.add(
-          FetchUserFollowers(
-            userId: widget.userId,
-            page: userFollowersBloc.currentPage,
-          ),
+    _userFollowersBloc = BlocProvider.of<UserFollowersBloc>(context);
+    // Fetch first page of followers
+    _userFollowersBloc.add(FetchUserFollowers(userId: widget.userId, page: 1));
+
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 300) {
+      final state = _userFollowersBloc.state;
+
+      if (_userFollowersBloc.hasMoreFollowers &&
+          !_userFollowersBloc.isLoading) {
+        final nextPage = _userFollowersBloc.currentPage + 1;
+
+        _userFollowersBloc.add(
+          FetchUserFollowers(userId: widget.userId, page: nextPage),
         );
       }
-    });
+    }
   }
 
   @override
@@ -58,11 +64,13 @@ class _UsersFollowersScreenState extends State<UsersFollowersScreen> {
                     ? state.followers
                     : (state as dynamic).followers;
 
-            return ListView.builder(
+            final isLoadingMore = state is UserFollowersLoadingMore;
+
+            return ListView.separated(
               controller: _scrollController,
-              itemCount:
-                  followers.length +
-                  (state is UserFollowersLoadingMore ? 1 : 0),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+              itemCount: followers.length + (isLoadingMore ? 1 : 0),
+              separatorBuilder: (_, __) => const SizedBox(height: 8),
               itemBuilder: (context, index) {
                 if (index < followers.length) {
                   final user = followers[index];

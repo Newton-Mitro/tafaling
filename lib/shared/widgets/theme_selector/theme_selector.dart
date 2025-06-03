@@ -9,8 +9,6 @@ class ThemeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<ThemeSelectorEvent>(
-      color: context.theme.colorScheme.primary,
-      offset: const Offset(0, 52),
       icon: Icon(Icons.color_lens, color: context.theme.colorScheme.onPrimary),
       tooltip: 'Select Theme',
       onSelected: (event) {
@@ -19,62 +17,73 @@ class ThemeSelector extends StatelessWidget {
       itemBuilder:
           (context) => [
             PopupMenuItem(
-              value: SetPrimaryLightTheme(),
+              value: SetBlueOceanTheme(),
               child: Row(
                 children: [
                   Icon(
-                    Icons.wb_sunny,
+                    Icons.color_lens,
                     size: 18,
-                    color: context.theme.colorScheme.onPrimary,
+                    color: context.theme.colorScheme.onSurface,
                   ),
                   SizedBox(width: 8),
-                  Text(
-                    'Primary Light',
-                    style: TextStyle(
-                      color: context.theme.colorScheme.onPrimary,
-                      fontSize: 14,
-                    ),
-                  ),
+                  Text('Blue Ocean'),
                 ],
               ),
             ),
             PopupMenuItem(
-              value: SetPrimaryDarkTheme(),
+              value: SetEleganceTheme(),
               child: Row(
                 children: [
                   Icon(
-                    Icons.wb_sunny,
+                    Icons.color_lens,
                     size: 18,
-                    color: context.theme.colorScheme.onPrimary,
+                    color: context.theme.colorScheme.onSurface,
                   ),
                   SizedBox(width: 8),
-                  Text(
-                    'Primary Dark',
-                    style: TextStyle(
-                      color: context.theme.colorScheme.onPrimary,
-                      fontSize: 14,
-                    ),
-                  ),
+                  Text('Elegance'),
                 ],
               ),
             ),
             PopupMenuItem(
-              value: SetForeverGreenLightTheme(),
+              value: SetDarkBlueAbyssTheme(),
               child: Row(
                 children: [
                   Icon(
-                    Icons.wb_sunny,
+                    Icons.color_lens,
                     size: 18,
-                    color: context.theme.colorScheme.onPrimary,
+                    color: context.theme.colorScheme.onSurface,
                   ),
                   SizedBox(width: 8),
-                  Text(
-                    'Forever Green',
-                    style: TextStyle(
-                      color: context.theme.colorScheme.onPrimary,
-                      fontSize: 14,
-                    ),
+                  Text('Dark Blue Abyss'),
+                ],
+              ),
+            ),
+            PopupMenuItem(
+              value: SetOliverPetalTheme(),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.color_lens,
+                    size: 18,
+                    color: context.theme.colorScheme.onSurface,
                   ),
+                  SizedBox(width: 8),
+                  Text('Oliver Petal'),
+                ],
+              ),
+            ),
+
+            PopupMenuItem(
+              value: SetDarkBlueOceanTheme(),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.color_lens,
+                    size: 18,
+                    color: context.theme.colorScheme.onSurface,
+                  ),
+                  SizedBox(width: 8),
+                  Text('Dark Blue Ocean'),
                 ],
               ),
             ),

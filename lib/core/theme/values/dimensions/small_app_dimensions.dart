@@ -1,4 +1,4 @@
-import 'package:tafaling/core/theme/values/dimensions/app_dimensions.dart';
+import 'app_dimensions.dart';
 
 class SmallAppDimensions implements AppDimensions {
   @override

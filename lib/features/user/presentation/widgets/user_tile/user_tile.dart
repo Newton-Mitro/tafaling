@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tafaling/core/extensions/app_context.dart';
 import 'package:tafaling/core/injection.dart';
 import 'package:tafaling/features/auth/presentation/views/bloc/auth_bloc/auth_bloc.dart';
 import 'package:tafaling/features/home/presentation/widgets/bottom_sheet.dart';
@@ -28,10 +29,8 @@ class UserTile extends StatelessWidget {
               builder: (context, authState) {
                 return Card(
                   color: Theme.of(context).colorScheme.surface,
-
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
+                  elevation: 4.0,
+                  shadowColor: Colors.black,
                   child: ListTile(
                     minTileHeight: 60,
                     leading: CachedNetworkImage(
@@ -83,8 +82,8 @@ class UserTile extends StatelessWidget {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:
                                     userTileState.user.isFollowing
-                                        ? const Color.fromARGB(255, 13, 82, 14)
-                                        : const Color.fromARGB(255, 6, 47, 82),
+                                        ? context.theme.colorScheme.primary
+                                        : context.theme.colorScheme.secondary,
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 10,
                                   vertical: 5,

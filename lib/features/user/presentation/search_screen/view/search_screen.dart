@@ -87,7 +87,7 @@ class _SearchScreenState extends State<SearchScreen> {
           title: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: SizedBox(
-              height: 36,
+              height: 40, // Slightly taller for better tap target
               child: TextField(
                 controller: _searchController,
                 onChanged: _onSearch,
@@ -96,7 +96,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   filled: true,
                   fillColor: Colors.white10,
                   contentPadding: const EdgeInsets.symmetric(
-                    vertical: 8,
+                    vertical: 10,
                     horizontal: 12,
                   ),
                   prefixIcon: const Icon(
@@ -134,9 +134,13 @@ class _SearchScreenState extends State<SearchScreen> {
 
               return NotificationListener<ScrollNotification>(
                 onNotification: _onScrollNotification,
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(8.0),
+                child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 20,
+                  ),
                   itemCount: users.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: 8),
                   itemBuilder: (context, index) {
                     final user = users[index];
                     return UserTile(user: user);

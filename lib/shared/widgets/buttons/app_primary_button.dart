@@ -20,45 +20,28 @@ class AppPrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Row(
-      children: [
-        SizedBox(
-          height: 36,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-                side: BorderSide(color: theme.colorScheme.secondary),
-              ),
-              backgroundColor: theme.colorScheme.primary,
-              foregroundColor: theme.colorScheme.onPrimary,
-              textStyle: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-            ),
-            onPressed: onPressed,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (iconBefore != null) ...[
-                    iconBefore!,
-                    const SizedBox(width: 8),
-                  ],
-                  Text(label),
-                  if (iconAfter != null) ...[
-                    const SizedBox(width: 8),
-                    iconAfter!,
-                  ],
-                ],
-              ),
-            ),
+    return SizedBox(
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: BorderSide(color: theme.colorScheme.primary),
           ),
+          backgroundColor: theme.colorScheme.primary,
+          foregroundColor: theme.colorScheme.onPrimary,
+          textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
         ),
-      ],
+        onPressed: onPressed,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (iconBefore != null) ...[iconBefore!, const SizedBox(width: 8)],
+            Text(label),
+            if (iconAfter != null) ...[const SizedBox(width: 8), iconAfter!],
+          ],
+        ),
+      ),
     );
   }
 }

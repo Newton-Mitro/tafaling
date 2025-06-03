@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:tafaling/core/theme/themes/forever_green_light_theme.dart';
-import 'package:tafaling/core/theme/themes/primary_dark_theme.dart';
-import 'package:tafaling/core/theme/themes/primary_light_theme.dart';
+import 'package:tafaling/core/theme/theme_data/blue_ocean_theme_data.dart';
+import 'package:tafaling/core/theme/theme_data/dark_blue_abyss_theme_data.dart';
+import 'package:tafaling/core/theme/theme_data/dark_blue_ocean_theme_data.dart';
+import 'package:tafaling/core/theme/theme_data/elegance_theme_data.dart';
+import 'package:tafaling/core/theme/theme_data/oliver_petal_theme_data.dart';
 
 class AppTheme {
-  static final ThemeData primaryDark = primaryDarkTheme;
-  static final ThemeData primaryLight = primaryLightTheme;
-  static final ThemeData foreverGreenLight = foreverGreenLightTheme;
+  static final ThemeData darkBlueAbyss = darkBlueAbyssThemeData;
+  static final ThemeData blueOcean = blueOceanThemeData;
+  static final ThemeData darkBlueOcean = darkBlueOceanThemeData;
+  static final ThemeData oliverPetal = oliverPetalThemeData;
+  static final ThemeData elegance = eleganceThemeData;
 }
